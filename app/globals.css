@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  --shadow-soft: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+  --shadow-soft-lg: 0 20px 27px 0 rgba(0, 0, 0, 0.08);
+  --shadow-soft-sm: 0 2px 12px 0 rgba(0, 0, 0, 0.04);
+  --shadow-soft-inset: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.5rem;
+}
+
+@layer base {
+  :root {
+    --background: 220 33% 98%; /* Softer lilac/slate grey */
+    --foreground: 222.2 47.4% 11.2%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 1rem;
+
+    --success: 142.1 76.2% 36.3%;
+    --warning: 38 92% 50%;
+    --info: 199 89% 48%;
+  }
+
+  * {
+    border-color: hsl(var(--border) / 0.5);
+  }
+
+  body {
+    background-color: #f8f9fa; /* Soft UI signature background color */
+    color: hsl(var(--foreground));
+  }
+}
