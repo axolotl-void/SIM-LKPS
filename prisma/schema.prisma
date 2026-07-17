@@ -1,0 +1,372 @@
+// SIM-LKPS — Initial Prisma Schema
+// Agent: CTO Agent
+// Sprint: 0
+// Version: 1.0
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum Role {
+  ADMIN
+  OPERATOR
+  VALIDATOR
+  PIMPINAN
+}
+
+enum TabelStatus {
+  DRAFT
+  DIAJUKAN
+  DIREVISI
+  DISETUJUI
+  DITOLAK
+}
+
+enum ValidationAction {
+  SUBMIT
+  APPROVE
+  REJECT
+  REVISE
+}
+
+enum NotificationType {
+  INFO
+  WARNING
+  SUCCESS
+  ERROR
+}
+
+// ============================================================================
+// AUTH (Auth.js / NextAuth v5 compatible)
+// ============================================================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified DateTime?
+  password      String    // bcrypt hashed
+  image         String?
+  role          Role      @default(OPERATOR)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  accounts          Account[]
+  sessions          Session[]
+  auditLogs         AuditLog[]
+  notifications     Notification[]
+  submittedTabels   TabelLkps[]         @relation("SubmittedBy")
+  validatedTabels   TabelLkps[]         @relation("ValidatedBy")
+  validationHistory ValidationHistory[]
+  uploadedEvidence  Evidence[]
+
+  @@index([role])
+  @@index([email])
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ============================================================================
+// MASTER DATA
+// ============================================================================
+
+model Prodi {
+  id        String   @id @default(cuid())
+  nama      String   // "Ilmu Komputer"
+  jenjang   String   // "S1"
+  kode      String   @unique // "55201"
+  fakultas  String   // "Fakultas Keguruan dan Ilmu Pendidikan"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tahunAkademik TahunAkademik[]
+
+  @@map("prodi")
+}
+
+model TahunAkademik {
+  id        String   @id @default(cuid())
+  tahun     String   // "2024/2025"
+  semester  String   // "Ganjil" | "Genap"
+  isActive  Boolean  @default(false)
+  prodiId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prodi     Prodi       @relation(fields: [prodiId], references: [id])
+  tabelLkps TabelLkps[]
+
+  @@unique([tahun, semester, prodiId])
+  @@map("tahun_akademik")
+}
+
+model Dosen {
+  id                  String   @id @default(cuid())
+  nidn                String   @unique
+  nama                String
+  jabatanFungsional   String?  // "Lektor", "Lektor Kepala", "Guru Besar"
+  pendidikanTerakhir  String   // "S2", "S3"
+  bidangKeahlian      String?
+  status              String   @default("Tetap") // "Tetap" | "Tidak Tetap"
+  jenisKelamin        String   // "L" | "P"
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([nama])
+  @@index([status])
+  @@map("dosen")
+}
+
+model Tendik {
+  id                  String   @id @default(cuid())
+  nip                 String   @unique
+  nama                String
+  jabatan             String?
+  pendidikanTerakhir  String
+  status              String   @default("Aktif")
+  jenisKelamin        String
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([nama])
+  @@map("tendik")
+}
+
+model Mahasiswa {
+  id           String   @id @default(cuid())
+  nim          String   @unique
+  nama         String
+  angkatan     Int      // 2020, 2021, ...
+  status       String   @default("Aktif") // "Aktif", "Cuti", "Lulus", "DO"
+  jenisKelamin String
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([angkatan])
+  @@index([status])
+  @@index([nama])
+  @@map("mahasiswa")
+}
+
+model MataKuliah {
+  id        String   @id @default(cuid())
+  kode      String   @unique
+  nama      String
+  sks       Int
+  semester  Int      // 1-8
+  kategori  String?  // "Wajib", "Pilihan"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([semester])
+  @@map("mata_kuliah")
+}
+
+// ============================================================================
+// TABEL LKPS
+// ============================================================================
+
+/// Definisi 31 tabel LKPS (metadata, kolom-kolom)
+model TabelDefinition {
+  id               String   @id @default(cuid())
+  kode             String   @unique // "1.A.1", "2.B.3", etc.
+  nama             String   // "Pimpinan dan Tupoksi UPPS dan PS"
+  bab              Int      // 1-6
+  urutan           Int      // Urutan dalam BAB
+  deskripsi        String?
+  kolomDefinitions Json     // Array of column definitions
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  tabelLkps TabelLkps[]
+
+  @@index([bab])
+  @@map("tabel_definition")
+}
+
+/// Instance tabel LKPS per tahun akademik
+model TabelLkps {
+  id                String      @id @default(cuid())
+  tabelDefinitionId String
+  tahunAkademikId   String
+  status            TabelStatus @default(DRAFT)
+  submittedById     String?
+  submittedAt       DateTime?
+  validatedById     String?
+  validatedAt       DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  tabelDefinition   TabelDefinition    @relation(fields: [tabelDefinitionId], references: [id])
+  tahunAkademik     TahunAkademik      @relation(fields: [tahunAkademikId], references: [id])
+  submittedBy       User?              @relation("SubmittedBy", fields: [submittedById], references: [id])
+  validatedBy       User?              @relation("ValidatedBy", fields: [validatedById], references: [id])
+  rows              TabelLkpsRow[]
+  evidence          Evidence[]
+  validationHistory ValidationHistory[]
+
+  @@unique([tabelDefinitionId, tahunAkademikId])
+  @@index([status])
+  @@index([tahunAkademikId])
+  @@map("tabel_lkps")
+}
+
+/// Baris data dalam tabel LKPS (dynamic columns via JSON)
+model TabelLkpsRow {
+  id          String   @id @default(cuid())
+  tabelLkpsId String
+  rowOrder    Int
+  rowData     Json     // Dynamic column data
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tabelLkps TabelLkps @relation(fields: [tabelLkpsId], references: [id], onDelete: Cascade)
+
+  @@index([tabelLkpsId])
+  @@index([rowOrder])
+  @@map("tabel_lkps_row")
+}
+
+// ============================================================================
+// EVIDENCE (Bukti Pendukung)
+// ============================================================================
+
+model Evidence {
+  id          String   @id @default(cuid())
+  tabelLkpsId String
+  filename    String   // Original filename
+  minioKey    String   // Object key in MinIO
+  mimeType    String   // "application/pdf", "image/jpeg", etc.
+  size        Int      // File size in bytes
+  version     Int      @default(1)
+  description String?
+  uploadedById String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tabelLkps  TabelLkps @relation(fields: [tabelLkpsId], references: [id], onDelete: Cascade)
+  uploadedBy User      @relation(fields: [uploadedById], references: [id])
+
+  @@index([tabelLkpsId])
+  @@map("evidence")
+}
+
+// ============================================================================
+// VALIDATION WORKFLOW
+// ============================================================================
+
+model ValidationHistory {
+  id          String           @id @default(cuid())
+  tabelLkpsId String
+  userId      String
+  action      ValidationAction
+  comment     String?
+  createdAt   DateTime         @default(now())
+
+  tabelLkps TabelLkps @relation(fields: [tabelLkpsId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@index([tabelLkpsId])
+  @@index([createdAt])
+  @@map("validation_history")
+}
+
+// ============================================================================
+// AUDIT LOG
+// ============================================================================
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String   // "CREATE", "UPDATE", "DELETE", "LOGIN", "LOGOUT"
+  entity    String   // "User", "TabelLkps", "Dosen", etc.
+  entityId  String?  // ID of affected entity
+  oldValue  Json?    // Previous value
+  newValue  Json?    // New value
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("audit_log")
+}
+
+// ============================================================================
+// NOTIFICATION
+// ============================================================================
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      NotificationType @default(INFO)
+  isRead    Boolean          @default(false)
+  link      String?          // URL to navigate to
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@index([createdAt])
+  @@map("notifications")
+}
