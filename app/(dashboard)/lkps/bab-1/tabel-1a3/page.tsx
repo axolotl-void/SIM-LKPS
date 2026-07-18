@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { Tabel1A3Client } from "@/components/tables/tabel-1a3-client";
+import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, Calendar, FileText } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -179,11 +180,13 @@ export default async function Tabel1A3Page() {
       </div>
 
       {/* Client Interactive Table & Modal Form */}
-      <Tabel1A3Client
-        initialRows={initialRows}
-        tahunAkademikId={activeTa.id}
-        tabelKode={def.kode}
-      />
+      <ErrorBoundary>
+        <Tabel1A3Client
+          initialRows={initialRows}
+          tahunAkademikId={activeTa.id}
+          tabelKode={def.kode}
+        />
+      </ErrorBoundary>
     </div>
   );
 }

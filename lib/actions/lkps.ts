@@ -67,7 +67,7 @@ export async function upsertLkpsRow(params: {
     });
   }
 
-  revalidatePath(`/lkps/bab-1/tabel-${params.tabelKode.toLowerCase().replace(/\./g, "")}`);
+  revalidatePath(`/lkps/bab-${def.bab}/tabel-${params.tabelKode.toLowerCase().replace(/\./g, "")}`);
   
   return {
     id: savedRow.id,

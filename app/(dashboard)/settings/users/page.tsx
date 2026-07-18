@@ -3,6 +3,7 @@ import { getUsers } from "@/lib/actions/user";
 import { UserTable } from "@/components/tables/user-table";
 import { CreateUserDialog } from "@/components/forms/create-user-dialog";
 import { PermissionGate } from "@/components/shared/permission-gate";
+import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { hasPermission } from "@/lib/utils/permissions";
@@ -64,7 +65,9 @@ export default async function UsersPage({ searchParams }: Props) {
       </form>
 
       {/* Table */}
-      <UserTable users={result.data} meta={result.meta} />
+      <ErrorBoundary>
+        <UserTable users={result.data} meta={result.meta} />
+      </ErrorBoundary>
     </div>
   );
 }

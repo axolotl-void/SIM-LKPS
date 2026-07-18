@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LoginForm } from "@/components/forms/login-form";
+import { ErrorBoundary } from "@/components/shared/error-boundary";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -14,7 +15,9 @@ export default function LoginPage() {
           Sistem Informasi Manajemen Laporan Kinerja Program Studi
         </p>
       </div>
-      <LoginForm />
+      <ErrorBoundary>
+        <LoginForm />
+      </ErrorBoundary>
       <p className="mt-4 text-center text-xs text-gray-400">
         Program Studi Ilmu Komputer — UBBG
       </p>
