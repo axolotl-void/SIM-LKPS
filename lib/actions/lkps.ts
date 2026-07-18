@@ -86,3 +86,38 @@ export async function deleteLkpsRow(rowId: string, path: string) {
 
   revalidatePath(path);
 }
+
+export async function createDosen(nama: string) {
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+
+  // Generate a random 10-digit NIDN that doesn't conflict
+  let nidn = "";
+  let isUnique = false;
+  while (!isUnique) {
+    const rand = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+    const existing = await db.dosen.findUnique({
+      where: { nidn: rand },
+    });
+    if (!existing) {
+      nidn = rand;
+      isUnique = true;
+    }
+  }
+
+  const newDosen = await db.dosen.create({
+    data: {
+      nidn,
+      nama,
+      status: "Tetap",
+      pendidikanTerakhir: "S2",
+      jenisKelamin: "L", // default
+    },
+  });
+
+  return {
+    id: newDosen.id,
+    nidn: newDosen.nidn,
+    nama: newDosen.nama,
+  };
+}

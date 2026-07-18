@@ -1,15 +1,15 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { Tabel1A4Client } from "@/components/tables/tabel-1a4-client";
+import { Tabel1BClient } from "@/components/tables/tabel-1b-client";
 import { BookOpen, Calendar, FileText } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Tabel 1.A.4 — Rata-rata Beban DTPR per Semester (EWMP)",
+  title: "Tabel 1.B — Unit SPMI dan SDM",
 };
 
-export default async function Tabel1A4Page() {
+export default async function Tabel1BPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
@@ -27,71 +27,17 @@ export default async function Tabel1A4Page() {
     );
   }
 
-  // Get definition for 1.A.4
+  // Get definition for 1.B
   const def = await db.tabelDefinition.findUnique({
-    where: { kode: "1.A.4" },
+    where: { kode: "1.B" },
   });
 
   if (!def) {
     return (
       <div className="rounded-2xl bg-white p-6 shadow-soft text-center text-xs font-semibold text-slate-500">
-        Definisi Tabel 1.A.4 tidak ditemukan di database. Pastikan seed data telah dijalankan.
+        Definisi Tabel 1.B tidak ditemukan di database. Pastikan seed data telah dijalankan.
       </div>
     );
-  }
-
-  // Query active Dosen Tetap from Master Data
-  let dosenList = await db.dosen.findMany({
-    where: { status: "Tetap", isActive: true },
-    orderBy: { nama: "asc" },
-    select: {
-      id: true,
-      nidn: true,
-      nama: true,
-    },
-  });
-
-  // Proactive Auto-Seed for DTPR Master Data if database table is empty or missing entries
-  if (dosenList.length < 18) {
-    const seedDosenData = [
-      { nidn: "0102030401", nama: "Rossiana Br Ginting, S.Kom, M.Pd", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030402", nama: "Mukhroji, S.ST., M.T.", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030403", nama: "Ully Muzakir, MT", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030404", nama: "Khairuman, S.Kom, M.Kom", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030405", nama: "Mohd. Iqbal Muttaqin", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030406", nama: "Bakruddin, S.Si. M.T", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030407", nama: "Miftahul Jannah, M.Pd", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030408", nama: "Muhajir, M.T", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030409", nama: "Ir. Muhibul Jamal, S.T., M.T.", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030410", nama: "Mulyati, S.Si, M.Kom", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030411", nama: "Nazuarsyah, ST, MT", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030412", nama: "Oktalia Triananda Lovita, S.ST. MT", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030413", nama: "Nur Aynun Siregar,. S.kom., M.Kom", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030414", nama: "Prof. Dr. Sariakin, S.Pd., M.Pd", pendidikanTerakhir: "S3", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030415", nama: "Satria Prayudi, S.TI, M.Kom", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030416", nama: "Teuku Muhammad Mirza Keumala, S.Kom, M.T", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030417", nama: "Zharifah Muthi'ah, S.T., M.T", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030418", nama: "Ahmad Mufti, S.Pd", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" }
-    ];
-
-    for (const d of seedDosenData) {
-      await db.dosen.upsert({
-        where: { nidn: d.nidn },
-        update: { nama: d.nama, status: d.status, pendidikanTerakhir: d.pendidikanTerakhir },
-        create: d,
-      });
-    }
-
-    // Re-fetch after seeding
-    dosenList = await db.dosen.findMany({
-      where: { status: "Tetap", isActive: true },
-      orderBy: { nama: "asc" },
-      select: {
-        id: true,
-        nidn: true,
-        nama: true,
-      },
-    });
   }
 
   // Query existing row records for current year (TS)
@@ -132,7 +78,7 @@ export default async function Tabel1A4Page() {
               {def.nama}
             </h2>
             <p className="mt-1 text-xs font-semibold text-slate-500">
-              Ekuivalen Waktu Mengajar Penuh (EWMP) Dosen Tetap Program Studi
+              Unit Penjaminan Mutu Internal (SPMI) dan Sumber Daya Manusia (SDM)
             </p>
           </div>
 
@@ -170,10 +116,9 @@ export default async function Tabel1A4Page() {
         </div>
       </div>
 
-      {/* Client Component */}
-      <Tabel1A4Client
+      {/* Main Client Table */}
+      <Tabel1BClient
         initialRows={rows}
-        dosenList={dosenList}
         tahunAkademikId={activeTa.id}
         tabelKode={def.kode}
       />

@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import { upsertLkpsRow, deleteLkpsRow, createDosen } from "@/lib/actions/lkps";
 
 interface DosenOption {
   id: string;
@@ -49,6 +49,12 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
   const [manajemenPtSendiri, setManajemenPtSendiri] = useState("");
   const [manajemenPtLain, setManajemenPtLain] = useState("");
 
+  // Dosen autocomplete states
+  const [localDosenList, setLocalDosenList] = useState<DosenOption[]>(dosenList);
+  const [dosenSearchQuery, setDosenSearchQuery] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isCreatingDosen, setIsCreatingDosen] = useState(false);
+
   const triggerToast = (message: string, type: "success" | "error") => {
     setToast({ message, type });
     setTimeout(() => {
@@ -59,6 +65,7 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
   const handleOpenAdd = () => {
     setEditId(undefined);
     setDosenId("");
+    setDosenSearchQuery("");
     setPsSendiri("");
     setPsLainPtSendiri("");
     setPtLain("");
@@ -71,7 +78,9 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
 
   const handleOpenEdit = (row: any) => {
     setEditId(row.id);
+    const selected = localDosenList.find(d => d.id === row.rowData.dosenId);
     setDosenId(row.rowData.dosenId || "");
+    setDosenSearchQuery(selected ? selected.nama : (row.rowData.dosenNama || ""));
     setPsSendiri(row.rowData.psSendiri !== undefined ? String(row.rowData.psSendiri) : "");
     setPsLainPtSendiri(row.rowData.psLainPtSendiri !== undefined ? String(row.rowData.psLainPtSendiri) : "");
     setPtLain(row.rowData.ptLain !== undefined ? String(row.rowData.ptLain) : "");
@@ -82,11 +91,35 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
     setIsOpen(true);
   };
 
+  const handleSelectDosen = (dosen: DosenOption) => {
+    setDosenId(dosen.id);
+    setDosenSearchQuery(dosen.nama);
+    setIsDropdownOpen(false);
+  };
+
+  const handleCreateCustomDosen = async () => {
+    if (!dosenSearchQuery.trim()) return;
+    setIsCreatingDosen(true);
+    try {
+      const newDosen = await createDosen(dosenSearchQuery.trim());
+      setLocalDosenList([...localDosenList, newDosen]);
+      setDosenId(newDosen.id);
+      setDosenSearchQuery(newDosen.nama);
+      setIsDropdownOpen(false);
+      triggerToast(`Dosen "${newDosen.nama}" berhasil ditambahkan`, "success");
+    } catch (err) {
+      console.error(err);
+      triggerToast("Gagal menambahkan dosen kustom baru.", "error");
+    } finally {
+      setIsCreatingDosen(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const selectedDosen = dosenList.find(d => d.id === dosenId);
+    const selectedDosen = localDosenList.find(d => d.id === dosenId);
     if (!selectedDosen) {
       triggerToast("Dosen wajib dipilih.", "error");
       setIsLoading(false);
@@ -228,7 +261,6 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
                 {/* Nama DTPR */}
                 <div className="col-span-3">
                   <div className="text-xs font-bold text-slate-800 leading-snug">{row.rowData.dosenNama}</div>
-                  <div className="text-3xs text-slate-400 font-semibold mt-0.5">NIDN: {row.rowData.nidn}</div>
                 </div>
 
                 {/* SKS Pengajaran */}
@@ -360,23 +392,80 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
                       Pilih Dosen <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <User className="h-4 w-4 text-blue-500" />
                       </span>
-                      <select
+                      <input
+                        type="text"
                         required
-                        value={dosenId}
-                        onChange={(e) => setDosenId(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-10 text-xs transition-all focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 appearance-none shadow-3xs"
-                      >
-                        <option value="" disabled>Pilih Dosen Tetap</option>
-                        {dosenList.map((d) => (
-                          <option key={d.id} value={d.id}>{d.nama} (NIDN: {d.nidn})</option>
-                        ))}
-                      </select>
+                        value={dosenSearchQuery}
+                        onChange={(e) => {
+                          setDosenSearchQuery(e.target.value);
+                          setIsDropdownOpen(true);
+                          const matched = localDosenList.find(d => d.nama.toLowerCase() === e.target.value.toLowerCase());
+                          if (matched) {
+                            setDosenId(matched.id);
+                          } else {
+                            setDosenId("");
+                          }
+                        }}
+                        onFocus={() => setIsDropdownOpen(true)}
+                        placeholder="Ketik untuk mencari atau menambah dosen baru..."
+                        className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-10 text-xs transition-all focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-3xs"
+                      />
                       <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
                         <ChevronDown className="h-4 w-4" />
                       </span>
+
+                      {isDropdownOpen && (
+                        <>
+                          {/* Close dropdown overlay helper */}
+                          <div 
+                            className="fixed inset-0 z-40 bg-transparent" 
+                            onClick={() => setIsDropdownOpen(false)}
+                          />
+                          <div className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-slate-100 bg-white p-1.5 shadow-soft-lg">
+                            {localDosenList.filter(d => 
+                              d.nama.toLowerCase().includes(dosenSearchQuery.toLowerCase())
+                            ).length > 0 ? (
+                              localDosenList.filter(d => 
+                                d.nama.toLowerCase().includes(dosenSearchQuery.toLowerCase())
+                              ).map((d) => (
+                                <button
+                                  key={d.id}
+                                  type="button"
+                                  onClick={() => handleSelectDosen(d)}
+                                  className="w-full rounded-lg px-3 py-2 text-left text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors"
+                                >
+                                  {d.nama}
+                                </button>
+                              ))
+                            ) : (
+                              <div className="px-3 py-2 text-xs text-slate-400 font-medium">
+                                Dosen tidak ditemukan
+                              </div>
+                            )}
+                            
+                            {dosenSearchQuery.trim() && !localDosenList.some(d => d.nama.toLowerCase() === dosenSearchQuery.toLowerCase().trim()) && (
+                              <div className="border-t border-slate-100/60 my-1 pt-1">
+                                <button
+                                  type="button"
+                                  disabled={isCreatingDosen}
+                                  onClick={handleCreateCustomDosen}
+                                  className="w-full rounded-lg px-3 py-2 text-left text-xs font-bold text-blue-600 hover:bg-blue-50/50 transition-colors flex items-center gap-1.5"
+                                >
+                                  {isCreatingDosen ? (
+                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                  ) : (
+                                    <Plus className="h-3.5 w-3.5" />
+                                  )}
+                                  Tambah "{dosenSearchQuery}" sebagai dosen baru
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
