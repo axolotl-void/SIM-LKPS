@@ -270,17 +270,17 @@ export function Tabel1A2Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
             ))}
 
             {/* Total Row Card */}
-            <div className="grid grid-cols-12 items-center rounded-3xl bg-slate-50/50 p-5 border border-slate-200/60 shadow-3xs gap-4 font-bold">
-              <div className="col-span-4 text-xs text-slate-800 text-left font-extrabold pl-2">
+            <div className="grid grid-cols-12 items-center rounded-3xl bg-gradient-to-tr from-indigo-500 to-blue-600 p-5 border border-white/10 shadow-soft-lg gap-4 font-bold text-white">
+              <div className="col-span-4 text-xs text-white text-left font-black pl-2 uppercase tracking-widest">
                 Jumlah Total Pendanaan
               </div>
-              <div className="col-span-2 text-xs text-slate-400 text-right font-black">
+              <div className="col-span-2 text-xs text-white/80 text-right font-black">
                 Rp {totalTs2.toLocaleString("id-ID")}
               </div>
-              <div className="col-span-2 text-xs text-slate-400 text-right font-black">
+              <div className="col-span-2 text-xs text-white/80 text-right font-black">
                 Rp {totalTs1.toLocaleString("id-ID")}
               </div>
-              <div className="col-span-2 text-xs text-slate-900 text-right font-black">
+              <div className="col-span-2 text-xs text-emerald-300 text-right font-black drop-shadow-sm">
                 Rp {totalTs.toLocaleString("id-ID")}
               </div>
               <div className="col-span-2"></div>

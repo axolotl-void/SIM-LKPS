@@ -65,7 +65,7 @@ export function Sidebar({ role }: SidebarProps) {
   const filteredItems = menuItems.filter((item) => item.roles.includes(role));
 
   return (
-    <aside className="flex w-64 flex-col rounded-2xl border-none bg-white shadow-soft">
+    <aside className="sticky top-4 flex h-[calc(100vh-2rem)] w-64 flex-col rounded-2xl border-none bg-white shadow-soft">
       {/* Logo */}
       <div className="flex h-20 items-center justify-center px-6">
         <div className="flex items-center gap-2">
@@ -77,7 +77,7 @@ export function Sidebar({ role }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1.5 px-4 py-3">
+      <nav className="flex-1 overflow-y-auto space-y-1.5 px-4 py-3 custom-scrollbar">
         {filteredItems.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href + "/"));
           const Icon = item.icon;

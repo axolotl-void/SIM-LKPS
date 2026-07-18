@@ -1,16 +1,16 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { Tabel1BClient } from "@/components/tables/tabel-1b-client";
+import { Tabel2A1Client } from "@/components/tables/tabel-2a1-client";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, Calendar, FileText } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Tabel 1.B — Unit SPMI dan SDM",
+  title: "Tabel 2.A.1 — Data Mahasiswa",
 };
 
-export default async function Tabel1BPage() {
+export default async function Tabel2A1Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
@@ -28,15 +28,15 @@ export default async function Tabel1BPage() {
     );
   }
 
-  // Get definition for 1.B
+  // Get definition for 2.A.1
   const def = await db.tabelDefinition.findUnique({
-    where: { kode: "1.B" },
+    where: { kode: "2.A.1" },
   });
 
   if (!def) {
     return (
       <div className="rounded-2xl bg-white p-6 shadow-soft text-center text-xs font-semibold text-slate-500">
-        Definisi Tabel 1.B tidak ditemukan di database. Pastikan seed data telah dijalankan.
+        Definisi Tabel 2.A.1 tidak ditemukan di database. Pastikan seed data telah dijalankan.
       </div>
     );
   }
@@ -79,7 +79,7 @@ export default async function Tabel1BPage() {
               {def.nama}
             </h2>
             <p className="mt-1 text-xs font-semibold text-slate-500">
-              Unit Penjaminan Mutu Internal (SPMI) dan Sumber Daya Manusia (SDM)
+              Data Rekapitulasi Calon Mahasiswa, Mahasiswa Baru, dan Mahasiswa Aktif
             </p>
           </div>
 
@@ -119,7 +119,7 @@ export default async function Tabel1BPage() {
 
       {/* Main Client Table */}
       <ErrorBoundary>
-        <Tabel1BClient
+        <Tabel2A1Client
           initialRows={rows}
           tahunAkademikId={activeTa.id}
           tabelKode={def.kode}

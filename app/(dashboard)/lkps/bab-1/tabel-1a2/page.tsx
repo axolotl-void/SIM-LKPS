@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { Tabel1A2Client } from "@/components/tables/tabel-1a2-client";
+import { ErrorBoundary } from "@/components/shared/error-boundary";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -132,11 +133,13 @@ export default async function Tabel1A2Page() {
       </div>
 
       {/* Client Interactive Table & Modal Form */}
-      <Tabel1A2Client
-        initialRows={initialRows}
-        tahunAkademikId={activeTa.id}
-        tabelKode={def.kode}
-      />
+      <ErrorBoundary>
+        <Tabel1A2Client
+          initialRows={initialRows}
+          tahunAkademikId={activeTa.id}
+          tabelKode={def.kode}
+        />
+      </ErrorBoundary>
     </div>
   );
 }
