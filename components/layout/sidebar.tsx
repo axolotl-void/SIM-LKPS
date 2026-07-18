@@ -109,10 +109,17 @@ export function Sidebar({ role }: SidebarProps) {
 
       {/* Footer */}
       <div className="p-4 border-t border-slate-50">
-        <div className="rounded-xl bg-gradient-to-tr from-slate-900 to-slate-800 p-4 text-white shadow-soft">
-          <p className="text-2xs font-bold text-slate-400 uppercase tracking-wider">Program Studi</p>
+        <div 
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-700 p-4 text-white shadow-soft"
+          style={{
+            backgroundImage: "linear-gradient(135deg, rgba(37, 99, 235, 0.85) 0%, rgba(67, 56, 202, 0.85) 100%), url('/img/gedung-ubbg_11zon.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <p className="text-2xs font-bold text-blue-100 uppercase tracking-wider">Program Studi</p>
           <p className="text-xs font-bold text-white mt-0.5">Ilmu Komputer UBBG</p>
-          <p className="text-2xs text-slate-400 mt-2">Versi 0.1.0 (Soft UI)</p>
+          <p className="text-2xs text-blue-200 mt-2">Versi 0.1.0 (Soft UI)</p>
         </div>
       </div>
     </aside>

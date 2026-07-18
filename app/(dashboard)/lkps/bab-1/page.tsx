@@ -170,61 +170,61 @@ export default async function Bab1Page() {
           const status = inst?.status;
 
           return (
-            <div
+            <Link
               key={def.id}
-              className="flex flex-col justify-between rounded-3xl bg-white p-5 shadow-soft border border-slate-100/50 hover:shadow-soft-lg hover:border-slate-200/50 transition-all duration-200"
+              href={`/lkps/bab-1/tabel-${def.kode.toLowerCase().replace(/\./g, "")}`}
+              className="group relative flex flex-col justify-between rounded-3xl bg-white p-5 shadow-soft border border-slate-100/50 hover:shadow-[0_20px_60px_rgba(59,130,246,0.15)] hover:border-blue-200/60 hover:scale-[1.02] transition-all duration-300 ease-out cursor-pointer overflow-hidden"
             >
-              <div>
+              {/* Hover blue gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out rounded-3xl" />
+
+              <div className="relative z-10">
                 {/* Card Top bar */}
                 <div className="flex items-center justify-between gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 text-white shadow-soft-sm">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 text-white shadow-soft-sm group-hover:bg-white/20 group-hover:from-white/20 group-hover:to-white/10 transition-all duration-300">
                     <FileText className="h-5 w-5" />
                   </div>
-                  {getStatusBadge(status)}
+                  <div className="group-hover:[&_span]:bg-white/15 group-hover:[&_span]:border-white/20 group-hover:[&_span]:text-white transition-all duration-300">
+                    {getStatusBadge(status)}
+                  </div>
                 </div>
 
                 {/* Table Title Block */}
                 <div className="mt-4">
-                  <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
+                  <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg group-hover:bg-white/20 group-hover:text-white transition-all duration-300">
                     Tabel {def.kode}
                   </span>
-                  <h3 className="mt-3.5 text-sm font-bold text-slate-800 leading-snug tracking-tight">
+                  <h3 className="mt-3.5 text-sm font-bold text-slate-800 leading-snug tracking-tight group-hover:text-white transition-colors duration-300">
                     {def.nama}
                   </h3>
                 </div>
 
                 {/* Row Data count box */}
-                <div className="flex items-center gap-3 rounded-2xl bg-slate-50/50 p-3 mt-4 border border-slate-100/60 shadow-3xs">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-indigo-500 border border-slate-100/40 shadow-2xs">
+                <div className="flex items-center gap-3 rounded-2xl bg-slate-50/50 p-3 mt-4 border border-slate-100/60 shadow-3xs group-hover:bg-white/10 group-hover:border-white/20 transition-all duration-300">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-indigo-500 border border-slate-100/40 shadow-2xs group-hover:bg-white/20 group-hover:border-white/10 group-hover:text-white group-hover:shadow-none transition-all duration-300">
                     {getTableIcon(def.kode)}
                   </div>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-base font-extrabold text-slate-800">
+                    <span className="text-base font-extrabold text-slate-800 group-hover:text-white transition-colors duration-300">
                       {rowCount}
                     </span>
-                    <span className="text-2xs font-semibold text-slate-400">
+                    <span className="text-2xs font-semibold text-slate-400 group-hover:text-blue-100 transition-colors duration-300">
                       data dimasukkan
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Card Footer actions */}
-              <div className="mt-6 pt-4 border-t border-slate-50 flex items-center justify-between">
-                <Link
-                  href={`/lkps/bab-1/tabel-${def.kode.toLowerCase().replace(/\./g, "")}`}
-                  className="text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors"
-                >
+              {/* Card Footer */}
+              <div className="relative z-10 mt-6 pt-4 border-t border-slate-50 group-hover:border-white/20 flex items-center justify-between transition-all duration-300">
+                <span className="text-xs font-bold text-slate-500 group-hover:text-white transition-colors duration-300">
                   Kelola Data
-                </Link>
-                <Link
-                  href={`/lkps/bab-1/tabel-${def.kode.toLowerCase().replace(/\./g, "")}`}
-                  className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 shadow-2xs hover:bg-slate-50 hover:text-blue-600 hover:border-blue-200 transition-all duration-150"
-                >
+                </span>
+                <div className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 shadow-2xs group-hover:bg-white/20 group-hover:border-white/30 group-hover:text-white group-hover:translate-x-1 transition-all duration-300">
                   <ArrowRight className="h-4 w-4" />
-                </Link>
+                </div>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

@@ -39,14 +39,14 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
   const [unitKerja, setUnitKerja] = useState("");
   
   // Kualifikasi counts
-  const [s3, setS3] = useState<number | string>(0);
-  const [s2, setS2] = useState<number | string>(0);
-  const [s1, setS1] = useState<number | string>(0);
-  const [d4, setD4] = useState<number | string>(0);
-  const [d3, setD3] = useState<number | string>(0);
-  const [d2, setD2] = useState<number | string>(0);
-  const [d1, setD1] = useState<number | string>(0);
-  const [sma, setSma] = useState<number | string>(0);
+  const [s3, setS3] = useState<number | string>("");
+  const [s2, setS2] = useState<number | string>("");
+  const [s1, setS1] = useState<number | string>("");
+  const [d4, setD4] = useState<number | string>("");
+  const [d3, setD3] = useState<number | string>("");
+  const [d2, setD2] = useState<number | string>("");
+  const [d1, setD1] = useState<number | string>("");
+  const [sma, setSma] = useState<number | string>("");
 
   const triggerToast = (message: string, type: "success" | "error") => {
     setToast({ message, type });
@@ -60,14 +60,14 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
     setJenisTendik("Pustakawan");
     setCustomJenis("");
     setUnitKerja("");
-    setS3(0);
-    setS2(0);
-    setS1(0);
-    setD4(0);
-    setD3(0);
-    setD2(0);
-    setD1(0);
-    setSma(0);
+    setS3("");
+    setS2("");
+    setS1("");
+    setD4("");
+    setD3("");
+    setD2("");
+    setD1("");
+    setSma("");
     setIsOpen(true);
   };
 
@@ -83,14 +83,14 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
       setCustomJenis(jt);
     }
     setUnitKerja(row.rowData.unitKerja || "");
-    setS3(Number(row.rowData.s3 || 0));
-    setS2(Number(row.rowData.s2 || 0));
-    setS1(Number(row.rowData.s1 || 0));
-    setD4(Number(row.rowData.d4 || 0));
-    setD3(Number(row.rowData.d3 || 0));
-    setD2(Number(row.rowData.d2 || 0));
-    setD1(Number(row.rowData.d1 || 0));
-    setSma(Number(row.rowData.sma || 0));
+    setS3(Number(row.rowData.s3) || "");
+    setS2(Number(row.rowData.s2) || "");
+    setS1(Number(row.rowData.s1) || "");
+    setD4(Number(row.rowData.d4) || "");
+    setD3(Number(row.rowData.d3) || "");
+    setD2(Number(row.rowData.d2) || "");
+    setD1(Number(row.rowData.d1) || "");
+    setSma(Number(row.rowData.sma) || "");
     setIsOpen(true);
   };
 
@@ -516,8 +516,9 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
                       type="number"
                       min="0"
                       value={s3}
+                      placeholder="0"
                       onChange={(e) => setS3(e.target.value === "" ? "" : Math.max(0, parseInt(e.target.value) || 0))}
-                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden"
+                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden placeholder:text-slate-300"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -526,8 +527,9 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
                       type="number"
                       min="0"
                       value={s2}
+                      placeholder="0"
                       onChange={(e) => setS2(e.target.value === "" ? "" : Math.max(0, parseInt(e.target.value) || 0))}
-                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden"
+                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden placeholder:text-slate-300"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -536,8 +538,9 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
                       type="number"
                       min="0"
                       value={s1}
+                      placeholder="0"
                       onChange={(e) => setS1(e.target.value === "" ? "" : Math.max(0, parseInt(e.target.value) || 0))}
-                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden"
+                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden placeholder:text-slate-300"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -546,8 +549,9 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
                       type="number"
                       min="0"
                       value={d4}
+                      placeholder="0"
                       onChange={(e) => setD4(e.target.value === "" ? "" : Math.max(0, parseInt(e.target.value) || 0))}
-                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden"
+                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden placeholder:text-slate-300"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -556,8 +560,9 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
                       type="number"
                       min="0"
                       value={d3}
+                      placeholder="0"
                       onChange={(e) => setD3(e.target.value === "" ? "" : Math.max(0, parseInt(e.target.value) || 0))}
-                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden"
+                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden placeholder:text-slate-300"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -566,8 +571,9 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
                       type="number"
                       min="0"
                       value={d2}
+                      placeholder="0"
                       onChange={(e) => setD2(e.target.value === "" ? "" : Math.max(0, parseInt(e.target.value) || 0))}
-                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden"
+                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden placeholder:text-slate-300"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -576,8 +582,9 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
                       type="number"
                       min="0"
                       value={d1}
+                      placeholder="0"
                       onChange={(e) => setD1(e.target.value === "" ? "" : Math.max(0, parseInt(e.target.value) || 0))}
-                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden"
+                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden placeholder:text-slate-300"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -586,8 +593,9 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
                       type="number"
                       min="0"
                       value={sma}
+                      placeholder="0"
                       onChange={(e) => setSma(e.target.value === "" ? "" : Math.max(0, parseInt(e.target.value) || 0))}
-                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden"
+                      className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 text-center shadow-3xs focus:border-indigo-500 focus:outline-hidden placeholder:text-slate-300"
                     />
                   </div>
                 </div>
