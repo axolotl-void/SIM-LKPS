@@ -12,7 +12,7 @@
 
 @layer base {
   :root {
-    --background: 220 33% 98%; /* Softer lilac/slate grey */
+    --background: 220 33% 98%;
     --foreground: 222.2 47.4% 11.2%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 47.4% 11.2%;
@@ -32,7 +32,6 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 1rem;
-
     --success: 142.1 76.2% 36.3%;
     --warning: 38 92% 50%;
     --info: 199 89% 48%;
@@ -43,7 +42,7 @@
   }
 
   body {
-    background-color: #f8f9fa; /* Soft UI signature background color */
+    background-color: #f8fafc;
     color: hsl(var(--foreground));
   }
 }
