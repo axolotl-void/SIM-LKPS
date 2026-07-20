@@ -33,7 +33,26 @@ export default async function Tabel3C1Page() {
     where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: activeTa.id } },
     include: { rows: { orderBy: { rowOrder: "asc" } } },
   });
-  const rows = lkpsTs?.rows || [];
+  const rawRows = lkpsTs?.rows ?? [];
+
+  const rows = rawRows.map((r) => {
+    const d = r.rowData as Record<string, unknown>;
+    return {
+      id: r.id,
+      rowOrder: r.rowOrder,
+      rowData: {
+        tahun: String(d.tahun ?? "TS"),
+        judulKerjasama: String(d.judulKerjasama ?? ""),
+        mitraKerja: String(d.mitraKerja ?? ""),
+        sumber: (["L", "N", "I"].includes(String(d.sumber)) ? d.sumber : "L") as "L" | "N" | "I",
+        durasi: Number(d.durasi ?? 0),
+        danaTs2: Number(d.danaTs2 ?? 0),
+        danaTs1: Number(d.danaTs1 ?? 0),
+        danaTs: Number(d.danaTs ?? 0),
+        linkBukti: String(d.linkBukti ?? ""),
+      },
+    };
+  });
 
   return (
     <div className="space-y-6">

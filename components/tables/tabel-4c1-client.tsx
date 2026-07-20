@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 
-interface KerjasamaItem {
+interface KerjasamaPkmItem {
   id: string;
   rowOrder: number;
   rowData: {
@@ -27,16 +27,16 @@ interface KerjasamaItem {
 }
 
 interface Props {
-  initialRows: KerjasamaItem[];
+  initialRows: KerjasamaPkmItem[];
   tahunAkademikId: string;
   tabelKode: string;
 }
 
-export function Tabel3C1Client({ initialRows, tahunAkademikId, tabelKode }: Props) {
+export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode }: Props) {
   const [rows, setRows] = useState(initialRows);
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
-  const [editItem, setEditItem] = useState<KerjasamaItem | null>(null);
+  const [editItem, setEditItem] = useState<KerjasamaPkmItem | null>(null);
   const [form, setForm] = useState({ judulKerjasama: "", mitraKerja: "", sumber: "L" as "L" | "N" | "I", durasi: "", danaTs2: "", danaTs1: "", danaTs: "", linkBukti: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
@@ -50,7 +50,7 @@ export function Tabel3C1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
   };
 
   const openAdd = () => { setEditItem(null); setForm({ judulKerjasama: "", mitraKerja: "", sumber: "L", durasi: "", danaTs2: "", danaTs1: "", danaTs: "", linkBukti: "" }); setModalOpen(true); };
-  const openEdit = (item: KerjasamaItem) => {
+  const openEdit = (item: KerjasamaPkmItem) => {
     setEditItem(item);
     setForm({
       judulKerjasama: item.rowData.judulKerjasama || "",
@@ -72,7 +72,7 @@ export function Tabel3C1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
       const rowData = { tahun: "TS", judulKerjasama: form.judulKerjasama.trim(), mitraKerja: form.mitraKerja.trim(), sumber: form.sumber, durasi: Number(form.durasi) || 0, danaTs2: Number(form.danaTs2) || 0, danaTs1: Number(form.danaTs1) || 0, danaTs: Number(form.danaTs) || 0, linkBukti: form.linkBukti.trim() };
       const isUpdate = editItem !== null && !editItem.id.startsWith("temp-");
       const result = await upsertLkpsRow({ tabelKode, tahunAkademikId, rowId: isUpdate ? editItem.id : undefined, rowData });
-      const updated: KerjasamaItem = { id: result.id, rowOrder: result.rowOrder, rowData };
+      const updated: KerjasamaPkmItem = { id: result.id, rowOrder: result.rowOrder, rowData };
       if (editItem) setRows(rows.map((r) => (r.id === editItem.id ? updated : r)));
       else setRows([...rows, updated]);
       setModalOpen(false);
@@ -99,33 +99,33 @@ export function Tabel3C1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-3" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors"><ArrowLeft className="h-4 w-4" /> Kembali ke BAB 3</Link>
-        <button onClick={openAdd} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 px-5 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all"><Plus className="h-4 w-4" /> Tambah Kerjasama</button>
+        <Link href="/lkps/bab-4" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-teal-600 transition-colors"><ArrowLeft className="h-4 w-4" /> Kembali ke BAB 4</Link>
+        <button onClick={openAdd} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-600 px-5 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all"><Plus className="h-4 w-4" /> Tambah Kerjasama PkM</button>
       </div>
 
-      <div className="flex items-center gap-3 rounded-2xl bg-blue-50/60 border border-blue-100/60 px-5 py-4 text-xs font-semibold text-blue-700">
-        <Lightbulb className="h-5 w-5 shrink-0 text-blue-500" />
-        <span>Catat kerjasama penelitian dengan mitra kerja termasuk sumber pendanaan.</span>
+      <div className="flex items-center gap-3 rounded-2xl bg-teal-50/60 border border-teal-100/60 px-5 py-4 text-xs font-semibold text-teal-700">
+        <Lightbulb className="h-5 w-5 shrink-0 text-teal-500" />
+        <span>Catat kerjasama PkM dengan mitra kerja termasuk sumber pendanaan.</span>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">Jumlah Mitra</div><p className="text-3xl font-black text-slate-800">{totalMitra}</p></div></div>
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Dana TS</div><p className="text-3xl font-black text-blue-600">{totalDanaTs.toLocaleString("id-ID")} jt</p></div></div>
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">Skala Internasional</div><p className="text-3xl font-black text-indigo-600">{rows.filter((r) => r.rowData.sumber === "I").length}</p></div></div>
+        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Dana TS</div><p className="text-3xl font-black text-teal-600">{totalDanaTs.toLocaleString("id-ID")} jt</p></div></div>
+        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">Skala Internasional</div><p className="text-3xl font-black text-cyan-600">{rows.filter((r) => r.rowData.sumber === "I").length}</p></div></div>
       </div>
 
-      <div className="rounded-2xl border-2 border-blue-200/70 bg-white shadow-soft overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 px-7 py-4">
+      <div className="rounded-2xl border-2 border-teal-200/70 bg-white shadow-soft overflow-hidden">
+        <div className="bg-gradient-to-r from-teal-500 to-cyan-600 px-7 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm"><Handshake className="h-5 w-5 text-white" /></div>
-              <div><h3 className="text-sm font-bold text-white">Kerjasama Penelitian</h3><p className="text-2xs font-semibold text-blue-200">Mitra kerja dan pendanaan</p></div>
+              <div><h3 className="text-sm font-bold text-white">Kerjasama PkM</h3><p className="text-2xs font-semibold text-teal-200">Mitra kerja dan pendanaan</p></div>
             </div>
             <span className="rounded-xl bg-white/20 backdrop-blur-sm px-3 py-1 text-2xs font-bold text-white">{rows.length} items</span>
           </div>
         </div>
         {rows.length === 0 ? (
-          <div className="p-12 text-center"><div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100"><Handshake className="h-8 w-8 text-slate-400" /></div><p className="text-sm font-semibold text-slate-500">Belum ada data kerjasama.</p></div>
+          <div className="p-12 text-center"><div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100"><Handshake className="h-8 w-8 text-slate-400" /></div><p className="text-sm font-semibold text-slate-500">Belum ada data kerjasama PkM.</p></div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
@@ -147,7 +147,7 @@ export function Tabel3C1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                   <td className="px-4 py-3 text-center"><span className={`inline-flex rounded-lg px-2.5 py-1 text-2xs font-bold ${item.rowData.sumber === "I" ? "bg-purple-100 text-purple-700" : item.rowData.sumber === "N" ? "bg-blue-100 text-blue-700" : "bg-amber-100 text-amber-700"}`}>{item.rowData.sumber === "I" ? "Internasional" : item.rowData.sumber === "N" ? "Nasional" : "Lokal"}</span></td>
                   <td className="px-4 py-3 text-center font-semibold text-emerald-600">{item.rowData.danaTs2 > 0 ? item.rowData.danaTs2 + " jt" : "-"}</td>
                   <td className="px-4 py-3 text-center font-semibold text-cyan-600">{item.rowData.danaTs1 > 0 ? item.rowData.danaTs1 + " jt" : "-"}</td>
-                  <td className="px-4 py-3 text-center font-semibold text-blue-600">{item.rowData.danaTs > 0 ? item.rowData.danaTs + " jt" : "-"}</td>
+                  <td className="px-4 py-3 text-center font-semibold text-teal-600">{item.rowData.danaTs > 0 ? item.rowData.danaTs + " jt" : "-"}</td>
                   <td className="px-4 py-3 text-center"><div className="flex items-center justify-center gap-2">
                     <button onClick={() => openEdit(item)} className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 text-2xs font-bold text-blue-600 hover:bg-blue-100 transition-colors"><Edit2 className="h-3 w-3" /> Edit</button>
                     <button onClick={() => openDeleteConfirm(item.id, item.rowData.judulKerjasama)} className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-2xs font-bold text-red-600 hover:bg-red-100 transition-colors"><Trash2 className="h-3 w-3" /> Hapus</button>
@@ -163,18 +163,18 @@ export function Tabel3C1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/30 backdrop-blur-sm p-4 overflow-y-auto">
           <motion.div initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }} transition={{ type: "spring", damping: 25, stiffness: 350 }} className="w-full max-w-xl rounded-3xl bg-white shadow-soft-lg border border-slate-100/50 p-8 my-8">
             <div className="flex items-center gap-4 mb-6">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-soft-sm">{editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}</div>
-              <div><h3 className="text-lg font-bold text-slate-800">{editItem ? "Edit Kerjasama" : "Tambah Kerjasama Penelitian"}</h3><p className="text-xs text-slate-500 font-semibold mt-0.5">Mitra dan Pendanaan</p></div>
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 text-white shadow-soft-sm">{editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}</div>
+              <div><h3 className="text-lg font-bold text-slate-800">{editItem ? "Edit Kerjasama PkM" : "Tambah Kerjasama PkM"}</h3><p className="text-xs text-slate-500 font-semibold mt-0.5">Mitra dan Pendanaan</p></div>
             </div>
             <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-5">
-              <div className="rounded-2xl border border-blue-100 bg-blue-50/30 p-5 space-y-4">
-                <div className="flex items-center gap-2 text-xs font-bold text-blue-700"><Handshake className="h-4 w-4" /> Identitas Kerjasama</div>
-                <div><label className="block text-2xs font-bold text-slate-600 mb-1">Judul Kerjasama <span className="text-red-500">*</span></label><input type="text" placeholder="Judul kegiatan kerjasama" value={form.judulKerjasama} onChange={(e) => setForm((p) => ({ ...p, judulKerjasama: e.target.value }))} className="w-full rounded-xl border border-blue-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-sm placeholder:text-slate-300" /></div>
+              <div className="rounded-2xl border border-teal-100 bg-teal-50/30 p-5 space-y-4">
+                <div className="flex items-center gap-2 text-xs font-bold text-teal-700"><Handshake className="h-4 w-4" /> Identitas Kerjasama</div>
+                <div><label className="block text-2xs font-bold text-slate-600 mb-1">Judul Kerjasama <span className="text-red-500">*</span></label><input type="text" placeholder="Judul kegiatan kerjasama" value={form.judulKerjasama} onChange={(e) => setForm((p) => ({ ...p, judulKerjasama: e.target.value }))} className="w-full rounded-xl border border-teal-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-sm placeholder:text-slate-300" /></div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div><label className="block text-2xs font-bold text-slate-600 mb-1">Mitra Kerja <span className="text-red-500">*</span></label><input type="text" placeholder="Nama mitra" value={form.mitraKerja} onChange={(e) => setForm((p) => ({ ...p, mitraKerja: e.target.value }))} className="w-full rounded-xl border border-blue-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-sm placeholder:text-slate-300" /></div>
-                  <div><label className="block text-2xs font-bold text-slate-600 mb-1">Skala / Sumber</label><div className="flex gap-2">{(["L", "N", "I"] as const).map((v) => (<button key={v} type="button" onClick={() => setForm((p) => ({ ...p, sumber: v }))} className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${form.sumber === v ? "bg-gradient-to-tr from-blue-500 to-indigo-600 text-white shadow-soft-sm" : "bg-white border border-slate-200 text-slate-600 hover:border-blue-300"}`}>{v === "L" ? "Lokal" : v === "N" ? "Nasional" : "Internasional"}</button>))}</div></div>
+                  <div><label className="block text-2xs font-bold text-slate-600 mb-1">Mitra Kerja <span className="text-red-500">*</span></label><input type="text" placeholder="Nama mitra" value={form.mitraKerja} onChange={(e) => setForm((p) => ({ ...p, mitraKerja: e.target.value }))} className="w-full rounded-xl border border-teal-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-sm placeholder:text-slate-300" /></div>
+                  <div><label className="block text-2xs font-bold text-slate-600 mb-1">Skala / Sumber</label><div className="flex gap-2">{(["L", "N", "I"] as const).map((v) => (<button key={v} type="button" onClick={() => setForm((p) => ({ ...p, sumber: v }))} className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${form.sumber === v ? "bg-gradient-to-tr from-teal-500 to-cyan-600 text-white shadow-soft-sm" : "bg-white border border-slate-200 text-slate-600 hover:border-teal-300"}`}>{v === "L" ? "Lokal" : v === "N" ? "Nasional" : "Internasional"}</button>))}</div></div>
                 </div>
-                <div><label className="block text-2xs font-bold text-slate-600 mb-1">Durasi (tahun)</label><input type="number" min="0" placeholder="1" value={form.durasi} onChange={(e) => setForm((p) => ({ ...p, durasi: e.target.value }))} className="w-full rounded-xl border border-blue-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-sm placeholder:text-slate-300" /></div>
+                <div><label className="block text-2xs font-bold text-slate-600 mb-1">Durasi (tahun)</label><input type="number" min="0" placeholder="1" value={form.durasi} onChange={(e) => setForm((p) => ({ ...p, durasi: e.target.value }))} className="w-full rounded-xl border border-teal-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-sm placeholder:text-slate-300" /></div>
               </div>
               <div className="rounded-2xl border border-slate-100 bg-slate-50/30 p-5 space-y-4">
                 <div className="flex items-center gap-2 text-xs font-bold text-slate-600"><DollarSign className="h-4 w-4" /> Pendanaan (juta rupiah)</div>
@@ -187,7 +187,7 @@ export function Tabel3C1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
               </div>
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
                 <button type="button" onClick={() => setModalOpen(false)} disabled={isLoading} className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-50 transition-colors"><X className="h-4 w-4" /> Batal</button>
-                <button type="submit" disabled={isLoading} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50">{isLoading ? <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</> : <><Save className="h-4 w-4" /> Simpan</>}</button>
+                <button type="submit" disabled={isLoading} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50">{isLoading ? <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</> : <><Save className="h-4 w-4" /> Simpan</>}</button>
               </div>
             </form>
           </motion.div>
@@ -202,7 +202,7 @@ export function Tabel3C1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
               <div className="flex justify-center mb-5">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 text-red-500"><AlertTriangle className="h-8 w-8" /></div>
               </div>
-              <h3 className="text-base font-bold text-slate-800 text-center">Hapus Kerjasama?</h3>
+              <h3 className="text-base font-bold text-slate-800 text-center">Hapus Kerjasama PkM?</h3>
               <p className="text-xs font-semibold text-slate-500 text-center mt-1.5">Tindakan ini tidak dapat dibatalkan.</p>
               <div className="mt-5 rounded-xl bg-red-50/70 border border-red-100 px-4 py-3 text-center">
                 <p className="text-xs font-bold text-red-700">&ldquo;{deleteConfirmName}&rdquo;</p>
