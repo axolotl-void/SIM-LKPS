@@ -84,10 +84,10 @@ export function Tabel2A3Client({ initialRows, tahunAkademikId, tabelKode, status
         id: result.id,
         rowOrder: result.rowOrder,
         rowData: {
-          kategori: result.rowData.kategori,
-          ts: Number(result.rowData.nominal) || 0,
-          ts1: editId ? (rows.find(r => r.id === editId)?.rowData.ts1 || 0) : 0,
-          ts2: editId ? (rows.find(r => r.id === editId)?.rowData.ts2 || 0) : 0,
+          kategori: (result.rowData as any)?.kategori ?? "",
+          ts: Number((result.rowData as any)?.nominal) || 0,
+          ts1: editId ? (rows.find(r => r.id === editId)?.rowData as any)?.ts1 || 0 : 0,
+          ts2: editId ? (rows.find(r => r.id === editId)?.rowData as any)?.ts2 || 0 : 0,
         },
       };
 

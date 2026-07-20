@@ -19,10 +19,6 @@ const statusBadge = {
   DITOLAK:   { icon: <XCircle className="h-3.5 w-3.5" />, label: "Ditolak", color: "red" as const },
 };
 
-export const metadata: Metadata = {
-  title: "Tabel 3.A.1 — Sarana dan Prasarana Penelitian",
-};
-
 export default async function Tabel3A1Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
