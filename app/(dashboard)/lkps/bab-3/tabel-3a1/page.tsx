@@ -2,9 +2,22 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { Tabel3A1Client } from "@/components/tables/tabel-3a1-client";
+import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
-import { Building2, Calendar, BookOpen, FileText } from "lucide-react";
+import { Building2, Calendar, BookOpen, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
 import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tabel 3.A.1 — Sarana dan Prasarana Penelitian",
+};
+
+const statusBadge = {
+  DRAFT:     { icon: <Clock className="h-3.5 w-3.5" />, label: "Draft", color: "slate" as const },
+  DIAJUKAN:  { icon: <Clock className="h-3.5 w-3.5" />, label: "Diajukan", color: "amber" as const },
+  DIREVISI:  { icon: <AlertCircle className="h-3.5 w-3.5" />, label: "Direvisi", color: "orange" as const },
+  DISETUJUI: { icon: <CheckCircle2 className="h-3.5 w-3.5" />, label: "Disetujui", color: "emerald" as const },
+  DITOLAK:   { icon: <XCircle className="h-3.5 w-3.5" />, label: "Ditolak", color: "red" as const },
+};
 
 export const metadata: Metadata = {
   title: "Tabel 3.A.1 — Sarana dan Prasarana Penelitian",
@@ -31,9 +44,12 @@ export default async function Tabel3A1Page() {
 
   const lkpsTs = await db.tabelLkps.findUnique({
     where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: activeTa.id } },
-    include: { rows: { orderBy: { rowOrder: "asc" } } },
+    include: { rows: { orderBy: { rowOrder: "asc" } }, validationHistory: { orderBy: { createdAt: "desc" }, take: 10, include: { user: { select: { name: true, role: true } } } } },
   });
   const rawRows = lkpsTs?.rows ?? [];
+  const status = lkpsTs?.status ?? "DRAFT";
+  const statusCfg = statusBadge[status] ?? statusBadge.DRAFT;
+  const history = lkpsTs?.validationHistory || [];
 
   // Cast Prisma JsonValue → SaranaItem agar client component dapat typed data
   const rows = rawRows.map((r) => {
@@ -66,17 +82,20 @@ export default async function Tabel3A1Page() {
         </div>
 
         <div className="relative z-10 flex flex-col gap-5 md:max-w-xl">
-          <div>
+          <div className="flex items-center gap-3">
             <span className="text-3xs font-black uppercase tracking-wider text-emerald-600 bg-emerald-50/80 px-2.5 py-1 rounded-lg">
               Tabel {def.kode}
             </span>
-            <h2 className="mt-3.5 text-lg font-bold text-slate-800 tracking-tight">
-              {def.nama}
-            </h2>
-            <p className="mt-1 text-xs font-semibold text-slate-500">
-              Inventarisasi sarana dan prasarana penelitian DTPR di Program Studi
-            </p>
+            <span className="flex items-center gap-1 text-2xs font-bold px-2.5 py-1 rounded-lg bg-slate-50 text-slate-600 border border-slate-100/50">
+              {statusCfg?.icon} {statusCfg?.label}
+            </span>
           </div>
+          <h2 className="mt-3.5 text-lg font-bold text-slate-800 tracking-tight">
+            {def.nama}
+          </h2>
+          <p className="mt-1 text-xs font-semibold text-slate-500">
+            Inventarisasi sarana dan prasarana penelitian DTPR di Program Studi
+          </p>
 
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
@@ -102,8 +121,11 @@ export default async function Tabel3A1Page() {
       </div>
 
       <ErrorBoundary>
-        <Tabel3A1Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} />
+        <Tabel3A1Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role} />
       </ErrorBoundary>
+      {history.length > 0 && (
+        <ValidationHistory history={history.map((h) => ({ id: h.id, action: h.action, comment: h.comment, createdAt: h.createdAt.toISOString(), user: h.user }))} />
+      )}
     </div>
   );
 }

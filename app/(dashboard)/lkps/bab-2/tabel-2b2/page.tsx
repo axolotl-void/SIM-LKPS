@@ -2,10 +2,20 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { Tabel2B2Client } from "@/components/tables/tabel-2b2-client";
+import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
+import { CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Tabel 2.B.2 — Pemetaan CPL dan PL" };
+
+const statusBadge = {
+  DRAFT:     { icon: <Clock className="h-3.5 w-3.5" />, label: "Draft", color: "slate" as const },
+  DIAJUKAN:  { icon: <Clock className="h-3.5 w-3.5" />, label: "Diajukan", color: "amber" as const },
+  DIREVISI:  { icon: <AlertCircle className="h-3.5 w-3.5" />, label: "Direvisi", color: "orange" as const },
+  DISETUJUI: { icon: <CheckCircle2 className="h-3.5 w-3.5" />, label: "Disetujui", color: "emerald" as const },
+  DITOLAK:   { icon: <XCircle className="h-3.5 w-3.5" />, label: "Ditolak", color: "red" as const },
+};
 
 export default async function Tabel2B2Page() {
   const session = await auth();
@@ -17,18 +27,29 @@ export default async function Tabel2B2Page() {
 
   const lkpsTs = await db.tabelLkps.findUnique({
     where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: activeTa.id } },
-    include: { rows: { orderBy: { rowOrder: "asc" } } },
+    include: { rows: { orderBy: { rowOrder: "asc" } }, validationHistory: { orderBy: { createdAt: "desc" }, take: 10, include: { user: { select: { name: true, role: true } } } } },
   });
+
+  const status = lkpsTs?.status ?? "DRAFT";
+  const history = lkpsTs?.validationHistory || [];
 
   return (
     <div className="space-y-6">
       <div className="rounded-3xl bg-white p-7 shadow-soft border border-slate-100/50">
-        <span className="text-3xs font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg">Tabel {def.kode}</span>
-        <h2 className="mt-4 text-xl font-bold text-slate-800">{def.nama}</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">Tabel {def.kode}</span>
+          <span className={`flex items-center gap-1 text-2xs font-bold px-2.5 py-1 rounded-lg bg-${statusBadge[status]?.color ?? "slate"}-50 text-${statusBadge[status]?.color ?? "slate"}-600 border border-${statusBadge[status]?.color ?? "slate"}-100/50`}>
+            {statusBadge[status]?.icon ?? statusBadge.DRAFT.icon} {statusBadge[status]?.label ?? "Draft"}
+          </span>
+        </div>
+        <h2 className="text-xl font-bold text-slate-800">{def.nama}</h2>
       </div>
       <ErrorBoundary>
-        <Tabel2B2Client initialRows={lkpsTs?.rows || []} tahunAkademikId={activeTa.id} tabelKode={def.kode} />
+        <Tabel2B2Client initialRows={lkpsTs?.rows || []} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role} />
       </ErrorBoundary>
+      {history.length > 0 && (
+        <ValidationHistory history={history.map((h) => ({ id: h.id, action: h.action, comment: h.comment, createdAt: h.createdAt.toISOString(), user: h.user }))} />
+      )}
     </div>
   );
 }

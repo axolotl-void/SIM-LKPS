@@ -5,12 +5,14 @@ import {
   Plus, Edit2, Trash2, Loader2, ArrowLeft, 
   FileText, User, Calendar, GraduationCap, 
   Briefcase, Lightbulb, CheckCircle2, X, Save,
-  AlertTriangle, Info, RefreshCw, ChevronDown, Filter, ArrowRight
+  AlertTriangle, Info, RefreshCw, ChevronDown, Filter, ArrowRight,
+  Send, MessageSquare, ThumbsUp, ThumbsDown, RotateCcw
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
 interface Tabel1A1ClientProps {
   initialRows: {
@@ -20,11 +22,16 @@ interface Tabel1A1ClientProps {
   }[];
   tahunAkademikId: string;
   tabelKode: string;
+  status: string;
+  userRole: string;
 }
 
-export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode }: Tabel1A1ClientProps) {
+export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Tabel1A1ClientProps) {
   const [rows, setRows] = useState(initialRows);
+  const [currentStatus, setCurrentStatus] = useState(status);
   const router = useRouter();
+
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   
   // Modals & Toast States
   const [isOpen, setIsOpen] = useState(false);
@@ -113,16 +120,15 @@ export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
   const handleDeleteConfirm = async () => {
     if (!deleteId) return;
     try {
-      await deleteLkpsRow(deleteId, `/lkps/bab-1/tabel-${tabelKode.toLowerCase().replace(/\./g, "")}`);
+      await deleteLkpsRow({ rowId: deleteId, tabelKode });
       
       // Update local state without reload
       setRows(rows.filter((r) => r.id !== deleteId));
       setDeleteId(null);
       triggerToast("Data pimpinan telah berhasil dihapus", "success");
       router.refresh(); // Sync server state in background
-    } catch (err) {
-      console.error(err);
-      triggerToast("Gagal menghapus data.", "error");
+    } catch (err: any) {
+      triggerToast(err.message || "Gagal menghapus data.", "error");
     }
   };
 
@@ -138,14 +144,24 @@ export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
         </Link>
 
         <div className="flex items-center gap-2.5">
-          <button
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-500 hover:bg-slate-50 transition-colors shadow-2xs"
-          >
-            <Filter className="h-4 w-4" /> Filter
-          </button>
+          {/* Validation Controls */}
+          <ValidationControls
+            tabelKode={tabelKode}
+            tahunAkademikId={tahunAkademikId}
+            currentStatus={currentStatus}
+            userRole={userRole}
+            onChangeStatus={setCurrentStatus}
+            triggerToast={triggerToast}
+          />
+
           <button
             onClick={handleOpenAdd}
-            className="flex items-center gap-1.5 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all duration-200"
+            disabled={!canEdit}
+            className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all duration-200 ${
+              canEdit
+                ? "bg-gradient-to-tr from-blue-500 to-indigo-600 text-white"
+                : "bg-slate-100 text-slate-400 cursor-not-allowed"
+            }`}
           >
             <Plus className="h-4 w-4" /> Tambah Data
           </button>
@@ -219,15 +235,25 @@ export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
               <div className="col-span-1 flex items-center justify-center gap-1.5">
                 <button
                   onClick={() => handleOpenEdit(row)}
-                  className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-2xs hover:bg-slate-50 hover:text-blue-600 hover:border-blue-200 transition-all duration-150"
-                  title="Edit"
+                  disabled={!canEdit}
+                  className={`flex h-7 w-7 items-center justify-center rounded-lg border shadow-2xs transition-all duration-150 ${
+                    canEdit
+                      ? "border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-blue-600 hover:border-blue-200"
+                      : "border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed"
+                  }`}
+                  title={canEdit ? "Edit" : "Tidak bisa diedit"}
                 >
                   <Edit2 className="h-3.5 w-3.5" />
                 </button>
                 <button
                   onClick={() => setDeleteId(row.id)}
-                  className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-2xs hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all duration-150"
-                  title="Hapus"
+                  disabled={!canEdit}
+                  className={`flex h-7 w-7 items-center justify-center rounded-lg border shadow-2xs transition-all duration-150 ${
+                    canEdit
+                      ? "border-slate-200 bg-white text-slate-500 hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+                      : "border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed"
+                  }`}
+                  title={canEdit ? "Hapus" : "Tidak bisa dihapus"}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>

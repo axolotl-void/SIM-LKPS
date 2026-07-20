@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
 interface Row {
   id: string;
@@ -21,6 +22,8 @@ interface Props {
   initialRows: Row[];
   tahunAkademikId: string;
   tabelKode: string;
+  status: string;
+  userRole: string;
 }
 
 const DEFAULT_KEMAMPUAN = [
@@ -33,7 +36,9 @@ const DEFAULT_KEMAMPUAN = [
   { key: "etosKerja", label: "Etos Kerja", icon: Briefcase },
 ];
 
-export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode }: Props) {
+export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
+  const [currentStatus, setCurrentStatus] = useState(status);
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const [rows, setRows] = useState<Row[]>(() => {
     if (initialRows.length > 0) return initialRows;
     // Seed default 7 rows
@@ -114,7 +119,7 @@ export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode }: Prop
   const handleDeleteConfirm = async () => {
     if (!deleteId) return;
     try {
-      await deleteLkpsRow(deleteId, `/lkps/bab-2/tabel-2b6`);
+      await deleteLkpsRow({ rowId: deleteId, tabelKode });
       setRows(rows.filter((r) => r.id !== deleteId));
       setDeleteId(null);
       triggerToast("Data dihapus", "success");
@@ -142,6 +147,14 @@ export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode }: Prop
         <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
+        <ValidationControls
+          tabelKode={tabelKode}
+          tahunAkademikId={tahunAkademikId}
+          currentStatus={currentStatus}
+          userRole={userRole}
+          onChangeStatus={setCurrentStatus}
+          triggerToast={triggerToast}
+        />
       </div>
 
       {/* Summary */}

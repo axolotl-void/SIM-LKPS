@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
 interface RowData {
   id: string;
@@ -21,6 +22,8 @@ interface Props {
   initialRows: RowData[];
   tahunAkademikId: string;
   tabelKode: string;
+  status: string;
+  userRole: string;
 }
 
 const TS_LABELS = ["TS-3", "TS-2", "TS-1", "TS"];
@@ -79,7 +82,9 @@ const FIELD_GROUPS = [
   },
 ];
 
-export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode }: Props) {
+export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
+  const [currentStatus, setCurrentStatus] = useState(status);
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const router = useRouter();
 
   const [rows, setRows] = useState<RowData[]>(() => {
@@ -174,12 +179,27 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
-        <button
-          onClick={openModal}
-          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all"
-        >
-          <Edit2 className="h-4 w-4" /> Edit Data TS
-        </button>
+        <div className="flex items-center gap-2.5">
+          <ValidationControls
+            tabelKode={tabelKode}
+            tahunAkademikId={tahunAkademikId}
+            currentStatus={currentStatus}
+            userRole={userRole}
+            onChangeStatus={setCurrentStatus}
+            triggerToast={triggerToast}
+          />
+          <button
+            onClick={openModal}
+            disabled={!canEdit}
+            className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold shadow-soft-sm transition-all ${
+              canEdit
+                ? "bg-gradient-to-tr from-blue-500 to-indigo-600 text-white hover:shadow-soft"
+                : "bg-slate-100 text-slate-400 cursor-not-allowed"
+            }`}
+          >
+            <Edit2 className="h-4 w-4" /> Edit Data TS
+          </button>
+        </div>
       </div>
 
       {/* Info */}

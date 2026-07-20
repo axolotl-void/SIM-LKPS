@@ -2,12 +2,21 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { Tabel3C2Client } from "@/components/tables/tabel-3c2-client";
+import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
-import { FileText as FileTextIcon, Calendar, BookOpen, FileText } from "lucide-react";
+import { FileText as FileTextIcon, Calendar, BookOpen, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Tabel 3.C.2 — Publikasi Penelitian",
+};
+
+const statusBadge = {
+  DRAFT:     { icon: <Clock className="h-3.5 w-3.5" />, label: "Draft", color: "slate" as const },
+  DIAJUKAN:  { icon: <Clock className="h-3.5 w-3.5" />, label: "Diajukan", color: "amber" as const },
+  DIREVISI:  { icon: <AlertCircle className="h-3.5 w-3.5" />, label: "Direvisi", color: "orange" as const },
+  DISETUJUI: { icon: <CheckCircle2 className="h-3.5 w-3.5" />, label: "Disetujui", color: "emerald" as const },
+  DITOLAK:   { icon: <XCircle className="h-3.5 w-3.5" />, label: "Ditolak", color: "red" as const },
 };
 
 export default async function Tabel3C2Page() {
@@ -31,9 +40,19 @@ export default async function Tabel3C2Page() {
 
   const lkpsTs = await db.tabelLkps.findUnique({
     where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: activeTa.id } },
-    include: { rows: { orderBy: { rowOrder: "asc" } } },
+    include: {
+      rows: { orderBy: { rowOrder: "asc" } },
+      validationHistory: {
+        orderBy: { createdAt: "desc" },
+        take: 10,
+        include: { user: { select: { name: true, role: true } } },
+      },
+    },
   });
   const rawRows = lkpsTs?.rows ?? [];
+  const status = lkpsTs?.status ?? "DRAFT";
+  const statusCfg = statusBadge[status] ?? statusBadge.DRAFT;
+  const history = lkpsTs?.validationHistory || [];
 
   const VALID_JENIS = ["IB", "I", "S1", "S2", "S3", "S4", "T"] as const;
   type JenisPublikasi = typeof VALID_JENIS[number];
@@ -67,9 +86,14 @@ export default async function Tabel3C2Page() {
 
         <div className="relative z-10 flex flex-col gap-5 md:max-w-xl">
           <div>
-            <span className="text-3xs font-black uppercase tracking-wider text-indigo-600 bg-indigo-50/80 px-2.5 py-1 rounded-lg">
-              Tabel {def.kode}
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-3xs font-black uppercase tracking-wider text-indigo-600 bg-indigo-50/80 px-2.5 py-1 rounded-lg">
+                Tabel {def.kode}
+              </span>
+              <span className={`flex items-center gap-1 text-2xs font-bold px-2.5 py-1 rounded-lg bg-${statusCfg.color}-50 text-${statusCfg.color}-600 border border-${statusCfg.color}-100/50`}>
+                {statusCfg.icon} {statusCfg.label}
+              </span>
+            </div>
             <h2 className="mt-3.5 text-lg font-bold text-slate-800 tracking-tight">
               {def.nama}
             </h2>
@@ -102,8 +126,20 @@ export default async function Tabel3C2Page() {
       </div>
 
       <ErrorBoundary>
-        <Tabel3C2Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} />
+        <Tabel3C2Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role} />
       </ErrorBoundary>
+
+      {history.length > 0 && (
+        <ValidationHistory
+          history={history.map((h) => ({
+            id: h.id,
+            action: h.action,
+            comment: h.comment,
+            createdAt: h.createdAt.toISOString(),
+            user: h.user,
+          }))}
+        />
+      )}
     </div>
   );
 }

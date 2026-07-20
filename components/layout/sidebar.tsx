@@ -54,7 +54,7 @@ const menuItems = [
     roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"],
   },
   { label: "Bukti Pendukung", href: "/evidence", icon: Upload, roles: ["ADMIN", "OPERATOR", "VALIDATOR"] },
-  { label: "Validasi", href: "/validasi", icon: ClipboardCheck, roles: ["ADMIN", "VALIDATOR"] },
+  { label: "Validasi", href: "/lkps/validasi", icon: ClipboardCheck, roles: ["ADMIN", "VALIDATOR"] },
   { label: "Laporan", href: "/laporan", icon: BarChart3, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
   { label: "Notifikasi", href: "/notifikasi", icon: Bell, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
   { label: "Pengaturan", href: "/settings", icon: Settings, roles: ["ADMIN"] },

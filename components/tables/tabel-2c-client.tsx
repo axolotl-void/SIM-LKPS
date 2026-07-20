@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
 const TYPES = [
   { key: "mahasiswaAktif", label: "Jumlah Mahasiswa Aktif", icon: Users, color: "from-blue-500 to-cyan-500" },
@@ -26,10 +27,14 @@ interface Props {
   rowsTs: Record<string, any>;
   rowsTs1: Record<string, any>;
   rowsTs2: Record<string, any>;
+  status: string;
+  userRole: string;
 }
 
-export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, rowsTs2 }: Props) {
+export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, rowsTs2, status, userRole }: Props) {
+  const [currentStatus, setCurrentStatus] = useState(status);
   const router = useRouter();
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [formLink, setFormLink] = useState("");
@@ -92,7 +97,7 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
     if (!id) return;
     setIsLoading(true);
     try {
-      await deleteLkpsRow(id, "/lkps/bab-2/tabel-2c");
+      await deleteLkpsRow({ rowId: id, tabelKode });
       setDeleteKey(null);
       triggerToast("Data berhasil dihapus", "success");
       router.refresh();
@@ -125,9 +130,27 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
         <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
-        <button onClick={openModal} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 px-5 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all">
-          <Edit2 className="h-4 w-4" /> Edit Data TS
-        </button>
+        <div className="flex items-center gap-2.5">
+          <ValidationControls
+            tabelKode={tabelKode}
+            tahunAkademikId={tahunAkademikId}
+            currentStatus={currentStatus}
+            userRole={userRole}
+            onChangeStatus={setCurrentStatus}
+            triggerToast={triggerToast}
+          />
+          <button
+            onClick={openModal}
+            disabled={!canEdit}
+            className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm transition-all ${
+              canEdit
+                ? "bg-gradient-to-tr from-indigo-500 to-purple-600 text-white hover:shadow-soft"
+                : "bg-slate-100 text-slate-400 cursor-not-allowed"
+            }`}
+          >
+            <Edit2 className="h-4 w-4" /> Edit Data TS
+          </button>
+        </div>
       </div>
 
       <div className="flex items-center gap-3 rounded-2xl bg-indigo-50/60 border border-indigo-100/60 px-5 py-4 text-xs font-semibold text-indigo-700">

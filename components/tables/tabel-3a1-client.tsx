@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
 interface SaranaItem {
   id: string;
@@ -29,11 +30,15 @@ interface Props {
   initialRows: SaranaItem[];
   tahunAkademikId: string;
   tabelKode: string;
+  status: string;
+  userRole: string;
 }
 
-export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Props) {
+export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
   const [rows, setRows] = useState<SaranaItem[]>(initialRows);
+  const [currentStatus, setCurrentStatus] = useState(status);
   const router = useRouter();
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
 
   // --- Modal tambah / edit ---
   const [modalOpen, setModalOpen] = useState(false);
@@ -179,12 +184,27 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 3
         </Link>
-        <button
-          onClick={openAddModal}
-          className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 px-5 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all"
-        >
-          <Plus className="h-4 w-4" /> Tambah Prasarana
-        </button>
+        <div className="flex items-center gap-2.5">
+          <ValidationControls
+            tabelKode={tabelKode}
+            tahunAkademikId={tahunAkademikId}
+            currentStatus={currentStatus}
+            userRole={userRole}
+            onChangeStatus={setCurrentStatus}
+            triggerToast={triggerToast}
+          />
+          <button
+            onClick={openAddModal}
+            disabled={!canEdit}
+            className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm transition-all ${
+              canEdit
+                ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white hover:shadow-soft"
+                : "bg-slate-100 text-slate-400 cursor-not-allowed"
+            }`}
+          >
+            <Plus className="h-4 w-4" /> Tambah Prasarana
+          </button>
+        </div>
       </div>
 
       {/* Info banner */}
@@ -293,13 +313,25 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                       <div className="flex items-center justify-center gap-2">
                         <button
                           onClick={() => openEditModal(item)}
-                          className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 text-2xs font-bold text-blue-600 hover:bg-blue-100 transition-colors"
+                          disabled={!canEdit}
+                          className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-2xs font-bold transition-colors ${
+                            canEdit
+                              ? "bg-blue-50 text-blue-600 hover:bg-blue-100"
+                              : "bg-slate-50 text-slate-300 cursor-not-allowed"
+                          }`}
+                          title={canEdit ? "Edit" : "Tidak bisa diedit"}
                         >
                           <Edit2 className="h-3 w-3" /> Edit
                         </button>
                         <button
                           onClick={() => openDeleteConfirm(item.id, item.rowData.namaPrasarana)}
-                          className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-2xs font-bold text-red-600 hover:bg-red-100 transition-colors"
+                          disabled={!canEdit}
+                          className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-2xs font-bold transition-colors ${
+                            canEdit
+                              ? "bg-red-50 text-red-600 hover:bg-red-100"
+                              : "bg-slate-50 text-slate-300 cursor-not-allowed"
+                          }`}
+                          title={canEdit ? "Hapus" : "Tidak bisa dihapus"}
                         >
                           <Trash2 className="h-3 w-3" /> Hapus
                         </button>
