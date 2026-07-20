@@ -7,13 +7,14 @@ import { cn } from "@/lib/utils/format";
  * Usage:
  *   <Skeleton className="h-4 w-24" />
  */
-export function Skeleton({ className }: { className?: string }) {
+export function Skeleton({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <div
       className={cn(
         "animate-pulse rounded-xl bg-slate-200",
         className,
       )}
+      style={style}
     />
   );
 }

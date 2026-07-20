@@ -33,7 +33,7 @@ export default async function Tabel2DPage() {
   const def = await db.tabelDefinition.findUnique({ where: { kode: "2.D" } });
   if (!def) return <div className="p-6 text-center text-xs font-bold text-slate-400">Definisi tabel 2.D tidak ditemukan.</div>;
 
-  const activeYearStart = parseInt(activeTa.tahun.split("/")[0]);
+  const activeYearStart = parseInt(activeTa.tahun.split("/")[0]!);
   const taTs1 = await db.tahunAkademik.findFirst({ where: { tahun: `${activeYearStart - 1}/${activeYearStart}`, semester: activeTa.semester, prodiId: activeTa.prodiId } });
   const taTs2 = await db.tahunAkademik.findFirst({ where: { tahun: `${activeYearStart - 2}/${activeYearStart - 1}`, semester: activeTa.semester, prodiId: activeTa.prodiId } });
 

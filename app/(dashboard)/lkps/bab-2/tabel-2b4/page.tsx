@@ -46,7 +46,7 @@ export default async function Tabel2B4Page() {
   }
 
   // Determine TS-1 and TS-2
-  const activeYearStart = parseInt(activeTa.tahun.split("/")[0]);
+  const activeYearStart = parseInt(activeTa.tahun.split("/")[0]!);
   const ts1Tahun = `${activeYearStart - 1}/${activeYearStart}`;
   const ts2Tahun = `${activeYearStart - 2}/${activeYearStart - 1}`;
 

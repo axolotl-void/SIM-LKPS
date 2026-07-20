@@ -51,7 +51,7 @@ export default async function Tabel1A3Page() {
   }
 
   // Determine TS-1 and TS-2 academic years based on active Ta
-  const activeYearStart = parseInt(activeTa.tahun.split("/")[0]);
+  const activeYearStart = parseInt(activeTa.tahun.split("/")[0]!);
   const ts1Tahun = `${activeYearStart - 1}/${activeYearStart}`;
   const ts2Tahun = `${activeYearStart - 2}/${activeYearStart - 1}`;
 
@@ -118,21 +118,18 @@ export default async function Tabel1A3Page() {
 
   // Merge rows by 'jenisPenggunaan'
   const initialRows = rowsTs.map((r: any) => {
-    const penggunaan = r.rowData.jenisPenggunaan;
-    
-    // Find matching nominal in TS-1 and TS-2
-    const matchTs1 = rowsTs1.find((x: any) => x.rowData.jenisPenggunaan === penggunaan);
-    const matchTs2 = rowsTs2.find((x: any) => x.rowData.jenisPenggunaan === penggunaan);
-
+    const penggunaan = r.rowData?.jenisPenggunaan as string | undefined;
+    const matchTs1 = penggunaan ? rowsTs1.find((x: any) => x.rowData?.jenisPenggunaan === penggunaan) : undefined;
+    const matchTs2 = penggunaan ? rowsTs2.find((x: any) => x.rowData?.jenisPenggunaan === penggunaan) : undefined;
     return {
       id: r.id,
       rowOrder: r.rowOrder,
       rowData: {
-        jenisPenggunaan: penggunaan,
-        ts: Number(r.rowData.nominal) || 0,
-        ts1: matchTs1 ? Number(matchTs1.rowData.nominal) || 0 : 0,
-        ts2: matchTs2 ? Number(matchTs2.rowData.nominal) || 0 : 0,
-        linkBukti: r.rowData.linkBukti || "",
+        jenisPenggunaan: penggunaan ?? "",
+        ts: Number(r.rowData?.nominal) || 0,
+        ts1: matchTs1 ? Number((matchTs1.rowData as any)?.nominal) || 0 : 0,
+        ts2: matchTs2 ? Number((matchTs2.rowData as any)?.nominal) || 0 : 0,
+        linkBukti: (r.rowData?.linkBukti as string) ?? "",
       },
     };
   });

@@ -33,7 +33,7 @@ export default async function Tabel2CPage() {
   const def = await db.tabelDefinition.findUnique({ where: { kode: "2.C" } });
   if (!def) return <div className="p-6 text-center text-xs font-bold text-slate-400">Definisi tabel 2.C tidak ditemukan.</div>;
 
-  const activeYearStart = parseInt(activeTa.tahun.split("/")[0]);
+  const activeYearStart = parseInt(activeTa.tahun.split("/")[0]!);
   const taTs1 = await db.tahunAkademik.findFirst({ where: { tahun: `${activeYearStart - 1}/${activeYearStart}`, semester: activeTa.semester, prodiId: activeTa.prodiId } });
   const taTs2 = await db.tahunAkademik.findFirst({ where: { tahun: `${activeYearStart - 2}/${activeYearStart - 1}`, semester: activeTa.semester, prodiId: activeTa.prodiId } });
 
@@ -104,7 +104,6 @@ export default async function Tabel2CPage() {
         <Tabel2CClient
           tahunAkademikId={activeTa.id}
           tabelKode={def.kode}
-          defaultTypes={DEFAULT_TYPES}
           rowsTs={rowsTs}
           rowsTs1={rowsTs1}
           rowsTs2={rowsTs2}

@@ -126,7 +126,7 @@ export default async function Bab4Page() {
             <div className="w-10 h-10 bg-emerald-50 text-emerald-500 rounded-xl flex items-center justify-center text-lg">✓</div>
             <div>
               <p className="text-xl font-bold text-emerald-600 leading-none">
-                {tables.filter(t => lkpsMap.get(t.kode)?.rows?.length > 0).length}
+                {tables.filter(t => (lkpsMap.get(t.kode) as any)?.rows?.length > 0).length}
               </p>
               <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide">Terisi</p>
             </div>

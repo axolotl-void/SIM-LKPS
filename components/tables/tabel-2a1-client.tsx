@@ -121,7 +121,7 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
     const data: Record<string, string> = {};
     for (const g of FIELD_GROUPS) {
       for (const f of g.fields) {
-        const val = tsRow.rowData[f.key];
+        const val = (tsRow?.rowData as any)?.[f.key];
         data[f.key] = val !== undefined && val !== "" && val !== null ? String(val) : "";
       }
     }
@@ -139,16 +139,16 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
         }
       }
 
-      const isTemp = tsRow.id.startsWith("temp-");
+      const isTemp = tsRow?.id?.startsWith("temp-") ?? false;
       const result = await upsertLkpsRow({
         tabelKode,
         tahunAkademikId,
-        rowId: isTemp ? undefined : tsRow.id,
+        rowId: isTemp ? undefined : tsRow?.id,
         rowData,
       });
 
-      const updated = { id: result.id, rowOrder: tsRow.rowOrder, rowData: result.rowData };
-      setRows(rows.map((r) => (r.rowData.ts_label === "TS" ? updated : r)));
+      const updated = { id: result.id, rowOrder: tsRow?.rowOrder ?? 1, rowData: result.rowData };
+      setRows(rows.map((r: any) => (r.rowData.ts_label === "TS" ? updated : r)));
       setModalOpen(false);
       triggerToast("Data mahasiswa berhasil disimpan", "success");
       router.refresh();
