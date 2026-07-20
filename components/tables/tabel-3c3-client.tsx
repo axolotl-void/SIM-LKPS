@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   Loader2, ArrowLeft, CheckCircle2, X, Save, Plus, Trash2,
-  Award, FileText, Edit2, Lightbulb
+  Award, FileText, Edit2, Lightbulb, AlertTriangle
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -35,6 +35,9 @@ export function Tabel3C3Client({ initialRows, tahunAkademikId, tabelKode }: Prop
   const [editItem, setEditItem] = useState<HkiItem | null>(null);
   const [form, setForm] = useState({ judul: "", jenisHki: "", namaDtpr: "", linkBukti: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [deleteConfirmName, setDeleteConfirmName] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   const triggerToast = (message: string, type: "success" | "error") => {
@@ -61,11 +64,16 @@ export function Tabel3C3Client({ initialRows, tahunAkademikId, tabelKode }: Prop
     } catch { triggerToast("Gagal menyimpan.", "error"); } finally { setIsLoading(false); }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Hapus item ini?")) return;
-    setIsLoading(true);
-    try { await deleteLkpsRow({ tabelKode, rowId: id }); setRows(rows.filter((r) => r.id !== id)); triggerToast("Berhasil dihapus.", "success"); router.refresh(); }
-    catch { triggerToast("Gagal menghapus.", "error"); } finally { setIsLoading(false); }
+  const openDeleteConfirm = (id: string, nama: string) => {
+    setDeleteConfirmId(id);
+    setDeleteConfirmName(nama);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteConfirmId) return;
+    setIsDeleting(true);
+    try { await deleteLkpsRow({ tabelKode, rowId: deleteConfirmId }); setRows(rows.filter((r) => r.id !== deleteConfirmId)); triggerToast("Berhasil dihapus.", "success"); router.refresh(); }
+    catch { triggerToast("Gagal menghapus.", "error"); } finally { setIsDeleting(false); setDeleteConfirmId(null); setDeleteConfirmName(""); }
   };
 
   return (
@@ -116,7 +124,7 @@ export function Tabel3C3Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                   <td className="px-4 py-3 text-slate-600">{item.rowData.namaDtpr}</td>
                   <td className="px-4 py-3 text-center"><div className="flex items-center justify-center gap-2">
                     <button onClick={() => openEdit(item)} className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 text-2xs font-bold text-blue-600 hover:bg-blue-100 transition-colors"><Edit2 className="h-3 w-3" /> Edit</button>
-                    <button onClick={() => handleDelete(item.id)} className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-2xs font-bold text-red-600 hover:bg-red-100 transition-colors"><Trash2 className="h-3 w-3" /> Hapus</button>
+                    <button onClick={() => openDeleteConfirm(item.id, item.rowData.judul)} className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-2xs font-bold text-red-600 hover:bg-red-100 transition-colors"><Trash2 className="h-3 w-3" /> Hapus</button>
                   </div></td>
                 </tr>
               ))}</tbody>
@@ -148,6 +156,30 @@ export function Tabel3C3Client({ initialRows, tahunAkademikId, tabelKode }: Prop
           </motion.div>
         </div>
       )}</AnimatePresence>
+
+      {/* Modal Konfirmasi Hapus */}
+      <AnimatePresence>
+        {deleteConfirmId && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+            <motion.div initial={{ scale: 0.9, opacity: 0, y: 12 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0, y: 12 }} transition={{ type: "spring", damping: 28, stiffness: 380 }} className="w-full max-w-sm rounded-3xl bg-white shadow-soft-lg border border-slate-100/50 p-8">
+              <div className="flex justify-center mb-5">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 text-red-500"><AlertTriangle className="h-8 w-8" /></div>
+              </div>
+              <h3 className="text-base font-bold text-slate-800 text-center">Hapus HKI?</h3>
+              <p className="text-xs font-semibold text-slate-500 text-center mt-1.5">Tindakan ini tidak dapat dibatalkan.</p>
+              <div className="mt-5 rounded-xl bg-red-50/70 border border-red-100 px-4 py-3 text-center">
+                <p className="text-xs font-bold text-red-700">&ldquo;{deleteConfirmName}&rdquo;</p>
+              </div>
+              <div className="mt-6 flex items-center gap-3">
+                <button type="button" onClick={() => { setDeleteConfirmId(null); setDeleteConfirmName(""); }} disabled={isDeleting} className="flex-1 rounded-xl border border-slate-200 bg-white py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-50">Batal</button>
+                <button type="button" onClick={handleDelete} disabled={isDeleting} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-tr from-red-500 to-rose-600 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60">
+                  {isDeleting ? <><Loader2 className="h-4 w-4 animate-spin" /> Menghapus...</> : <><Trash2 className="h-4 w-4" /> Ya, Hapus</>}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>{toast && (<motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl px-5 py-4 text-xs font-bold text-white shadow-soft-lg bg-slate-900 border border-slate-800"><CheckCircle2 className={`h-5 w-5 shrink-0 ${toast.type === "success" ? "text-emerald-400" : "text-red-400"}`} /><span>{toast.message}</span></motion.div>)}</AnimatePresence>
     </div>

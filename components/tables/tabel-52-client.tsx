@@ -3,14 +3,14 @@
 import { useState } from "react";
 import {
   Loader2, ArrowLeft, CheckCircle2, X, Save, Plus, Trash2,
-  Building2, Server, Monitor, Edit2, Lightbulb, AlertTriangle,
+  Building2, GraduationCap, Monitor, Edit2, Lightbulb, AlertTriangle,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 
-interface SaranaItem {
+interface PrasaranaPendidikanItem {
   id: string;
   rowOrder: number;
   rowData: {
@@ -26,18 +26,18 @@ interface SaranaItem {
 }
 
 interface Props {
-  initialRows: SaranaItem[];
+  initialRows: PrasaranaPendidikanItem[];
   tahunAkademikId: string;
   tabelKode: string;
 }
 
-export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Props) {
-  const [rows, setRows] = useState<SaranaItem[]>(initialRows);
+export function Tabel52Client({ initialRows, tahunAkademikId, tabelKode }: Props) {
+  const [rows, setRows] = useState<PrasaranaPendidikanItem[]>(initialRows);
   const router = useRouter();
 
   // --- Modal tambah / edit ---
   const [modalOpen, setModalOpen] = useState(false);
-  const [editItem, setEditItem] = useState<SaranaItem | null>(null);
+  const [editItem, setEditItem] = useState<PrasaranaPendidikanItem | null>(null);
   const [form, setForm] = useState({
     namaPrasarana: "",
     dayaTampung: "",
@@ -68,7 +68,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
     setModalOpen(true);
   };
 
-  const openEditModal = (item: SaranaItem) => {
+  const openEditModal = (item: PrasaranaPendidikanItem) => {
     setEditItem(item);
     setForm({
       namaPrasarana: item.rowData.namaPrasarana,
@@ -108,7 +108,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
         rowData,
       });
 
-      const updatedItem: SaranaItem = {
+      const updatedItem: PrasaranaPendidikanItem = {
         id: result.id,
         rowOrder: result.rowOrder,
         rowData: {
@@ -125,10 +125,10 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
 
       if (isUpdate) {
         setRows((prev) => prev.map((r) => (r.id === editItem.id ? updatedItem : r)));
-        triggerToast("Data prasarana berhasil diperbarui.", "success");
+        triggerToast("Data prasarana pendidikan berhasil diperbarui.", "success");
       } else {
         setRows((prev) => [...prev, updatedItem]);
-        triggerToast("Prasarana berhasil ditambahkan.", "success");
+        triggerToast("Prasarana pendidikan berhasil ditambahkan.", "success");
       }
       setModalOpen(false);
       router.refresh();
@@ -151,7 +151,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
     try {
       await deleteLkpsRow({ rowId: deleteConfirmId, tabelKode });
       setRows((prev) => prev.filter((r) => r.id !== deleteConfirmId));
-      triggerToast("Prasarana berhasil dihapus.", "success");
+      triggerToast("Prasarana pendidikan berhasil dihapus.", "success");
       router.refresh();
     } catch (err) {
       console.error(err);
@@ -164,6 +164,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
   };
 
   // --- Stats ---
+  const totalPrasarana = rows.length;
   const totalDayaTampung = rows.reduce((a, r) => a + (r.rowData.dayaTampung || 0), 0);
   const totalLuasRuang = rows.reduce((a, r) => a + (r.rowData.luasRuang || 0), 0);
   const milikSendiri = rows.filter((r) => r.rowData.status === "M").length;
@@ -174,24 +175,24 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
       {/* Top bar */}
       <div className="flex items-center justify-between">
         <Link
-          href="/lkps/bab-3"
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors"
+          href="/lkps/bab-5"
+          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-violet-600 transition-colors"
         >
-          <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 3
+          <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 5
         </Link>
         <button
           onClick={openAddModal}
-          className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 px-5 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all"
+          className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-violet-500 to-purple-600 px-5 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all"
         >
-          <Plus className="h-4 w-4" /> Tambah Prasarana
+          <Plus className="h-4 w-4" /> Tambah Prasarana Pendidikan
         </button>
       </div>
 
       {/* Info banner */}
-      <div className="flex items-center gap-3 rounded-2xl bg-emerald-50/60 border border-emerald-100/60 px-5 py-4 text-xs font-semibold text-emerald-700">
-        <Lightbulb className="h-5 w-5 shrink-0 text-emerald-500" />
+      <div className="flex items-center gap-3 rounded-2xl bg-violet-50/60 border border-violet-100/60 px-5 py-4 text-xs font-semibold text-violet-700">
+        <Lightbulb className="h-5 w-5 shrink-0 text-violet-500" />
         <span>
-          Klik <strong>"Tambah Prasarana"</strong> untuk menambahkan data. Klik{" "}
+          Klik <strong>"Tambah Prasarana Pendidikan"</strong> untuk menambahkan data. Klik{" "}
           <strong>Edit</strong> untuk mengubah atau <strong>Hapus</strong> untuk menghapus item.
         </span>
       </div>
@@ -199,9 +200,9 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
       {/* Summary Cards */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-4">
         {[
-          { label: "Total Prasarana", value: rows.length, color: "text-slate-800" },
-          { label: "Total Daya Tampung", value: totalDayaTampung, color: "text-emerald-600" },
-          { label: "Total Luas Ruang", value: `${totalLuasRuang} m²`, color: "text-teal-600" },
+          { label: "Total Prasarana", value: totalPrasarana, color: "text-slate-800" },
+          { label: "Total Daya Tampung", value: totalDayaTampung, color: "text-violet-600" },
+          { label: "Total Luas Ruang", value: `${totalLuasRuang} m²`, color: "text-purple-600" },
           { label: "Milik / Sewa", value: `${milikSendiri} / ${sewa}`, color: "text-slate-700" },
         ].map((card) => (
           <div
@@ -215,21 +216,21 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
       </div>
 
       {/* Table card */}
-      <div className="rounded-2xl border-2 border-emerald-200/70 bg-white shadow-soft overflow-hidden">
+      <div className="rounded-2xl border-2 border-violet-200/70 bg-white shadow-soft overflow-hidden">
         {/* Table header */}
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 px-7 py-4">
+        <div className="bg-gradient-to-r from-violet-500 to-purple-600 px-7 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
-                <Building2 className="h-5 w-5 text-white" />
+                <GraduationCap className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white">Sarana dan Prasarana Penelitian</h3>
-                <p className="text-2xs font-semibold text-emerald-200">Inventaris laboratorium dan perangkat penelitian</p>
+                <h3 className="text-sm font-bold text-white">Sarana dan Prasarana Pendidikan</h3>
+                <p className="text-2xs font-semibold text-violet-200">Inventaris ruang dan perangkat pendidikan</p>
               </div>
             </div>
             <span className="rounded-xl bg-white/20 backdrop-blur-sm px-3 py-1 text-2xs font-bold text-white">
-              {rows.length} item
+              {totalPrasarana} item
             </span>
           </div>
         </div>
@@ -237,10 +238,10 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
         {rows.length === 0 ? (
           <div className="p-12 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
-              <Server className="h-8 w-8 text-slate-400" />
+              <GraduationCap className="h-8 w-8 text-slate-400" />
             </div>
-            <p className="text-sm font-semibold text-slate-500">Belum ada data prasarana penelitian.</p>
-            <p className="text-xs text-slate-400 mt-1">Klik "Tambah Prasarana" di atas untuk memulai.</p>
+            <p className="text-sm font-semibold text-slate-500">Belum ada data prasarana pendidikan.</p>
+            <p className="text-xs text-slate-400 mt-1">Klik "Tambah Prasarana Pendidikan" di atas untuk memulai.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -271,8 +272,8 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                     <td className="px-4 py-3 text-center">
                       <span className={`inline-flex items-center rounded-lg px-2.5 py-1 text-2xs font-bold ${
                         item.rowData.status === "M"
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-amber-100 text-amber-700"
+                          ? "bg-violet-100 text-violet-700"
+                          : "bg-purple-100 text-purple-700"
                       }`}>
                         {item.rowData.status === "M" ? "Milik Sendiri" : "Sewa"}
                       </span>
@@ -313,8 +314,8 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                   <td colSpan={2} className="px-4 py-3 text-left font-black text-slate-700 uppercase tracking-wider text-xs">
                     Total
                   </td>
-                  <td className="px-4 py-3 text-center font-black text-emerald-600">{totalDayaTampung}</td>
-                  <td className="px-4 py-3 text-center font-black text-teal-600">{totalLuasRuang} m²</td>
+                  <td className="px-4 py-3 text-center font-black text-violet-600">{totalDayaTampung}</td>
+                  <td className="px-4 py-3 text-center font-black text-purple-600">{totalLuasRuang} m²</td>
                   <td colSpan={4} />
                 </tr>
               </tfoot>
@@ -336,15 +337,15 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
             >
               {/* Modal header */}
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-soft-sm">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-soft-sm">
                   {editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">
-                    {editItem ? "Edit Prasarana Penelitian" : "Tambah Prasarana Penelitian"}
+                    {editItem ? "Edit Prasarana Pendidikan" : "Tambah Prasarana Pendidikan"}
                   </h3>
                   <p className="text-xs font-semibold text-slate-400 mt-0.5">
-                    {editItem ? "Perbarui data sarana/prasarana." : "Tambah sarana/prasarana baru."}
+                    {editItem ? "Perbarui data sarana/prasarana pendidikan." : "Tambah sarana/prasarana pendidikan baru."}
                   </p>
                 </div>
               </div>
@@ -357,20 +358,20 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                 className="space-y-5"
               >
                 {/* Seksi — Identitas */}
-                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/30 p-5 space-y-4">
-                  <div className="flex items-center gap-2 text-xs font-bold text-emerald-700">
+                <div className="rounded-2xl border border-violet-100 bg-violet-50/30 p-5 space-y-4">
+                  <div className="flex items-center gap-2 text-xs font-bold text-violet-700">
                     <Building2 className="h-4 w-4" /> Identitas Prasarana
                   </div>
                   <div>
                     <label className="block text-2xs font-bold text-slate-600 mb-1">
-                      Nama Prasarana / Laboratorium <span className="text-red-500">*</span>
+                      Nama Prasarana / Ruang <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
-                      placeholder="cth: Lab Komputasi, Lab Jaringan"
+                      placeholder="cth: Ruang Kelas A, Lab Komputer, Perpustakaan"
                       value={form.namaPrasarana}
                       onChange={(e) => setForm((p) => ({ ...p, namaPrasarana: e.target.value }))}
-                      className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 shadow-sm placeholder:text-slate-300"
+                      className="w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 shadow-sm placeholder:text-slate-300"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
@@ -382,7 +383,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                         placeholder="cth: 40"
                         value={form.dayaTampung}
                         onChange={(e) => setForm((p) => ({ ...p, dayaTampung: e.target.value }))}
-                        className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 shadow-sm placeholder:text-slate-300"
+                        className="w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 shadow-sm placeholder:text-slate-300"
                       />
                     </div>
                     <div>
@@ -393,16 +394,16 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                         placeholder="cth: 100"
                         value={form.luasRuang}
                         onChange={(e) => setForm((p) => ({ ...p, luasRuang: e.target.value }))}
-                        className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 shadow-sm placeholder:text-slate-300"
+                        className="w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 shadow-sm placeholder:text-slate-300"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Seksi — Kepemilikan */}
-                <div className="rounded-2xl border border-teal-100 bg-teal-50/30 p-5 space-y-4">
-                  <div className="flex items-center gap-2 text-xs font-bold text-teal-700">
-                    <Server className="h-4 w-4" /> Status Kepemilikan
+                <div className="rounded-2xl border border-purple-100 bg-purple-50/30 p-5 space-y-4">
+                  <div className="flex items-center gap-2 text-xs font-bold text-purple-700">
+                    <GraduationCap className="h-4 w-4" /> Status Kepemilikan
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -415,8 +416,8 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                             onClick={() => setForm((p) => ({ ...p, status: v }))}
                             className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${
                               form.status === v
-                                ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white shadow-soft-sm"
-                                : "bg-white border border-slate-200 text-slate-600 hover:border-emerald-300"
+                                ? "bg-gradient-to-tr from-violet-500 to-purple-600 text-white shadow-soft-sm"
+                                : "bg-white border border-slate-200 text-slate-600 hover:border-violet-300"
                             }`}
                           >
                             {v === "M" ? "Milik Sendiri" : "Sewa"}
@@ -434,8 +435,8 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                             onClick={() => setForm((p) => ({ ...p, publicDomain: v }))}
                             className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${
                               form.publicDomain === v
-                                ? "bg-gradient-to-tr from-teal-500 to-cyan-600 text-white shadow-soft-sm"
-                                : "bg-white border border-slate-200 text-slate-600 hover:border-teal-300"
+                                ? "bg-gradient-to-tr from-purple-500 to-pink-600 text-white shadow-soft-sm"
+                                : "bg-white border border-slate-200 text-slate-600 hover:border-purple-300"
                             }`}
                           >
                             {v === "P" ? "Public" : "Berlisensi"}
@@ -488,7 +489,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
+                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-violet-500 to-purple-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
                   >
                     {isLoading ? (
                       <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</>
@@ -521,7 +522,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                 </div>
               </div>
 
-              <h3 className="text-base font-bold text-slate-800 text-center">Hapus Prasarana?</h3>
+              <h3 className="text-base font-bold text-slate-800 text-center">Hapus Prasarana Pendidikan?</h3>
               <p className="text-xs font-semibold text-slate-500 text-center mt-1.5">
                 Tindakan ini tidak dapat dibatalkan.
               </p>

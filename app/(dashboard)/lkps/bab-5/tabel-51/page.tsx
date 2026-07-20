@@ -1,81 +1,59 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { Tabel3A3Client } from "@/components/tables/tabel-3a3-client";
+import { Tabel51Client } from "@/components/tables/tabel-51-client";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
-import { BookOpen, Calendar, BookOpen as BookOpenIcon, FileText } from "lucide-react";
+import { Shield, Calendar, BookOpen } from "lucide-react";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Tabel 3.A.3 — Pengembangan DTPR di Bidang Penelitian",
-};
+export const metadata: Metadata = { title: "Tabel 5.1 — Sistem Tata Kelola" };
 
-export default async function Tabel3A3Page() {
+export default async function Tabel51Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
-
   const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true },
+    where: { isActive: true }, include: { prodi: true },
   });
   if (!activeTa) redirect("/dashboard");
-
-  const def = await db.tabelDefinition.findUnique({ where: { kode: "3.A.3" } });
-  if (!def) {
-    return (
-      <div className="rounded-2xl bg-white p-6 shadow-soft text-center text-xs font-semibold text-slate-500">
-        Definisi Tabel 3.A.3 tidak ditemukan. Pastikan seed data telah dijalankan.
-      </div>
-    );
-  }
-
+  const def = await db.tabelDefinition.findUnique({ where: { kode: "5.1" } });
+  if (!def) { return <div className="rounded-2xl bg-white p-6 shadow-soft text-center text-xs font-semibold text-slate-500">Definisi Tabel 5.1 tidak ditemukan.</div>; }
   const lkpsTs = await db.tabelLkps.findUnique({
     where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: activeTa.id } },
     include: { rows: { orderBy: { rowOrder: "asc" } } },
   });
   const rawRows = lkpsTs?.rows ?? [];
-
   const rows = rawRows.map((r) => {
     const d = r.rowData as Record<string, unknown>;
     return {
-      id: r.id,
-      rowOrder: r.rowOrder,
+      id: r.id, rowOrder: r.rowOrder,
       rowData: {
-        tahun: String(d.tahun ?? "TS"),
-        namaDtpr: String(d.namaDtpr ?? ""),
-        jenisPengembangan: String(d.jenisPengembangan ?? ""),
+        tahun: String(d.tahun ?? "daftar"),
+        jenisTataKelola: String(d.jenisTataKelola ?? ""),
+        namaSistem: String(d.namaSistem ?? ""),
+        akses: (d.akses === "Internet" ? "Internet" : "Lokal") as "Lokal" | "Internet",
+        unitPengelola: String(d.unitPengelola ?? ""),
         linkBukti: String(d.linkBukti ?? ""),
       },
     };
   });
-
   return (
     <div className="space-y-6">
-      {/* Header Banner */}
       <div className="relative overflow-hidden rounded-3xl bg-white p-7 shadow-soft border border-slate-100/50">
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-cyan-50/50 via-blue-50/20 to-transparent pointer-events-none rounded-r-3xl" />
+        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-violet-50/50 via-purple-50/20 to-transparent pointer-events-none rounded-r-3xl" />
         <div className="absolute right-12 top-1/2 -translate-y-1/2 hidden md:block pointer-events-none">
-          <div className="flex h-20 w-16 rotate-12 items-center justify-center rounded-2xl bg-white shadow-soft-lg border border-slate-100/40 text-cyan-500">
-            <BookOpenIcon className="h-10 w-10 text-cyan-400" />
+          <div className="flex h-20 w-16 rotate-12 items-center justify-center rounded-2xl bg-white shadow-soft-lg border border-slate-100/40 text-violet-500">
+            <Shield className="h-10 w-10 text-violet-400" />
           </div>
         </div>
-
         <div className="relative z-10 flex flex-col gap-5 md:max-w-xl">
           <div>
-            <span className="text-3xs font-black uppercase tracking-wider text-cyan-600 bg-cyan-50/80 px-2.5 py-1 rounded-lg">
-              Tabel {def.kode}
-            </span>
-            <h2 className="mt-3.5 text-lg font-bold text-slate-800 tracking-tight">
-              {def.nama}
-            </h2>
-            <p className="mt-1 text-xs font-semibold text-slate-500">
-              Pengembangan DTPR di bidang penelitian
-            </p>
+            <span className="text-3xs font-black uppercase tracking-wider text-violet-600 bg-violet-50/80 px-2.5 py-1 rounded-lg">Tabel {def.kode}</span>
+            <h2 className="mt-3.5 text-lg font-bold text-slate-800 tracking-tight">{def.nama}</h2>
+            <p className="mt-1 text-xs font-semibold text-slate-500">Sistem informasi tata kelola di UPPS/PS</p>
           </div>
-
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-cyan-500/10 to-blue-500/10 text-cyan-600 shadow-soft-2xs">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-500/10 to-purple-500/10 text-violet-600 shadow-soft-2xs">
                 <Calendar className="h-5 w-5" />
               </div>
               <div>
@@ -84,7 +62,7 @@ export default async function Tabel3A3Page() {
               </div>
             </div>
             <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-cyan-500/10 to-blue-500/10 text-cyan-600 shadow-soft-2xs">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-500/10 to-purple-500/10 text-violet-600 shadow-soft-2xs">
                 <BookOpen className="h-5 w-5" />
               </div>
               <div>
@@ -95,9 +73,8 @@ export default async function Tabel3A3Page() {
           </div>
         </div>
       </div>
-
       <ErrorBoundary>
-        <Tabel3A3Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} />
+        <Tabel51Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} />
       </ErrorBoundary>
     </div>
   );

@@ -33,7 +33,26 @@ export default async function Tabel3A1Page() {
     where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: activeTa.id } },
     include: { rows: { orderBy: { rowOrder: "asc" } } },
   });
-  const rows = lkpsTs?.rows || [];
+  const rawRows = lkpsTs?.rows ?? [];
+
+  // Cast Prisma JsonValue → SaranaItem agar client component dapat typed data
+  const rows = rawRows.map((r) => {
+    const d = r.rowData as Record<string, unknown>;
+    return {
+      id: r.id,
+      rowOrder: r.rowOrder,
+      rowData: {
+        tahun: String(d.tahun ?? "inventory"),
+        namaPrasarana: String(d.namaPrasarana ?? ""),
+        dayaTampung: Number(d.dayaTampung ?? 0),
+        luasRuang: Number(d.luasRuang ?? 0),
+        status: (d.status === "W" ? "W" : "M") as "M" | "W",
+        publicDomain: (d.publicDomain === "T" ? "T" : "P") as "P" | "T",
+        perangkat: String(d.perangkat ?? ""),
+        linkBukti: String(d.linkBukti ?? ""),
+      },
+    };
+  });
 
   return (
     <div className="space-y-6">

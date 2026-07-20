@@ -76,15 +76,29 @@ export async function upsertLkpsRow(params: {
   };
 }
 
-export async function deleteLkpsRow(rowId: string, path: string) {
+export async function deleteLkpsRow(params: {
+  rowId: string;
+  tabelKode: string;
+}) {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
-  await db.tabelLkpsRow.delete({
-    where: { id: rowId },
+  // Ambil info bab dari definisi tabel untuk revalidatePath yang tepat
+  const row = await db.tabelLkpsRow.findUnique({
+    where: { id: params.rowId },
+    include: {
+      tabelLkps: {
+        include: { tabelDefinition: true },
+      },
+    },
   });
+  if (!row) throw new Error("Row not found");
 
-  revalidatePath(path);
+  await db.tabelLkpsRow.delete({ where: { id: params.rowId } });
+
+  const kode = row.tabelLkps.tabelDefinition.kode;
+  const bab = row.tabelLkps.tabelDefinition.bab;
+  revalidatePath(`/lkps/bab-${bab}/tabel-${kode.toLowerCase().replace(/\./g, "")}`);
 }
 
 export async function createDosen(nama: string) {
