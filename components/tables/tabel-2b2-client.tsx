@@ -5,9 +5,12 @@ import { Plus, Edit2, Trash2, ArrowLeft, GraduationCap, X } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
-export function Tabel2B2Client({ initialRows, tahunAkademikId, tabelKode }: any) {
+export function Tabel2B2Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: any) {
   const [rows, setRows] = useState(initialRows);
+  const [currentStatus, setCurrentStatus] = useState(status);
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const [isOpen, setIsOpen] = useState(false);
   const [editId, setEditId] = useState<string | undefined>();
   const [form, setForm] = useState({ kodeCpl: "", pl01: false, pl02: false, pl03: false, pl04: false, pl05: false });
@@ -31,7 +34,27 @@ export function Tabel2B2Client({ initialRows, tahunAkademikId, tabelKode }: any)
     <div className="space-y-6">
       <div className="flex justify-between">
         <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-500"><ArrowLeft className="h-4 w-4" /> Kembali</Link>
-        <button onClick={() => { setEditId(undefined); setForm({ kodeCpl: "", pl01: false, pl02: false, pl03: false, pl04: false, pl05: false }); setIsOpen(true); }} className="rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white">+ Tambah Mapping</button>
+        <div className="flex items-center gap-2.5">
+          <ValidationControls
+            tabelKode={tabelKode}
+            tahunAkademikId={tahunAkademikId}
+            currentStatus={currentStatus}
+            userRole={userRole}
+            onChangeStatus={setCurrentStatus}
+            triggerToast={(msg, type) => {}}
+          />
+          <button
+            onClick={() => { setEditId(undefined); setForm({ kodeCpl: "", pl01: false, pl02: false, pl03: false, pl04: false, pl05: false }); setIsOpen(true); }}
+            disabled={!canEdit}
+            className={`rounded-xl px-4 py-2 text-xs font-bold ${
+              canEdit
+                ? "bg-indigo-600 text-white"
+                : "bg-slate-100 text-slate-400 cursor-not-allowed"
+            }`}
+          >
+            + Tambah Mapping
+          </button>
+        </div>
       </div>
 
       <div className="rounded-3xl bg-white shadow-soft border border-slate-100 overflow-hidden">
@@ -51,7 +74,7 @@ export function Tabel2B2Client({ initialRows, tahunAkademikId, tabelKode }: any)
                 <td className="p-4 text-left font-black text-indigo-900">{row.rowData.kodeCpl}</td>
                 {[1,2,3,4,5].map(n => <td key={n} className="p-4"><CheckMark v={row.rowData[`pl0${n}`]} /></td>)}
                 <td className="p-4 flex justify-center gap-2">
-                  <button onClick={() => handleOpenEdit(row)} className="text-slate-400 hover:text-blue-600"><Edit2 className="h-4 w-4" /></button>
+                  <button onClick={() => handleOpenEdit(row)} disabled={!canEdit} className={`${canEdit ? "text-slate-400 hover:text-blue-600" : "text-slate-300 cursor-not-allowed"}`} title={canEdit ? "Edit" : "Tidak bisa diedit"}><Edit2 className="h-4 w-4" /></button>
                 </td>
               </tr>
             ))}

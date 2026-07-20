@@ -1,11 +1,22 @@
 import { Client } from "minio";
 
+const requiredEnv = (key: string): string => {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(
+      `[MinIO] Missing required environment variable: ${key}. ` +
+        "Set it in .env file. DO NOT use default credentials in production."
+    );
+  }
+  return value;
+};
+
 const minioClient = new Client({
-  endPoint: process.env.MINIO_ENDPOINT || "localhost",
-  port: parseInt(process.env.MINIO_PORT || "9000"),
+  endPoint: process.env.MINIO_ENDPOINT ?? "localhost",
+  port: parseInt(process.env.MINIO_PORT ?? "9000"),
   useSSL: process.env.MINIO_USE_SSL === "true",
-  accessKey: process.env.MINIO_ACCESS_KEY || "minioadmin",
-  secretKey: process.env.MINIO_SECRET_KEY || "minioadmin",
+  accessKey: requiredEnv("MINIO_ACCESS_KEY"),
+  secretKey: requiredEnv("MINIO_SECRET_KEY"),
 });
 
 const BUCKET_NAME = process.env.MINIO_BUCKET || "evidence";

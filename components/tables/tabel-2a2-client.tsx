@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
 interface Tabel2A2ClientProps {
   initialRows: {
@@ -19,11 +20,16 @@ interface Tabel2A2ClientProps {
   }[];
   tahunAkademikId: string;
   tabelKode: string;
+  status: string;
+  userRole: string;
 }
 
-export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode }: Tabel2A2ClientProps) {
+export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Tabel2A2ClientProps) {
   const [rows, setRows] = useState(initialRows);
+  const [currentStatus, setCurrentStatus] = useState(status);
   const router = useRouter();
+
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -113,7 +119,7 @@ export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
   const handleDeleteConfirm = async () => {
     if (!deleteId) return;
     try {
-      await deleteLkpsRow(deleteId, `/lkps/bab-2/tabel-2a2`);
+      await deleteLkpsRow({ rowId: deleteId, tabelKode });
       setRows(rows.filter((r) => r.id !== deleteId));
       setDeleteId(null);
       triggerToast("Data dihapus", "success");
@@ -134,9 +140,27 @@ export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
         <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
-        <button onClick={handleOpenAdd} className="flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-soft-sm hover:bg-indigo-700 transition-all">
-          <Plus className="h-4 w-4" /> Tambah Data
-        </button>
+        <div className="flex items-center gap-2.5">
+          <ValidationControls
+            tabelKode={tabelKode}
+            tahunAkademikId={tahunAkademikId}
+            currentStatus={currentStatus}
+            userRole={userRole}
+            onChangeStatus={setCurrentStatus}
+            triggerToast={triggerToast}
+          />
+          <button
+            onClick={handleOpenAdd}
+            disabled={!canEdit}
+            className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold shadow-soft-sm transition-all ${
+              canEdit
+                ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                : "bg-slate-100 text-slate-400 cursor-not-allowed"
+            }`}
+          >
+            <Plus className="h-4 w-4" /> Tambah Data
+          </button>
+        </div>
       </div>
 
       <div className="space-y-3">
@@ -171,8 +195,8 @@ export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
                   ) : "-"}
                 </div>
                 <div className="col-span-1 flex justify-center gap-1.5">
-                  <button onClick={() => handleOpenEdit(row)} className="p-1.5 text-slate-400 hover:text-blue-600"><Edit2 className="h-3.5 w-3.5" /></button>
-                  <button onClick={() => setDeleteId(row.id)} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="h-3.5 w-3.5" /></button>
+                  <button onClick={() => handleOpenEdit(row)} disabled={!canEdit} className={`p-1.5 ${canEdit ? "text-slate-400 hover:text-blue-600" : "text-slate-300 cursor-not-allowed"}`} title={canEdit ? "Edit" : "Tidak bisa diedit"}><Edit2 className="h-3.5 w-3.5" /></button>
+                  <button onClick={() => setDeleteId(row.id)} disabled={!canEdit} className={`p-1.5 ${canEdit ? "text-slate-400 hover:text-red-600" : "text-slate-300 cursor-not-allowed"}`} title={canEdit ? "Hapus" : "Tidak bisa dihapus"}><Trash2 className="h-3.5 w-3.5" /></button>
                 </div>
               </div>
             ))}

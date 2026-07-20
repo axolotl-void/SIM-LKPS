@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
 interface PengembanganItem {
   id: string;
@@ -25,10 +26,14 @@ interface Props {
   initialRows: PengembanganItem[];
   tahunAkademikId: string;
   tabelKode: string;
+  status: string;
+  userRole: string;
 }
 
-export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode }: Props) {
+export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
   const [rows, setRows] = useState<PengembanganItem[]>(initialRows);
+  const [currentStatus, setCurrentStatus] = useState(status);
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const router = useRouter();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -126,9 +131,19 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode }: Prop
         <Link href="/lkps/bab-3" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 3
         </Link>
-        <button onClick={openAdd} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-600 px-5 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all">
-          <Plus className="h-4 w-4" /> Tambah Pengembangan
-        </button>
+        <div className="flex items-center gap-2.5">
+          <ValidationControls
+            tabelKode={tabelKode}
+            tahunAkademikId={tahunAkademikId}
+            currentStatus={currentStatus}
+            userRole={userRole}
+            onChangeStatus={setCurrentStatus}
+            triggerToast={triggerToast}
+          />
+          <button onClick={openAdd} disabled={!canEdit} className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${canEdit ? "bg-gradient-to-tr from-teal-500 to-cyan-600 text-white" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}>
+            <Plus className="h-4 w-4" /> Tambah Pengembangan
+          </button>
+        </div>
       </div>
 
       <div className="flex items-center gap-3 rounded-2xl bg-teal-50/60 border border-teal-100/60 px-5 py-4 text-xs font-semibold text-teal-700">
@@ -197,8 +212,8 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                     </td>
                     <td className="px-4 py-3 text-center">
                       <div className="flex items-center justify-center gap-2">
-                        <button onClick={() => openEdit(item)} className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 text-2xs font-bold text-blue-600 hover:bg-blue-100 transition-colors"><Edit2 className="h-3 w-3" /> Edit</button>
-                        <button onClick={() => openDeleteConfirm(item.id, item.rowData.namaDtpr)} className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-2xs font-bold text-red-600 hover:bg-red-100 transition-colors"><Trash2 className="h-3 w-3" /> Hapus</button>
+                        <button onClick={() => openEdit(item)} disabled={!canEdit} className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-2xs font-bold transition-colors ${canEdit ? "bg-blue-50 text-blue-600 hover:bg-blue-100" : "bg-slate-50 text-slate-400 cursor-not-allowed"}`}><Edit2 className="h-3 w-3" /> Edit</button>
+                        <button onClick={() => openDeleteConfirm(item.id, item.rowData.namaDtpr)} disabled={!canEdit} className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-2xs font-bold transition-colors ${canEdit ? "bg-red-50 text-red-600 hover:bg-red-100" : "bg-slate-50 text-slate-400 cursor-not-allowed"}`}><Trash2 className="h-3 w-3" /> Hapus</button>
                       </div>
                     </td>
                   </tr>

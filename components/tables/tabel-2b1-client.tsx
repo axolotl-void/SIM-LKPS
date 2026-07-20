@@ -6,10 +6,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
-export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode }: any) {
+export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: any) {
   const [rows, setRows] = useState(initialRows);
+  const [currentStatus, setCurrentStatus] = useState(status);
   const router = useRouter();
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -56,7 +59,7 @@ export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode }: any)
   const handleDelete = async () => {
     if (!deleteId) return;
     try {
-      await deleteLkpsRow(deleteId, `/lkps/bab-2/tabel-2b1`);
+      await deleteLkpsRow({ rowId: deleteId, tabelKode });
       setRows(rows.filter((r: any) => r.id !== deleteId));
       setDeleteId(null);
       notify("Dihapus", "success");
@@ -70,7 +73,27 @@ export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode }: any)
     <div className="space-y-6">
       <div className="flex justify-between">
         <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-500 hover:text-indigo-600"><ArrowLeft className="h-4 w-4" /> BAB 2</Link>
-        <button onClick={handleOpenAdd} className="flex gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white"><Plus className="h-4 w-4" /> Tambah</button>
+        <div className="flex items-center gap-2.5">
+          <ValidationControls
+            tabelKode={tabelKode}
+            tahunAkademikId={tahunAkademikId}
+            currentStatus={currentStatus}
+            userRole={userRole}
+            onChangeStatus={setCurrentStatus}
+            triggerToast={notify}
+          />
+          <button
+            onClick={handleOpenAdd}
+            disabled={!canEdit}
+            className={`flex gap-1.5 rounded-xl px-4 py-2 text-xs font-bold ${
+              canEdit
+                ? "bg-indigo-600 text-white"
+                : "bg-slate-100 text-slate-400 cursor-not-allowed"
+            }`}
+          >
+            <Plus className="h-4 w-4" /> Tambah
+          </button>
+        </div>
       </div>
 
       <div className="space-y-3">
@@ -96,8 +119,8 @@ export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode }: any)
                 <CheckMark v={row.rowData.pl01} /><CheckMark v={row.rowData.pl02} /><CheckMark v={row.rowData.pl03} /><CheckMark v={row.rowData.pl04} /><CheckMark v={row.rowData.pl05} />
               </div>
               <div className="col-span-1 flex justify-center gap-1.5">
-                <button onClick={() => handleOpenEdit(row)} className="p-1.5 text-slate-400 hover:text-blue-600"><Edit2 className="h-3.5 w-3.5" /></button>
-                <button onClick={() => setDeleteId(row.id)} className="p-1.5 text-slate-400 hover:text-red-600"><Trash2 className="h-3.5 w-3.5" /></button>
+                <button onClick={() => handleOpenEdit(row)} disabled={!canEdit} className={`p-1.5 ${canEdit ? "text-slate-400 hover:text-blue-600" : "text-slate-300 cursor-not-allowed"}`} title={canEdit ? "Edit" : "Tidak bisa diedit"}><Edit2 className="h-3.5 w-3.5" /></button>
+                <button onClick={() => setDeleteId(row.id)} disabled={!canEdit} className={`p-1.5 ${canEdit ? "text-slate-400 hover:text-red-600" : "text-slate-300 cursor-not-allowed"}`} title={canEdit ? "Hapus" : "Tidak bisa dihapus"}><Trash2 className="h-3.5 w-3.5" /></button>
               </div>
             </div>
           ))}

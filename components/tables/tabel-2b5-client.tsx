@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
 interface Row {
   id: string;
@@ -29,11 +30,15 @@ interface Props {
   initialRows: Row[];
   tahunAkademikId: string;
   tabelKode: string;
+  status: string;
+  userRole: string;
 }
 
-export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode }: Props) {
+export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
   const [rows, setRows] = useState(initialRows);
+  const [currentStatus, setCurrentStatus] = useState(status);
   const router = useRouter();
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [form, setForm] = useState<Record<string, string>>({});
@@ -108,9 +113,27 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode }: Prop
         <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
-        <button onClick={openModal} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 px-5 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all">
-          <Edit2 className="h-4 w-4" /> Edit Data TS
-        </button>
+        <div className="flex items-center gap-2.5">
+          <ValidationControls
+            tabelKode={tabelKode}
+            tahunAkademikId={tahunAkademikId}
+            currentStatus={currentStatus}
+            userRole={userRole}
+            onChangeStatus={setCurrentStatus}
+            triggerToast={triggerToast}
+          />
+          <button
+            onClick={openModal}
+            disabled={!canEdit}
+            className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm transition-all ${
+              canEdit
+                ? "bg-gradient-to-tr from-blue-500 to-indigo-600 text-white hover:shadow-soft"
+                : "bg-slate-100 text-slate-400 cursor-not-allowed"
+            }`}
+          >
+            <Edit2 className="h-4 w-4" /> Edit Data TS
+          </button>
+        </div>
       </div>
 
       <div className="flex items-center gap-3 rounded-2xl bg-blue-50/60 border border-blue-100/60 px-5 py-4 text-xs font-semibold text-blue-700">
@@ -159,7 +182,7 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode }: Prop
                 <p className="text-2xs font-semibold text-blue-200">Data kesesuaian bidang kerja lulusan</p>
               </div>
             </div>
-            <button onClick={openModal} className="flex items-center gap-2 rounded-xl bg-white/20 backdrop-blur-sm px-4 py-2 text-2xs font-bold text-white hover:bg-white/30 transition-all">
+            <button onClick={openModal} disabled={!canEdit} className={`flex items-center gap-2 rounded-xl px-4 py-2 text-2xs font-bold transition-all ${canEdit ? "bg-white/20 backdrop-blur-sm text-white hover:bg-white/30" : "bg-white/5 text-white/30 cursor-not-allowed"}`}>
               <Edit2 className="h-3.5 w-3.5" /> Edit Data
             </button>
           </div>

@@ -2,12 +2,21 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { Tabel2B5Client } from "@/components/tables/tabel-2b5-client";
+import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
-import { BookOpen, Calendar, FileText } from "lucide-react";
+import { BookOpen, Calendar, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Tabel 2.B.5 — Kesesuaian Bidang Kerja Lulusan",
+};
+
+const statusBadge = {
+  DRAFT:     { icon: <Clock className="h-3.5 w-3.5" />, label: "Draft", color: "slate" as const },
+  DIAJUKAN:  { icon: <Clock className="h-3.5 w-3.5" />, label: "Diajukan", color: "amber" as const },
+  DIREVISI:  { icon: <AlertCircle className="h-3.5 w-3.5" />, label: "Direvisi", color: "orange" as const },
+  DISETUJUI: { icon: <CheckCircle2 className="h-3.5 w-3.5" />, label: "Disetujui", color: "emerald" as const },
+  DITOLAK:   { icon: <XCircle className="h-3.5 w-3.5" />, label: "Ditolak", color: "red" as const },
 };
 
 export default async function Tabel2B5Page() {
@@ -29,7 +38,7 @@ export default async function Tabel2B5Page() {
   const taTs2 = await db.tahunAkademik.findFirst({ where: { tahun: `${activeYearStart - 2}/${activeYearStart - 1}`, semester: activeTa.semester, prodiId: activeTa.prodiId } });
 
   const [lkpsTs, lkpsTs1, lkpsTs2] = await Promise.all([
-    db.tabelLkps.findUnique({ where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: activeTa.id } }, include: { rows: true } }),
+    db.tabelLkps.findUnique({ where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: activeTa.id } }, include: { rows: true, validationHistory: { orderBy: { createdAt: "desc" }, take: 10, include: { user: { select: { name: true, role: true } } } } } }),
     taTs1 ? db.tabelLkps.findUnique({ where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: taTs1.id } }, include: { rows: true } }) : null,
     taTs2 ? db.tabelLkps.findUnique({ where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: taTs2.id } }, include: { rows: true } }) : null,
   ]);
@@ -52,13 +61,16 @@ export default async function Tabel2B5Page() {
     };
   };
 
-  const dflt = (label: string) => ({ id: "", rowOrder: 0, rowData: { tahun: label, jumlahLulusan: 0, jumlahTerlacak: 0, profesiInfokom: 0, profesiNonInfokom: 0, internasional: 0, nasional: 0, wirausaha: 0 } });
+    const dflt = (label: string) => ({ id: "", rowOrder: 0, rowData: { tahun: label, jumlahLulusan: 0, jumlahTerlacak: 0, profesiInfokom: 0, profesiNonInfokom: 0, internasional: 0, nasional: 0, wirausaha: 0 } });
 
   const initialRows = [
     extract(lkpsTs2?.rows || [], "TS-2") || dflt("TS-2"),
     extract(lkpsTs1?.rows || [], "TS-1") || dflt("TS-1"),
     extract(lkpsTs?.rows || [], "TS") || dflt("TS"),
   ];
+  const status = lkpsTs?.status ?? "DRAFT";
+  const statusCfg = statusBadge[status] ?? statusBadge.DRAFT;
+  const history = lkpsTs?.validationHistory || [];
 
   return (
     <div className="space-y-6">
@@ -70,11 +82,14 @@ export default async function Tabel2B5Page() {
           </div>
         </div>
         <div className="relative z-10 flex flex-col gap-5 md:max-w-xl">
-          <div>
+          <div className="flex items-center gap-3">
             <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">Tabel {def.kode}</span>
-            <h2 className="mt-3.5 text-lg font-bold text-slate-800 tracking-tight">{def.nama}</h2>
-            <p className="mt-1 text-xs font-semibold text-slate-500">Kesesuaian bidang kerja lulusan Program Studi Ilmu Komputer</p>
+            <span className={`flex items-center gap-1 text-2xs font-bold px-2.5 py-1 rounded-lg bg-${statusCfg.color}-50 text-${statusCfg.color}-600 border border-${statusCfg.color}-100/50`}>
+              {statusCfg.icon} {statusCfg.label}
+            </span>
           </div>
+          <h2 className="mt-3.5 text-lg font-bold text-slate-800 tracking-tight">{def.nama}</h2>
+          <p className="mt-1 text-xs font-semibold text-slate-500">Kesesuaian bidang kerja lulusan Program Studi Ilmu Komputer</p>
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
               <Calendar className="h-5 w-5 text-indigo-600" />
@@ -95,8 +110,11 @@ export default async function Tabel2B5Page() {
       </div>
 
       <ErrorBoundary>
-        <Tabel2B5Client initialRows={initialRows} tahunAkademikId={activeTa.id} tabelKode={def.kode} />
+        <Tabel2B5Client initialRows={initialRows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role} />
       </ErrorBoundary>
+      {history.length > 0 && (
+        <ValidationHistory history={history.map((h) => ({ id: h.id, action: h.action, comment: h.comment, createdAt: h.createdAt.toISOString(), user: h.user }))} />
+      )}
     </div>
   );
 }

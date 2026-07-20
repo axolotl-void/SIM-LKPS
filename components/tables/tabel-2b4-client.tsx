@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
 interface Tabel2B4Row {
   id: string;
@@ -26,11 +27,15 @@ interface Props {
   initialRows: Tabel2B4Row[];
   tahunAkademikId: string;
   tabelKode: string;
+  status: string;
+  userRole: string;
 }
 
-export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode }: Props) {
+export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
   const [rows, setRows] = useState(initialRows);
+  const [currentStatus, setCurrentStatus] = useState(status);
   const router = useRouter();
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({ jumlahLulusan: "", jumlahTerlacak: "", rataRata: "" });
@@ -110,9 +115,27 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode }: Prop
         <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
-        <button onClick={openModal} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 px-5 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all">
-          <Edit2 className="h-4 w-4" /> Edit Data TS
-        </button>
+        <div className="flex items-center gap-2.5">
+          <ValidationControls
+            tabelKode={tabelKode}
+            tahunAkademikId={tahunAkademikId}
+            currentStatus={currentStatus}
+            userRole={userRole}
+            onChangeStatus={setCurrentStatus}
+            triggerToast={triggerToast}
+          />
+          <button
+            onClick={openModal}
+            disabled={!canEdit}
+            className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm transition-all ${
+              canEdit
+                ? "bg-gradient-to-tr from-indigo-500 to-purple-600 text-white hover:shadow-soft"
+                : "bg-slate-100 text-slate-400 cursor-not-allowed"
+            }`}
+          >
+            <Edit2 className="h-4 w-4" /> Edit Data TS
+          </button>
+        </div>
       </div>
 
       {/* Info */}

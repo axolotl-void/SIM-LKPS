@@ -5,9 +5,12 @@ import { Plus, Edit2, Trash2, ArrowLeft, Network } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import ValidationControls from "@/components/tables/validation-controls";
 
-export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode }: any) {
+export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: any) {
   const [rows, setRows] = useState(initialRows);
+  const [currentStatus, setCurrentStatus] = useState(status);
+  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const [isOpen, setIsOpen] = useState(false);
   const [editId, setEditId] = useState<string | undefined>();
   const [form, setForm] = useState({ kodeCpl: "", rumusanCpl: "", kodeCpmk: "", rumusanCpmk: "", mataKuliah: "" });
@@ -29,7 +32,27 @@ export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode }: any)
     <div className="space-y-6">
       <div className="flex justify-between">
         <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-500"><ArrowLeft className="h-4 w-4" /> Kembali</Link>
-        <button onClick={() => { setEditId(undefined); setForm({ kodeCpl: "", rumusanCpl: "", kodeCpmk: "", rumusanCpmk: "", mataKuliah: "" }); setIsOpen(true); }} className="rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white">+ Tambah Peta CPL</button>
+        <div className="flex items-center gap-2.5">
+          <ValidationControls
+            tabelKode={tabelKode}
+            tahunAkademikId={tahunAkademikId}
+            currentStatus={currentStatus}
+            userRole={userRole}
+            onChangeStatus={setCurrentStatus}
+            triggerToast={(msg, type) => {}}
+          />
+          <button
+            onClick={() => { setEditId(undefined); setForm({ kodeCpl: "", rumusanCpl: "", kodeCpmk: "", rumusanCpmk: "", mataKuliah: "" }); setIsOpen(true); }}
+            disabled={!canEdit}
+            className={`rounded-xl px-4 py-2 text-xs font-bold ${
+              canEdit
+                ? "bg-indigo-600 text-white"
+                : "bg-slate-100 text-slate-400 cursor-not-allowed"
+            }`}
+          >
+            + Tambah Peta CPL
+          </button>
+        </div>
       </div>
 
       <div className="space-y-3">
@@ -51,8 +74,8 @@ export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode }: any)
               </div>
             </div>
             <div className="flex flex-col gap-2 border-l border-slate-50 pl-5">
-              <button onClick={() => handleOpenEdit(row)} className="p-2 bg-slate-50 rounded-xl text-blue-500"><Edit2 className="h-4 w-4" /></button>
-              <button onClick={async () => { await deleteLkpsRow(row.id, '/lkps/bab-2/tabel-2b3'); setRows(rows.filter((r:any) => r.id !== row.id)); }} className="p-2 bg-red-50 rounded-xl text-red-500"><Trash2 className="h-4 w-4" /></button>
+              <button onClick={() => handleOpenEdit(row)} disabled={!canEdit} className={`p-2 rounded-xl ${canEdit ? "bg-slate-50 text-blue-500" : "bg-slate-100 text-slate-300 cursor-not-allowed"}`} title={canEdit ? "Edit" : "Tidak bisa diedit"}><Edit2 className="h-4 w-4" /></button>
+              <button onClick={async () => { await deleteLkpsRow({ rowId: row.id, tabelKode }); setRows(rows.filter((r:any) => r.id !== row.id)); }} disabled={!canEdit} className={`p-2 rounded-xl ${canEdit ? "bg-red-50 text-red-500" : "bg-slate-100 text-slate-300 cursor-not-allowed"}`} title={canEdit ? "Hapus" : "Tidak bisa dihapus"}><Trash2 className="h-4 w-4" /></button>
             </div>
           </div>
         ))}
