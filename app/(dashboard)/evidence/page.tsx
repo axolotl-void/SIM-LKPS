@@ -18,11 +18,10 @@ export default async function EvidencePage() {
   });
   if (!activeTa) redirect("/dashboard");
 
-  // Get all TabelLkps records that have evidence
+  // Get all TabelLkps records with their evidence (including empty ones for upload)
   const tabelLkpsWithEvidence = await db.tabelLkps.findMany({
     where: {
       tahunAkademikId: activeTa.id,
-      evidence: { some: {} },
     },
     include: {
       tabelDefinition: true,
@@ -30,13 +29,6 @@ export default async function EvidencePage() {
         orderBy: { createdAt: "desc" },
       },
     },
-    orderBy: { tabelDefinition: { bab: "asc" } },
-  });
-
-  // Get all TabelLkps without evidence (for upload dropdown)
-  const allTabelLkps = await db.tabelLkps.findMany({
-    where: { tahunAkademikId: activeTa.id },
-    include: { tabelDefinition: true },
     orderBy: { tabelDefinition: { bab: "asc" } },
   });
 
@@ -51,7 +43,6 @@ export default async function EvidencePage() {
 
       <EvidenceClient
         tabelLkpsWithEvidence={JSON.parse(JSON.stringify(tabelLkpsWithEvidence))}
-        allTabelLkps={JSON.parse(JSON.stringify(allTabelLkps))}
       />
     </div>
   );

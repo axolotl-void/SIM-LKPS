@@ -3,10 +3,10 @@
 import { useState } from "react";
 import {
   Upload, FileText, Trash2, Download, Loader2,
-  X, CheckCircle2, AlertTriangle, File, Image, FileSpreadsheet,
+  X, CheckCircle2, File, Image, FileSpreadsheet, Search,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { uploadEvidence, getEvidenceList, deleteEvidence, getTabelLkpsId } from "@/lib/actions/evidence";
+import { uploadEvidence, getEvidenceList, deleteEvidence } from "@/lib/actions/evidence";
 
 interface EvidenceItem {
   id: string;
@@ -16,7 +16,7 @@ interface EvidenceItem {
   version: number;
   description: string | null;
   downloadUrl: string;
-  createdAt: Date;
+  createdAt: Date | string;
 }
 
 interface TabelLkpsItem {
@@ -27,7 +27,6 @@ interface TabelLkpsItem {
 
 interface Props {
   tabelLkpsWithEvidence: TabelLkpsItem[];
-  allTabelLkps: TabelLkpsItem[];
 }
 
 function formatSize(bytes: number) {
@@ -43,12 +42,24 @@ function getFileIcon(mimeType: string) {
   return <File className="h-5 w-5 text-slate-500" />;
 }
 
-export function EvidenceClient({ tabelLkpsWithEvidence, allTabelLkps }: Props) {
-  const [tabelLkpsWithEv, setTabelLkpsWithEv] = useState(tabelLkpsWithEvidence);
-  const [allLkps, setAllLkps] = useState(allTabelLkps);
+export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidence: any[] }) {
+  const [allData, setAllData] = useState(tabelLkpsWithEvidence);
+  const [searchQuery, setSearchQuery] = useState("");
   const [uploadingId, setUploadingId] = useState<string | null>(null);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [deleteModal, setDeleteModal] = useState<{ evidenceId: string; tabelLkpsId: string; filename: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Filter data based on search
+  const filteredData = allData.filter((item) => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    const matchesTable = item.tabelDefinition.kode.toLowerCase().includes(query) ||
+      item.tabelDefinition.nama.toLowerCase().includes(query);
+    const matchesFile = item.evidence.some((ev: EvidenceItem) => ev.filename.toLowerCase().includes(query));
+    return matchesTable || matchesFile;
+  });
 
   const triggerToast = (message: string, type: "success" | "error") => {
     setToast({ message, type });
@@ -78,7 +89,7 @@ export function EvidenceClient({ tabelLkpsWithEvidence, allTabelLkps }: Props) {
         // Refresh list
         const list = await getEvidenceList(tabelLkpsId);
         if (list.success && list.data) {
-          setTabelLkpsWithEv((prev) =>
+          setAllData((prev) =>
             prev.map((t) =>
               t.id === tabelLkpsId
                 ? { ...t, evidence: list.data as EvidenceItem[] }
@@ -94,26 +105,30 @@ export function EvidenceClient({ tabelLkpsWithEvidence, allTabelLkps }: Props) {
     input.click();
   };
 
-  const handleDelete = async (evidenceId: string, tabelLkpsId: string) => {
-    const confirmed = window.confirm("Hapus file ini?");
-    if (!confirmed) return;
+  const handleDelete = async () => {
+    if (!deleteModal) return;
+    setIsDeleting(true);
 
-    const result = await deleteEvidence(evidenceId);
+    const result = await deleteEvidence(deleteModal.evidenceId);
     if (result.success) {
       triggerToast("File berhasil dihapus", "success");
-      const list = await getEvidenceList(tabelLkpsId);
+      const list = await getEvidenceList(deleteModal.tabelLkpsId);
       if (list.success && list.data) {
-        setTabelLkpsWithEv((prev) =>
+        setAllData((prev) =>
           prev.map((t) =>
-            t.id === tabelLkpsId
+            t.id === deleteModal.tabelLkpsId
               ? { ...t, evidence: list.data as EvidenceItem[] }
               : t
           )
         );
       }
+      // Also remove empty entries
+      setAllData((prev) => prev.filter((t) => t.evidence.length > 0));
     } else {
       triggerToast(result.error || "Gagal hapus", "error");
     }
+    setIsDeleting(false);
+    setDeleteModal(null);
   };
 
   const toggleExpand = (id: string) => {
@@ -122,16 +137,40 @@ export function EvidenceClient({ tabelLkpsWithEvidence, allTabelLkps }: Props) {
 
   return (
     <div className="space-y-6">
-      {tabelLkpsWithEv.length === 0 ? (
+      {/* Search Bar */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Cari nama file, kode tabel, atau judul..."
+          className="w-full rounded-xl border border-slate-100 bg-white py-2.5 pl-10 pr-4 text-sm font-medium text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-soft-sm"
+        />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+
+      {filteredData.length === 0 && !searchQuery ? (
         <div className="rounded-2xl bg-white p-12 shadow-soft border border-slate-100/50 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
             <Upload className="h-8 w-8 text-slate-400" />
           </div>
-          <p className="text-sm font-semibold text-slate-500">Belum ada bukti pendukung.</p>
-          <p className="text-xs text-slate-400 mt-1">Upload file bukti dari halaman tabel masing-masing.</p>
+          <p className="text-sm font-semibold text-slate-500">
+            {searchQuery ? "File tidak ditemukan" : "Belum ada bukti pendukung."}
+          </p>
+          <p className="text-xs text-slate-400 mt-1">
+            {searchQuery ? "Coba kata kunci lain" : "Upload file bukti dari halaman tabel masing-masing."}
+          </p>
         </div>
       ) : (
-        tabelLkpsWithEv.map((item) => (
+        filteredData.map((item) => (
           <div key={item.id} className="rounded-2xl bg-white shadow-soft border border-slate-100/50 overflow-hidden">
             <button
               onClick={() => toggleExpand(item.id)}
@@ -143,7 +182,7 @@ export function EvidenceClient({ tabelLkpsWithEvidence, allTabelLkps }: Props) {
                   <p className="text-sm font-bold text-slate-800">
                     {item.tabelDefinition.kode} — {item.tabelDefinition.nama}
                   </p>
-                  <p className="text-2xs font-semibold text-slate-400">
+                  <p className="text-xs font-semibold text-slate-400">
                     {item.evidence.length} file • BAB {item.tabelDefinition.bab}
                   </p>
                 </div>
@@ -152,7 +191,7 @@ export function EvidenceClient({ tabelLkpsWithEvidence, allTabelLkps }: Props) {
                 <button
                   onClick={(e) => { e.stopPropagation(); handleUpload(item.id); }}
                   disabled={uploadingId === item.id}
-                  className="flex items-center gap-1 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 px-4 py-2 text-2xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50"
+                  className="flex items-center gap-1 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50"
                 >
                   {uploadingId === item.id ? (
                     <><Loader2 className="h-3 w-3 animate-spin" /> Uploading...</>
@@ -185,13 +224,13 @@ export function EvidenceClient({ tabelLkpsWithEvidence, allTabelLkps }: Props) {
                       </div>
                     ) : (
                       <div className="divide-y divide-slate-50">
-                        {item.evidence.map((ev) => (
+                        {item.evidence.map((ev: EvidenceItem) => (
                           <div key={ev.id} className="flex items-center justify-between px-6 py-3 hover:bg-slate-50/50">
                             <div className="flex items-center gap-3 min-w-0">
                               {getFileIcon(ev.mimeType)}
                               <div className="min-w-0">
                                 <p className="text-xs font-bold text-slate-700 truncate max-w-[300px]">{ev.filename}</p>
-                                <p className="text-2xs font-semibold text-slate-400">{formatSize(ev.size)}</p>
+                                <p className="text-xs font-semibold text-slate-400">{formatSize(ev.size)}</p>
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
@@ -199,14 +238,14 @@ export function EvidenceClient({ tabelLkpsWithEvidence, allTabelLkps }: Props) {
                                 <a
                                   href={ev.downloadUrl}
                                   download={ev.filename}
-                                  className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 text-2xs font-bold text-blue-600 hover:bg-blue-100 transition-colors"
+                                  className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 text-xs font-bold text-blue-600 hover:bg-blue-100 transition-colors"
                                 >
                                   <Download className="h-3 w-3" /> Download
                                 </a>
                               )}
                               <button
-                                onClick={() => handleDelete(ev.id, item.id)}
-                                className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-2xs font-bold text-red-600 hover:bg-red-100 transition-colors"
+                                onClick={() => setDeleteModal({ evidenceId: ev.id, tabelLkpsId: item.id, filename: ev.filename })}
+                                className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-xs font-bold text-red-600 hover:bg-red-100 transition-colors"
                               >
                                 <Trash2 className="h-3 w-3" /> Hapus
                               </button>
@@ -223,6 +262,60 @@ export function EvidenceClient({ tabelLkpsWithEvidence, allTabelLkps }: Props) {
         ))
       )}
 
+      {/* Delete Modal */}
+      <AnimatePresence>
+        {deleteModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/30 backdrop-blur-sm p-4">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 15 }}
+              transition={{ type: "spring", damping: 25, stiffness: 350 }}
+              className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-soft-lg text-center relative"
+            >
+              <button
+                onClick={() => !isDeleting && setDeleteModal(null)}
+                disabled={isDeleting}
+                className="absolute top-4 right-4 rounded-xl p-1.5 text-slate-400 hover:bg-slate-50 transition-colors disabled:opacity-50"
+              >
+                <X className="h-4 w-4" />
+              </button>
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-50 text-red-500 mb-4 shadow-soft-sm">
+                <Trash2 className="h-6 w-6" />
+              </div>
+              <h3 className="text-base font-bold text-slate-800">Hapus File</h3>
+              <p className="mt-2 text-sm font-semibold text-slate-600">{deleteModal.filename}</p>
+              <p className="mt-2 text-xs text-slate-400 font-medium leading-relaxed px-2">
+                Apakah Anda yakin ingin menghapus file ini? Tindakan ini tidak dapat dibatalkan.
+              </p>
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={() => setDeleteModal(null)}
+                  disabled={isDeleting}
+                  className="flex-1 rounded-xl border border-slate-100 bg-white py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-50 shadow-soft-sm transition-colors disabled:opacity-50"
+                >
+                  Batal
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-red-500 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isDeleting ? (
+                    <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                  ) : (
+                    <>
+                      <Trash2 className="h-4 w-4" /> Hapus
+                    </>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Toast */}
       <AnimatePresence>
         {toast && (
           <motion.div

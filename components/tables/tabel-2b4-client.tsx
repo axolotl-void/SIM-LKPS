@@ -81,9 +81,9 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
         rowOrder: result.rowOrder,
         rowData: {
           tahun: "TS",
-          jumlahLulusan: Number(result.rowData.jumlahLulusan) || 0,
-          jumlahTerlacak: Number(result.rowData.jumlahTerlacak) || 0,
-          rataRata: parseFloat(String(result.rowData.rataRata || 0)),
+          jumlahLulusan: Number((result.rowData as any)?.jumlahLulusan ?? 0),
+          jumlahTerlacak: Number((result.rowData as any)?.jumlahTerlacak ?? 0),
+          rataRata: parseFloat(String((result.rowData as any)?.rataRata ?? 0)),
         },
       };
 
