@@ -106,7 +106,7 @@ export function Tabel3C3Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">Total HKI</div><p className="text-3xl font-black text-slate-800">{rows.length}</p></div></div>
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">Jenis HKI Berbeda</div><p className="text-3xl font-black text-purple-600">{new Set(rows.map((r) => r.rowData.jenisHki)).size}</p></div></div>
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">DTPR Unik</div><p class className="text-3xl font-black text-pink-600">{new Set(rows.map((r) => r.rowData.namaDtpr)).size}</p></div></div>
+        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">DTPR Unik</div><p className="text-3xl font-black text-pink-600">{new Set(rows.map((r) => r.rowData.namaDtpr)).size}</p></div></div>
       </div>
 
       <div className="rounded-2xl border-2 border-purple-200/70 bg-white shadow-soft overflow-hidden">

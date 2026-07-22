@@ -58,7 +58,8 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
     const data: Record<string, string> = {};
     const fields = ["jumlahLulusan", "jumlahTerlacak", "profesiInfokom", "profesiNonInfokom", "internasional", "nasional", "wirausaha"];
     for (const f of fields) {
-      data[f] = tsRow?.rowData[f] !== undefined && tsRow.rowData[f] !== null ? String(tsRow.rowData[f]) : "";
+      const rowData = tsRow?.rowData as Record<string, any>;
+      data[f] = rowData && rowData[f] !== undefined && rowData[f] !== null ? String(rowData[f]) : "";
     }
     setForm(data);
     setModalOpen(true);
@@ -81,13 +82,13 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
         rowOrder: result.rowOrder,
         rowData: {
           tahun: "TS",
-          jumlahLulusan: Number(result.rowData.jumlahLulusan) || 0,
-          jumlahTerlacak: Number(result.rowData.jumlahTerlacak) || 0,
-          profesiInfokom: Number(result.rowData.profesiInfokom) || 0,
-          profesiNonInfokom: Number(result.rowData.profesiNonInfokom) || 0,
-          internasional: Number(result.rowData.internasional) || 0,
-          nasional: Number(result.rowData.nasional) || 0,
-          wirausaha: Number(result.rowData.wirausaha) || 0,
+          jumlahLulusan: Number((result.rowData as any)?.jumlahLulusan ?? 0),
+          jumlahTerlacak: Number((result.rowData as any)?.jumlahTerlacak ?? 0),
+          profesiInfokom: Number((result.rowData as any)?.profesiInfokom ?? 0),
+          profesiNonInfokom: Number((result.rowData as any)?.profesiNonInfokom ?? 0),
+          internasional: Number((result.rowData as any)?.internasional ?? 0),
+          nasional: Number((result.rowData as any)?.nasional ?? 0),
+          wirausaha: Number((result.rowData as any)?.wirausaha ?? 0),
         },
       };
 
@@ -102,7 +103,7 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
     }
   };
 
-  const sumField = (key: keyof Row["rowData"]) => rows.reduce((a, r) => a + (r.rowData[key] || 0), 0);
+  const sumField = (key: keyof Row["rowData"]) => rows.reduce((a, r) => a + ((r.rowData as any)[key] as number || 0), 0);
   const tracePct = tsRow && tsRow.rowData.jumlahLulusan > 0
     ? ((tsRow.rowData.jumlahTerlacak / tsRow.rowData.jumlahLulusan) * 100).toFixed(0)
     : "0";

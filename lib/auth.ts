@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 
 import { db } from "@/lib/db";
+import { Role } from "@prisma/client";
 
 const loginSchema = z.object({
   email: z.string().email("Email tidak valid"),
@@ -50,8 +51,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.role = (user as { role: string }).role;
+        token.id = user.id as string;
+        token.role = (user as { role: Role }).role;
       }
       return token;
     },

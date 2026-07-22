@@ -298,9 +298,58 @@ export async function createDosen(nama: string) {
     },
   });
 
+  await createAuditLog({
+    action: "CREATE",
+    entity: "Dosen",
+    entityId: newDosen.id,
+    newValue: { nama, nidn, status: "Tetap" },
+  });
+
   return {
     id: newDosen.id,
     nidn: newDosen.nidn,
     nama: newDosen.nama,
   };
+}
+
+export async function updateDosen(id: string, data: { nama?: string; status?: string; pendidikanTerakhir?: string }) {
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+
+  const existing = await db.dosen.findUnique({ where: { id } });
+  if (!existing) throw new Error("Dosen tidak ditemukan");
+
+  const updated = await db.dosen.update({
+    where: { id },
+    data,
+  });
+
+  await createAuditLog({
+    action: "UPDATE",
+    entity: "Dosen",
+    entityId: id,
+    oldValue: { nama: existing.nama, status: existing.status },
+    newValue: { nama: updated.nama, status: updated.status },
+  });
+
+  return { id: updated.id, nama: updated.nama, status: updated.status };
+}
+
+export async function deleteDosen(id: string) {
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+
+  const existing = await db.dosen.findUnique({ where: { id } });
+  if (!existing) throw new Error("Dosen tidak ditemukan");
+
+  await db.dosen.delete({ where: { id } });
+
+  await createAuditLog({
+    action: "DELETE",
+    entity: "Dosen",
+    entityId: id,
+    oldValue: { nama: existing.nama, nidn: existing.nidn },
+  });
+
+  return { success: true };
 }
