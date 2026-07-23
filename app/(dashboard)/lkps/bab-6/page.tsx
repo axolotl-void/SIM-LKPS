@@ -40,39 +40,13 @@ export default async function Bab6Page() {
     instances.map((inst) => [inst.tabelDefinitionId, inst])
   );
 
-  const getStatusBadge = (status?: TabelStatus) => {
-    switch (status) {
-      case TabelStatus.DISETUJUI:
-        return (
-          <span className="flex items-center gap-1 rounded-lg bg-emerald-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-emerald-600 border border-emerald-100/50">
-            <CheckCircle2 className="h-3 w-3" /> Disetujui
-          </span>
-        );
-      case TabelStatus.DIAJUKAN:
-        return (
-          <span className="flex items-center gap-1 rounded-lg bg-amber-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-amber-600 border border-amber-100/50">
-            <Clock className="h-3 w-3" /> Diajukan
-          </span>
-        );
-      case TabelStatus.DIREVISI:
-        return (
-          <span className="flex items-center gap-1 rounded-lg bg-orange-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-orange-600 border border-orange-100/50">
-            <AlertCircle className="h-3 w-3" /> Direvisi
-          </span>
-        );
-      case TabelStatus.DITOLAK:
-        return (
-          <span className="flex items-center gap-1 rounded-lg bg-red-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-red-600 border border-red-100/50">
-            <XCircle className="h-3 w-3" /> Ditolak
-          </span>
-        );
-      default:
-        return (
-          <span className="flex items-center gap-1 rounded-lg bg-slate-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-slate-500 border border-slate-100/30">
-            Draft
-          </span>
-        );
-    }
+  // VALIDASI DIHAPUS - Semua tabel selalu tampil Draft
+  const getStatusBadge = () => {
+    return (
+      <span className="flex items-center gap-1 rounded-lg bg-slate-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-slate-500 border border-slate-100/30">
+        Draft
+      </span>
+    );
   };
 
   return (
@@ -132,7 +106,7 @@ export default async function Bab6Page() {
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 text-white shadow-soft-sm group-hover:bg-white/20 group-hover:from-white/20 group-hover:to-white/10 transition-all duration-300">
                     <FileText className="h-5 w-5" />
                   </div>
-                  <div>{getStatusBadge(status)}</div>
+                  <div>{getStatusBadge()}</div>
                 </div>
                 <div className="mt-4">
                   <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg group-hover:bg-white/20 group-hover:text-white transition-all duration-300">

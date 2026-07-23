@@ -1,16 +1,25 @@
 "use client";
 
-import { useEffect, useState, useRef, memo, useCallback } from "react";
-import {
-  Shield,
-  GraduationCap,
-  FlaskConical,
-  CircleCheck,
-  Cog,
-  Eye,
-  LucideIcon,
-} from "lucide-react";
-import { ChevronRight } from "lucide-react";
+import { useState, useEffect, useRef, memo } from "react";
+import { Shield, GraduationCap, FlaskConical, CircleCheck, Cog, Eye, ChevronRight, BookOpen, TrendingUp } from "lucide-react";
+
+// CSS-only animation styles
+const styleId = "progress-section-styles";
+if (typeof document !== "undefined" && !document.getElementById(styleId)) {
+  const style = document.createElement("style");
+  style.id = styleId;
+  style.textContent = `
+    @keyframes bab-card-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .bab-card { animation: bab-card-in 0.5s ease-out forwards; }
+    .progress-fill {
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 interface ProgressItem {
   bab: string;
@@ -25,7 +34,9 @@ interface ProgressSectionProps {
   items: ProgressItem[];
 }
 
-const icons: LucideIcon[] = [Shield, GraduationCap, FlaskConical, CircleCheck, Cog, Eye];
+const BAB_ICONS = [Shield, GraduationCap, FlaskConical, CircleCheck, Cog, Eye];
+const BAB_GRADIENTS = ["from-indigo-500 to-indigo-600", "from-emerald-500 to-emerald-600", "from-amber-500 to-amber-600", "from-rose-500 to-rose-600", "from-violet-500 to-violet-600", "from-cyan-500 to-cyan-600"];
+const BAB_COLORS = ["#6366F1", "#10B981", "#F59E0B", "#F43F5E", "#8B5CF6", "#06B6D4"];
 
 const getStatus = (percentage: number) => {
   if (percentage === 100) return { label: "Selesai", variant: "success" as const };
@@ -34,415 +45,212 @@ const getStatus = (percentage: number) => {
   return { label: "Belum Dimulai", variant: "pending" as const };
 };
 
-const statusStyles = {
-  success: { bg: "rgba(16, 185, 129, 0.12)", color: "#10B981", border: "rgba(16, 185, 129, 0.25)" },
-  progress: { bg: "rgba(99, 102, 241, 0.12)", color: "#6366F1", border: "rgba(99, 102, 241, 0.25)" },
-  warning: { bg: "rgba(245, 158, 11, 0.12)", color: "#F59E0B", border: "rgba(245, 158, 11, 0.25)" },
-  pending: { bg: "rgba(156, 163, 175, 0.12)", color: "#9CA3AF", border: "rgba(156, 163, 175, 0.25)" },
+const STATUS_CONFIG = {
+  success: { bg: "bg-emerald-50", text: "text-emerald-600" },
+  progress: { bg: "bg-indigo-50", text: "text-indigo-600" },
+  warning: { bg: "bg-amber-50", text: "text-amber-600" },
+  pending: { bg: "bg-slate-50", text: "text-slate-500" },
 };
 
-// Premium easing: cubic-bezier(0.22, 0.61, 0.36, 1)
-const easeOutQuart = (t: number): number => 1 - Math.pow(1 - t, 4);
+// Memoized progress bar
+const AnimatedProgressBar = memo(function AnimatedProgressBar({ percentage, color, delay }: { percentage: number; color: string; delay: number }) {
+  const [width, setWidth] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const animatedRef = useRef(false);
 
-// Fixed elegant asymmetric path - 2 smooth Bézier curves
-// Amplitude ~10px, organic asymmetric curves
-const createWavePath = (width: number, height: number) => {
-  const midY = height / 2;
-  const amp = 10;
-
-  // Asymmetric bezier for organic feel
-  // Curve 1: slower rise, faster fall
-  const c1x = width * 0.25;
-  const c1y = midY - amp * 1.2;
-  const c2x = width * 0.35;
-  const c2y = midY + amp * 0.6;
-
-  // Curve 2: gradual rise, sharp peak, gentle fall
-  const c3x = width * 0.65;
-  const c3y = midY - amp * 0.8;
-  const c4x = width * 0.8;
-  const c4y = midY + amp * 0.4;
-
-  return `M0,${midY} C${c1x},${c1y} ${c2x},${c2y} ${width * 0.5},${midY} C${c3x},${c3y} ${c4x},${c4y} ${width},${midY}`;
-};
-
-// CSS custom property name for glow animation
-const getGlowVarName = (index: number) => `--glow-opacity-${index}`;
-
-// Wave SVG with optimized draw animation
-const WaveAnimation = memo(function WaveAnimation({
-  percentage,
-  color,
-  index,
-  width = 360,
-  height = 40,
-}: {
-  percentage: number;
-  color: string;
-  index: number;
-  width?: number;
-  height?: number;
-}) {
-  const wavePathRef = useRef<SVGPathElement>(null);
-  const glowPathRef = useRef<SVGPathElement>(null);
-  const dotRef = useRef<SVGCircleElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const hasAnimated = useRef(false);
-  const pathLengthRef = useRef(0);
-  const prefersReducedMotion = useRef(false);
-
-  const wavePath = createWavePath(width, height);
-
-  // Check reduced motion preference
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    prefersReducedMotion.current = mediaQuery.matches;
+    if (animatedRef.current) return;
+    const el = ref.current;
+    if (!el) return;
 
-    const handler = (e: MediaQueryListEvent) => {
-      prefersReducedMotion.current = e.matches;
-    };
-
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
-
-  // Get path length once on mount
-  useEffect(() => {
-    if (wavePathRef.current && pathLengthRef.current === 0) {
-      pathLengthRef.current = wavePathRef.current.getTotalLength();
-    }
-  }, []);
-
-  // Main animation effect
-  useEffect(() => {
-    if (hasAnimated.current) return;
-    hasAnimated.current = true;
-
-    const pathLength = pathLengthRef.current;
-    if (pathLength === 0) return;
-
-    // If reduced motion, set final state immediately
-    if (prefersReducedMotion.current) {
-      if (wavePathRef.current) {
-        wavePathRef.current.style.strokeDashoffset = "0";
-      }
-      if (glowPathRef.current) {
-        glowPathRef.current.style.strokeDashoffset = "0";
-      }
-      if (dotRef.current) {
-        const point = wavePathRef.current?.getPointAtLength(pathLength) || { x: width, y: height / 2 };
-        dotRef.current.setAttribute("cx", String(point.x));
-        dotRef.current.setAttribute("cy", String(point.y));
-        dotRef.current.setAttribute("r", "4");
-      }
-      return;
-    }
-
-    const drawLength = (percentage / 100) * pathLength;
-    const drawDuration = 3000; // 3 seconds
-
-    // Set initial state - path fully hidden
-    if (wavePathRef.current) {
-      wavePathRef.current.style.strokeDasharray = `${pathLength}`;
-      wavePathRef.current.style.strokeDashoffset = `${pathLength}`;
-    }
-    if (glowPathRef.current) {
-      glowPathRef.current.style.strokeDasharray = `${pathLength}`;
-      glowPathRef.current.style.strokeDashoffset = `${pathLength}`;
-    }
-
-    const startTime = performance.now();
-    let rafId: number;
-
-    const animate = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const t = Math.min(elapsed / drawDuration, 1);
-      const eased = easeOutQuart(t);
-      const currentDraw = eased * drawLength;
-
-      // Update stroke-dashoffset
-      if (wavePathRef.current) {
-        wavePathRef.current.style.strokeDashoffset = String(pathLength - currentDraw);
-      }
-      if (glowPathRef.current) {
-        glowPathRef.current.style.strokeDashoffset = String(pathLength - currentDraw);
-      }
-
-      // Update dot position
-      if (dotRef.current && wavePathRef.current) {
-        const point = wavePathRef.current.getPointAtLength(currentDraw);
-        dotRef.current.setAttribute("cx", String(point.x));
-        dotRef.current.setAttribute("cy", String(point.y));
-        dotRef.current.setAttribute("r", "4");
-      }
-
-      if (t < 1) {
-        rafId = requestAnimationFrame(animate);
-      }
-      // Animation completes naturally - path stays at final position
-    };
-
-    rafId = requestAnimationFrame(animate);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-    };
-  }, [percentage, width, height]); // Intentionally minimal deps
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          animatedRef.current = true;
+          observer.disconnect();
+          // Delayed animation start
+          setTimeout(() => setWidth(percentage), delay * 150);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [percentage, delay]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full">
-      <svg
-        className="w-full h-full"
-        viewBox={`0 0 ${width} ${height}`}
-        aria-hidden="true"
-        style={{ overflow: "visible" }}
-      >
-        <defs>
-          <linearGradient id={`waveGrad-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor={color} />
-            <stop offset="100%" stopColor={`${color}90`} />
-          </linearGradient>
-          <filter id={`waveFilter-${index}`}>
-            <feGaussianBlur stdDeviation="2.5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-
-        {/* Dotted guide line */}
-        <path
-          d={wavePath}
-          fill="none"
-          stroke="#E5E7EB"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeDasharray="2,6"
-          opacity="0.4"
-        />
-
-        {/* Glow path */}
-        <path
-          ref={glowPathRef}
-          d={wavePath}
-          fill="none"
-          stroke={color}
-          strokeWidth="8"
-          strokeLinecap="round"
-          filter={`url(#waveFilter-${index})`}
-          className="wave-glow"
-          style={{
-            ["--target-opacity" as string]: 0.4,
-          }}
-        />
-
-        {/* Main wave path */}
-        <path
-          ref={wavePathRef}
-          d={wavePath}
-          fill="none"
-          stroke={`url(#waveGrad-${index})`}
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        />
-
-        {/* Animated dot */}
-        <circle
-          ref={dotRef}
-          cx={0}
-          cy={height / 2}
-          r={0}
-          fill={color}
-          className="wave-dot"
-          style={{
-            filter: `drop-shadow(0 0 6px ${color})`,
-          }}
-        />
-      </svg>
+    <div ref={ref} className="relative h-2.5 bg-slate-100 rounded-full overflow-hidden">
+      <div
+        className="absolute inset-y-0 left-0 rounded-full progress-fill"
+        style={{
+          width: `${width}%`,
+          background: `linear-gradient(90deg, ${color}, ${color}CC)`,
+          boxShadow: `0 0 10px ${color}50`,
+        }}
+      />
+      {/* Shine */}
+      <div
+        className="absolute inset-y-0 left-0 w-8 rounded-full"
+        style={{
+          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)",
+          transform: `translateX(${width}%)`,
+          transition: `transform 1s cubic-bezier(0.4, 0, 0.2, 1)`,
+        }}
+      />
     </div>
   );
 });
 
-// Progress item row
-const ProgressItemRow = memo(function ProgressItemRow({
-  item,
-  index,
-}: {
-  item: ProgressItem;
-  index: number;
-}) {
-  const [isHovered, setIsHovered] = useState(false);
-  const IconComponent = icons[index % icons.length] || Shield;
-  const status = getStatus(item.percentage);
-  const statusStyle = statusStyles[status.variant];
+AnimatedProgressBar.displayName = "AnimatedProgressBar";
 
-  const progressLabel = `${item.percentage}% - ${item.filled} dari ${item.total} tabel ${item.title}`;
+// Memoized BAB card
+const BABCard = memo(function BABCard({ item, index }: { item: ProgressItem; index: number }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const IconComponent = BAB_ICONS[index % BAB_ICONS.length];
+  const gradientClass = BAB_GRADIENTS[index % BAB_GRADIENTS.length];
+  const color = BAB_COLORS[index % BAB_COLORS.length];
+  const status = getStatus(item.percentage);
+  const statusConfig = STATUS_CONFIG[status.variant];
 
   return (
     <div
-      className="relative rounded-xl px-4 py-3 flex items-center gap-4 transition-all duration-300"
-      role="listitem"
-      style={{
-        height: "72px", // Fixed 72px
-        background: isHovered ? "#FFFFFF" : "rgba(255,255,255,0.7)",
-        backdropFilter: "blur(8px)",
-        border: `1px solid ${isHovered ? "rgba(99,102,241,0.2)" : "rgba(229,231,235,0.6)"}`,
-        transform: isHovered ? "translateY(-4px)" : "translateY(0)",
-        boxShadow: isHovered
-          ? "0 12px 32px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04)"
-          : "0 1px 3px rgba(0,0,0,0.03)",
-        marginBottom: "8px", // Fixed 8px
-        cursor: "pointer",
-      }}
+      className="bab-card group relative"
+      style={{ opacity: 0, animationDelay: `${index * 80}ms`, willChange: "transform, opacity" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* LEFT (~30%) */}
-      <div className="flex items-center gap-3" style={{ width: "30%", flexShrink: 0 }}>
-        <div
-          className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform duration-300"
-          style={{
-            background: `linear-gradient(135deg, ${item.color}18, ${item.color}08)`,
-            transform: isHovered ? "scale(1.08)" : "scale(1)",
-            boxShadow: isHovered ? `0 0 20px ${item.color}30` : "none",
-          }}
-          aria-hidden="true"
-        >
-          <IconComponent className="w-5 h-5" style={{ color: item.color }} />
-        </div>
-
-        <div className="flex flex-col min-w-0">
-          <h4 className="text-[13px] font-semibold text-gray-900 truncate leading-tight">
-            {item.title}
-          </h4>
-          <p className="text-[11px] text-gray-500 mt-0.5">
-            {item.filled} dari {item.total} tabel
-          </p>
-          <span
-            className="inline-flex items-center justify-center mt-1 px-2 py-0.5 rounded-full text-[11px] font-medium leading-tight w-fit"
-            style={{
-              background: statusStyle.bg,
-              color: statusStyle.color,
-              border: `1px solid ${statusStyle.border}`,
-            }}
-          >
-            {status.label}
-          </span>
-        </div>
-      </div>
-
-      {/* CENTER (~45%) */}
       <div
-        className="relative flex-1"
-        role="progressbar"
-        aria-valuenow={item.percentage}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-label={progressLabel}
-        style={{ height: "40px" }}
-      >
-        <div
-          className="absolute inset-0 rounded-lg transition-opacity duration-300"
-          style={{
-            background: `radial-gradient(ellipse at 20% 50%, ${item.color}15 0%, transparent 60%)`,
-            opacity: isHovered ? 1 : 0,
-          }}
-        />
-        <WaveAnimation
-          percentage={item.percentage}
-          color={item.color}
-          index={index}
-          width={360}
-          height={40}
-        />
-      </div>
-
-      {/* RIGHT (~25%) */}
-      <div
-        className="flex items-center gap-3 flex-shrink-0 transition-transform duration-300"
+        className="relative bg-white rounded-2xl p-5 overflow-hidden transition-all duration-300"
         style={{
-          width: "25%",
-          transform: isHovered ? "translateX(6px)" : "translateX(0)",
+          border: `1px solid ${isHovered ? `${color}30` : "rgba(0,0,0,0.06)"}`,
+          boxShadow: isHovered
+            ? `0 16px 32px -8px ${color}15, 0 4px 12px -4px ${color}10`
+            : "0 2px 8px -2px rgba(0,0,0,0.04)",
+          transform: isHovered ? "translateY(-2px)" : "translateY(0)",
+          willChange: "transform",
         }}
       >
+        {/* Glow */}
         <div
-          className="px-3 py-1.5 rounded-lg text-center transition-all duration-300"
-          style={{
-            background: `linear-gradient(135deg, ${item.color}20, ${item.color}08)`,
-            backdropFilter: "blur(12px)",
-            border: `1px solid ${item.color}35`,
-            boxShadow: isHovered
-              ? `0 0 20px ${item.color}30, inset 0 1px 0 rgba(255,255,255,0.6)`
-              : "inset 0 1px 0 rgba(255,255,255,0.4)",
-            transform: isHovered ? "scale(1.05)" : "scale(1)",
-            minWidth: "64px",
-          }}
-          aria-hidden="true"
-        >
-          <span
-            className="text-[18px] font-bold leading-none"
-            style={{
-              color: item.color,
-              textShadow: `0 0 12px ${item.color}50`,
-            }}
-          >
-            {item.percentage}%
-          </span>
-        </div>
+          className="absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-500"
+          style={{ background: `radial-gradient(circle, ${color} 0%, transparent 70%)` }}
+        />
 
-        <div className="flex items-center gap-2">
-          <span className="text-[12px] font-medium text-gray-600 whitespace-nowrap">
-            {item.filled}/{item.total}
-          </span>
-          <span
-            className="text-gray-400 transition-transform duration-300"
-            style={{
-              transform: isHovered ? "translateX(6px)" : "translateX(0)",
-            }}
+        {/* Top accent */}
+        <div
+          className="absolute top-0 left-4 right-4 h-1 rounded-full"
+          style={{ background: `linear-gradient(90deg, ${color}, ${color}60)`, opacity: isHovered ? 1 : 0.6, transition: "opacity 0.3s" }}
+        />
+
+        {/* Content */}
+        <div className="flex items-start gap-4">
+          {/* Icon */}
+          <div
+            className={`relative flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${gradientClass} flex items-center justify-center shadow-lg transition-transform duration-300 ${isHovered ? "scale-110 rotate-3" : ""}`}
+            style={{ willChange: "transform", boxShadow: isHovered ? `0 8px 20px -4px ${color}50` : `0 4px 12px -2px ${color}30` }}
           >
-            <ChevronRight className="w-4 h-4" />
-          </span>
+            <IconComponent className="w-6 h-6 text-white" />
+            <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-50 transition-opacity" style={{ background: color, filter: "blur(8px)", transform: "scale(1.2)" }} />
+          </div>
+
+          {/* Info */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-sm font-bold text-slate-800">{item.title}</h4>
+              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusConfig.bg} ${statusConfig.text}`}>
+                {status.label}
+              </span>
+            </div>
+            <div className="mb-2">
+              <AnimatedProgressBar percentage={item.percentage} color={color} delay={index + 1} />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-slate-500">
+                <span className="font-semibold text-slate-700">{item.filled}</span> dari {item.total} tabel
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold" style={{ color }}>{item.percentage}%</span>
+                <ChevronRight className={`w-4 h-4 text-slate-400 transition-all duration-300 ${isHovered ? "translate-x-1 text-indigo-500" : ""}`} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 });
 
+BABCard.displayName = "BABCard";
+
 export function ProgressSection({ items }: ProgressSectionProps) {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoaded(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const totalTables = items.reduce((sum, item) => sum + item.total, 0);
+  const totalFilled = items.reduce((sum, item) => sum + item.filled, 0);
+  const overallProgress = totalTables > 0 ? Math.round((totalFilled / totalTables) * 100) : 0;
+
   return (
     <div
-      className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl flex flex-col overflow-hidden"
+      className="relative bg-white rounded-2xl overflow-hidden"
       style={{
-        boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)",
-        flex: 1,
-        minHeight: 0,
+        boxShadow: "0 4px 24px -4px rgba(0, 0, 0, 0.06), 0 2px 8px -2px rgba(0, 0, 0, 0.03)",
+        border: "1px solid rgba(0, 0, 0, 0.04)",
+        opacity: loaded ? 1 : 0,
+        transition: "opacity 0.4s ease",
       }}
     >
+      {/* Top gradient bar */}
+      <div className="h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100/80 flex-shrink-0">
-        <h3 className="text-[13px] font-semibold text-gray-900">
-          Progres Pengisian Data per BAB
-        </h3>
-        <a
-          href="#"
-          className="text-[11px] font-medium text-indigo-500 flex items-center gap-1 hover:text-indigo-600 transition-colors"
-        >
-          Lihat Semua
-          <ChevronRight className="w-3.5 h-3.5" />
-        </a>
+      <div className="px-5 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+              <BookOpen className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-slate-800">Progres Pengisian Data per BAB</h3>
+              <p className="text-xs text-slate-400">Pantau progres pengisian tabel LKPS</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="text-right">
+              <p className="text-xs text-slate-500">Total Progress</p>
+              <p className="text-lg font-bold text-indigo-600">{overallProgress}%</p>
+            </div>
+            <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center">
+              <TrendingUp className="w-6 h-6 text-indigo-500" />
+            </div>
+          </div>
+        </div>
+        <div className="mt-4">
+          <AnimatedProgressBar percentage={overallProgress} color="#6366F1" delay={0} />
+        </div>
       </div>
 
-      {/* List */}
-      <div
-        className="flex-1 overflow-y-auto p-3"
-        role="list"
-        aria-label="Daftar progres BAB"
-      >
-        {items.map((item, index) => (
-          <ProgressItemRow key={item.bab} item={item} index={index} />
-        ))}
+      {/* Cards Grid */}
+      <div className="px-5 pb-5">
+        <div className="grid grid-cols-2 gap-4">
+          {items.map((item, index) => (
+            <BABCard key={item.bab} item={item} index={index} />
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="px-5 pb-4">
+        <button className="w-full relative group overflow-hidden rounded-xl bg-gradient-to-r from-slate-50 to-slate-100 p-[1.5px] transition-all duration-300 hover:shadow-md hover:from-indigo-50 hover:to-indigo-50">
+          <div className="relative flex items-center justify-center gap-2 bg-white rounded-[11px] px-4 py-2.5 group-hover:bg-gradient-to-r group-hover:from-indigo-50 group-hover:to-white transition-colors duration-300">
+            <span className="text-sm font-semibold text-slate-600 group-hover:text-indigo-600 transition-colors">Lihat Semua</span>
+            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-500 group-hover:translate-x-1 transition-all duration-200" />
+          </div>
+        </button>
       </div>
     </div>
   );

@@ -49,39 +49,13 @@ export default async function Bab2Page() {
     instances.map((inst) => [inst.tabelDefinitionId, inst])
   );
 
-  const getStatusBadge = (status?: TabelStatus) => {
-    switch (status) {
-      case TabelStatus.DISETUJUI:
-        return (
-          <span className="flex items-center gap-1 rounded-lg bg-emerald-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-emerald-600 border border-emerald-100/50">
-            <CheckCircle2 className="h-3 w-3" /> Disetujui
-          </span>
-        );
-      case TabelStatus.DIAJUKAN:
-        return (
-          <span className="flex items-center gap-1 rounded-lg bg-amber-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-amber-600 border border-amber-100/50">
-            <Clock className="h-3 w-3" /> Diajukan
-          </span>
-        );
-      case TabelStatus.DIREVISI:
-        return (
-          <span className="flex items-center gap-1 rounded-lg bg-orange-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-orange-600 border border-orange-100/50">
-            <AlertCircle className="h-3 w-3" /> Direvisi
-          </span>
-        );
-      case TabelStatus.DITOLAK:
-        return (
-          <span className="flex items-center gap-1 rounded-lg bg-red-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-red-600 border border-red-100/50">
-            <AlertCircle className="h-3 w-3" /> Ditolak
-          </span>
-        );
-      default:
-        return (
-          <span className="flex items-center gap-1 rounded-lg bg-slate-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-slate-500 border border-slate-100/30">
-            Draft
-          </span>
-        );
-    }
+  // VALIDASI DIHAPUS - Semua tabel selalu tampil Draft
+  const getStatusBadge = () => {
+    return (
+      <span className="flex items-center gap-1 rounded-lg bg-slate-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-slate-500 border border-slate-100/30">
+        Draft
+      </span>
+    );
   };
 
   // Helper to map icons for each table
@@ -195,7 +169,7 @@ export default async function Bab2Page() {
                     <FileText className="h-5 w-5" />
                   </div>
                   <div className="group-hover:[&_span]:bg-white/15 group-hover:[&_span]:border-white/20 group-hover:[&_span]:text-white transition-all duration-300">
-                    {getStatusBadge(status)}
+                    {getStatusBadge()}
                   </div>
                 </div>
 

@@ -65,10 +65,10 @@ export async function upsertLkpsRow(params: {
 
   const lkps = await getOrCreateLkps(params.tabelKode, params.tahunAkademikId);
 
-  // Jika status DISETUJUI atau DIAJUKAN → blokir edit
-  if (lkps.status === "DISETUJUI" || lkps.status === "DIAJUKAN") {
-    throw new Error("Tidak dapat mengubah data tabel yang sudah disetujui atau sedang diajukan.");
-  }
+  // VALIDASI DIHAPUS - Semua orang bisa edit
+  // if (lkps.status === "DISETUJUI" || lkps.status === "DIAJUKAN") {
+  //   throw new Error("Tidak dapat mengubah data tabel yang sudah disetujui atau sedang diajukan.");
+  // }
 
   let savedRow;
   if (params.rowId) {
@@ -112,9 +112,10 @@ export async function deleteLkpsRow(params: { rowId: string; tabelKode: string }
   if (!row) throw new Error("Row not found");
 
   // Blokir hapus jika DIAJUKAN atau DISETUJUI
-  if (row.tabelLkps.status === "DIAJUKAN" || row.tabelLkps.status === "DISETUJUI") {
-    throw new Error("Tidak dapat menghapus data pada tabel yang sedang diproses.");
-  }
+  // VALIDASI DIHAPUS - Semua orang bisa hapus
+  // if (row.tabelLkps.status === "DIAJUKAN" || row.tabelLkps.status === "DISETUJUI") {
+  //   throw new Error("Tidak dapat menghapus data pada tabel yang sedang diproses.");
+  // }
 
   await db.tabelLkpsRow.delete({ where: { id: params.rowId } });
 

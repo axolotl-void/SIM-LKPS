@@ -2,21 +2,12 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { Tabel1A1Client } from "@/components/tables/tabel-1a1-client";
-import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
-import { BookOpen, Calendar, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import { BookOpen, Calendar, FileText } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Tabel 1.A.1 — Pimpinan dan Tupoksi UPPS dan PS",
-};
-
-const statusBadge = {
-  DRAFT:     { icon: <Clock className="h-3.5 w-3.5" />, label: "Draft", color: "slate" as const },
-  DIAJUKAN:  { icon: <Clock className="h-3.5 w-3.5" />, label: "Diajukan", color: "amber" as const },
-  DIREVISI:  { icon: <AlertCircle className="h-3.5 w-3.5" />, label: "Direvisi", color: "orange" as const },
-  DISETUJUI: { icon: <CheckCircle2 className="h-3.5 w-3.5" />, label: "Disetujui", color: "emerald" as const },
-  DITOLAK:   { icon: <XCircle className="h-3.5 w-3.5" />, label: "Ditolak", color: "red" as const },
 };
 
 export default async function Tabel1A1Page() {
@@ -63,9 +54,6 @@ export default async function Tabel1A1Page() {
   });
 
   const initialRows = lkps?.rows || [];
-  const status = lkps?.status ?? "DRAFT";
-  const statusCfg = statusBadge[status] ?? statusBadge.DRAFT;
-  const history = lkps?.validationHistory || [];
 
   return (
     <div className="space-y-6">
@@ -83,9 +71,7 @@ export default async function Tabel1A1Page() {
             <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
               Tabel {def.kode}
             </span>
-            <span className={`flex items-center gap-1 text-2xs font-bold px-2.5 py-1 rounded-lg bg-${statusCfg.color}-50 text-${statusCfg.color}-600 border border-${statusCfg.color}-100/50`}>
-              {statusCfg.icon} {statusCfg.label}
-            </span>
+            {/* Status badge dihapus */}
           </div>
           <h2 className="text-lg font-bold text-slate-800 tracking-tight">{def.nama}</h2>
 
@@ -122,12 +108,10 @@ export default async function Tabel1A1Page() {
           }))}
           tahunAkademikId={activeTa.id}
           tabelKode={def.kode}
-          status={status}
-          userRole={session.user.role}
         />
       </ErrorBoundary>
 
-      {/* Validation History */}
+      {/* Validation History - DIHAPUS
       {history.length > 0 && (
         <ValidationHistory
           history={history.map((h) => ({
@@ -138,7 +122,7 @@ export default async function Tabel1A1Page() {
             user: h.user,
           }))}
         />
-      )}
+      )} */}
     </div>
   );
 }
