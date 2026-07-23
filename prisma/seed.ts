@@ -38,14 +38,14 @@ async function main() {
   const ta = await db.tahunAkademik.upsert({
     where: {
       tahun_semester_prodiId: {
-        tahun: "2024/2025",
+        tahun: "2026/2027",
         semester: "Ganjil",
         prodiId: prodi.id,
       },
     },
     update: {},
     create: {
-      tahun: "2024/2025",
+      tahun: "2026/2027",
       semester: "Ganjil",
       isActive: true,
       prodiId: prodi.id,

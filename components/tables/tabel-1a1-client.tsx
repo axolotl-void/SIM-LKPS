@@ -22,16 +22,14 @@ interface Tabel1A1ClientProps {
   }[];
   tahunAkademikId: string;
   tabelKode: string;
-  status: string;
-  userRole: string;
 }
 
-export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Tabel1A1ClientProps) {
+export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode }: Tabel1A1ClientProps) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus, setCurrentStatus] = useState(status);
   const router = useRouter();
 
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+  // VALIDASI DIHAPUS - Selalu bisa edit
+  const canEdit = true;
   
   // Modals & Toast States
   const [isOpen, setIsOpen] = useState(false);
@@ -144,7 +142,8 @@ export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode, status
         </Link>
 
         <div className="flex items-center gap-2.5">
-          {/* Validation Controls */}
+          {/* Validation Controls - DIHAPUS */}
+          {/* 
           <ValidationControls
             tabelKode={tabelKode}
             tahunAkademikId={tahunAkademikId}
@@ -153,6 +152,7 @@ export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode, status
             onChangeStatus={setCurrentStatus}
             triggerToast={triggerToast}
           />
+          */}
 
           <button
             onClick={handleOpenAdd}
