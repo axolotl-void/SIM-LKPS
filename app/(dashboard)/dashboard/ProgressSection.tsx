@@ -106,9 +106,9 @@ AnimatedProgressBar.displayName = "AnimatedProgressBar";
 // Memoized BAB card
 const BABCard = memo(function BABCard({ item, index }: { item: ProgressItem; index: number }) {
   const [isHovered, setIsHovered] = useState(false);
-  const IconComponent = BAB_ICONS[index % BAB_ICONS.length];
-  const gradientClass = BAB_GRADIENTS[index % BAB_GRADIENTS.length];
-  const color = BAB_COLORS[index % BAB_COLORS.length];
+  const IconComponent = BAB_ICONS[index % BAB_ICONS.length] || Shield;
+  const gradientClass = BAB_GRADIENTS[index % BAB_GRADIENTS.length] || "from-blue-500 to-blue-600";
+  const color = BAB_COLORS[index % BAB_COLORS.length] || "#3B82F6";
   const status = getStatus(item.percentage);
   const statusConfig = STATUS_CONFIG[status.variant];
 

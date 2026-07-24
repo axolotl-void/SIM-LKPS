@@ -21,7 +21,7 @@ export async function GET() {
       if (!groupedByBab[def.bab]) {
         groupedByBab[def.bab] = [];
       }
-      groupedByBab[def.bab].push(def);
+      groupedByBab[def.bab]!.push(def);
     }
 
     // Get filled data for each table
@@ -94,7 +94,7 @@ export async function GET() {
     summarySheet.addRow(["BAB", "Nama BAB", "Total Tabel", "Terisi", "Kosong", "Progress"]);
     for (let i = 0; i < 6; i++) {
       const cell = summarySheet.getCell(rowNum, i + 1);
-      cell.font = { bold: true, color: "FFFFFF" };
+      cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
       cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF6366F1" } };
       cell.alignment = { horizontal: "center" };
     }
@@ -126,11 +126,11 @@ export async function GET() {
       // Color progress based on status
       const progressCell = row.getCell(6);
       if (progress === 100) {
-        progressCell.font = { color: "FF10B981", bold: true };
+        progressCell.font = { color: { argb: "FF10B981" }, bold: true };
       } else if (progress >= 70) {
-        progressCell.font = { color: "FFF59E0B", bold: true };
+        progressCell.font = { color: { argb: "FFF59E0B" }, bold: true };
       } else {
-        progressCell.font = { color: "FFEF4444" };
+        progressCell.font = { color: { argb: "FFEF4444" } };
       }
     }
 
@@ -145,7 +145,7 @@ export async function GET() {
       `${grandProgress}%`,
     ]);
     totalRow.font = { bold: true };
-    totalRow.getCell(6).font = { bold: true, color: "FF6366F1", size: 12 };
+    totalRow.getCell(6).font = { bold: true, color: { argb: "FF6366F1" }, size: 12 };
 
     // Column widths for summary
     summarySheet.columns = [
@@ -166,7 +166,7 @@ export async function GET() {
       babSheet.getCell("A1").value = `BAB ${babNum} - ${babNames[Number(babNum)] || ""}`;
       babSheet.getCell("A1").font = { bold: true, size: 14 };
       babSheet.getCell("A1").fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF6366F1" } };
-      babSheet.getCell("A1").font = { bold: true, size: 14, color: "FFFFFF" };
+      babSheet.getCell("A1").font = { bold: true, size: 14, color: { argb: "FFFFFFFF" } };
       babSheet.getCell("A1").alignment = { horizontal: "center" };
 
       // Column headers
@@ -180,7 +180,7 @@ export async function GET() {
       const headerRowNum = 2;
       for (let i = 0; i < 4; i++) {
         const cell = babSheet.getCell(headerRowNum, i + 1);
-        cell.font = { bold: true, color: "FFFFFF" };
+        cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
         cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF8B5CF6" } };
       }
 
@@ -189,6 +189,7 @@ export async function GET() {
       
       for (let i = 0; i < defs.length; i++) {
         const def = defs[i];
+        if (!def) continue;
         const jumlah = totalRows[def.kode] || 0;
         babTotal += jumlah;
 
@@ -197,9 +198,9 @@ export async function GET() {
         // Color code
         const jumlahCell = babSheet.getCell(rowNumBab, 4);
         if (jumlah > 0) {
-          jumlahCell.font = { color: "FF10B981", bold: true };
+          jumlahCell.font = { color: { argb: "FF10B981" }, bold: true };
         } else {
-          jumlahCell.font = { color: "FFEF4444" };
+          jumlahCell.font = { color: { argb: "FFEF4444" } };
         }
         rowNumBab++;
       }
@@ -208,7 +209,7 @@ export async function GET() {
       const babTotalRow = babSheet.addRow(["", "", "TOTAL", babTotal]);
       babSheet.mergeCells(`A${rowNumBab}:C${rowNumBab}`);
       babTotalRow.font = { bold: true };
-      babTotalRow.getCell(4).font = { bold: true, color: "FF6366F1", size: 12 };
+      babTotalRow.getCell(4).font = { bold: true, color: { argb: "FF6366F1" }, size: 12 };
 
       babSheet.columns = [
         { width: 6 },
@@ -222,7 +223,7 @@ export async function GET() {
     const buffer = await workbook.xlsx.writeBuffer();
     const dateStr = new Date().toISOString().split("T")[0];
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer as ArrayBuffer), {
       status: 200,
       headers: {
         "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

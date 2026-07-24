@@ -46,7 +46,7 @@ const AVATAR_GRADIENTS = [
   "from-rose-500 to-rose-600",
 ];
 
-const getAvatarGradient = (name: string): string => AVATAR_GRADIENTS[name.charCodeAt(0) % AVATAR_GRADIENTS.length];
+const getAvatarGradient = (name: string): string => AVATAR_GRADIENTS[name.charCodeAt(0) % AVATAR_GRADIENTS.length] || "from-blue-500 to-blue-600";
 
 // Memoized activity row
 const ActivityRow = memo(function ActivityRow({ activity, index }: { activity: ActivityItem; index: number }) {
