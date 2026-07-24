@@ -3,45 +3,61 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import { 
-  FileText, ArrowRight, CheckCircle2, Clock, AlertCircle,
-  Calendar, BookOpen, GraduationCap, Users, Map, BarChart3,
-  Briefcase, Star, Shuffle, Award
+  FileText, ArrowRight, Calendar, BookOpen, 
+  GraduationCap, Users, Map, BarChart3,
+  Briefcase, Star, Shuffle, Award, Target, TrendingUp, CheckCircle2,
+  Plus, Clock
 } from "lucide-react";
 import type { Metadata } from "next";
-import { TabelStatus } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "BAB 2 — Pendidikan",
+};
+
+// Table configurations - Soft Cyan theme
+const DEFAULT_CONFIG = { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Default" };
+const TABLE_CONFIGS: Record<string, typeof DEFAULT_CONFIG> = {
+  "2.A.1": { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Mahasiswa" },
+  "2.A.2": { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Kelulusan" },
+  "2.A.3": { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Prestasi" },
+  "2.B.1": { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Kurikulum" },
+  "2.B.2": { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Pembelajaran" },
+  "2.B.3": { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Integrasi" },
+  "2.B.4": { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Dosen" },
+  "2.B.5": { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Biaya" },
+  "2.B.6": { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Beasiswa" },
+  "2.C": { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Kerja Sama" },
+  "2.D": { gradient: "from-cyan-600 to-teal-600", iconBg: "bg-cyan-600", iconColor: "text-white", accentColor: "cyan", badge: "Luaran" },
+};
+
+const TABLE_ICONS: Record<string, any> = {
+  "2.A.1": Users, "2.A.2": Map, "2.A.3": BarChart3,
+  "2.B.1": BookOpen, "2.B.2": GraduationCap, "2.B.3": FileText,
+  "2.B.4": Clock, "2.B.5": Briefcase, "2.B.6": Star,
+  "2.C": Shuffle, "2.D": Award,
 };
 
 export default async function Bab2Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  // Get active academic year
   const activeTa = await db.tahunAkademik.findFirst({
     where: { isActive: true },
     include: { prodi: true }
   });
 
-  // Get definitions for BAB 2
   const definitions = await db.tabelDefinition.findMany({
     where: { bab: 2 },
     orderBy: { urutan: "asc" },
   });
 
-  // Fetch current status/instances of the tables for active TA
   const instances = activeTa
     ? await db.tabelLkps.findMany({
         where: {
           tahunAkademikId: activeTa.id,
           tabelDefinitionId: { in: definitions.map((d) => d.id) },
         },
-        include: {
-          _count: {
-            select: { rows: true },
-          },
-        },
+        include: { _count: { select: { rows: true } } },
       })
     : [];
 
@@ -49,169 +65,164 @@ export default async function Bab2Page() {
     instances.map((inst) => [inst.tabelDefinitionId, inst])
   );
 
-  // VALIDASI DIHAPUS - Semua tabel selalu tampil Draft
-  const getStatusBadge = () => {
-    return (
-      <span className="flex items-center gap-1 rounded-lg bg-slate-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-slate-500 border border-slate-100/30">
-        Draft
-      </span>
-    );
-  };
-
-  // Helper to map icons for each table
-  const getTableIcon = (kode: string) => {
-    switch (kode) {
-      case "2.A.1":
-        return <Users className="h-5 w-5 text-indigo-500" />;
-      case "2.A.2":
-        return <Map className="h-5 w-5 text-indigo-500" />;
-      case "2.A.3":
-        return <BarChart3 className="h-5 w-5 text-indigo-500" />;
-      case "2.B.1":
-        return <BookOpen className="h-5 w-5 text-indigo-500" />;
-      case "2.B.2":
-        return <GraduationCap className="h-5 w-5 text-indigo-500" />;
-      case "2.B.3":
-        return <FileText className="h-5 w-5 text-indigo-500" />;
-      case "2.B.4":
-        return <Clock className="h-5 w-5 text-indigo-500" />;
-      case "2.B.5":
-        return <Briefcase className="h-5 w-5 text-indigo-500" />;
-      case "2.B.6":
-        return <Star className="h-5 w-5 text-indigo-500" />;
-      case "2.C":
-        return <Shuffle className="h-5 w-5 text-indigo-500" />;
-      case "2.D":
-        return <Award className="h-5 w-5 text-indigo-500" />;
-      default:
-        return <FileText className="h-5 w-5 text-indigo-500" />;
-    }
-  };
+  const totalData = instances.reduce((sum, i) => sum + i._count.rows, 0);
+  const filledTables = instances.filter((i) => i._count.rows > 0).length;
+  const progressPercent = definitions.length > 0 ? Math.round((filledTables / definitions.length) * 100) : 0;
 
   return (
-    <div className="space-y-6">
-      {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-white p-7 shadow-soft border border-slate-100/50">
-        {/* Decorative elements */}
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-indigo-50/50 via-purple-50/20 to-transparent pointer-events-none rounded-r-3xl" />
-        <div className="absolute right-12 top-1/2 -translate-y-1/2 hidden md:block pointer-events-none">
-          <div className="flex h-20 w-16 rotate-12 items-center justify-center rounded-2xl bg-white shadow-soft-lg border border-slate-100/40 text-indigo-500">
-            <GraduationCap className="h-10 w-10 text-indigo-400" />
-          </div>
-        </div>
+    <div className="min-h-screen pb-12">
+      {/* ═══════════════════════════════════════════════════════════════ */}
+      {/* HERO HEADER - Compact Cyan Theme */}
+      {/* ═══════════════════════════════════════════════════════════════ */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-600 via-teal-600 to-cyan-700 p-5 mb-6 shadow-xl animate-fade-in-up">
+        {/* Animated blobs */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-cyan-400/20 rounded-full blur-2xl animate-pulse" />
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-teal-400/20 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1.5s' }} />
 
-        <div className="relative z-10 flex flex-col gap-5 md:max-w-xl">
-          <div>
-            <h2 className="text-lg font-bold text-slate-800 tracking-tight">
-              BAB 2 — Pendidikan
-            </h2>
-            <p className="mt-1 text-xs font-semibold text-slate-500">
-              Data Mahasiswa, Kurikulum, Lulusan, dan Pembelajaran Program Studi
-            </p>
+        <div className="relative z-10">
+          {/* Header Row */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg">
+                <GraduationCap className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <span className="text-white/70 text-2xs font-bold uppercase tracking-widest">BAB 2 • Akreditasi</span>
+                <h1 className="text-white text-lg font-black tracking-tight">Pendidikan</h1>
+              </div>
+            </div>
+            
+            {/* Mini Progress Ring */}
+            <div className="relative w-14 h-14">
+              <svg className="w-14 h-14 -rotate-90">
+                <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="5" />
+                <circle cx="28" cy="28" r="24" fill="none" stroke="white" strokeWidth="5" strokeDasharray={`${(progressPercent / 100) * 150} 150`} strokeLinecap="round" className="transition-all duration-1000" />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-white text-sm font-black">{progressPercent}%</span>
+              </div>
+            </div>
           </div>
 
+          {/* Stats Row - Compact */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <CheckCircle2 className="w-3 h-3 text-emerald-300" />
+                <span className="text-white/70 text-2xs font-semibold">Terisi</span>
+              </div>
+              <div className="text-white text-xl font-black">{filledTables}/{definitions.length}</div>
+            </div>
+            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <FileText className="w-3 h-3 text-blue-300" />
+                <span className="text-white/70 text-2xs font-semibold">Total Data</span>
+              </div>
+              <div className="text-white text-xl font-black">{totalData}</div>
+            </div>
+            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <Clock className="w-3 h-3 text-amber-300" />
+                <span className="text-white/70 text-2xs font-semibold">Status</span>
+              </div>
+              <div className="text-white text-base font-bold">Draft</div>
+            </div>
+            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <Calendar className="w-3 h-3 text-pink-300" />
+                <span className="text-white/70 text-2xs font-semibold">Tahun</span>
+              </div>
+              <div className="text-white text-base font-bold">{activeTa?.tahun || '-'}</div>
+            </div>
+          </div>
+
+          {/* Info Row - Compact */}
           {activeTa && (
-            <div className="flex flex-wrap items-center gap-3">
-              {/* Academic Year Card */}
-              <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 text-indigo-600 shadow-soft-2xs">
-                  <Calendar className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">
-                    Tahun Akademik
-                  </div>
-                  <div className="text-xs font-bold text-slate-800 mt-0.5">
-                    {activeTa.tahun} ({activeTa.semester})
-                  </div>
-                </div>
-              </div>
-
-              {/* Prodi Card */}
-              <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 text-indigo-600 shadow-soft-2xs">
-                  <BookOpen className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">
-                    Program Studi
-                  </div>
-                  <div className="text-xs font-bold text-slate-800 mt-0.5">
-                    {activeTa.prodi.nama} ({activeTa.prodi.jenjang})
-                  </div>
-                </div>
-              </div>
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-white/80 text-3xs font-semibold">
+              <span className="px-2 py-1 bg-white/10 rounded-lg border border-white/20">{activeTa.semester}</span>
+              <span className="px-2 py-1 bg-white/10 rounded-lg border border-white/20">{activeTa.prodi.nama} ({activeTa.prodi.jenjang})</span>
             </div>
           )}
         </div>
       </div>
 
-      {/* Grid List of Tables */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {definitions.map((def) => {
+      {/* ═══════════════════════════════════════════════════════════════ */}
+      {/* TABLE CARDS - Compact with Smooth Entrance Animation */}
+      {/* ═══════════════════════════════════════════════════════════════ */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {definitions.map((def, index) => {
           const inst = instanceMap[def.id];
           const rowCount = inst?._count.rows || 0;
-          const status = inst?.status;
+          const hasData = rowCount > 0;
+          const config = TABLE_CONFIGS[def.kode] || DEFAULT_CONFIG;
+          const IconComponent = TABLE_ICONS[def.kode] || FileText;
 
           return (
             <Link
               key={def.id}
               href={`/lkps/bab-2/tabel-${def.kode.toLowerCase().replace(/\./g, "")}`}
-              className="group relative flex flex-col justify-between rounded-3xl bg-white p-5 shadow-soft border border-slate-100/50 hover:shadow-[0_20px_60px_rgba(59,130,246,0.15)] hover:border-blue-200/60 hover:scale-[1.02] transition-all duration-300 ease-out cursor-pointer overflow-hidden"
+              className="group animate-fade-in-up"
+              style={{ animationDelay: `${0.1 + index * 0.08}s` }}
             >
-              {/* Hover blue gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out rounded-3xl" />
+              {/* Main Card - Compact */}
+              <div className={`relative h-full rounded-2xl bg-white shadow-md border border-slate-100/50 overflow-hidden transition-all duration-500 group-hover:shadow-xl group-hover:-translate-y-1.5 group-hover:border-cyan-200/30`}>
+                
+                {/* Top Color Bar */}
+                <div className={`h-1.5 bg-gradient-to-r ${config.gradient}`} />
 
-              <div className="relative z-10">
-                {/* Card Top bar */}
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 text-white shadow-soft-sm group-hover:bg-white/20 group-hover:from-white/20 group-hover:to-white/10 transition-all duration-300">
-                    <FileText className="h-5 w-5" />
-                  </div>
-                  <div className="group-hover:[&_span]:bg-white/15 group-hover:[&_span]:border-white/20 group-hover:[&_span]:text-white transition-all duration-300">
-                    {getStatusBadge()}
-                  </div>
-                </div>
-
-                {/* Table Title Block */}
-                <div className="mt-4">
-                  <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg group-hover:bg-white/20 group-hover:text-white transition-all duration-300">
-                    Tabel {def.kode}
-                  </span>
-                  <h3 className="mt-3.5 text-sm font-bold text-slate-800 leading-snug tracking-tight group-hover:text-white transition-colors duration-300">
-                    {def.nama}
-                  </h3>
-                </div>
-
-                {/* Row Data count box */}
-                <div className="flex items-center gap-3 rounded-2xl bg-slate-50/50 p-3 mt-4 border border-slate-100/60 shadow-3xs group-hover:bg-white/10 group-hover:border-white/20 transition-all duration-300">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-indigo-500 border border-slate-100/40 shadow-2xs group-hover:bg-white/20 group-hover:border-white/10 group-hover:text-white group-hover:shadow-none transition-all duration-300">
-                    {getTableIcon(def.kode)}
-                  </div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-base font-extrabold text-slate-800 group-hover:text-white transition-colors duration-300">
-                      {rowCount}
+                {/* Content */}
+                <div className="p-4">
+                  {/* Header Row */}
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="px-2 py-0.5 bg-cyan-50 text-cyan-600 rounded-md text-2xs font-black uppercase tracking-wider">
+                      Tabel {def.kode}
                     </span>
-                    <span className="text-2xs font-semibold text-slate-400 group-hover:text-blue-100 transition-colors duration-300">
-                      data dimasukkan
+                    <span className={`px-2 py-0.5 rounded-md text-2xs font-bold ${hasData ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+                      {hasData ? 'Terisi' : 'Empty'}
                     </span>
                   </div>
+
+                  {/* Title & Icon */}
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className={`flex items-center justify-center w-12 h-12 rounded-xl ${config.iconBg} shadow-md transform group-hover:scale-110 transition-transform duration-500`}>
+                      <IconComponent className={`w-6 h-6 ${config.iconColor}`} />
+                    </div>
+                    <h3 className="text-sm font-bold text-slate-700 leading-tight group-hover:text-cyan-700 transition-colors flex-1 pt-1">
+                      {def.nama}
+                    </h3>
+                  </div>
+
+                  {/* Data Counter */}
+                  <div className={`flex items-center justify-between p-2.5 rounded-xl border-2 ${hasData ? 'bg-cyan-50/50 border-cyan-100' : 'bg-slate-50 border-dashed border-slate-200'}`}>
+                    <div>
+                      <div className={`text-2xl font-black ${hasData ? 'text-cyan-600' : 'text-slate-300'}`}>{rowCount}</div>
+                      <div className="text-2xs text-slate-400 font-semibold">Data</div>
+                    </div>
+                    {hasData && (
+                      <CheckCircle2 className="w-6 h-6 text-cyan-500" />
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-slate-100">
+                    <span className="text-xs font-bold text-slate-400 group-hover:text-cyan-600 transition-colors">
+                      {hasData ? 'Edit Data' : 'Mulai Isi'}
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all duration-300" />
+                  </div>
                 </div>
+
+                {/* Bottom accent */}
+                <div className={`h-0.5 bg-gradient-to-r ${config.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
               </div>
 
-              {/* Card Footer */}
-              <div className="relative z-10 mt-6 pt-4 border-t border-slate-50 group-hover:border-white/20 flex items-center justify-between transition-all duration-300">
-                <span className="text-xs font-bold text-slate-500 group-hover:text-white transition-colors duration-300">
-                  Kelola Data
-                </span>
-                <div className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 shadow-2xs group-hover:bg-white/20 group-hover:border-white/30 group-hover:text-white group-hover:translate-x-1 transition-all duration-300">
-                  <ArrowRight className="h-4 w-4" />
-                </div>
-              </div>
+              {/* Glow on hover */}
+              <div className={`absolute -inset-1 bg-gradient-to-r ${config.gradient} rounded-2xl opacity-0 group-hover:opacity-15 blur-sm transition-opacity duration-700 -z-10`} />
             </Link>
           );
         })}
       </div>
+
     </div>
   );
 }

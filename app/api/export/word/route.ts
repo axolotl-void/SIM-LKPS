@@ -26,7 +26,7 @@ export async function GET() {
     const totalFilled = laporanData.reduce((sum, item) => sum + item.filled, 0);
     const totalProgress = Math.round((totalFilled / totalTables) * 100);
 
-    const children: Paragraph[] = [];
+    const children: (Paragraph | Table)[] = [];
 
     // Title
     const titlePara = new Paragraph({
@@ -118,7 +118,7 @@ export async function GET() {
     const buffer = await Packer.toBuffer(doc);
     const dateStr = new Date().toISOString().split("T")[0];
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       status: 200,
       headers: {
         "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
