@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow } from "@/lib/actions/lkps";
-import ValidationControls from "@/components/tables/validation-controls";
 
 interface Row {
   id: string;
@@ -115,14 +114,6 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
         <div className="flex items-center gap-2.5">
-          <ValidationControls
-            tabelKode={tabelKode}
-            tahunAkademikId={tahunAkademikId}
-            currentStatus={currentStatus}
-            userRole={userRole}
-            onChangeStatus={setCurrentStatus}
-            triggerToast={triggerToast}
-          />
           <button
             onClick={openModal}
             disabled={!canEdit}

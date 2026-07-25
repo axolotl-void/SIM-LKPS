@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
-import ValidationControls from "@/components/tables/validation-controls";
 
 type JenisPublikasi = "IB" | "I" | "S1" | "S2" | "S3" | "S4" | "T";
 
@@ -103,14 +102,6 @@ export function Tabel3C2Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center justify-between">
         <Link href="/lkps/bab-3" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors"><ArrowLeft className="h-4 w-4" /> Kembali ke BAB 3</Link>
         <div className="flex items-center gap-2.5">
-          <ValidationControls
-            tabelKode={tabelKode}
-            tahunAkademikId={tahunAkademikId}
-            currentStatus={currentStatus}
-            userRole={userRole}
-            onChangeStatus={setCurrentStatus}
-            triggerToast={triggerToast}
-          />
           <button onClick={openAdd} disabled={!canEdit} className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${canEdit ? "bg-gradient-to-tr from-indigo-500 to-purple-600 text-white" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}><Plus className="h-4 w-4" /> Tambah Publikasi</button>
         </div>
       </div>

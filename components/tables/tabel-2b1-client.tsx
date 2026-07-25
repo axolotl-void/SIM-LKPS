@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
-import ValidationControls from "@/components/tables/validation-controls";
 
 export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: any) {
   const [rows, setRows] = useState(initialRows);
@@ -74,14 +73,6 @@ export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex justify-between">
         <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-500 hover:text-indigo-600"><ArrowLeft className="h-4 w-4" /> BAB 2</Link>
         <div className="flex items-center gap-2.5">
-          <ValidationControls
-            tabelKode={tabelKode}
-            tahunAkademikId={tahunAkademikId}
-            currentStatus={currentStatus}
-            userRole={userRole}
-            onChangeStatus={setCurrentStatus}
-            triggerToast={notify}
-          />
           <button
             onClick={handleOpenAdd}
             disabled={!canEdit}

@@ -10,7 +10,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
-import ValidationControls from "@/components/tables/validation-controls";
 
 const TYPES = [
   { key: "mahasiswaAktif", label: "Jumlah Mahasiswa Aktif", icon: Users, color: "from-blue-500 to-cyan-500" },
@@ -131,14 +130,6 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
         <div className="flex items-center gap-2.5">
-          <ValidationControls
-            tabelKode={tabelKode}
-            tahunAkademikId={tahunAkademikId}
-            currentStatus={currentStatus}
-            userRole={userRole}
-            onChangeStatus={setCurrentStatus}
-            triggerToast={triggerToast}
-          />
           <button
             onClick={openModal}
             disabled={!canEdit}

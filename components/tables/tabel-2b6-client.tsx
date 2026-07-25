@@ -10,7 +10,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
-import ValidationControls from "@/components/tables/validation-controls";
 
 interface Row {
   id: string;
@@ -147,14 +146,6 @@ export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status
         <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
-        <ValidationControls
-          tabelKode={tabelKode}
-          tahunAkademikId={tahunAkademikId}
-          currentStatus={currentStatus}
-          userRole={userRole}
-          onChangeStatus={setCurrentStatus}
-          triggerToast={triggerToast}
-        />
       </div>
 
       {/* Summary */}

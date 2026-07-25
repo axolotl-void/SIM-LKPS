@@ -5,7 +5,6 @@ import { Plus, Edit2, Trash2, ArrowLeft, GraduationCap, X } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
-import ValidationControls from "@/components/tables/validation-controls";
 
 export function Tabel2B2Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: any) {
   const [rows, setRows] = useState(initialRows);
@@ -35,14 +34,6 @@ export function Tabel2B2Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex justify-between">
         <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-500"><ArrowLeft className="h-4 w-4" /> Kembali</Link>
         <div className="flex items-center gap-2.5">
-          <ValidationControls
-            tabelKode={tabelKode}
-            tahunAkademikId={tahunAkademikId}
-            currentStatus={currentStatus}
-            userRole={userRole}
-            onChangeStatus={setCurrentStatus}
-            triggerToast={(msg, type) => {}}
-          />
           <button
             onClick={() => { setEditId(undefined); setForm({ kodeCpl: "", pl01: false, pl02: false, pl03: false, pl04: false, pl05: false }); setIsOpen(true); }}
             disabled={!canEdit}

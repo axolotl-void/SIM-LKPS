@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
-import ValidationControls from "@/components/tables/validation-controls";
 
 interface PengembanganItem {
   id: string;
@@ -132,14 +131,6 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 3
         </Link>
         <div className="flex items-center gap-2.5">
-          <ValidationControls
-            tabelKode={tabelKode}
-            tahunAkademikId={tahunAkademikId}
-            currentStatus={currentStatus}
-            userRole={userRole}
-            onChangeStatus={setCurrentStatus}
-            triggerToast={triggerToast}
-          />
           <button onClick={openAdd} disabled={!canEdit} className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${canEdit ? "bg-gradient-to-tr from-teal-500 to-cyan-600 text-white" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}>
             <Plus className="h-4 w-4" /> Tambah Pengembangan
           </button>
