@@ -10,7 +10,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow } from "@/lib/actions/lkps";
-import ValidationControls from "@/components/tables/validation-controls";
 
 interface Props {
   tahunAkademikId: string;
@@ -95,14 +94,6 @@ export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rows
         <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
-        <ValidationControls
-          tabelKode={tabelKode}
-          tahunAkademikId={tahunAkademikId}
-          currentStatus={currentStatus}
-          userRole={userRole}
-          onChangeStatus={setCurrentStatus}
-          triggerToast={triggerToast}
-        />
       </div>
 
       <div className="flex items-center gap-3 rounded-2xl bg-emerald-50/60 border border-emerald-100/60 px-5 py-4 text-xs font-semibold text-emerald-700">

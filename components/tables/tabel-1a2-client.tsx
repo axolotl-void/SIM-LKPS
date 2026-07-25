@@ -10,7 +10,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
-import ValidationControls from "@/components/tables/validation-controls";
 
 interface Tabel1A2ClientProps {
   initialRows: {
@@ -173,14 +172,6 @@ export function Tabel1A2Client({ initialRows, tahunAkademikId, tabelKode, status
         </Link>
 
         <div className="flex items-center gap-2.5">
-          <ValidationControls
-            tabelKode={tabelKode}
-            tahunAkademikId={tahunAkademikId}
-            currentStatus={currentStatus}
-            userRole={userRole}
-            onChangeStatus={setCurrentStatus}
-            triggerToast={triggerToast}
-          />
           <button
             onClick={handleOpenAdd}
             disabled={!canEdit}
