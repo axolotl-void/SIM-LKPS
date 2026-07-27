@@ -176,7 +176,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
       <div className="flex items-center justify-between">
         <Link
           href="/lkps/bab-5"
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-violet-600 transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 5
         </Link>
@@ -186,7 +186,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
             disabled={!canEdit}
             className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${
               canEdit
-                ? "bg-gradient-to-tr from-violet-500 to-purple-600 text-white"
+                ? "bg-gradient-to-tr from-slate-500 to-slate-600 text-white"
                 : "bg-slate-100 text-slate-400 cursor-not-allowed"
             }`}
           >
@@ -196,8 +196,8 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
       </div>
 
       {/* Info banner */}
-      <div className="flex items-center gap-3 rounded-2xl bg-violet-50/60 border border-violet-100/60 px-5 py-4 text-xs font-semibold text-violet-700">
-        <Lightbulb className="h-5 w-5 shrink-0 text-violet-500" />
+      <div className="flex items-center gap-3 rounded-2xl bg-slate-50/60 border border-slate-100/60 px-5 py-4 text-xs font-semibold text-slate-700">
+        <Lightbulb className="h-5 w-5 shrink-0 text-slate-500" />
         <span>
           Klik <strong>"Tambah Sistem Tata Kelola"</strong> untuk menambahkan data. Klik{" "}
           <strong>Edit</strong> untuk mengubah atau <strong>Hapus</strong> untuk menghapus item.
@@ -208,8 +208,8 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         {[
           { label: "Total Sistem", value: totalSistem, color: "text-slate-800" },
-          { label: "Akses Internet", value: aksesInternet, color: "text-violet-600" },
-          { label: "Akses Lokal", value: aksesLokal, color: "text-purple-600" },
+          { label: "Akses Internet", value: aksesInternet, color: "text-slate-600" },
+          { label: "Akses Lokal", value: aksesLokal, color: "text-slate-600" },
         ].map((card) => (
           <div
             key={card.label}
@@ -222,9 +222,9 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
       </div>
 
       {/* Table card */}
-      <div className="rounded-2xl border-2 border-violet-200/70 bg-white shadow-soft overflow-hidden">
+      <div className="rounded-2xl border-2 border-slate-200/70 bg-white shadow-soft overflow-hidden">
         {/* Table header */}
-        <div className="bg-gradient-to-r from-violet-500 to-purple-600 px-7 py-4">
+        <div className="bg-gradient-to-r from-slate-500 to-slate-600 px-7 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
@@ -232,7 +232,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white">Sistem Tata Kelola</h3>
-                <p className="text-2xs font-semibold text-violet-200">Daftar sistem tata kelola perguruan tinggi</p>
+                <p className="text-2xs font-semibold text-slate-200">Daftar sistem tata kelola perguruan tinggi</p>
               </div>
             </div>
             <span className="rounded-xl bg-white/20 backdrop-blur-sm px-3 py-1 text-2xs font-bold text-white">
@@ -272,8 +272,8 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
                     <td className="px-4 py-3 text-center">
                       <span className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-2xs font-bold ${
                         item.rowData.akses === "Internet"
-                          ? "bg-violet-100 text-violet-700"
-                          : "bg-purple-100 text-purple-700"
+                          ? "bg-slate-100 text-slate-700"
+                          : "bg-slate-100 text-slate-700"
                       }`}>
                         {item.rowData.akses === "Internet" ? (
                           <><Globe className="h-3 w-3" /> Internet</>
@@ -333,9 +333,9 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
                   </td>
                   <td className="px-4 py-3 font-black text-slate-700">{totalSistem}</td>
                   <td className="px-4 py-3 text-center">
-                    <span className="font-black text-violet-600">{aksesInternet} Internet</span>
+                    <span className="font-black text-slate-600">{aksesInternet} Internet</span>
                     {" / "}
-                    <span className="font-black text-purple-600">{aksesLokal} Lokal</span>
+                    <span className="font-black text-slate-600">{aksesLokal} Lokal</span>
                   </td>
                   <td colSpan={3} />
                 </tr>
@@ -358,7 +358,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
             >
               {/* Modal header */}
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-soft-sm">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-500 to-slate-600 text-white shadow-soft-sm">
                   {editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}
                 </div>
                 <div>
@@ -379,8 +379,8 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
                 className="space-y-5"
               >
                 {/* Seksi — Informasi Sistem */}
-                <div className="rounded-2xl border border-violet-100 bg-violet-50/30 p-5 space-y-4">
-                  <div className="flex items-center gap-2 text-xs font-bold text-violet-700">
+                <div className="rounded-2xl border border-slate-100 bg-slate-50/30 p-5 space-y-4">
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
                     <Shield className="h-4 w-4" /> Informasi Sistem
                   </div>
                   <div>
@@ -392,7 +392,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
                       placeholder="cth: Sistem Informasi, SPMI, SPME"
                       value={form.jenisTataKelola}
                       onChange={(e) => setForm((p) => ({ ...p, jenisTataKelola: e.target.value }))}
-                      className="w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 shadow-sm placeholder:text-slate-300"
+                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 shadow-sm placeholder:text-slate-300"
                     />
                   </div>
                   <div>
@@ -404,14 +404,14 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
                       placeholder="cth: SIAkad, SISTER, SPMI Online"
                       value={form.namaSistem}
                       onChange={(e) => setForm((p) => ({ ...p, namaSistem: e.target.value }))}
-                      className="w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 shadow-sm placeholder:text-slate-300"
+                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 shadow-sm placeholder:text-slate-300"
                     />
                   </div>
                 </div>
 
                 {/* Seksi — Akses & Pengelola */}
-                <div className="rounded-2xl border border-purple-100 bg-purple-50/30 p-5 space-y-4">
-                  <div className="flex items-center gap-2 text-xs font-bold text-purple-700">
+                <div className="rounded-2xl border border-slate-100 bg-slate-50/30 p-5 space-y-4">
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
                     <Globe className="h-4 w-4" /> Akses & Pengelola
                   </div>
                   <div>
@@ -426,8 +426,8 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
                           onClick={() => setForm((p) => ({ ...p, akses: v }))}
                           className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${
                             form.akses === v
-                              ? "bg-gradient-to-tr from-violet-500 to-purple-600 text-white shadow-soft-sm"
-                              : "bg-white border border-slate-200 text-slate-600 hover:border-violet-300"
+                              ? "bg-gradient-to-tr from-slate-500 to-slate-600 text-white shadow-soft-sm"
+                              : "bg-white border border-slate-200 text-slate-600 hover:border-slate-300"
                           }`}
                         >
                           {v === "Internet" ? (
@@ -448,7 +448,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
                       placeholder="cth: UPT TIK, Biro Akademik"
                       value={form.unitPengelola}
                       onChange={(e) => setForm((p) => ({ ...p, unitPengelola: e.target.value }))}
-                      className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 shadow-sm placeholder:text-slate-300"
+                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 shadow-sm placeholder:text-slate-300"
                     />
                   </div>
                 </div>
@@ -483,7 +483,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-violet-500 to-purple-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
+                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-slate-500 to-slate-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
                   >
                     {isLoading ? (
                       <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</>

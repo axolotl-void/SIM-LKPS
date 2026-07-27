@@ -57,10 +57,10 @@ export default async function Bab5Page() {
 
   return (
     <div className="min-h-screen pb-12">
-      {/* HERO HEADER - Violet/Purple Theme */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-600 p-5 mb-6 shadow-xl animate-fade-in-up">
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-violet-400/20 rounded-full blur-2xl animate-pulse" />
-        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-400/20 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1.5s' }} />
+      {/* HERO HEADER - Slate/Navy Theme */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-600 via-slate-700 to-slate-800 p-5 mb-6 shadow-xl animate-fade-in-up">
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-slate-400/20 rounded-full blur-2xl animate-pulse" />
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-slate-500/20 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1.5s' }} />
 
         <div className="relative z-10">
           {/* Header Row */}
@@ -97,8 +97,8 @@ export default async function Bab5Page() {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 border border-white/10">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-violet-500/30 flex items-center justify-center">
-                  <Settings className="w-4 h-4 text-violet-300" />
+                <div className="w-8 h-8 rounded-lg bg-slate-500/30 flex items-center justify-center">
+                  <Settings className="w-4 h-4 text-slate-300" />
                 </div>
                 <div>
                   <div className="text-white/60 text-3xs">Tata Kelola</div>
@@ -108,8 +108,8 @@ export default async function Bab5Page() {
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 border border-white/10">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-purple-500/30 flex items-center justify-center">
-                  <Building2 className="w-4 h-4 text-purple-300" />
+                <div className="w-8 h-8 rounded-lg bg-slate-500/30 flex items-center justify-center">
+                  <Building2 className="w-4 h-4 text-slate-300" />
                 </div>
                 <div>
                   <div className="text-white/60 text-3xs">Sarana</div>
@@ -119,8 +119,8 @@ export default async function Bab5Page() {
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 border border-white/10">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-fuchsia-500/30 flex items-center justify-center">
-                  <Eye className="w-4 h-4 text-fuchsia-300" />
+                <div className="w-8 h-8 rounded-lg bg-slate-500/30 flex items-center justify-center">
+                  <Eye className="w-4 h-4 text-slate-300" />
                 </div>
                 <div>
                   <div className="text-white/60 text-3xs">Visi Misi</div>
@@ -130,8 +130,8 @@ export default async function Bab5Page() {
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 border border-white/10">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-violet-500/30 flex items-center justify-center">
-                  <Target className="w-4 h-4 text-violet-300" />
+                <div className="w-8 h-8 rounded-lg bg-slate-500/30 flex items-center justify-center">
+                  <Target className="w-4 h-4 text-slate-300" />
                 </div>
                 <div>
                   <div className="text-white/60 text-3xs">Strategi</div>
@@ -141,8 +141,8 @@ export default async function Bab5Page() {
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 border border-white/10">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-purple-500/30 flex items-center justify-center">
-                  <FileText className="w-4 h-4 text-purple-300" />
+                <div className="w-8 h-8 rounded-lg bg-slate-500/30 flex items-center justify-center">
+                  <FileText className="w-4 h-4 text-slate-300" />
                 </div>
                 <div>
                   <div className="text-white/60 text-3xs">Total</div>
@@ -156,7 +156,7 @@ export default async function Bab5Page() {
           <div className="mt-3 flex flex-wrap items-center gap-3 text-white/70 text-xs font-medium">
             <span className="px-2.5 py-1 bg-white/10 rounded-lg border border-white/10">{activeTa?.tahun} ({activeTa?.semester})</span>
             <span className="px-2.5 py-1 bg-white/10 rounded-lg border border-white/10">{activeTa?.prodi.nama}</span>
-            <span className="px-2.5 py-1 bg-violet-500/20 rounded-lg border border-violet-400/20 text-violet-200">{filledTables}/{tables.length} tabel terisi</span>
+            <span className="px-2.5 py-1 bg-slate-500/20 rounded-lg border border-slate-400/20 text-slate-200">{filledTables}/{tables.length} tabel terisi</span>
           </div>
         </div>
       </div>
@@ -180,11 +180,11 @@ export default async function Bab5Page() {
                 className="group animate-fade-in-up"
                 style={{ animationDelay: `${0.1 + index * 0.1}s` }}
               >
-                <div className="absolute -inset-1 bg-gradient-to-r from-violet-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-25 blur-xl transition-all duration-500 -z-10" />
+                <div className="absolute -inset-1 bg-gradient-to-r from-slate-500 to-slate-600 rounded-2xl opacity-0 group-hover:opacity-25 blur-xl transition-all duration-500 -z-10" />
                 
-                <div className="relative h-full rounded-2xl bg-gradient-to-br from-white to-violet-50/30 shadow-lg border border-slate-100 overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-1 group-hover:border-violet-200/50">
+                <div className="relative h-full rounded-2xl bg-gradient-to-br from-white to-slate-50/30 shadow-lg border border-slate-100 overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-1 group-hover:border-slate-200/50">
                   
-                  <div className="relative h-20 bg-gradient-to-br from-violet-500 to-purple-600 overflow-hidden">
+                  <div className="relative h-20 bg-gradient-to-br from-slate-500 to-slate-600 overflow-hidden">
                     <div className="absolute inset-0 opacity-20" style={{
                       backgroundImage: "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.5) 1px, transparent 0)",
                       backgroundSize: "12px 12px"
@@ -217,12 +217,12 @@ export default async function Bab5Page() {
                     </h3>
 
                     <div className={`rounded-xl p-4 transition-all ${hasData 
-                      ? 'bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg' 
+                      ? 'bg-gradient-to-br from-slate-500 to-slate-600 text-white shadow-lg' 
                       : 'bg-slate-100 border-2 border-dashed border-slate-200'}`}>
                       <div className="flex items-center justify-between">
                         <div>
                           <div className={`text-3xl font-black ${hasData ? 'text-white' : 'text-slate-300'}`}>{rowCount}</div>
-                          <div className={`text-sm font-medium ${hasData ? 'text-violet-100' : 'text-slate-400'}`}>Data Entry</div>
+                          <div className={`text-sm font-medium ${hasData ? 'text-slate-100' : 'text-slate-400'}`}>Data Entry</div>
                         </div>
                         {hasData && (
                           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
@@ -234,12 +234,12 @@ export default async function Bab5Page() {
                     </div>
 
                     <div className="flex items-center justify-between mt-4">
-                      <span className={`text-sm font-semibold ${hasData ? 'text-violet-600' : 'text-slate-500'} group-hover:underline`}>
+                      <span className={`text-sm font-semibold ${hasData ? 'text-slate-600' : 'text-slate-500'} group-hover:underline`}>
                         {hasData ? 'Lihat & Edit Data' : 'Mulai Mengisi'}
                       </span>
                       <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all ${hasData 
-                        ? 'bg-violet-100 text-violet-600 group-hover:bg-violet-600 group-hover:text-white group-hover:translate-x-1' 
-                        : 'bg-slate-100 text-slate-400 group-hover:bg-violet-500 group-hover:text-white group-hover:translate-x-1'}`}>
+                        ? 'bg-slate-100 text-slate-600 group-hover:bg-slate-600 group-hover:text-white group-hover:translate-x-1' 
+                        : 'bg-slate-100 text-slate-400 group-hover:bg-slate-500 group-hover:text-white group-hover:translate-x-1'}`}>
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>
@@ -270,11 +270,11 @@ export default async function Bab5Page() {
                 className="group animate-fade-in-up"
                 style={{ animationDelay: `${0.1 + index * 0.1}s` }}
               >
-                <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-fuchsia-500 rounded-2xl opacity-0 group-hover:opacity-25 blur-xl transition-all duration-500 -z-10" />
+                <div className="absolute -inset-1 bg-gradient-to-r from-slate-600 to-slate-700 rounded-2xl opacity-0 group-hover:opacity-25 blur-xl transition-all duration-500 -z-10" />
                 
-                <div className="relative h-full rounded-2xl bg-gradient-to-br from-white to-purple-50/30 shadow-lg border border-slate-100 overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-1 group-hover:border-purple-200/50">
+                <div className="relative h-full rounded-2xl bg-gradient-to-br from-white to-slate-50/30 shadow-lg border border-slate-100 overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:-translate-y-1 group-hover:border-slate-200/50">
                   
-                  <div className="relative h-20 bg-gradient-to-br from-purple-500 to-fuchsia-600 overflow-hidden">
+                  <div className="relative h-20 bg-gradient-to-br from-slate-600 to-slate-700 overflow-hidden">
                     <div className="absolute inset-0 opacity-20" style={{
                       backgroundImage: "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.5) 1px, transparent 0)",
                       backgroundSize: "12px 12px"
@@ -302,17 +302,17 @@ export default async function Bab5Page() {
                   </div>
 
                   <div className="p-5">
-                    <h3 className="text-base font-bold text-slate-800 leading-snug mb-3 group-hover:text-purple-600 transition-colors">
+                    <h3 className="text-base font-bold text-slate-800 leading-snug mb-3 group-hover:text-slate-600 transition-colors">
                       {table.nama}
                     </h3>
 
                     <div className={`rounded-xl p-4 transition-all ${hasData 
-                      ? 'bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white shadow-lg' 
+                      ? 'bg-gradient-to-br from-slate-600 to-slate-700 text-white shadow-lg' 
                       : 'bg-slate-100 border-2 border-dashed border-slate-200'}`}>
                       <div className="flex items-center justify-between">
                         <div>
                           <div className={`text-3xl font-black ${hasData ? 'text-white' : 'text-slate-300'}`}>{rowCount}</div>
-                          <div className={`text-sm font-medium ${hasData ? 'text-purple-100' : 'text-slate-400'}`}>Data Entry</div>
+                          <div className={`text-sm font-medium ${hasData ? 'text-slate-100' : 'text-slate-400'}`}>Data Entry</div>
                         </div>
                         {hasData && (
                           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
@@ -324,12 +324,12 @@ export default async function Bab5Page() {
                     </div>
 
                     <div className="flex items-center justify-between mt-4">
-                      <span className={`text-sm font-semibold ${hasData ? 'text-purple-600' : 'text-slate-500'} group-hover:underline`}>
+                      <span className={`text-sm font-semibold ${hasData ? 'text-slate-600' : 'text-slate-500'} group-hover:underline`}>
                         {hasData ? 'Lihat & Edit Data' : 'Mulai Mengisi'}
                       </span>
                       <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all ${hasData 
-                        ? 'bg-purple-100 text-purple-600 group-hover:bg-purple-600 group-hover:text-white group-hover:translate-x-1' 
-                        : 'bg-slate-100 text-slate-400 group-hover:bg-purple-500 group-hover:text-white group-hover:translate-x-1'}`}>
+                        ? 'bg-slate-100 text-slate-600 group-hover:bg-slate-600 group-hover:text-white group-hover:translate-x-1' 
+                        : 'bg-slate-100 text-slate-400 group-hover:bg-slate-500 group-hover:text-white group-hover:translate-x-1'}`}>
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>

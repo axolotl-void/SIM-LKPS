@@ -187,7 +187,7 @@ export function Tabel3C3Client({ initialRows, tahunAkademikId, tabelKode, status
         )}
       </AnimatePresence>
 
-      <AnimatePresence>{toast && (<motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl px-5 py-4 text-xs font-bold text-white shadow-soft-lg bg-slate-900 border border-slate-800"><CheckCircle2 className={`h-5 w-5 shrink-0 ${toast.type === "success" ? "text-emerald-400" : "text-red-400"}`} /><span>{toast.message}</span></motion.div>)}</AnimatePresence>
+      <AnimatePresence>{toast && (<motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl px-5 py-4 text-xs font-bold text-white shadow-soft-lg bg-slate-900 border border-slate-800"><CheckCircle2 className={`h-5 w-5 shrink-0 ${toast.type === "success" ? "text-violet-400" : "text-red-400"}`} /><span>{toast.message}</span></motion.div>)}</AnimatePresence>
     </div>
   );
 }

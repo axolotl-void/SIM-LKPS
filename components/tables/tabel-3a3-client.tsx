@@ -131,21 +131,21 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 3
         </Link>
         <div className="flex items-center gap-2.5">
-          <button onClick={openAdd} disabled={!canEdit} className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${canEdit ? "bg-gradient-to-tr from-teal-500 to-cyan-600 text-white" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}>
+          <button onClick={openAdd} disabled={!canEdit} className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${canEdit ? "bg-gradient-to-tr from-purple-500 to-cyan-600 text-white" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}>
             <Plus className="h-4 w-4" /> Tambah Pengembangan
           </button>
         </div>
       </div>
 
-      <div className="flex items-center gap-3 rounded-2xl bg-teal-50/60 border border-teal-100/60 px-5 py-4 text-xs font-semibold text-teal-700">
-        <Lightbulb className="h-5 w-5 shrink-0 text-teal-500" />
+      <div className="flex items-center gap-3 rounded-2xl bg-teal-50/60 border border-teal-100/60 px-5 py-4 text-xs font-semibold text-purple-700">
+        <Lightbulb className="h-5 w-5 shrink-0 text-purple-500" />
         <span>Catat pengembangan DTPR di bidang penelitian.</span>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         {[
           { label: "Total Pengembangan", value: totalItems, color: "text-slate-800" },
-          { label: "DTPR Terdaftar", value: rows.length, color: "text-teal-600" },
+          { label: "DTPR Terdaftar", value: rows.length, color: "text-purple-600" },
           { label: "Ada Bukti", value: `${rows.filter((r) => r.rowData.linkBukti).length}/${totalItems}`, color: "text-cyan-600" },
         ].map((card) => (
           <div key={card.label} className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
@@ -156,7 +156,7 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status
       </div>
 
       <div className="rounded-2xl border-2 border-teal-200/70 bg-white shadow-soft overflow-hidden">
-        <div className="bg-gradient-to-r from-teal-500 to-cyan-600 px-7 py-4">
+        <div className="bg-gradient-to-r from-purple-500 to-cyan-600 px-7 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
@@ -164,7 +164,7 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white">Pengembangan DTPR Bidang Penelitian</h3>
-                <p className="text-2xs font-semibold text-teal-200">Data pengembangan dosen tetap program studi</p>
+                <p className="text-2xs font-semibold text-purple-200">Data pengembangan dosen tetap program studi</p>
               </div>
             </div>
             <span className="rounded-xl bg-white/20 backdrop-blur-sm px-3 py-1 text-2xs font-bold text-white">{totalItems} items</span>
@@ -221,7 +221,7 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 overflow-y-auto">
             <motion.div initial={{ scale: 0.95, opacity: 0, y: 16 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 16 }} transition={{ type: "spring", damping: 25, stiffness: 350 }} className="w-full max-w-lg rounded-3xl bg-white shadow-soft-lg border border-slate-100/50 p-8 my-8">
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 text-white shadow-soft-sm">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-cyan-600 text-white shadow-soft-sm">
                   {editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}
                 </div>
                 <div>
@@ -231,7 +231,7 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-5">
                 <div className="rounded-2xl border border-teal-100 bg-teal-50/30 p-5 space-y-4">
-                  <div className="flex items-center gap-2 text-xs font-bold text-teal-700"><GraduationCap className="h-4 w-4" /> Identitas</div>
+                  <div className="flex items-center gap-2 text-xs font-bold text-purple-700"><GraduationCap className="h-4 w-4" /> Identitas</div>
                   <div>
                     <label className="block text-2xs font-bold text-slate-600 mb-1">Nama DTPR <span className="text-red-500">*</span></label>
                     <input type="text" placeholder="Nama dosen" value={form.namaDtpr} onChange={(e) => setForm((p) => ({ ...p, namaDtpr: e.target.value }))} className="w-full rounded-xl border border-teal-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-sm placeholder:text-slate-300" />
@@ -247,7 +247,7 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status
                 </div>
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
                   <button type="button" onClick={() => setModalOpen(false)} disabled={isLoading} className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-50 transition-colors"><X className="h-4 w-4" /> Batal</button>
-                  <button type="submit" disabled={isLoading} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50">
+                  <button type="submit" disabled={isLoading} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-purple-500 to-cyan-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50">
                     {isLoading ? <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</> : <><Save className="h-4 w-4" /> {editItem ? "Perbarui" : "Simpan"}</>}
                   </button>
                 </div>
@@ -285,7 +285,7 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status
       <AnimatePresence>
         {toast && (
           <motion.div initial={{ opacity: 0, y: 50, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.95 }} className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl bg-slate-900 border border-slate-800 px-5 py-4 text-xs font-bold text-white shadow-soft-lg">
-            <CheckCircle2 className={`h-5 w-5 shrink-0 ${toast.type === "success" ? "text-emerald-400" : "text-red-400"}`} />
+            <CheckCircle2 className={`h-5 w-5 shrink-0 ${toast.type === "success" ? "text-violet-400" : "text-red-400"}`} />
             <span>{toast.message}</span>
           </motion.div>
         )}

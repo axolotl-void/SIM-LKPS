@@ -120,7 +120,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
             disabled={!canEdit}
             className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm transition-all ${
               canEdit
-                ? "bg-gradient-to-tr from-indigo-500 to-purple-600 text-white hover:shadow-soft"
+                ? "bg-gradient-to-tr from-cyan-500 to-teal-600 text-white hover:shadow-soft"
                 : "bg-slate-100 text-slate-400 cursor-not-allowed"
             }`}
           >
@@ -146,7 +146,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <p className="text-3xl font-black text-slate-800">{fmt(allJumlahLulusan)}</p>
             </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white shadow-soft-sm">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 text-white shadow-soft-sm">
               <Users className="h-6 w-6" />
             </div>
           </div>
@@ -165,7 +165,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <p className="text-3xl font-black text-slate-800">{fmt(allJumlahTerlacak)}</p>
             </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-soft-sm">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 text-white shadow-soft-sm">
               <BarChart3 className="h-6 w-6" />
             </div>
           </div>
@@ -183,7 +183,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <p className="text-3xl font-black text-slate-800">{allAvgRata.toFixed(1)} <span className="text-lg font-bold text-slate-400">bulan</span></p>
             </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-soft-sm">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-500 text-white shadow-soft-sm">
               <Clock className="h-6 w-6" />
             </div>
           </div>
@@ -196,7 +196,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
       {/* TS Card — Main Large */}
       <div className="rounded-2xl border-2 border-indigo-200/70 bg-white shadow-soft overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-7 py-4">
+        <div className="bg-gradient-to-r from-cyan-500 to-teal-600 px-7 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
@@ -239,7 +239,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
               <p className="text-4xl font-black text-indigo-900">{fmt(tsRow?.rowData.jumlahTerlacak)}</p>
               <div className="mt-2 flex items-center gap-1.5">
                 <div className="flex-1 h-2 rounded-full bg-indigo-100 overflow-hidden">
-                  <div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500"
+                  <div className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 transition-all duration-500"
                     style={{ width: `${Math.min(Number(tracePct), 100)}%` }} />
                 </div>
                 <span className="text-2xs font-bold text-indigo-600">{tracePct}%</span>
@@ -295,7 +295,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
               className="w-full max-w-xl rounded-3xl bg-white shadow-soft-lg border border-slate-100/50 p-8"
             >
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-soft-sm">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-600 text-white shadow-soft-sm">
                   <Clock className="h-7 w-7" />
                 </div>
                 <div>
@@ -359,7 +359,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
                     <X className="h-4 w-4" /> Batal
                   </button>
                   <button type="submit" disabled={isLoading}
-                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50">
+                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-cyan-500 to-teal-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50">
                     {isLoading ? <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</>
                       : <><Save className="h-4 w-4" /> Simpan Data</>}
                   </button>

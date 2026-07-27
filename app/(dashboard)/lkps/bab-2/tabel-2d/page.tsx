@@ -69,10 +69,10 @@ export default async function Tabel2DPage() {
   return (
     <div className="space-y-6">
       <div className="relative overflow-hidden rounded-3xl bg-white p-7 shadow-soft border border-slate-100/50">
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-indigo-50/50 via-purple-50/20 to-transparent pointer-events-none rounded-r-3xl" />
+        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-cyan-50/50 via-purple-50/20 to-transparent pointer-events-none rounded-r-3xl" />
         <div className="relative z-10 flex flex-col gap-5 md:max-w-xl">
           <div className="flex items-center gap-3">
-            <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">Tabel {def.kode}</span>
+            <span className="text-3xs font-black uppercase tracking-wider text-cyan-600 bg-cyan-50/80 px-2.5 py-1 rounded-lg">Tabel {def.kode}</span>
             <span className={`flex items-center gap-1 text-2xs font-bold px-2.5 py-1 rounded-lg bg-${statusCfg.color}-50 text-${statusCfg.color}-600 border border-${statusCfg.color}-100/50`}>
               {statusCfg.icon} {statusCfg.label}
             </span>
@@ -81,14 +81,14 @@ export default async function Tabel2DPage() {
           <p className="mt-1 text-xs font-semibold text-slate-500">Pengakuan dan apresiasi kompetensi lulusan oleh DUDIKA</p>
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-              <Calendar className="h-5 w-5 text-indigo-600" />
+              <Calendar className="h-5 w-5 text-cyan-600" />
               <div>
                 <div className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">Tahun Akademik</div>
                 <div className="text-xs font-bold text-slate-800 mt-0.5">{activeTa.tahun} ({activeTa.semester})</div>
               </div>
             </div>
             <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-              <BookOpen className="h-5 w-5 text-indigo-600" />
+              <BookOpen className="h-5 w-5 text-cyan-600" />
               <div>
                 <div className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">Program Studi</div>
                 <div className="text-xs font-bold text-slate-800 mt-0.5">{activeTa.prodi.nama} ({activeTa.prodi.jenjang})</div>

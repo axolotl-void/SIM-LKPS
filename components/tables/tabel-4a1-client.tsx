@@ -189,7 +189,7 @@ export function Tabel4A1Client({ initialRows, tahunAkademikId, tabelKode, status
             disabled={!canEdit}
             className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${
               canEdit
-                ? "bg-gradient-to-tr from-amber-500 to-orange-600 text-white"
+                ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white"
                 : "bg-slate-100 text-slate-400 cursor-not-allowed"
             }`}
           >
@@ -228,7 +228,7 @@ export function Tabel4A1Client({ initialRows, tahunAkademikId, tabelKode, status
       {/* Table card */}
       <div className="rounded-2xl border-2 border-amber-200/70 bg-white shadow-soft overflow-hidden">
         {/* Table header */}
-        <div className="bg-gradient-to-r from-amber-500 to-orange-600 px-7 py-4">
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 px-7 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
@@ -357,7 +357,7 @@ export function Tabel4A1Client({ initialRows, tahunAkademikId, tabelKode, status
             >
               {/* Modal header */}
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-soft-sm">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-soft-sm">
                   {editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}
                 </div>
                 <div>
@@ -436,7 +436,7 @@ export function Tabel4A1Client({ initialRows, tahunAkademikId, tabelKode, status
                             onClick={() => setForm((p) => ({ ...p, status: v }))}
                             className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${
                               form.status === v
-                                ? "bg-gradient-to-tr from-amber-500 to-orange-600 text-white shadow-soft-sm"
+                                ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white shadow-soft-sm"
                                 : "bg-white border border-slate-200 text-slate-600 hover:border-amber-300"
                             }`}
                           >
@@ -509,7 +509,7 @@ export function Tabel4A1Client({ initialRows, tahunAkademikId, tabelKode, status
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
+                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
                   >
                     {isLoading ? (
                       <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</>

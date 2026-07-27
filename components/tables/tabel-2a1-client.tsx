@@ -31,7 +31,7 @@ const FIELD_GROUPS = [
   {
     label: "Calon Mahasiswa",
     icon: Users,
-    color: "from-blue-500 to-cyan-500",
+    color: "from-cyan-500 to-teal-500",
     fields: [
       { key: "dayaTampung", label: "Daya Tampung", placeholder: "cth: 120" },
       { key: "pendaftar", label: "Jumlah Pendaftar", placeholder: "cth: 1100" },
@@ -42,7 +42,7 @@ const FIELD_GROUPS = [
   {
     label: "Mahasiswa Baru Reguler",
     icon: GraduationCap,
-    color: "from-indigo-500 to-purple-500",
+    color: "from-cyan-500 to-teal-500",
     fields: [
       { key: "mabaRegulerDiterima", label: "Diterima", placeholder: "cth: 290" },
       { key: "mabaRegulerAfirmasi", label: "Afirmasi", placeholder: "cth: 10" },
@@ -52,7 +52,7 @@ const FIELD_GROUPS = [
   {
     label: "Mahasiswa Baru Transfer/RPL",
     icon: UserPlus,
-    color: "from-purple-500 to-pink-500",
+    color: "from-teal-500 to-cyan-500",
     fields: [
       { key: "mabaRplDiterima", label: "Diterima", placeholder: "cth: 20" },
       { key: "mabaRplAfirmasi", label: "Afirmasi", placeholder: "cth: 0" },
@@ -62,7 +62,7 @@ const FIELD_GROUPS = [
   {
     label: "Mahasiswa Aktif Reguler",
     icon: BookOpen,
-    color: "from-emerald-500 to-teal-500",
+    color: "from-cyan-600 to-teal-600",
     fields: [
       { key: "aktifRegulerJumlah", label: "Jumlah", placeholder: "cth: 300" },
       { key: "aktifRegulerAfirmasi", label: "Afirmasi", placeholder: "cth: 8" },
@@ -72,7 +72,7 @@ const FIELD_GROUPS = [
   {
     label: "Mahasiswa Aktif Transfer/RPL",
     icon: Users,
-    color: "from-orange-500 to-amber-500",
+    color: "from-cyan-500 to-teal-500",
     fields: [
       { key: "aktifRplJumlah", label: "Jumlah", placeholder: "cth: 10" },
       { key: "aktifRplAfirmasi", label: "Afirmasi", placeholder: "cth: 0" },
@@ -174,7 +174,7 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center justify-between">
         <Link
           href="/lkps/bab-2"
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-cyan-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
@@ -184,7 +184,7 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
             disabled={!canEdit}
             className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold shadow-soft-sm transition-all ${
               canEdit
-                ? "bg-gradient-to-tr from-blue-500 to-indigo-600 text-white hover:shadow-soft"
+                ? "bg-gradient-to-tr from-cyan-500 to-teal-600 text-white hover:shadow-soft"
                 : "bg-slate-100 text-slate-400 cursor-not-allowed"
             }`}
           >
@@ -195,7 +195,7 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
 
       {/* Info */}
       <div className="flex items-center gap-2 rounded-2xl bg-blue-50/50 border border-blue-100/50 px-4 py-3 text-2xs font-semibold text-blue-700">
-        <Lightbulb className="h-4 w-4 shrink-0 text-blue-500" />
+        <Lightbulb className="h-4 w-4 shrink-0 text-cyan-500" />
         <span>Data TS-3, TS-2, TS-1 otomatis dari tahun akademik sebelumnya. <strong>Klik "Edit Data TS"</strong> untuk mengisi data Tahun Sekarang.</span>
       </div>
 
@@ -206,11 +206,11 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
                 <th rowSpan={2} className="px-3 py-2.5 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-slate-100/50 w-16">TS</th>
-                <th colSpan={4} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-blue-50/50">Calon Mahasiswa</th>
-                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-indigo-50/50">Maba Reguler</th>
-                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-purple-50/50">Maba Transfer/RPL</th>
-                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-emerald-50/50">Aktif Reguler</th>
-                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center bg-orange-50/50">Aktif Transfer/RPL</th>
+                <th colSpan={4} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-cyan-50/50">Calon Mahasiswa</th>
+                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-teal-50/50">Maba Reguler</th>
+                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-cyan-50/50">Maba Transfer/RPL</th>
+                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-teal-50/50">Aktif Reguler</th>
+                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center bg-cyan-50/50">Aktif Transfer/RPL</th>
               </tr>
               <tr className="border-b border-slate-200">
                 <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Daya Tampung</th>
@@ -284,7 +284,7 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
             >
               {/* Header */}
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-soft-sm">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 shadow-soft-sm">
                   <Users className="h-6 w-6" />
                 </div>
                 <div>
@@ -317,7 +317,7 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
                               placeholder={f.placeholder}
                               value={formData[f.key] || ""}
                               onChange={(e) => setFormData((p) => ({ ...p, [f.key]: e.target.value }))}
-                              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-bold text-slate-700 transition-all focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/30 shadow-3xs placeholder:text-slate-300"
+                              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-bold text-slate-700 transition-all focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 shadow-3xs placeholder:text-slate-300"
                             />
                           </div>
                         ))}
@@ -339,7 +339,7 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex items-center gap-1.5 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 px-5 py-2 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-xl bg-gradient-to-tr from-cyan-500 to-teal-600 px-5 py-2 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50"
                   >
                     {isLoading ? (
                       <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Menyimpan...</>

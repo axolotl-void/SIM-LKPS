@@ -105,7 +105,7 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center justify-between">
         <Link href="/lkps/bab-4" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-teal-600 transition-colors"><ArrowLeft className="h-4 w-4" /> Kembali ke BAB 4</Link>
         <div className="flex items-center gap-2.5">
-          <button onClick={openAdd} disabled={!canEdit} className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${canEdit ? "bg-gradient-to-tr from-teal-500 to-cyan-600 text-white" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}><Plus className="h-4 w-4" /> Tambah Kerjasama PkM</button>
+          <button onClick={openAdd} disabled={!canEdit} className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${canEdit ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}><Plus className="h-4 w-4" /> Tambah Kerjasama PkM</button>
         </div>
       </div>
 
@@ -121,7 +121,7 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
       </div>
 
       <div className="rounded-2xl border-2 border-teal-200/70 bg-white shadow-soft overflow-hidden">
-        <div className="bg-gradient-to-r from-teal-500 to-cyan-600 px-7 py-4">
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 px-7 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm"><Handshake className="h-5 w-5 text-white" /></div>
@@ -169,7 +169,7 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/30 backdrop-blur-sm p-4 overflow-y-auto">
           <motion.div initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }} transition={{ type: "spring", damping: 25, stiffness: 350 }} className="w-full max-w-xl rounded-3xl bg-white shadow-soft-lg border border-slate-100/50 p-8 my-8">
             <div className="flex items-center gap-4 mb-6">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 text-white shadow-soft-sm">{editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}</div>
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-soft-sm">{editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}</div>
               <div><h3 className="text-lg font-bold text-slate-800">{editItem ? "Edit Kerjasama PkM" : "Tambah Kerjasama PkM"}</h3><p className="text-xs text-slate-500 font-semibold mt-0.5">Mitra dan Pendanaan</p></div>
             </div>
             <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-5">
@@ -178,7 +178,7 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
                 <div><label className="block text-2xs font-bold text-slate-600 mb-1">Judul Kerjasama <span className="text-red-500">*</span></label><input type="text" placeholder="Judul kegiatan kerjasama" value={form.judulKerjasama} onChange={(e) => setForm((p) => ({ ...p, judulKerjasama: e.target.value }))} className="w-full rounded-xl border border-teal-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-sm placeholder:text-slate-300" /></div>
                 <div className="grid grid-cols-2 gap-4">
                   <div><label className="block text-2xs font-bold text-slate-600 mb-1">Mitra Kerja <span className="text-red-500">*</span></label><input type="text" placeholder="Nama mitra" value={form.mitraKerja} onChange={(e) => setForm((p) => ({ ...p, mitraKerja: e.target.value }))} className="w-full rounded-xl border border-teal-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-sm placeholder:text-slate-300" /></div>
-                  <div><label className="block text-2xs font-bold text-slate-600 mb-1">Skala / Sumber</label><div className="flex gap-2">{(["L", "N", "I"] as const).map((v) => (<button key={v} type="button" onClick={() => setForm((p) => ({ ...p, sumber: v }))} className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${form.sumber === v ? "bg-gradient-to-tr from-teal-500 to-cyan-600 text-white shadow-soft-sm" : "bg-white border border-slate-200 text-slate-600 hover:border-teal-300"}`}>{v === "L" ? "Lokal" : v === "N" ? "Nasional" : "Internasional"}</button>))}</div></div>
+                  <div><label className="block text-2xs font-bold text-slate-600 mb-1">Skala / Sumber</label><div className="flex gap-2">{(["L", "N", "I"] as const).map((v) => (<button key={v} type="button" onClick={() => setForm((p) => ({ ...p, sumber: v }))} className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${form.sumber === v ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white shadow-soft-sm" : "bg-white border border-slate-200 text-slate-600 hover:border-teal-300"}`}>{v === "L" ? "Lokal" : v === "N" ? "Nasional" : "Internasional"}</button>))}</div></div>
                 </div>
                 <div><label className="block text-2xs font-bold text-slate-600 mb-1">Durasi (tahun)</label><input type="number" min="0" placeholder="1" value={form.durasi} onChange={(e) => setForm((p) => ({ ...p, durasi: e.target.value }))} className="w-full rounded-xl border border-teal-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-sm placeholder:text-slate-300" /></div>
               </div>
@@ -193,7 +193,7 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
                 <button type="button" onClick={() => setModalOpen(false)} disabled={isLoading} className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-50 transition-colors"><X className="h-4 w-4" /> Batal</button>
-                <button type="submit" disabled={isLoading} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50">{isLoading ? <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</> : <><Save className="h-4 w-4" /> Simpan</>}</button>
+                <button type="submit" disabled={isLoading} className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50">{isLoading ? <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</> : <><Save className="h-4 w-4" /> Simpan</>}</button>
               </div>
             </form>
           </motion.div>

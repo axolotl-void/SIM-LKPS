@@ -79,17 +79,17 @@ export default async function Tabel3A2Page() {
     <div className="space-y-6">
       {/* Header Banner */}
       <div className="relative overflow-hidden rounded-3xl bg-white p-7 shadow-soft border border-slate-100/50">
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-teal-50/50 via-cyan-50/20 to-transparent pointer-events-none rounded-r-3xl" />
+        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-purple-50/50 via-cyan-50/20 to-transparent pointer-events-none rounded-r-3xl" />
         <div className="absolute right-12 top-1/2 -translate-y-1/2 hidden md:block pointer-events-none">
-          <div className="flex h-20 w-16 rotate-12 items-center justify-center rounded-2xl bg-white shadow-soft-lg border border-slate-100/40 text-teal-500">
-            <FlaskConical className="h-10 w-10 text-teal-400" />
+          <div className="flex h-20 w-16 rotate-12 items-center justify-center rounded-2xl bg-white shadow-soft-lg border border-slate-100/40 text-purple-500">
+            <FlaskConical className="h-10 w-10 text-purple-400" />
           </div>
         </div>
 
         <div className="relative z-10 flex flex-col gap-5 md:max-w-xl">
           <div>
             <div className="flex items-center gap-3">
-              <span className="text-3xs font-black uppercase tracking-wider text-teal-600 bg-teal-50/80 px-2.5 py-1 rounded-lg">
+              <span className="text-3xs font-black uppercase tracking-wider text-purple-600 bg-purple-50/80 px-2.5 py-1 rounded-lg">
                 Tabel {def.kode}
               </span>
               <span className={`flex items-center gap-1 text-2xs font-bold px-2.5 py-1 rounded-lg bg-${statusCfg.color}-50 text-${statusCfg.color}-600 border border-${statusCfg.color}-100/50`}>
@@ -106,7 +106,7 @@ export default async function Tabel3A2Page() {
 
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-teal-500/10 to-cyan-500/10 text-teal-600 shadow-soft-2xs">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-purple-500/10 to-cyan-500/10 text-purple-600 shadow-soft-2xs">
                 <Calendar className="h-5 w-5" />
               </div>
               <div>
@@ -115,7 +115,7 @@ export default async function Tabel3A2Page() {
               </div>
             </div>
             <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-teal-500/10 to-cyan-500/10 text-teal-600 shadow-soft-2xs">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-purple-500/10 to-cyan-500/10 text-purple-600 shadow-soft-2xs">
                 <BookOpen className="h-5 w-5" />
               </div>
               <div>
