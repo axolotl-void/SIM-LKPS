@@ -40,7 +40,7 @@ export default async function Tabel2B1Page() {
     <div className="space-y-6">
       <div className="rounded-3xl bg-white p-7 shadow-soft border border-slate-100/50">
         <div className="flex items-center gap-3 mb-2">
-          <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">Tabel {def.kode}</span>
+          <span className="text-3xs font-black uppercase tracking-wider text-cyan-600 bg-cyan-50/80 px-2.5 py-1 rounded-lg">Tabel {def.kode}</span>
           <span className={`flex items-center gap-1 text-2xs font-bold px-2.5 py-1 rounded-lg bg-${statusBadge[status]?.color ?? "slate"}-50 text-${statusBadge[status]?.color ?? "slate"}-600 border border-${statusBadge[status]?.color ?? "slate"}-100/50`}>
             {statusBadge[status]?.icon ?? statusBadge.DRAFT.icon} {statusBadge[status]?.label ?? "Draft"}
           </span>

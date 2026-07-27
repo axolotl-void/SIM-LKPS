@@ -12,11 +12,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 
 const TYPES = [
-  { key: "mahasiswaAktif", label: "Jumlah Mahasiswa Aktif", icon: Users, color: "from-blue-500 to-cyan-500" },
-  { key: "microCredential", label: "Micro-credential", icon: GraduationCap, color: "from-indigo-500 to-purple-500" },
-  { key: "rplA2", label: "RPL tipe A-2", icon: BookOpen, color: "from-purple-500 to-pink-500" },
-  { key: "pembelajaranPSLain", label: "Pembelajaran di PS lain", icon: Monitor, color: "from-emerald-500 to-teal-500" },
-  { key: "pembelajaranPTLain", label: "Pembelajaran di PT lain", icon: Globe, color: "from-orange-500 to-amber-500" },
+  { key: "mahasiswaAktif", label: "Jumlah Mahasiswa Aktif", icon: Users, color: "from-cyan-500 to-teal-500" },
+  { key: "microCredential", label: "Micro-credential", icon: GraduationCap, color: "from-cyan-500 to-teal-500" },
+  { key: "rplA2", label: "RPL tipe A-2", icon: BookOpen, color: "from-teal-500 to-cyan-500" },
+  { key: "pembelajaranPSLain", label: "Pembelajaran di PS lain", icon: Monitor, color: "from-cyan-600 to-teal-600" },
+  { key: "pembelajaranPTLain", label: "Pembelajaran di PT lain", icon: Globe, color: "from-cyan-500 to-teal-500" },
   { key: "cblPbl", label: "CBL / PBL", icon: GitBranch, color: "from-rose-500 to-red-500" },
 ];
 

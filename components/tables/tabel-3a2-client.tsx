@@ -188,7 +188,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center justify-between">
         <Link
           href="/lkps/bab-3"
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-teal-600 transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-purple-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 3
         </Link>
@@ -198,7 +198,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
             disabled={!canEdit}
             className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${
               canEdit
-                ? "bg-gradient-to-tr from-teal-500 to-cyan-600 text-white"
+                ? "bg-gradient-to-tr from-purple-500 to-cyan-600 text-white"
                 : "bg-slate-100 text-slate-400 cursor-not-allowed"
             }`}
           >
@@ -208,8 +208,8 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
       </div>
 
       {/* Info banner */}
-      <div className="flex items-center gap-3 rounded-2xl bg-teal-50/60 border border-teal-100/60 px-5 py-4 text-xs font-semibold text-teal-700">
-        <Lightbulb className="h-5 w-5 shrink-0 text-teal-500" />
+      <div className="flex items-center gap-3 rounded-2xl bg-teal-50/60 border border-teal-100/60 px-5 py-4 text-xs font-semibold text-purple-700">
+        <Lightbulb className="h-5 w-5 shrink-0 text-purple-500" />
         <span>
           Klik <strong>"Tambah Penelitian"</strong> untuk menambahkan data. Isi data penelitian DTPR
           termasuk jenis hibah dan pendanaan per tahun (TS-2, TS-1, TS).
@@ -220,9 +220,9 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-4">
         {[
           { label: "Jumlah Penelitian", value: rows.length, color: "text-slate-800" },
-          { label: "Total Dana TS", value: `${totalDanaTs.toLocaleString("id-ID")} jt`, color: "text-teal-600" },
+          { label: "Total Dana TS", value: `${totalDanaTs.toLocaleString("id-ID")} jt`, color: "text-purple-600" },
           { label: "Total Dana TS-1", value: `${totalDanaTs1.toLocaleString("id-ID")} jt`, color: "text-cyan-600" },
-          { label: "Total Dana TS-2", value: `${totalDanaTs2.toLocaleString("id-ID")} jt`, color: "text-emerald-600" },
+          { label: "Total Dana TS-2", value: `${totalDanaTs2.toLocaleString("id-ID")} jt`, color: "text-violet-600" },
         ].map((card) => (
           <div key={card.label} className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
             <div className="text-xs font-bold uppercase tracking-wider text-slate-400">{card.label}</div>
@@ -233,7 +233,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
 
       {/* Table card */}
       <div className="rounded-2xl border-2 border-teal-200/70 bg-white shadow-soft overflow-hidden">
-        <div className="bg-gradient-to-r from-teal-500 to-cyan-600 px-7 py-4">
+        <div className="bg-gradient-to-r from-purple-500 to-cyan-600 px-7 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
@@ -241,7 +241,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white">Penelitian DTPR</h3>
-                <p className="text-2xs font-semibold text-teal-200">Hibah dan pembiayaan penelitian</p>
+                <p className="text-2xs font-semibold text-purple-200">Hibah dan pembiayaan penelitian</p>
               </div>
             </div>
             <span className="rounded-xl bg-white/20 backdrop-blur-sm px-3 py-1 text-2xs font-bold text-white">
@@ -292,13 +292,13 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
                         {item.rowData.jenisHibah === "I" ? "Internasional" : item.rowData.jenisHibah === "N" ? "Nasional" : "Lokal"}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-center font-semibold text-emerald-600">
+                    <td className="px-4 py-3 text-center font-semibold text-violet-600">
                       {item.rowData.danaTs2 > 0 ? item.rowData.danaTs2.toLocaleString("id-ID") : "—"}
                     </td>
                     <td className="px-4 py-3 text-center font-semibold text-cyan-600">
                       {item.rowData.danaTs1 > 0 ? item.rowData.danaTs1.toLocaleString("id-ID") : "—"}
                     </td>
-                    <td className="px-4 py-3 text-center font-semibold text-teal-600">
+                    <td className="px-4 py-3 text-center font-semibold text-purple-600">
                       {item.rowData.danaTs > 0 ? item.rowData.danaTs.toLocaleString("id-ID") : "—"}
                     </td>
                     <td className="px-4 py-3 text-center">
@@ -335,13 +335,13 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
                   <td colSpan={5} className="px-4 py-3 text-left font-black text-slate-700 uppercase tracking-wider text-xs">
                     Total Dana (juta Rp)
                   </td>
-                  <td className="px-4 py-3 text-center font-black text-emerald-600">
+                  <td className="px-4 py-3 text-center font-black text-violet-600">
                     {totalDanaTs2 > 0 ? totalDanaTs2.toLocaleString("id-ID") : "—"}
                   </td>
                   <td className="px-4 py-3 text-center font-black text-cyan-600">
                     {totalDanaTs1 > 0 ? totalDanaTs1.toLocaleString("id-ID") : "—"}
                   </td>
-                  <td className="px-4 py-3 text-center font-black text-teal-600">
+                  <td className="px-4 py-3 text-center font-black text-purple-600">
                     {totalDanaTs > 0 ? totalDanaTs.toLocaleString("id-ID") : "—"}
                   </td>
                   <td />
@@ -365,7 +365,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
             >
               {/* Header modal */}
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 text-white shadow-soft-sm">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-cyan-600 text-white shadow-soft-sm">
                   {editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}
                 </div>
                 <div>
@@ -381,7 +381,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
               <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-5">
                 {/* Identitas */}
                 <div className="rounded-2xl border border-teal-100 bg-teal-50/30 p-5 space-y-4">
-                  <div className="flex items-center gap-2 text-xs font-bold text-teal-700">
+                  <div className="flex items-center gap-2 text-xs font-bold text-purple-700">
                     <Users className="h-4 w-4" /> Identitas Penelitian
                   </div>
                   <div className="grid grid-cols-2 gap-4">
@@ -432,7 +432,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
                             onClick={() => setForm((p) => ({ ...p, jenisHibah: v }))}
                             className={`flex-1 rounded-xl px-2 py-2.5 text-xs font-bold transition-all ${
                               form.jenisHibah === v
-                                ? "bg-gradient-to-tr from-teal-500 to-cyan-600 text-white shadow-soft-sm"
+                                ? "bg-gradient-to-tr from-purple-500 to-cyan-600 text-white shadow-soft-sm"
                                 : "bg-white border border-slate-200 text-slate-600 hover:border-teal-300"
                             }`}
                           >
@@ -504,7 +504,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
+                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-purple-500 to-cyan-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
                   >
                     {isLoading ? (
                       <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</>
@@ -582,7 +582,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
           >
             <CheckCircle2
               className={`h-5 w-5 shrink-0 ${
-                toast.type === "success" ? "text-emerald-400" : "text-red-400"
+                toast.type === "success" ? "text-violet-400" : "text-red-400"
               }`}
             />
             <span>{toast.message}</span>

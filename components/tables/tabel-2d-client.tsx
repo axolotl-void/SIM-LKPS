@@ -30,10 +30,10 @@ const SOURCE_ICONS: Record<string, any> = {
 };
 
 const SOURCE_COLORS: Record<string, string> = {
-  masyarakat: "from-blue-500 to-cyan-500",
-  duniaUsaha: "from-indigo-500 to-purple-500",
-  duniaIndustri: "from-purple-500 to-pink-500",
-  duniaKerja: "from-emerald-500 to-teal-500",
+  masyarakat: "from-cyan-500 to-teal-500",
+  duniaUsaha: "from-cyan-500 to-teal-500",
+  duniaIndustri: "from-teal-500 to-cyan-500",
+  duniaKerja: "from-cyan-600 to-teal-600",
 };
 
 export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rowsTs, rowsTs1, rowsTs2, status, userRole }: Props) {
@@ -126,7 +126,7 @@ export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rows
                   <tr key={item.key} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-4 py-3 border-r border-slate-100">
                       <div className="flex items-center gap-3">
-                        <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br ${SOURCE_COLORS[item.key] || "from-blue-500 to-indigo-600"} text-white shadow-soft-sm`}>
+                        <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br ${SOURCE_COLORS[item.key] || "from-cyan-500 to-teal-600"} text-white shadow-soft-sm`}>
                           <Icon className="h-4 w-4" />
                         </div>
                         <span className="text-xs font-bold text-slate-800">{item.label}</span>
@@ -169,7 +169,7 @@ export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rows
               className="w-full max-w-lg rounded-3xl bg-white shadow-soft-lg border border-slate-100/50 p-7"
             >
               <div className="flex items-center gap-4 mb-6">
-                <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${SOURCE_COLORS[editKey] || "from-blue-500 to-indigo-600"} text-white shadow-soft-sm`}>
+                <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${SOURCE_COLORS[editKey] || "from-cyan-500 to-teal-600"} text-white shadow-soft-sm`}>
                   {(() => { const Icon = SOURCE_ICONS[editKey] || FileText; return <Icon className="h-7 w-7" />; })()}
                 </div>
                 <div>

@@ -188,7 +188,7 @@ export function Tabel2A3Client({ initialRows, tahunAkademikId, tabelKode, status
             })}
 
             {/* Total Row */}
-            <div className="grid grid-cols-12 items-center rounded-3xl bg-gradient-to-tr from-indigo-500 to-blue-600 p-5 text-white shadow-soft-lg gap-4 border border-white/10">
+            <div className="grid grid-cols-12 items-center rounded-3xl bg-gradient-to-tr from-cyan-500 to-teal-600 p-5 text-white shadow-soft-lg gap-4 border border-white/10">
               <div className="col-span-5 text-xs font-black px-2 uppercase tracking-widest">Jumlah Total</div>
               <div className="col-span-2 text-center text-xs font-black text-white/90">{totalTs2}</div>
               <div className="col-span-2 text-center text-xs font-black text-white/90">{totalTs1}</div>

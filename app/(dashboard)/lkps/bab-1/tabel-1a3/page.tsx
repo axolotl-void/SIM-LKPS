@@ -64,7 +64,7 @@ export default async function Tabel1A3Page() {
   });
 
   // Get current year (TS) TabelLkps
-  let lkpsTs = await db.tabelLkps.findUnique({
+  const lkpsTs = await db.tabelLkps.findUnique({
     where: {
       tabelDefinitionId_tahunAkademikId: {
         tabelDefinitionId: def.id,
