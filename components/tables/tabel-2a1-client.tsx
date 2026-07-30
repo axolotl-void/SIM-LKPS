@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   CheckCircle2, X, ArrowLeft, Loader2, Save, Edit2,
-  FileText, Users, GraduationCap, BookOpen, UserPlus,
-  Lightbulb
+  Users, GraduationCap, BookOpen, UserPlus, Lightbulb
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -81,8 +80,8 @@ const FIELD_GROUPS = [
   },
 ];
 
-export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
-  const [currentStatus, setCurrentStatus] = useState(status);
+export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: Props) {
+  const [currentStatus] = useState(status);
   const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const router = useRouter();
 

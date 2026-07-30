@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { 
-  Plus, Edit2, Trash2, CheckCircle2, X, AlertTriangle,
-  FileText, ArrowLeft, Loader2, Info
+import {
+  Plus, Edit2, Trash2, CheckCircle2, X,
+  FileText, ArrowLeft, Loader2, AlertTriangle, Info
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -22,9 +22,9 @@ interface Tabel1BClientProps {
   userRole: string;
 }
 
-export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Tabel1BClientProps) {
+export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: Tabel1BClientProps) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus, setCurrentStatus] = useState(status);
+  const [currentStatus] = useState(status);
   const router = useRouter();
 
   const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);

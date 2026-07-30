@@ -34,7 +34,7 @@ export function SummaryCard({
   const glowRef = useRef<HTMLDivElement>(null);
 
   // Static state — only changes twice: initial load + animation complete
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [, setIsAnimating] = useState(false);
 
   const circumference = 2 * Math.PI * 50;
   const targetPercentage = Math.round((dosenAktif / totalUsers) * 100);
@@ -168,6 +168,7 @@ export function SummaryCard({
         animationRef.current = null;
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

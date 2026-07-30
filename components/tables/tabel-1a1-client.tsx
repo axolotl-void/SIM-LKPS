@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { 
-  Plus, Edit2, Trash2, Loader2, ArrowLeft, 
-  FileText, User, Calendar, GraduationCap, 
+import {
+  Plus, Edit2, Trash2, Loader2, ArrowLeft,
+  FileText, User, Calendar, GraduationCap,
   Briefcase, Lightbulb, CheckCircle2, X, Save,
-  AlertTriangle, Info, RefreshCw, ChevronDown, Filter, ArrowRight,
-  Send, MessageSquare, ThumbsUp, ThumbsDown, RotateCcw
+  ChevronDown
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

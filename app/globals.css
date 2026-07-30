@@ -320,54 +320,41 @@
 }
 
 @layer utilities {
-  .animate-in {
-    animation: fadeSlideIn var(--transition-slow) forwards;
-  }
-  @keyframes fadeSlideIn {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* ── Performance Optimizations ──────────────────────────── */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
-  .animate-scale-in {
-    animation: scaleIn var(--transition-spring) forwards;
-  }
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(214.3 31.8% 87%) transparent;
   }
 
-  .stagger-children > * {
-    opacity: 0;
-    animation: fadeSlideIn var(--transition-slow) forwards;
-  }
-  .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
-  .stagger-children > *:nth-child(2) { animation-delay: 50ms; }
-  .stagger-children > *:nth-child(3) { animation-delay: 100ms; }
-  .stagger-children > *:nth-child(4) { animation-delay: 150ms; }
-  .stagger-children > *:nth-child(5) { animation-delay: 200ms; }
-  .stagger-children > *:nth-child(6) { animation-delay: 250ms; }
-
-  /* ── Fade In Up Animation ───────────────────────────────── */
+  /* ── Beautiful Fade In Up Animation ─────────────────── */
   .animate-fade-in-up {
     opacity: 0;
-    animation: fadeInUp 0.6s ease-out forwards;
+    transform: translateY(12px);
+    animation: fadeInUp 0.5s ease-out forwards;
+    transform: translateZ(0);
+    will-change: transform, opacity;
   }
+
+  /* Staggered delays for children */
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+  .stagger-6 { animation-delay: 0.6s; }
+  .stagger-7 { animation-delay: 0.7s; }
+  .stagger-8 { animation-delay: 0.8s; }
+
   @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(12px);
     }
     to {
       opacity: 1;
@@ -375,48 +362,58 @@
     }
   }
 
-  /* ── Spin Animations ──────────────────────────────────── */
-  @keyframes spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  @keyframes spin-reverse {
-    from { transform: rotate(360deg); }
-    to { transform: rotate(0deg); }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
-  .animate-spin-slow {
-    animation: spin-slow 20s linear infinite;
-  }
-  .animate-spin-reverse {
-    animation: spin-reverse 15s linear infinite;
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
   }
 
-  /* ── Wave Glow Pulse Animation ────────────────────────── */
-  /* Runs via CSS, no React state update per frame */
-  @keyframes waveGlowPulse {
-    0%, 100% { opacity: 0.35; }
-    50% { opacity: 0.55; }
-  }
-
-  .wave-glow {
-    animation: waveGlowPulse 7s ease-in-out infinite;
-  }
-
-  /* ── Reduced Motion ──────────────────────────────────── */
-  @media (prefers-reduced-motion: reduce) {
-    .wave-glow {
-      animation: none;
-      opacity: 0.35;
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
     }
-
-    .stagger-children > * {
-      animation: none;
+    to {
       opacity: 1;
+      transform: translateX(0);
     }
+  }
 
-    .animate-in,
-    .animate-scale-in {
+  /* ── Skeleton Shimmer ──────────────────────────────── */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      hsl(214.3 31.8% 95%) 0%,
+      hsl(214.3 31.8% 90%) 50%,
+      hsl(214.3 31.8% 95%) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* ── Card Hover Effects ────────────────────────────── */
+  .card-hover {
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* ── Reduced Motion ─────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in-up,
+    .skeleton,
+    .card-hover {
       animation: none;
       opacity: 1;
       transform: none;

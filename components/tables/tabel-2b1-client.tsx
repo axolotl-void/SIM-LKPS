@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Edit2, Trash2, Loader2, ArrowLeft, BookOpen, CheckCircle2, X, Save } from "lucide-react";
+import { Edit2, Trash2, Loader2, ArrowLeft, BookOpen, CheckCircle2, X, Save, Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 
-export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: any) {
+export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: any) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus, setCurrentStatus] = useState(status);
+  const [currentStatus] = useState(status);
   const router = useRouter();
   const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const [isOpen, setIsOpen] = useState(false);

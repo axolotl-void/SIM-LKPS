@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, memo } from "react";
-import { FileText, CheckCircle2, Clock, ShieldCheck, Sparkles, Target, Award } from "lucide-react";
+import { Clock, Sparkles, Target, Award } from "lucide-react";
 
 // CSS-only animation keyframes (more performant)
 const styleId = "kpi-cards-styles";
@@ -38,7 +38,7 @@ interface KPICardsProps {
 }
 
 // Animated counter - optimized with single RAF
-const AnimatedNumber = memo(function AnimatedNumber({ target, delay }: { target: number; delay: number }) {
+const AnimatedNumber = memo(function AnimatedNumber({ target }: { target: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const animatedRef = useRef(false);
 
@@ -78,7 +78,7 @@ const AnimatedNumber = memo(function AnimatedNumber({ target, delay }: { target:
 AnimatedNumber.displayName = "AnimatedNumber";
 
 // Animated percentage
-const AnimatedPercentage = memo(function AnimatedPercentage({ target, delay }: { target: number; delay: number }) {
+const AnimatedPercentage = memo(function AnimatedPercentage({ target }: { target: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const animatedRef = useRef(false);
 
@@ -281,7 +281,7 @@ const KPICard = memo(function KPICard({
         <div className="relative z-10 mt-auto flex items-end justify-between">
           <div>
             <span className="text-4xl font-black text-white" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.2)", letterSpacing: "-2px" }}>
-              <AnimatedNumber target={value} delay={delay} />
+              <AnimatedNumber target={value} />
             </span>
             <span className="text-lg font-bold text-white/60">/ 31</span>
           </div>
@@ -290,7 +290,7 @@ const KPICard = memo(function KPICard({
             <ProgressRing progress={percentage} color={ringColor} size={56} strokeWidth={4} />
             <div className="absolute inset-0 flex items-center justify-center">
               <span className="text-sm font-bold text-white">
-                <AnimatedPercentage target={percentage} delay={delay} />%
+                <AnimatedPercentage target={percentage} />%
               </span>
             </div>
           </div>

@@ -2,9 +2,8 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import Link from "next/link";
-import { FileText, ArrowRight, Calendar, BookOpen, Clock, CheckCircle2, AlertCircle, XCircle } from "lucide-react";
+import { FileText, ArrowRight, Calendar, BookOpen } from "lucide-react";
 import type { Metadata } from "next";
-import { TabelStatus } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "BAB 6 — Visi dan Misi",
@@ -92,7 +91,7 @@ export default async function Bab6Page() {
         {definitions.map((def) => {
           const inst = instanceMap[def.id];
           const rowCount = inst?._count.rows || 0;
-          const status = inst?.status;
+          void inst;
 
           return (
             <Link

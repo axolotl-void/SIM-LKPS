@@ -9,7 +9,6 @@ import {
   TextRun,
   HeadingLevel,
   AlignmentType,
-  WidthType,
 } from "docx";
 
 export async function GET() {

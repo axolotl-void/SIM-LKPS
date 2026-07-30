@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import type { Metadata } from "next";
-import { GraduationCap, Plus, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { GraduationCap, Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { MahasiswaActions } from "./MahasiswaActions";
 import { SearchBar } from "./SearchBar";
