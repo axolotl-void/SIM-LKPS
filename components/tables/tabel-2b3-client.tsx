@@ -6,9 +6,9 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 
-export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: any) {
+export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: any) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus, setCurrentStatus] = useState(status);
+  const [currentStatus] = useState(status);
   const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const [isOpen, setIsOpen] = useState(false);
   const [editId, setEditId] = useState<string | undefined>();

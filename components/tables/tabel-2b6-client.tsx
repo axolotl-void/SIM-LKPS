@@ -3,8 +3,8 @@
 import { useState } from "react";
 import {
   Loader2, ArrowLeft, CheckCircle2, X, Save,
-  Users, Star, Edit2, Lightbulb, BookOpen, BarChart3,
-  Target, MessageCircle, Briefcase, TrendingUp, Shield
+  Users, Edit2, BookOpen,
+  Target, MessageCircle, Briefcase, TrendingUp, Shield, Star, BarChart3
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -35,8 +35,8 @@ const DEFAULT_KEMAMPUAN = [
   { key: "etosKerja", label: "Etos Kerja", icon: Briefcase },
 ];
 
-export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
-  const [currentStatus, setCurrentStatus] = useState(status);
+export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: Props) {
+  const [currentStatus] = useState(status);
   const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const [rows, setRows] = useState<Row[]>(() => {
     if (initialRows.length > 0) return initialRows;

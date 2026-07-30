@@ -8,13 +8,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div className="flex min-h-screen p-4 gap-4" style={{ backgroundColor: "#F5F7FA" }}>
-      {/* Sidebar */}
       <Sidebar role={(session.user as { role: string }).role} />
-
-      {/* Main Content */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <main className="flex flex-1 flex-col overflow-hidden">
         {children}
-      </div>
+      </main>
     </div>
   );
 }

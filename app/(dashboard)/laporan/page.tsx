@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef, memo } from "react";
-import { FileText, Download, Printer, CheckCircle2, Clock, AlertCircle, TrendingUp, BookOpen, Shield, FlaskConical, CircleCheck, Users, Sparkles } from "lucide-react";
+import { useState, useEffect, memo } from "react";
+import { FileText, Download, Printer, CheckCircle2, Clock, TrendingUp, BookOpen, Shield, FlaskConical, CircleCheck, Users, Sparkles } from "lucide-react";
 import { BarChart3, ChevronRight } from "lucide-react";
 
 // CSS-only animation styles
@@ -69,15 +69,15 @@ const SummaryCard = memo(function SummaryCard({
   label, 
   sublabel, 
   color, 
-  bgColor, 
-  delay 
-}: { 
+  bgColor: _bgColor,
+  delay
+}: {
   icon: React.ElementType;
   value: string | number;
   label: string;
   sublabel: string;
   color: string;
-  bgColor: string;
+  bgColor?: string;
   delay: number;
 }) {
   return (
@@ -206,7 +206,7 @@ const BABRow = memo(function BABRow({
 
 export default function LaporanPage() {
   const [exporting, setExporting] = useState<string | null>(null);
-  const [loaded, setLoaded] = useState(false);
+  const [, setLoaded] = useState(false);
 
   useEffect(() => {
     setLoaded(true);

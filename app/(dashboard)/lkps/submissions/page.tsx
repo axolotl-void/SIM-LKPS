@@ -1,9 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import Link from "next/link";
 import { Role } from "@prisma/client";
-import { Clock, FileText, CheckCircle2, AlertCircle, XCircle, Search, X, ArrowRight, MessageSquare } from "lucide-react";
 import type { Metadata } from "next";
 import { SubmissionStatusClient } from "./submissions-client";
 

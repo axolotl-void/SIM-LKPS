@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { Tabel3A2Client } from "@/components/tables/tabel-3a2-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
-import { FlaskConical, Calendar, BookOpen, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import { FlaskConical, CheckCircle2, Clock, AlertCircle, XCircle, Calendar, BookOpen } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

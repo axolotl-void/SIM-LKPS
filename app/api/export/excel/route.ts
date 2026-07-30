@@ -68,15 +68,6 @@ export async function GET() {
     summarySheet.getCell("A2").alignment = { horizontal: "center" };
 
     // Summary table header
-    const headers = [
-      { header: "BAB", key: "bab", width: 10 },
-      { header: "Nama BAB", key: "nama", width: 25 },
-      { header: "Total Tabel", key: "total", width: 12 },
-      { header: "Terisi", key: "terisi", width: 10 },
-      { header: "Kosong", key: "kosong", width: 10 },
-      { header: "Progress", key: "progress", width: 12 },
-    ];
-
     let rowNum = 4;
     let grandTotal = 0;
     let grandFilled = 0;
@@ -170,12 +161,6 @@ export async function GET() {
       babSheet.getCell("A1").alignment = { horizontal: "center" };
 
       // Column headers
-      const dataHeaders = [
-        { header: "No", key: "no", width: 6 },
-        { header: "Kode Tabel", key: "kode", width: 12 },
-        { header: "Nama Tabel", key: "nama", width: 35 },
-        { header: "Jumlah Data", key: "jumlah", width: 15 },
-      ];
       babSheet.addRow(["No", "Kode Tabel", "Nama Tabel", "Jumlah Data"]);
       const headerRowNum = 2;
       for (let i = 0; i < 4; i++) {

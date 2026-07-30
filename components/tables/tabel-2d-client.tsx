@@ -4,7 +4,7 @@ import { useState } from "react";
 import {
   Loader2, ArrowLeft, CheckCircle2, X, Save,
   Building2, Factory, Briefcase, Users,
-  Edit2, Lightbulb, FileText, Link as LinkIcon
+  Edit2, Link as LinkIcon, Lightbulb, FileText
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -36,8 +36,8 @@ const SOURCE_COLORS: Record<string, string> = {
   duniaKerja: "from-cyan-600 to-teal-600",
 };
 
-export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rowsTs, rowsTs1, rowsTs2, status, userRole }: Props) {
-  const [currentStatus, setCurrentStatus] = useState(status);
+export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rowsTs, rowsTs1, rowsTs2, status, userRole: _userRole }: Props) {
+  const [currentStatus] = useState(status);
   const router = useRouter();
   const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);

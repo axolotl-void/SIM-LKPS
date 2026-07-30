@@ -30,9 +30,9 @@ interface Props {
   userRole: string;
 }
 
-export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
+export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: Props) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus, setCurrentStatus] = useState(status);
+  const [currentStatus] = useState(status);
   const router = useRouter();
   const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
 

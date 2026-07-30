@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Send, CheckCircle2, X, Loader2,
-  ThumbsUp, ThumbsDown, RotateCcw, AlertTriangle
+  ThumbsUp, ThumbsDown, RotateCcw
 } from "lucide-react";
 import { submitLkpsTabel, validateLkpsTabel } from "@/lib/actions/lkps";
 

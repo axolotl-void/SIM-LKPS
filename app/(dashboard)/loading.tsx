@@ -1,71 +1,46 @@
-import { Skeleton } from "@/components/shared/skeleton";
-
-export default function DashboardLoading() {
+// ponytail: Client-side interactivity not needed - skeleton is static
+// Remove "use client" to enable proper Next.js Suspense streaming
+export default function Loading() {
   return (
     <div className="space-y-6">
       {/* Welcome skeleton */}
-      <div className="overflow-hidden rounded-2xl bg-gradient-to-r from-slate-300 to-slate-200 p-6 shadow-soft">
-        <Skeleton className="h-4 w-48 bg-white/30" />
-        <Skeleton className="mt-2 h-7 w-64 bg-white/30" />
-        <Skeleton className="mt-3 h-3 w-36 bg-white/30" />
-        <div className="mt-4 flex gap-3">
-          <Skeleton className="h-6 w-28 rounded-xl bg-white/30" />
-          <Skeleton className="h-6 w-24 rounded-xl bg-white/30" />
-        </div>
-      </div>
+      <div className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 p-6 shadow-lg h-40 skeleton" />
 
-      {/* Stats cards skeleton */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="rounded-2xl border border-slate-100/50 bg-white p-5 shadow-soft">
+      {/* Stats Cards skeleton */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="rounded-xl border bg-white p-5 shadow-sm h-28">
             <div className="flex items-center justify-between">
               <div className="space-y-2">
-                <Skeleton className="h-3 w-24" />
-                <Skeleton className="h-8 w-12" />
+                <div className="h-4 w-24 rounded skeleton" />
+                <div className="h-8 w-16 rounded skeleton" />
               </div>
-              <Skeleton className="h-11 w-11 rounded-xl" />
+              <div className="h-12 w-12 rounded-xl skeleton" />
             </div>
           </div>
         ))}
       </div>
 
-      {/* Bottom grid skeleton */}
+      {/* Progress & Quick Stats skeleton */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Progress per BAB skeleton */}
-        <div className="col-span-2 space-y-5 rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft">
-          <Skeleton className="h-5 w-44" />
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Skeleton className="h-3 w-40" />
-                <Skeleton className="h-3 w-24" />
-              </div>
-              <Skeleton className="h-2 w-full rounded-full" />
-            </div>
-          ))}
-        </div>
-
-        {/* Side skeletons */}
-        <div className="space-y-6">
-          <div className="space-y-4 rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft">
-            <Skeleton className="h-5 w-36" />
-            {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Skeleton className="h-7 w-7 rounded-lg" />
-                  <Skeleton className="h-3 w-28" />
-                </div>
-                <Skeleton className="h-4 w-8" />
+        <div className="col-span-2 rounded-xl border bg-white p-6 shadow-sm h-64">
+          <div className="h-6 w-32 rounded skeleton mb-4" />
+          <div className="space-y-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="space-y-2">
+                <div className="h-4 w-40 rounded skeleton" />
+                <div className="h-2.5 w-full rounded-full skeleton" />
               </div>
             ))}
           </div>
-
-          <div className="space-y-4 rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft">
-            <Skeleton className="h-5 w-32" />
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <Skeleton className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full" />
-                <Skeleton className="h-3 flex-1" />
+        </div>
+        <div className="rounded-xl border bg-white p-6 shadow-sm h-64">
+          <div className="h-6 w-32 rounded skeleton mb-4" />
+          <div className="space-y-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex items-center justify-between">
+                <div className="h-4 w-24 rounded skeleton" />
+                <div className="h-4 w-8 rounded skeleton" />
               </div>
             ))}
           </div>

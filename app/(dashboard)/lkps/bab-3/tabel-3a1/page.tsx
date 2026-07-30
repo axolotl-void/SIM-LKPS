@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { Tabel3A1Client } from "@/components/tables/tabel-3a1-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
-import { Building2, Calendar, BookOpen, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import { Building2, CheckCircle2, Clock, AlertCircle, XCircle, Calendar, BookOpen } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

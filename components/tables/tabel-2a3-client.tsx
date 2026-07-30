@@ -23,9 +23,9 @@ interface Tabel2A3ClientProps {
   userRole: string;
 }
 
-export function Tabel2A3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Tabel2A3ClientProps) {
+export function Tabel2A3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: Tabel2A3ClientProps) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus, setCurrentStatus] = useState(status);
+  const [currentStatus] = useState(status);
   const router = useRouter();
 
   const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);

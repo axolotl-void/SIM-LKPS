@@ -25,10 +25,6 @@ interface TabelLkpsItem {
   evidence: EvidenceItem[];
 }
 
-interface Props {
-  tabelLkpsWithEvidence: TabelLkpsItem[];
-}
-
 function formatSize(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -42,7 +38,7 @@ function getFileIcon(mimeType: string) {
   return <File className="h-5 w-5 text-slate-500" />;
 }
 
-export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidence: any[] }) {
+export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidence: TabelLkpsItem[] }) {
   const [allData, setAllData] = useState(tabelLkpsWithEvidence);
   const [searchQuery, setSearchQuery] = useState("");
   const [uploadingId, setUploadingId] = useState<string | null>(null);

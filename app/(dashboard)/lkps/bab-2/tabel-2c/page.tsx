@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { Tabel2CClient } from "@/components/tables/tabel-2c-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
-import { BookOpen, Calendar, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import { BookOpen, CheckCircle2, Clock, AlertCircle, XCircle, Calendar } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -52,7 +52,7 @@ export default async function Tabel2CPage() {
     { key: "cblPbl", label: "CBL / PBL" },
   ];
 
-  const buildRows = (rows: any[], tahun: string) => {
+  const buildRows = (rows: any[], _tahun: string) => {
     const result: Record<string, any> = {};
     for (const t of DEFAULT_TYPES) {
       const match = rows.find((r: any) => r.rowData.key === t.key);

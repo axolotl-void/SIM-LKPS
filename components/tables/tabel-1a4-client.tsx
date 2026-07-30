@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { 
-  Plus, Edit2, Trash2, Loader2, ArrowLeft, 
-  FileText, CheckCircle2, X, Save, User, 
-  ChevronDown, BookOpen, Search, Filter
+import {
+  Plus, Edit2, Trash2, Loader2, ArrowLeft,
+  FileText, CheckCircle2, X, Save, User,
+  ChevronDown, BookOpen
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,9 +30,9 @@ interface Tabel1A4ClientProps {
   userRole: string;
 }
 
-export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelKode, status, userRole }: Tabel1A4ClientProps) {
+export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelKode, status, userRole: _userRole }: Tabel1A4ClientProps) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus, setCurrentStatus] = useState(status);
+  const [currentStatus] = useState(status);
   const router = useRouter();
 
   const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
