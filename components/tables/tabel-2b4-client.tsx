@@ -132,7 +132,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
       {/* Info */}
       <div className="flex items-center gap-3 rounded-2xl bg-indigo-50/60 border border-indigo-100/60 px-5 py-4 text-xs font-semibold text-indigo-700">
         <Lightbulb className="h-5 w-5 shrink-0 text-indigo-500" />
-        <span><strong>Klik "Edit Data TS"</strong> untuk mengisi data masa tunggu lulusan Tahun Sekarang.</span>
+        <span><strong>Klik &ldquo;Edit Data TS&rdquo;</strong> untuk mengisi data masa tunggu lulusan Tahun Sekarang.</span>
       </div>
 
       {/* Cards: 3 large stat cards */}

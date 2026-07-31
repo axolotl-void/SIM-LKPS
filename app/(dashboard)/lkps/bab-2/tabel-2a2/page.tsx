@@ -5,7 +5,14 @@ import { Tabel2A2Client } from "@/components/tables/tabel-2a2-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
+
+type LkpsRow = {
+  id: string;
+  rowOrder: number;
+  rowData: Record<string, unknown> | null;
+};
 
 export const metadata: Metadata = {
   title: "Tabel 2.A.2 — Keragaman Asal Mahasiswa",
@@ -48,19 +55,20 @@ export default async function Tabel2A2Page() {
   const statusCfg = statusBadge[status] ?? statusBadge.DRAFT;
   const history = lkpsTs?.validationHistory || [];
 
-  const initialRows = rowsTs.map((r: any) => {
-    const asal = r.rowData?.asalMahasiswa as string | undefined;
-    const matchTs1 = asal ? rowsTs1.find((x: any) => x.rowData?.asalMahasiswa === asal) : undefined;
-    const matchTs2 = asal ? rowsTs2.find((x: any) => x.rowData?.asalMahasiswa === asal) : undefined;
+  const initialRows = rowsTs.map((r) => {
+    const rd = r.rowData as Record<string, unknown> | null;
+    const asal = rd?.asalMahasiswa as string | undefined;
+    const matchTs1 = asal ? rowsTs1.find((x) => (x.rowData as Record<string, unknown> | null)?.asalMahasiswa === asal) : undefined;
+    const matchTs2 = asal ? rowsTs2.find((x) => (x.rowData as Record<string, unknown> | null)?.asalMahasiswa === asal) : undefined;
     return {
       id: r.id,
       rowOrder: r.rowOrder,
       rowData: {
         asalMahasiswa: asal ?? "",
-        ts: Number(r.rowData?.nominal) || 0,
-        ts1: matchTs1 ? Number((matchTs1.rowData as any)?.nominal) || 0 : 0,
-        ts2: matchTs2 ? Number((matchTs2.rowData as any)?.nominal) || 0 : 0,
-        linkBukti: (r.rowData?.linkBukti as string) ?? "",
+        ts: Number(rd?.nominal) || 0,
+        ts1: matchTs1 ? Number((matchTs1.rowData as Record<string, unknown> | null)?.nominal) || 0 : 0,
+        ts2: matchTs2 ? Number((matchTs2.rowData as Record<string, unknown> | null)?.nominal) || 0 : 0,
+        linkBukti: (rd?.linkBukti as string) ?? "",
       },
     };
   });

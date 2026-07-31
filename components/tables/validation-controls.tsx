@@ -45,8 +45,9 @@ export default function ValidationControls({
       setSubmitOpen(false);
       triggerToast("Tabel berhasil diajukan untuk validasi.", "success");
       router.refresh();
-    } catch (e: any) {
-      triggerToast(e.message || "Gagal mengajukan.", "error");
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Gagal mengajukan.";
+      triggerToast(msg, "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -68,8 +69,9 @@ export default function ValidationControls({
         "success"
       );
       router.refresh();
-    } catch (e: any) {
-      triggerToast(e.message || "Gagal validasi.", "error");
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Gagal validasi.";
+      triggerToast(msg, "error");
     } finally {
       setIsValidating(false);
     }

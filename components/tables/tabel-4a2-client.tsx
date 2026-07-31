@@ -211,7 +211,7 @@ export function Tabel4A2Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center gap-3 rounded-2xl bg-orange-50/60 border border-orange-100/60 px-5 py-4 text-xs font-semibold text-orange-700">
         <Lightbulb className="h-5 w-5 shrink-0 text-orange-500" />
         <span>
-          Klik <strong>"Tambah PkM"</strong> untuk menambahkan data. Isi data PkM DTPR
+          Klik <strong>&ldquo;Tambah PkM&rdquo;</strong> untuk menambahkan data. Isi data PkM DTPR
           termasuk jenis hibah dan pendanaan per tahun (TS-2, TS-1, TS).
         </span>
       </div>
@@ -256,7 +256,7 @@ export function Tabel4A2Client({ initialRows, tahunAkademikId, tabelKode, status
               <HeartHandshake className="h-8 w-8 text-slate-400" />
             </div>
             <p className="text-sm font-semibold text-slate-500">Belum ada data PkM.</p>
-            <p className="text-xs text-slate-400 mt-1">Klik "Tambah PkM" di atas untuk memulai.</p>
+            <p className="text-xs text-slate-400 mt-1">Klik &ldquo;Tambah PkM&rdquo; di atas untuk memulai.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

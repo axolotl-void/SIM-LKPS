@@ -65,7 +65,7 @@ export default async function Tabel6Page() {
   const initialRows = (lkps?.rows || []).map((r) => ({
     id: r.id,
     rowOrder: r.rowOrder,
-    rowData: r.rowData as any,
+    rowData: r.rowData as Record<string, unknown>,
   }));
 
   const status = lkps?.status ?? "DRAFT";
@@ -120,7 +120,7 @@ export default async function Tabel6Page() {
       {/* Client component */}
       <ErrorBoundary>
         <Tabel6Client
-          initialRows={initialRows}
+          initialRows={initialRows.map(r => ({ ...r, rowData: { ...r.rowData, kategori: (r.rowData as Record<string, unknown>).kategori as "VISI" | "MISI", pt: (r.rowData as Record<string, unknown>).pt as string, upps: (r.rowData as Record<string, unknown>).upps as string, ps: (r.rowData as Record<string, unknown>).ps as string } }))}
           tahunAkademikId={activeTa.id}
           tabelKode={def.kode}
           status={status}

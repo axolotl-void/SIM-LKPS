@@ -70,7 +70,7 @@ export default async function Tabel2A1Page() {
     },
   });
 
-  const rows = (lkpsTs?.rows || []) as any[];
+  const rows = lkpsTs?.rows || [];
   const status = lkpsTs?.status ?? "DRAFT";
   const statusCfg = statusBadge[status] ?? statusBadge.DRAFT;
   const history = lkpsTs?.validationHistory || [];
@@ -140,7 +140,7 @@ export default async function Tabel2A1Page() {
       {/* Main Client Table */}
       <ErrorBoundary>
         <Tabel2A1Client
-          initialRows={rows}
+          initialRows={rows.map(r => ({ id: r.id, rowOrder: r.rowOrder, rowData: r.rowData as Record<string, unknown> }))}
           tahunAkademikId={activeTa.id}
           tabelKode={def.kode}
           status={status}

@@ -3,10 +3,11 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import { FileText, ArrowRight, Settings, Building2, Eye, Target, CheckCircle2 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export const metadata = { title: "BAB 5 & 6 — Tata Kelola & Visi Misi" };
 
-const TABLE_ICONS: Record<string, any> = { "5.1": Settings, "5.2": Building2, "6.1": Eye, "6.2": Target };
+const TABLE_ICONS: Record<string, LucideIcon> = { "5.1": Settings, "5.2": Building2, "6.1": Eye, "6.2": Target };
 
 const tables = [
   { kode: "5.1", nama: "Sistem Tata Kelola", desc: "Data sistem informasi tata kelola UPPS/PS.", bab: "BAB 5" },
@@ -34,7 +35,7 @@ export default async function Bab5Page() {
   const instanceMap = new Map(instances.map(i => [i.tabelDefinitionId, i]));
   const filledTables = tables.filter(t => {
     const def = definitions.find(d => d.kode === t.kode);
-    return def && (instanceMap.get(def.id) as any)?._count?.rows > 0;
+    return def && (instanceMap.get(def.id)?._count?.rows ?? 0) > 0;
   }).length;
   const totalData = instances.reduce((s, i) => s + i._count.rows, 0);
   const progressPercent = tables.length ? Math.round((filledTables / tables.length) * 100) : 0;
@@ -118,8 +119,8 @@ export default async function Bab5Page() {
 
 function TableCard({ table, definitions, instanceMap, hrefBase, staggerIndex }: {
   table: { kode: string; nama: string; desc: string };
-  definitions: any[];
-  instanceMap: Map<string, any>;
+  definitions: { id: string; kode: string }[];
+  instanceMap: Map<string, { _count?: { rows: number } }>;
   hrefBase: string;
   staggerIndex: number;
 }) {
@@ -180,7 +181,7 @@ function TableCard({ table, definitions, instanceMap, hrefBase, staggerIndex }: 
   );
 }
 
-function MiniStat({ icon: Icon, label, sub }: { icon: any; label: string; sub: string }) {
+function MiniStat({ icon: Icon, label, sub }: { icon: LucideIcon; label: string; sub: string }) {
   return (
     <div className="bg-white/15 rounded-xl p-2.5 border border-white/20">
       <div className="flex items-center gap-2">

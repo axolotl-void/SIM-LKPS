@@ -146,7 +146,7 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
 
       <div className="flex items-center gap-3 rounded-2xl bg-indigo-50/60 border border-indigo-100/60 px-5 py-4 text-xs font-semibold text-indigo-700">
         <Lightbulb className="h-5 w-5 shrink-0 text-indigo-500" />
-        <span>Klik <strong>"Edit Data TS"</strong> untuk mengisi semua bentuk pembelajaran sekaligus.</span>
+        <span>Klik <strong>&ldquo;Edit Data TS&rdquo;</strong> untuk mengisi semua bentuk pembelajaran sekaligus.</span>
       </div>
 
       <div className="overflow-hidden rounded-3xl bg-white shadow-soft border border-slate-100/50">

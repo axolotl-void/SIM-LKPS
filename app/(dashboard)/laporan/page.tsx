@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, memo } from "react";
+import { useState, memo } from "react";
 import { FileText, Download, Printer, CheckCircle2, Clock, TrendingUp, BookOpen, Shield, FlaskConical, CircleCheck, Users, Sparkles } from "lucide-react";
 import { BarChart3, ChevronRight } from "lucide-react";
 
@@ -206,11 +206,6 @@ const BABRow = memo(function BABRow({
 
 export default function LaporanPage() {
   const [exporting, setExporting] = useState<string | null>(null);
-  const [, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
 
   const totalTables = TOTAL_TABLES;
   const totalFilled = BAB_REPORTS.reduce((sum, bab) => sum + bab.filled, 0);
@@ -388,7 +383,7 @@ export default function LaporanPage() {
             <p className="text-xs text-indigo-600 mt-1 leading-relaxed">
               Gunakan tombol Export untuk mengunduh laporan dalam format Excel atau Word. 
               Anda juga bisa langsung Print halaman ini untuk dokumentasi fisik. 
-              Klik "Lihat" pada setiap BAB untuk membuka halaman detail.
+              Klik &ldquo;Lihat&rdquo; pada setiap BAB untuk membuka halaman detail.
             </p>
           </div>
         </div>

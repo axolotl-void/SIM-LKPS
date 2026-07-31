@@ -6,10 +6,11 @@ import {
   FileText, ArrowRight,
   FlaskConical, Users, BookMarked, Handshake, FileTextIcon, Award, CheckCircle2
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export const metadata = { title: "BAB 3 — Penelitian" };
 
-const TABLE_ICONS: Record<string, any> = {
+const TABLE_ICONS: Record<string, LucideIcon> = {
   "3.A.1": FlaskConical, "3.A.2": Users, "3.A.3": BookMarked,
   "3.C.1": Handshake, "3.C.2": FileTextIcon, "3.C.3": Award,
 };
@@ -40,7 +41,10 @@ export default async function Bab3Page() {
   });
 
   const instanceMap = new Map(instances.map(i => [i.tabelDefinitionId, i]));
-  const filledTables = tables.filter(t => (instanceMap.get(definitions.find(d => d.kode === t.kode)?.id || "") as any)?._count?.rows > 0).length;
+  const filledTables = tables.filter(t => {
+    const def = definitions.find(d => d.kode === t.kode);
+    return def && (instanceMap.get(def.id)?._count?.rows ?? 0) > 0;
+  }).length;
   const totalData = instances.reduce((s, i) => s + i._count.rows, 0);
   const progressPercent = tables.length ? Math.round((filledTables / tables.length) * 100) : 0;
 
@@ -158,7 +162,7 @@ export default async function Bab3Page() {
   );
 }
 
-function MiniStat({ icon: Icon, label, sub }: { icon: any; label: string; sub: string }) {
+function MiniStat({ icon: Icon, label, sub }: { icon: LucideIcon; label: string; sub: string }) {
   return (
     <div className="bg-white/15 rounded-xl p-2.5 border border-white/20">
       <div className="flex items-center gap-2">

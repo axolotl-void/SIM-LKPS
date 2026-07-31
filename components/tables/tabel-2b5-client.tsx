@@ -130,7 +130,7 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
 
       <div className="flex items-center gap-3 rounded-2xl bg-blue-50/60 border border-blue-100/60 px-5 py-4 text-xs font-semibold text-blue-700">
         <Lightbulb className="h-5 w-5 shrink-0 text-blue-500" />
-        <span><strong>Klik "Edit Data TS"</strong> untuk mengisi data kesesuaian bidang kerja Tahun Sekarang.</span>
+        <span><strong>Klik &ldquo;Edit Data TS&rdquo;</strong> untuk mengisi data kesesuaian bidang kerja Tahun Sekarang.</span>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-4">

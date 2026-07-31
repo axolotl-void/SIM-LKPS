@@ -5,7 +5,14 @@ import { Tabel2A3Client } from "@/components/tables/tabel-2a3-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
+
+type LkpsRow = {
+  id: string;
+  rowOrder: number;
+  rowData: Record<string, unknown> | null;
+};
 
 export const metadata: Metadata = {
   title: "Tabel 2.A.3 — Kondisi Jumlah Mahasiswa",
@@ -48,18 +55,19 @@ export default async function Tabel2A3Page() {
   const statusCfg = statusBadge[status] ?? statusBadge.DRAFT;
   const history = lkpsTs?.validationHistory || [];
 
-  const initialRows = rowsTs.map((r: any) => {
-    const kat = r.rowData?.kategori as string | undefined;
-    const matchTs1 = kat ? rowsTs1.find((x: any) => x.rowData?.kategori === kat) : undefined;
-    const matchTs2 = kat ? rowsTs2.find((x: any) => x.rowData?.kategori === kat) : undefined;
+  const initialRows = rowsTs.map((r) => {
+    const rd = r.rowData as Record<string, unknown> | null;
+    const kat = rd?.kategori as string | undefined;
+    const matchTs1 = kat ? rowsTs1.find((x) => (x.rowData as Record<string, unknown> | null)?.kategori === kat) : undefined;
+    const matchTs2 = kat ? rowsTs2.find((x) => (x.rowData as Record<string, unknown> | null)?.kategori === kat) : undefined;
     return {
       id: r.id,
       rowOrder: r.rowOrder,
       rowData: {
         kategori: kat ?? "",
-        ts: Number(r.rowData?.nominal) || 0,
-        ts1: matchTs1 ? Number((matchTs1.rowData as any)?.nominal) || 0 : 0,
-        ts2: matchTs2 ? Number((matchTs2.rowData as any)?.nominal) || 0 : 0,
+        ts: Number(rd?.nominal) || 0,
+        ts1: matchTs1 ? Number((matchTs1.rowData as Record<string, unknown> | null)?.nominal) || 0 : 0,
+        ts2: matchTs2 ? Number((matchTs2.rowData as Record<string, unknown> | null)?.nominal) || 0 : 0,
       },
     };
   });

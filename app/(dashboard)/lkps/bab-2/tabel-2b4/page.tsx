@@ -5,7 +5,14 @@ import { Tabel2B4Client } from "@/components/tables/tabel-2b4-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, Calendar, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
+
+type LkpsRow = {
+  id: string;
+  rowOrder: number;
+  rowData: Record<string, unknown> | null;
+};
 
 export const metadata: Metadata = {
   title: "Tabel 2.B.4 — Rata-rata Masa Tunggu Lulusan",
@@ -81,17 +88,18 @@ export default async function Tabel2B4Page() {
   const statusCfg = statusBadge[status] ?? statusBadge.DRAFT;
   const history = lkpsTs?.validationHistory || [];
 
-  const getYearData = (rows: any[], label: string) => {
-    const match = rows.find((r: any) => r.rowData.tahun === label);
-    return match
+  const getYearData = (rows: { id: string; rowOrder: number; rowData: unknown }[], label: string) => {
+    const match = rows.find((r) => (r.rowData as Record<string, unknown> | null)?.tahun === label);
+    const rd = match?.rowData as Record<string, unknown> | null;
+    return match && rd
       ? {
           id: match.id,
           rowOrder: match.rowOrder,
           rowData: {
             tahun: label,
-            jumlahLulusan: Number(match.rowData.jumlahLulusan) || 0,
-            jumlahTerlacak: Number(match.rowData.jumlahTerlacak) || 0,
-            rataRata: Number(match.rowData.rataRata) || 0,
+            jumlahLulusan: Number(rd.jumlahLulusan) || 0,
+            jumlahTerlacak: Number(rd.jumlahTerlacak) || 0,
+            rataRata: Number(rd.rataRata) || 0,
           },
         }
       : null;

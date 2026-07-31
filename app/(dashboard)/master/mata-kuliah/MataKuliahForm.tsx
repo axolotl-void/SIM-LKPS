@@ -49,8 +49,8 @@ export function MataKuliahForm({ matakuliah }: MataKuliahFormProps) {
       }
       router.push("/master/mata-kuliah");
       router.refresh();
-    } catch (err: any) {
-      setError(err.message || "Terjadi kesalahan");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Terjadi kesalahan");
       setIsLoading(false);
     }
   };

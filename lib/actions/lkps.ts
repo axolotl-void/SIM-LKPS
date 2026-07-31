@@ -58,6 +58,7 @@ export async function upsertLkpsRow(params: {
   tabelKode: string;
   tahunAkademikId: string;
   rowId?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rowData: any;
 }) {
   const session = await auth();
@@ -227,6 +228,7 @@ export async function validateLkpsTabel(
     REVISE: "DIREVISI" as TabelStatus,
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateData: any = { status: statusMap[action] };
   if (action === "APPROVE") {
     updateData.validatedById = session.user.id;
