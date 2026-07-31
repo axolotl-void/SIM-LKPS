@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   Upload, FileText, Trash2, Download, Loader2,
-  X, CheckCircle2, File, Image, FileSpreadsheet, Search,
+  X, CheckCircle2, File, Image as ImageIcon, FileSpreadsheet, Search,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { uploadEvidence, getEvidenceList, deleteEvidence } from "@/lib/actions/evidence";
@@ -32,7 +32,7 @@ function formatSize(bytes: number) {
 }
 
 function getFileIcon(mimeType: string) {
-  if (mimeType.startsWith("image/")) return <Image className="h-5 w-5 text-blue-500" />;
+  if (mimeType.startsWith("image/")) return <ImageIcon className="h-5 w-5 text-blue-500" aria-hidden="true" />;
   if (mimeType.includes("pdf")) return <FileText className="h-5 w-5 text-red-500" />;
   if (mimeType.includes("spreadsheet") || mimeType.includes("excel")) return <FileSpreadsheet className="h-5 w-5 text-green-500" />;
   return <File className="h-5 w-5 text-slate-500" />;

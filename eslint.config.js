@@ -1,19 +1,23 @@
-import eslintPluginTs from "typescript-eslint";
-import reactHooks from "eslint-plugin-react-hooks";
+// @ts-check
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
 
-export default eslintPluginTs.config(
-  { ignores: ["node_modules/**", ".next/**", "dist/**"] },
-  ...eslintPluginTs.configs.recommended,
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+const eslintConfig = [
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
-    plugins: {
-      "react-hooks": reactHooks,
-    },
     rules: {
-      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
       "@typescript-eslint/no-explicit-any": "warn",
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     },
-  }
-);
+  },
+];
 
+export default eslintConfig;

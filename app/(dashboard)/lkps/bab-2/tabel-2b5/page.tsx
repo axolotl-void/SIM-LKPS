@@ -5,7 +5,14 @@ import { Tabel2B5Client } from "@/components/tables/tabel-2b5-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, Calendar, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
+
+type LkpsRow = {
+  id: string;
+  rowOrder: number;
+  rowData: Record<string, unknown> | null;
+};
 
 export const metadata: Metadata = {
   title: "Tabel 2.B.5 — Kesesuaian Bidang Kerja Lulusan",
@@ -43,20 +50,21 @@ export default async function Tabel2B5Page() {
     taTs2 ? db.tabelLkps.findUnique({ where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: taTs2.id } }, include: { rows: true } }) : null,
   ]);
 
-  const extract = (rows: any[], label: string) => {
-    const match = rows.find((r: any) => r.rowData.tahun === label);
-    if (!match) return null;
+  const extract = (rows: { rowData: unknown; id: string; rowOrder: number }[], label: string) => {
+    const match = rows.find((r) => (r.rowData as Record<string, unknown> | null)?.tahun === label);
+    const rd = match?.rowData as Record<string, unknown> | null;
+    if (!match || !rd) return null;
     return {
       id: match.id, rowOrder: match.rowOrder,
       rowData: {
         tahun: label,
-        jumlahLulusan: Number(match.rowData.jumlahLulusan) || 0,
-        jumlahTerlacak: Number(match.rowData.jumlahTerlacak) || 0,
-        profesiInfokom: Number(match.rowData.profesiInfokom) || 0,
-        profesiNonInfokom: Number(match.rowData.profesiNonInfokom) || 0,
-        internasional: Number(match.rowData.internasional) || 0,
-        nasional: Number(match.rowData.nasional) || 0,
-        wirausaha: Number(match.rowData.wirausaha) || 0,
+        jumlahLulusan: Number(rd.jumlahLulusan) || 0,
+        jumlahTerlacak: Number(rd.jumlahTerlacak) || 0,
+        profesiInfokom: Number(rd.profesiInfokom) || 0,
+        profesiNonInfokom: Number(rd.profesiNonInfokom) || 0,
+        internasional: Number(rd.internasional) || 0,
+        nasional: Number(rd.nasional) || 0,
+        wirausaha: Number(rd.wirausaha) || 0,
       },
     };
   };

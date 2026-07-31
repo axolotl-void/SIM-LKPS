@@ -195,7 +195,7 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
       {/* Info */}
       <div className="flex items-center gap-2 rounded-2xl bg-blue-50/50 border border-blue-100/50 px-4 py-3 text-2xs font-semibold text-blue-700">
         <Lightbulb className="h-4 w-4 shrink-0 text-cyan-500" />
-        <span>Data TS-3, TS-2, TS-1 otomatis dari tahun akademik sebelumnya. <strong>Klik "Edit Data TS"</strong> untuk mengisi data Tahun Sekarang.</span>
+        <span>Data TS-3, TS-2, TS-1 otomatis dari tahun akademik sebelumnya. <strong>Klik &ldquo;Edit Data TS&rdquo;</strong> untuk mengisi data Tahun Sekarang.</span>
       </div>
 
       {/* Table */}

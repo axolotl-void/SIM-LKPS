@@ -3,10 +3,11 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import { FileText, ArrowRight, Microscope, Users, Handshake, Speaker, Trophy, CheckCircle2 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export const metadata = { title: "BAB 4 — Pengadian Masyarakat" };
 
-const TABLE_ICONS: Record<string, any> = {
+const TABLE_ICONS: Record<string, LucideIcon> = {
   "4.A.1": Microscope, "4.A.2": Users, "4.C.1": Handshake, "4.C.2": Speaker, "4.C.3": Trophy,
 };
 
@@ -35,7 +36,10 @@ export default async function Bab4Page() {
   });
 
   const instanceMap = new Map(instances.map(i => [i.tabelDefinitionId, i]));
-  const filledTables = tables.filter(t => definitions.find(d => d.kode === t.kode) && (instanceMap.get(definitions.find(d => d.kode === t.kode)?.id || "") as any)?._count?.rows > 0).length;
+  const filledTables = tables.filter(t => {
+    const def = definitions.find(d => d.kode === t.kode);
+    return def && (instanceMap.get(def.id)?._count?.rows ?? 0) > 0;
+  }).length;
   const totalData = instances.reduce((s, i) => s + i._count.rows, 0);
   const progressPercent = tables.length ? Math.round((filledTables / tables.length) * 100) : 0;
 
@@ -153,7 +157,7 @@ export default async function Bab4Page() {
   );
 }
 
-function MiniStat({ icon: Icon, label, sub }: { icon: any; label: string; sub: string }) {
+function MiniStat({ icon: Icon, label, sub }: { icon: LucideIcon; label: string; sub: string }) {
   return (
     <div className="bg-white/15 rounded-xl p-2.5 border border-white/20">
       <div className="flex items-center gap-2">

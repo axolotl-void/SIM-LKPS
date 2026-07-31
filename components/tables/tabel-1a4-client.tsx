@@ -474,7 +474,7 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
                                   ) : (
                                     <Plus className="h-3.5 w-3.5" />
                                   )}
-                                  Tambah "{dosenSearchQuery}" sebagai dosen baru
+                                  Tambah &ldquo;{dosenSearchQuery}&rdquo; sebagai dosen baru
                                 </button>
                               </div>
                             )}

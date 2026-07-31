@@ -184,7 +184,7 @@ export function SubmissionStatusClient({ initialSubmissions, activeTa, prodi }: 
                       )}
                     </div>
                     <p className="text-xs text-slate-600 italic leading-relaxed">
-                      "{sub.latestComment}"
+                      &ldquo;{sub.latestComment}&rdquo;
                     </p>
                   </div>
                 )}

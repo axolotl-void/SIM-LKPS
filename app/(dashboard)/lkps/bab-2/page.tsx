@@ -7,6 +7,7 @@ import {
   GraduationCap, Users, Map, BarChart3,
   Briefcase, Star, Shuffle, Award, CheckCircle2, Clock
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export const metadata = { title: "BAB 2 — Pendidikan" };
 
@@ -24,7 +25,7 @@ const TABLE_CONFIGS: Record<string, { gradient: string; bg: string; color: strin
   "2.D": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Luaran" },
 };
 
-const TABLE_ICONS: Record<string, any> = {
+const TABLE_ICONS: Record<string, LucideIcon> = {
   "2.A.1": Users, "2.A.2": Map, "2.A.3": BarChart3,
   "2.B.1": BookOpen, "2.B.2": GraduationCap, "2.B.3": FileText,
   "2.B.4": Clock, "2.B.5": Briefcase, "2.B.6": Star,
@@ -161,7 +162,7 @@ export default async function Bab2Page() {
   );
 }
 
-function StatCard({ icon: Icon, label, value, color }: { icon: any; label: string; value: string | number; color: string }) {
+function StatCard({ icon: Icon, label, value, color }: { icon: LucideIcon; label: string; value: string | number; color: string }) {
   const colors: Record<string, string> = { emerald: 'emerald-300', blue: 'blue-300', amber: 'amber-300', pink: 'pink-300' };
   return (
     <div className="bg-white/15 rounded-xl p-3 border border-white/20">

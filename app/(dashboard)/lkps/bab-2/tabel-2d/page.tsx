@@ -5,7 +5,14 @@ import { Tabel2DClient } from "@/components/tables/tabel-2d-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, CheckCircle2, Clock, AlertCircle, XCircle, Calendar } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
+
+type LkpsRow = {
+  id: string;
+  rowOrder: number;
+  rowData: Record<string, unknown> | null;
+};
 
 export const metadata: Metadata = {
   title: "Tabel 2.D — Rekognisi dan Apresiasi Kompetensi Lulusan",
@@ -50,11 +57,11 @@ export default async function Tabel2DPage() {
     { key: "duniaKerja", label: "Dunia Kerja" },
   ];
 
-  const buildRows = (rows: any[], _tahun: string) => {
-    const result: Record<string, any> = {};
+  const buildRows = (rows: { rowData: unknown }[], _tahun: string) => {
+    const result: Record<string, Record<string, unknown> | null> = {};
     for (const s of DEFAULT_SOURCES) {
-      const match = rows.find((r: any) => r.rowData.key === s.key);
-      result[s.key] = match ? match.rowData : null;
+      const match = rows.find((r) => (r.rowData as Record<string, unknown> | null)?.key === s.key);
+      result[s.key] = match ? (match.rowData as Record<string, unknown>) : null;
     }
     return result;
   };

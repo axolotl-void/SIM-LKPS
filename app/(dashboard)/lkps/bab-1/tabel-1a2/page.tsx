@@ -5,7 +5,26 @@ import { Tabel1A2Client } from "@/components/tables/tabel-1a2-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
+
+type LkpsRow = {
+  id: string;
+  rowOrder: number;
+  rowData: Record<string, unknown> | null;
+};
+
+interface InitialRow {
+  id: string;
+  rowOrder: number;
+  rowData: {
+    sumberPendanaan: string;
+    ts: number;
+    ts1: number;
+    ts2: number;
+    linkBukti: string;
+  };
+}
 
 export const metadata: Metadata = {
   title: "Tabel 1.A.2 — Sumber Pendanaan UPPS/PS",
@@ -67,19 +86,20 @@ export default async function Tabel1A2Page() {
   const rowsTs1 = lkpsTs1?.rows || [];
   const rowsTs2 = lkpsTs2?.rows || [];
 
-  const initialRows = rowsTs.map((r: any) => {
-    const sumber = r.rowData?.sumberPendanaan as string | undefined;
-    const matchTs1 = sumber ? rowsTs1.find((x: any) => x.rowData?.sumberPendanaan === sumber) : undefined;
-    const matchTs2 = sumber ? rowsTs2.find((x: any) => x.rowData?.sumberPendanaan === sumber) : undefined;
+  const initialRows = rowsTs.map((r) => {
+    const rd = r.rowData as Record<string, unknown> | null;
+    const sumber = rd?.sumberPendanaan as string | undefined;
+    const matchTs1 = sumber ? rowsTs1.find((x) => (x.rowData as Record<string, unknown> | null)?.sumberPendanaan === sumber) : undefined;
+    const matchTs2 = sumber ? rowsTs2.find((x) => (x.rowData as Record<string, unknown> | null)?.sumberPendanaan === sumber) : undefined;
     return {
       id: r.id,
       rowOrder: r.rowOrder,
       rowData: {
         sumberPendanaan: sumber ?? "",
-        ts: Number(r.rowData?.nominal) || 0,
-        ts1: matchTs1 ? Number((matchTs1.rowData as any)?.nominal) || 0 : 0,
-        ts2: matchTs2 ? Number((matchTs2.rowData as any)?.nominal) || 0 : 0,
-        linkBukti: (r.rowData?.linkBukti as string) ?? "",
+        ts: Number(rd?.nominal) || 0,
+        ts1: matchTs1 ? Number((matchTs1.rowData as Record<string, unknown> | null)?.nominal) || 0 : 0,
+        ts2: matchTs2 ? Number((matchTs2.rowData as Record<string, unknown> | null)?.nominal) || 0 : 0,
+        linkBukti: (rd?.linkBukti as string) ?? "",
       },
     };
   });
@@ -105,7 +125,7 @@ export default async function Tabel1A2Page() {
         <Tabel1A2Client initialRows={initialRows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role} />
       </ErrorBoundary>
       {history.length > 0 && (
-        <ValidationHistory history={history.map((h: any) => ({ id: h.id, action: h.action, comment: h.comment, createdAt: h.createdAt.toISOString(), user: h.user }))} />
+        <ValidationHistory history={history.map((h) => ({ id: h.id, action: h.action, comment: h.comment, createdAt: h.createdAt.toISOString(), user: h.user }))} />
       )}
     </div>
   );

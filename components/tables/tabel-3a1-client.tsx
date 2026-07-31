@@ -202,7 +202,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center gap-3 rounded-2xl bg-violet-50/60 border border-violet-100/60 px-5 py-4 text-xs font-semibold text-violet-700">
         <Lightbulb className="h-5 w-5 shrink-0 text-violet-500" />
         <span>
-          Klik <strong>"Tambah Prasarana"</strong> untuk menambahkan data. Klik{" "}
+          Klik <strong>&ldquo;Tambah Prasarana&rdquo;</strong> untuk menambahkan data. Klik{" "}
           <strong>Edit</strong> untuk mengubah atau <strong>Hapus</strong> untuk menghapus item.
         </span>
       </div>
@@ -251,7 +251,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status
               <Server className="h-8 w-8 text-slate-400" />
             </div>
             <p className="text-sm font-semibold text-slate-500">Belum ada data prasarana penelitian.</p>
-            <p className="text-xs text-slate-400 mt-1">Klik "Tambah Prasarana" di atas untuk memulai.</p>
+            <p className="text-xs text-slate-400 mt-1">Klik &ldquo;Tambah Prasarana&rdquo; di atas untuk memulai.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

@@ -5,7 +5,14 @@ import { Tabel1A3Client } from "@/components/tables/tabel-1a3-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, Calendar, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
+
+type LkpsRow = {
+  id: string;
+  rowOrder: number;
+  rowData: Record<string, unknown> | null;
+};
 
 export const metadata: Metadata = {
   title: "Tabel 1.A.3 — Penggunaan Dana UPPS/PS",
@@ -117,19 +124,20 @@ export default async function Tabel1A3Page() {
   const history = lkpsTs?.validationHistory || [];
 
   // Merge rows by 'jenisPenggunaan'
-  const initialRows = rowsTs.map((r: any) => {
-    const penggunaan = r.rowData?.jenisPenggunaan as string | undefined;
-    const matchTs1 = penggunaan ? rowsTs1.find((x: any) => x.rowData?.jenisPenggunaan === penggunaan) : undefined;
-    const matchTs2 = penggunaan ? rowsTs2.find((x: any) => x.rowData?.jenisPenggunaan === penggunaan) : undefined;
+  const initialRows = rowsTs.map((r) => {
+    const rd = r.rowData as Record<string, unknown> | null;
+    const penggunaan = rd?.jenisPenggunaan as string | undefined;
+    const matchTs1 = penggunaan ? rowsTs1.find((x) => (x.rowData as Record<string, unknown> | null)?.jenisPenggunaan === penggunaan) : undefined;
+    const matchTs2 = penggunaan ? rowsTs2.find((x) => (x.rowData as Record<string, unknown> | null)?.jenisPenggunaan === penggunaan) : undefined;
     return {
       id: r.id,
       rowOrder: r.rowOrder,
       rowData: {
         jenisPenggunaan: penggunaan ?? "",
-        ts: Number(r.rowData?.nominal) || 0,
-        ts1: matchTs1 ? Number((matchTs1.rowData as any)?.nominal) || 0 : 0,
-        ts2: matchTs2 ? Number((matchTs2.rowData as any)?.nominal) || 0 : 0,
-        linkBukti: (r.rowData?.linkBukti as string) ?? "",
+        ts: Number(rd?.nominal) || 0,
+        ts1: matchTs1 ? Number((matchTs1.rowData as Record<string, unknown> | null)?.nominal) || 0 : 0,
+        ts2: matchTs2 ? Number((matchTs2.rowData as Record<string, unknown> | null)?.nominal) || 0 : 0,
+        linkBukti: (rd?.linkBukti as string) ?? "",
       },
     };
   });

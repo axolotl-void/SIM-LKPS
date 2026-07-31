@@ -211,7 +211,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center gap-3 rounded-2xl bg-teal-50/60 border border-teal-100/60 px-5 py-4 text-xs font-semibold text-purple-700">
         <Lightbulb className="h-5 w-5 shrink-0 text-purple-500" />
         <span>
-          Klik <strong>"Tambah Penelitian"</strong> untuk menambahkan data. Isi data penelitian DTPR
+          Klik <strong>&ldquo;Tambah Penelitian&rdquo;</strong> untuk menambahkan data. Isi data penelitian DTPR
           termasuk jenis hibah dan pendanaan per tahun (TS-2, TS-1, TS).
         </span>
       </div>
@@ -256,7 +256,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
               <FlaskConical className="h-8 w-8 text-slate-400" />
             </div>
             <p className="text-sm font-semibold text-slate-500">Belum ada data penelitian.</p>
-            <p className="text-xs text-slate-400 mt-1">Klik "Tambah Penelitian" di atas untuk memulai.</p>
+            <p className="text-xs text-slate-400 mt-1">Klik &ldquo;Tambah Penelitian&rdquo; di atas untuk memulai.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

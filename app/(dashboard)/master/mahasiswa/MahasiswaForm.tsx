@@ -49,8 +49,8 @@ export function MahasiswaForm({ mahasiswa }: MahasiswaFormProps) {
       }
       router.push("/master/mahasiswa");
       router.refresh();
-    } catch (err: any) {
-      setError(err.message || "Terjadi kesalahan");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Terjadi kesalahan");
       setIsLoading(false);
     }
   };

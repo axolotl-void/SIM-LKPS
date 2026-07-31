@@ -5,12 +5,13 @@ import Link from "next/link";
 import {
   FileText, ArrowRight, Calendar,
   Users, Wallet, PieChart, LineChart,
-  UserCheck, ShieldCheck, Target, CheckCircle2, Clock, Sparkles
+  UserCheck, ShieldCheck, Target, CheckCircle2, Clock, Sparkles,
+  type LucideIcon
 } from "lucide-react";
 
 export const metadata = { title: "BAB 1 — Tata Pamong" };
 
-const TABLE_ICONS: Record<string, any> = {
+const TABLE_ICONS: Record<string, LucideIcon> = {
   "1.A.1": Users, "1.A.2": Wallet, "1.A.3": PieChart,
   "1.A.4": LineChart, "1.A.5": UserCheck, "1.B": ShieldCheck,
 };
@@ -160,7 +161,7 @@ export default async function Bab1Page() {
   );
 }
 
-function StatCard({ icon: Icon, label, value, color }: { icon: any; label: string; value: string | number; color: string }) {
+function StatCard({ icon: Icon, label, value, color }: { icon: LucideIcon; label: string; value: string | number; color: string }) {
   const colors: Record<string, string> = { emerald: 'emerald-300', blue: 'blue-300', amber: 'amber-300', pink: 'pink-300' };
   return (
     <div className="bg-white/15 rounded-xl p-3 border border-white/20">

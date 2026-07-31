@@ -203,7 +203,7 @@ export function Tabel52Client({ initialRows, tahunAkademikId, tabelKode, status,
       <div className="flex items-center gap-3 rounded-2xl bg-slate-50/60 border border-slate-100/60 px-5 py-4 text-xs font-semibold text-slate-700">
         <Lightbulb className="h-5 w-5 shrink-0 text-slate-500" />
         <span>
-          Klik <strong>"Tambah Prasarana Pendidikan"</strong> untuk menambahkan data. Klik{" "}
+          Klik <strong>&ldquo;Tambah Prasarana Pendidikan&rdquo;</strong> untuk menambahkan data. Klik{" "}
           <strong>Edit</strong> untuk mengubah atau <strong>Hapus</strong> untuk menghapus item.
         </span>
       </div>
@@ -252,7 +252,7 @@ export function Tabel52Client({ initialRows, tahunAkademikId, tabelKode, status,
               <GraduationCap className="h-8 w-8 text-slate-400" />
             </div>
             <p className="text-sm font-semibold text-slate-500">Belum ada data prasarana pendidikan.</p>
-            <p className="text-xs text-slate-400 mt-1">Klik "Tambah Prasarana Pendidikan" di atas untuk memulai.</p>
+            <p className="text-xs text-slate-400 mt-1">Klik &ldquo;Tambah Prasarana Pendidikan&rdquo; di atas untuk memulai.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

@@ -176,7 +176,7 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status
               <GraduationCap className="h-8 w-8 text-slate-400" />
             </div>
             <p className="text-sm font-semibold text-slate-500">Belum ada data pengembangan.</p>
-            <p className="text-xs text-slate-400 mt-1">Klik "Tambah Pengembangan" untuk memulai.</p>
+            <p className="text-xs text-slate-400 mt-1">Klik &ldquo;Tambah Pengembangan&rdquo; untuk memulai.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
