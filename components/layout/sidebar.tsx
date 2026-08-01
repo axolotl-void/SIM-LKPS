@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, memo, useTransition } from "react";
+import { useState, useCallback, memo } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
@@ -13,17 +13,15 @@ import {
   BarChart3,
   Settings,
   ClipboardList,
-  ChevronDown,
   ChevronRight,
-  Circle,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface MenuItem {
   label: string;
   href: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   roles: string[];
-  badge: string | null;
 }
 
 interface MenuGroup {
@@ -31,207 +29,224 @@ interface MenuGroup {
   items: MenuItem[];
 }
 
-interface SidebarProps {
-  role: string;
-}
-
 const menuGroups: MenuGroup[] = [
   {
-    group: "Utama",
+    group: "Menu Utama",
     items: [
-      { label: "Dashboard", href: "/", icon: LayoutDashboard, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"], badge: null },
-      { label: "Master Data", href: "/master", icon: Database, roles: ["ADMIN"], badge: null },
+      { label: "Dashboard", href: "/", icon: LayoutDashboard, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
+      { label: "Master Data", href: "/master", icon: Database, roles: ["ADMIN"] },
     ],
   },
   {
     group: "Instrumen LKPS",
     items: [
-      { label: "BAB 1", href: "/lkps/bab-1", icon: FileText, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"], badge: "9" },
-      { label: "BAB 2", href: "/lkps/bab-2", icon: GraduationCap, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"], badge: "6" },
-      { label: "BAB 3", href: "/lkps/bab-3", icon: BookOpen, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"], badge: "4" },
-      { label: "BAB 4", href: "/lkps/bab-4", icon: Users, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"], badge: "3" },
-      { label: "BAB 5 & 6", href: "/lkps/bab-5", icon: ClipboardList, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"], badge: "2" },
+      { label: "BAB 1 — Tata Pamong", href: "/lkps/bab-1", icon: FileText, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
+      { label: "BAB 2 — Pendidikan", href: "/lkps/bab-2", icon: GraduationCap, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
+      { label: "BAB 3 — Penelitian", href: "/lkps/bab-3", icon: BookOpen, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
+      { label: "BAB 4 — Pengabdian", href: "/lkps/bab-4", icon: Users, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
+      { label: "BAB 5 & 6", href: "/lkps/bab-5", icon: ClipboardList, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
     ],
   },
   {
-    group: "Fitur & Utility",
+    group: "Fitur",
     items: [
-      { label: "Bukti Pendukung", href: "/evidence", icon: Upload, roles: ["ADMIN", "OPERATOR", "VALIDATOR"], badge: null },
-      { label: "Laporan", href: "/laporan", icon: BarChart3, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"], badge: null },
-      { label: "Pengaturan", href: "/settings", icon: Settings, roles: ["ADMIN"], badge: null },
+      { label: "Bukti Pendukung", href: "/evidence", icon: Upload, roles: ["ADMIN", "OPERATOR", "VALIDATOR"] },
+      { label: "Laporan", href: "/laporan", icon: BarChart3, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
+      { label: "Pengaturan", href: "/settings", icon: Settings, roles: ["ADMIN"] },
     ],
   },
 ];
 
-// Memoized menu item to prevent unnecessary re-renders
-const MenuItemComponent = memo(function MenuItemComponent({
-  item,
-  isActive,
-  isPending,
-  onClick,
-}: {
-  item: MenuItem;
-  isActive: boolean;
-  isPending: boolean;
-  onClick: () => void;
-}) {
-  const Icon = item.icon;
+// Smooth animation variants
+const sidebarVariants = {
+  hidden: { x: -80, opacity: 0 },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
 
-  return (
-    <li>
-      <button
-        onClick={onClick}
-        disabled={isPending}
-        className={`
-          group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-medium
-          transition-all duration-200 cursor-pointer
-          ${isActive
-            ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/25"
-            : "text-slate-600 hover:bg-slate-100/80 hover:text-slate-900"
-          }
-          ${isPending && isActive ? "opacity-70" : ""}
-        `}
-      >
-        {isActive ? (
-          <Circle className="h-1.5 w-1.5 fill-white text-white" />
-        ) : (
-          <span className="h-1.5 w-1.5 rounded-full bg-slate-300 group-hover:bg-slate-400" />
-        )}
-        <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-white/90" : "text-slate-400 group-hover:text-slate-600"}`} />
-        <span className="flex-1 truncate">{item.label}</span>
-        {item.badge && (
-          <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold transition-colors ${isActive ? "bg-white/20 text-white" : "bg-blue-100 text-blue-700"}`}>
-            {item.badge}
-          </span>
-        )}
-        {isPending && isActive && (
-          <span className="shrink-0 h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-        )}
-      </button>
-    </li>
-  );
-});
+const menuItemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: 0.2 + i * 0.06,
+      duration: 0.4,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  }),
+};
 
-// Memoized group toggle button
-const GroupToggle = memo(function GroupToggle({
-  label,
-  isCollapsed,
-  onClick,
-}: {
-  label: string;
-  isCollapsed: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className="group flex w-full items-center justify-between px-3 py-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors duration-150"
-    >
-      <div className="flex items-center gap-2">
-        <span className={`h-1.5 w-1.5 rounded-full transition-all duration-200 ${isCollapsed ? 'bg-slate-300' : 'bg-blue-500'}`} />
-        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">{label}</p>
-      </div>
-      {isCollapsed ? (
-        <ChevronRight className="h-3.5 w-3.5 text-slate-300 transition-transform duration-200" />
-      ) : (
-        <ChevronDown className="h-3.5 w-3.5 text-slate-400 transition-transform duration-200" />
-      )}
-    </button>
-  );
-});
+const itemHoverVariants = {
+  rest: { scale: 1, x: 0 },
+  hover: {
+    scale: 1.02,
+    x: 4,
+    transition: { duration: 0.2, ease: "easeOut" },
+  },
+};
+
+interface SidebarProps {
+  role: string;
+}
 
 export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
-
-  const toggle = useCallback((group: string) => {
-    setCollapsed((prev) => ({ ...prev, [group]: !prev[group] }));
-  }, []);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const handleNavigation = useCallback((href: string) => {
-    startTransition(() => {
-      router.push(href);
-    });
+    router.push(href);
   }, [router]);
-
-  // Prefetch links on hover for instant navigation
-  const handlePrefetch = useCallback((href: string) => {
-    router.prefetch(href);
-  }, [router]);
-  void handlePrefetch;
 
   return (
-    <aside className="sticky top-4 flex h-[calc(100vh-2rem)] w-64 flex-col rounded-2xl border border-slate-200/60 bg-white shadow-lg shadow-slate-200/40 overflow-hidden">
-      {/* Logo */}
+    <motion.aside
+      variants={sidebarVariants}
+      initial="hidden"
+      animate="visible"
+      className="fixed left-4 top-4 z-50 flex h-[calc(100vh-2rem)] w-72 flex-col rounded-2xl bg-white border border-slate-200/60 shadow-xl shadow-slate-200/40 overflow-hidden"
+    >
+      {/* Header - Logo */}
       <div className="flex h-16 items-center border-b border-slate-100/80 px-5 bg-gradient-to-r from-slate-50 to-white">
-        <div className="flex items-center gap-3">
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 shadow-lg shadow-blue-600/25">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.4, ease: "backOut" }}
+          className="flex items-center gap-3"
+        >
+          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20">
             <span className="text-sm font-bold text-white">SL</span>
-            <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-white" />
+            <motion.span
+              animate={{ scale: [1, 1.3, 1], opacity: [1, 0.6, 1] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-white"
+            />
           </div>
           <div className="flex flex-col">
-            <span className="text-base font-bold text-slate-900 tracking-tight">SIM-LKPS</span>
+            <span className="text-sm font-bold text-slate-800 tracking-tight">SIM-LKPS</span>
             <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">UBBG</span>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Nav */}
-      <nav className="flex-1 overflow-y-auto py-3 px-3 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
-        {menuGroups.map((group) => {
-          const visible = group.items.filter((i) => i.roles.includes(role));
-          if (!visible.length) return null;
-          const isCollapsed = collapsed[group.group] ?? false;
+      {/* Navigation */}
+      <nav className="flex-1 overflow-y-auto py-4 px-4 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+        {menuGroups.map((group, groupIndex) => {
+          const visibleItems = group.items.filter((item) => item.roles.includes(role));
+          if (!visibleItems.length) return null;
 
           return (
-            <div key={group.group} className="mb-2">
-              <GroupToggle
-                label={group.group}
-                isCollapsed={isCollapsed}
-                onClick={() => toggle(group.group)}
-              />
+            <div key={group.group} className="mb-5">
+              {/* Group Label */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 + groupIndex * 0.1 }}
+                className="mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400"
+              >
+                {group.group}
+              </motion.p>
 
-              {!isCollapsed && (
-                <ul className="mt-1 space-y-0.5 pl-1">
-                  {visible.map((item) => {
-                    const isActive = pathname === item.href ||
-                      (item.href !== "/" && pathname.startsWith(item.href + "/"));
+              {/* Menu Items */}
+              <ul className="space-y-1">
+                {visibleItems.map((item, itemIndex) => {
+                  const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+                  const Icon = item.icon;
+                  const globalIndex = groupIndex * 10 + itemIndex;
 
-                    return (
-                      <MenuItemComponent
-                        key={item.href}
-                        item={item}
-                        isActive={isActive}
-                        isPending={isPending}
+                  return (
+                    <motion.li
+                      key={item.href}
+                      custom={globalIndex}
+                      variants={menuItemVariants}
+                      initial="hidden"
+                      animate="visible"
+                      onHoverStart={() => setHoveredIndex(globalIndex)}
+                      onHoverEnd={() => setHoveredIndex(null)}
+                    >
+                      <motion.button
+                        variants={itemHoverVariants}
+                        initial="rest"
+                        animate={hoveredIndex === globalIndex ? "hover" : "rest"}
                         onClick={() => handleNavigation(item.href)}
-                      />
-                    );
-                  })}
-                </ul>
-              )}
+                        className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium transition-all duration-200 cursor-pointer ${
+                          isActive
+                            ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/20"
+                            : "text-slate-600 hover:bg-slate-50"
+                        }`}
+                      >
+                        {/* Active Indicator Bar */}
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeIndicator"
+                            className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-white/30"
+                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                          />
+                        )}
+
+                        {/* Icon */}
+                        <motion.div
+                          animate={{
+                            scale: hoveredIndex === globalIndex && !isActive ? 1.1 : 1,
+                          }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Icon
+                            className={`h-4 w-4 shrink-0 ${
+                              isActive ? "text-white" : "text-slate-400 group-hover:text-slate-600"
+                            }`}
+                            strokeWidth={isActive ? 2.5 : 2}
+                          />
+                        </motion.div>
+
+                        {/* Label */}
+                        <span className={`flex-1 text-left ${isActive ? "text-white" : "text-slate-600 group-hover:text-slate-900"}`}>
+                          {item.label}
+                        </span>
+
+                        {/* Arrow on hover */}
+                        {!isActive && hoveredIndex === globalIndex && (
+                          <motion.span
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                          >
+                            <ChevronRight className="h-3.5 w-3.5 text-slate-400" />
+                          </motion.span>
+                        )}
+                      </motion.button>
+                    </motion.li>
+                  );
+                })}
+              </ul>
             </div>
           );
         })}
       </nav>
 
-      {/* Footer */}
-      <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+      {/* Footer - Info Card Only */}
       <div className="p-4">
+        {/* Program Info Card */}
         <div
-          className="overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 p-4 text-white shadow-lg shadow-blue-600/25"
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 p-4 text-white shadow-lg"
           style={{
-            backgroundImage: "linear-gradient(135deg, rgba(37, 99, 235, 0.95) 0%, rgba(67, 56, 202, 0.95) 100%), url('/img/gedung-ubbg_11zon.png')",
+            backgroundImage: "linear-gradient(135deg, rgba(37, 99, 235, 0.9) 0%, rgba(67, 56, 202, 0.9) 100%), url('/img/gedung-ubbg_11zon.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         >
           <p className="text-[11px] font-bold uppercase tracking-wider text-blue-100">Program Studi</p>
-          <p className="mt-0.5 text-sm font-bold text-white">Ilmu Komputer UBBG</p>
+          <p className="mt-0.5 text-sm font-bold">Ilmu Komputer UBBG</p>
           <p className="mt-2 text-[11px] text-blue-200">Versi 0.1.0 (Soft UI)</p>
         </div>
       </div>
-    </aside>
+    </motion.aside>
   );
 });
+
+export default Sidebar;
