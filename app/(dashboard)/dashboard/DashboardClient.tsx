@@ -1,6 +1,5 @@
 "use client";
 
-import { Topbar } from "./Topbar";
 import { HeroBanner } from "./HeroBanner";
 import { KPICards } from "./KPICards";
 import { ProgressSection } from "./ProgressSection";
@@ -47,7 +46,7 @@ export function DashboardClient({ data }: { data: DashboardData }) {
   const activities = recentLogs.slice(0, 5).map((log) => ({
     id: log.id,
     userName: log.userName,
-    action: log.action.toLowerCase().includes("delete") ? "menghapus" : 
+    action: log.action.toLowerCase().includes("delete") ? "menghapus" :
             log.action.toLowerCase().includes("upload") || log.action.toLowerCase().includes("create") ? "mengunggah" :
             log.action.toLowerCase().includes("update") ? "memperbarui" : "mengedit",
     target: log.entity,
@@ -65,17 +64,11 @@ export function DashboardClient({ data }: { data: DashboardData }) {
   ];
 
   return (
-    <div
-      className="flex flex-col h-full p-4 gap-[14px]"
-      style={{ backgroundColor: "#F5F7FA" }}
-    >
-      {/* Topbar */}
-      <Topbar user={user} />
-
-      {/* Main Content */}
-      <div className="flex-1 flex gap-[14px] min-h-0">
-        {/* Left Column */}
-        <div className="flex-1 flex flex-col gap-[14px] min-h-0">
+    <div className="flex flex-col h-full p-4 gap-4" style={{ backgroundColor: "#F5F7FA" }}>
+      {/* Main Content - Responsive Layout */}
+      <div className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0">
+        {/* Left Column - Takes full width on mobile, majority on desktop */}
+        <div className="flex-1 flex flex-col gap-4 min-h-0">
           {/* Hero Banner */}
           <HeroBanner
             userName={user.name}
@@ -87,7 +80,7 @@ export function DashboardClient({ data }: { data: DashboardData }) {
             dosenCount={quickStats.dosenCount}
           />
 
-          {/* KPI Cards */}
+          {/* KPI Cards - Responsive Grid */}
           <KPICards
             totalTables={stats.totalDefinitions}
             filledTables={stats.terisi}
@@ -99,8 +92,8 @@ export function DashboardClient({ data }: { data: DashboardData }) {
           <ProgressSection items={progressItems} />
         </div>
 
-        {/* Right Column */}
-        <div className="w-[340px] flex flex-col gap-[14px] min-h-0">
+        {/* Right Column - Hidden on small screens, visible on lg and up */}
+        <div className="hidden lg:flex w-80 xl:w-[340px] flex-shrink-0 flex-col gap-4 min-h-0">
           {/* Summary Card */}
           <SummaryCard
             totalUsers={quickStats.userCount}
