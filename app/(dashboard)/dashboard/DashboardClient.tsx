@@ -6,6 +6,16 @@ import { ProgressSection } from "./ProgressSection";
 import { SummaryCard } from "./SummaryCard";
 import { ActivityCard } from "./ActivityCard";
 
+interface ProgressItem {
+  bab: string;
+  title: string;
+  filled: number;
+  total: number;
+  percentage: number;
+  color: string;
+  glowColor: string;
+}
+
 interface DashboardData {
   user: { name: string; email: string; role: string };
   stats: {
@@ -24,6 +34,7 @@ interface DashboardData {
     entity: string;
     createdAt: string;
   }>;
+  progressItems: ProgressItem[];
 }
 
 function formatActivityTime(dateString: string): string {
@@ -40,7 +51,7 @@ function formatActivityTime(dateString: string): string {
 }
 
 export function DashboardClient({ data }: { data: DashboardData }) {
-  const { user, stats, quickStats, recentLogs } = data;
+  const { user, stats, quickStats, recentLogs, progressItems } = data;
 
   // Transform logs to activities
   const activities = recentLogs.slice(0, 5).map((log) => ({
@@ -52,16 +63,6 @@ export function DashboardClient({ data }: { data: DashboardData }) {
     target: log.entity,
     time: formatActivityTime(log.createdAt),
   }));
-
-  // Progress items per BAB - matching exact source data
-  const progressItems = [
-    { bab: "BAB 1", title: "BAB 1 - Tata Pamong", filled: 4, total: 4, percentage: 100, color: "#6366F1", glowColor: "#818CF8" },
-    { bab: "BAB 2", title: "BAB 2 - Pendidikan", filled: 5, total: 6, percentage: 83, color: "#3B82F6", glowColor: "#60A5FA" },
-    { bab: "BAB 3", title: "BAB 3 - Penelitian", filled: 3, total: 5, percentage: 60, color: "#10B981", glowColor: "#34D399" },
-    { bab: "BAB 4", title: "BAB 4 - Pengabdian", filled: 3, total: 4, percentage: 75, color: "#F59E0B", glowColor: "#FBBF24" },
-    { bab: "BAB 5", title: "BAB 5 - Tata Kelola", filled: 4, total: 6, percentage: 66, color: "#EC4899", glowColor: "#F472B6" },
-    { bab: "BAB 6", title: "BAB 6 - Visi Misi", filled: 3, total: 6, percentage: 50, color: "#8B5CF6", glowColor: "#A78BFA" },
-  ];
 
   return (
     <div className="flex flex-col h-full p-4 gap-4" style={{ backgroundColor: "#F5F7FA" }}>
