@@ -11,17 +11,16 @@ import {
   Building2,
   UserCog,
   ArrowRight,
-  Plus,
   Download,
   Search,
   Database,
   ChevronRight,
-  UserPlus,
   UserCheck,
   Clock,
   Layers,
   Settings,
 } from "lucide-react";
+import { MasterActions } from "./MasterActions";
 
 export const metadata: Metadata = {
   title: "Master Data",
@@ -281,16 +280,10 @@ export default async function MasterDataPage() {
 
               {/* Action Buttons */}
               <div className="mt-4 flex gap-2">
-                <Link
-                  href="/master/dosen/new"
-                  className="relative z-10 flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-medium text-white shadow-sm transition-all hover:bg-emerald-700 hover:shadow-md"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  Tambah Dosen
-                </Link>
+                <MasterActions type="dosen" />
                 <Link
                   href="/master/dosen"
-                  className="relative z-10 flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 transition-all hover:border-slate-300 hover:bg-slate-50"
+                  className="relative z-10 flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 transition-all hover:border-slate-300 hover:bg-slate-50 cursor-pointer"
                 >
                   Lihat Detail
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -352,13 +345,7 @@ export default async function MasterDataPage() {
               </div>
 
               <div className="mt-4 flex gap-2">
-                <Link
-                  href="/master/mahasiswa/new"
-                  className="relative z-10 flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-xs font-medium text-white shadow-sm transition-all hover:bg-indigo-700 hover:shadow-md"
-                >
-                  <UserPlus className="h-3.5 w-3.5" />
-                  Tambah
-                </Link>
+                <MasterActions type="mahasiswa" />
               </div>
             </div>
 

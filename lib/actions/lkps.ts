@@ -72,10 +72,19 @@ export async function upsertLkpsRow(params: {
   // }
 
   let savedRow;
-  if (params.rowId) {
+  const isUpdate = !!params.rowId;
+
+  if (isUpdate) {
     savedRow = await db.tabelLkpsRow.update({
       where: { id: params.rowId },
       data: { rowData: params.rowData },
+    });
+    // Audit log untuk UPDATE
+    await createAuditLog({
+      action: "UPDATE",
+      entity: "TabelLkpsRow",
+      entityId: savedRow.id,
+      newValue: { tabelKode: params.tabelKode, rowData: params.rowData },
     });
   } else {
     const lastRow = await db.tabelLkpsRow.findFirst({
@@ -85,6 +94,13 @@ export async function upsertLkpsRow(params: {
     const order = lastRow ? lastRow.rowOrder + 1 : 1;
     savedRow = await db.tabelLkpsRow.create({
       data: { tabelLkpsId: lkps.id, rowOrder: order, rowData: params.rowData },
+    });
+    // Audit log untuk CREATE
+    await createAuditLog({
+      action: "CREATE",
+      entity: "TabelLkpsRow",
+      entityId: savedRow.id,
+      newValue: { tabelKode: params.tabelKode, rowData: params.rowData },
     });
   }
 
@@ -118,7 +134,18 @@ export async function deleteLkpsRow(params: { rowId: string; tabelKode: string }
   //   throw new Error("Tidak dapat menghapus data pada tabel yang sedang diproses.");
   // }
 
+  // Simpan data sebelum hapus untuk audit log
+  const deletedData = { tabelKode: row.tabelLkps.tabelDefinition.kode, rowData: row.rowData };
+
   await db.tabelLkpsRow.delete({ where: { id: params.rowId } });
+
+  // Audit log untuk DELETE
+  await createAuditLog({
+    action: "DELETE",
+    entity: "TabelLkpsRow",
+    entityId: params.rowId,
+    oldValue: deletedData,
+  });
 
   const { kode, bab } = row.tabelLkps.tabelDefinition;
   revalidateTabel(kode, bab);

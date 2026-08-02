@@ -273,7 +273,25 @@ async function main() {
       ],
     },
     // BAB 6 — Visi dan Misi
-    { kode: "6", bab: 6, urutan: 1, nama: "Kesesuaian Visi dan Misi", kolomDefinitions: [] },
+    { kode: "6.1", bab: 6, urutan: 1, nama: "Visi Misi Tujuan",
+      kolomDefinitions: [
+        { key: "kategori", label: "Kategori", type: "select", required: true, options: ["VISI", "MISI"] },
+        { key: "pt", label: "Perguruan Tinggi (PT)", type: "textarea", required: true },
+        { key: "upps", label: "Fakultas (UPPS)", type: "textarea", required: true },
+        { key: "ps", label: "Program Studi (PS)", type: "textarea", required: true },
+        { key: "linkBukti", label: "Link Bukti", type: "url", required: false },
+      ],
+    },
+    { kode: "6.2", bab: 6, urutan: 2, nama: "Strategi Pencapaian",
+      kolomDefinitions: [
+        { key: "nomor", label: "No", type: "number", required: true },
+        { key: "strategi", label: "Strategi Pencapaian", type: "textarea", required: true },
+        { key: "sasaran", label: "Sasaran", type: "textarea", required: true },
+        { key: "indikator", label: "Indikator Kinerja", type: "textarea", required: true },
+        { key: "target", label: "Target", type: "text", required: true },
+        { key: "linkBukti", label: "Link Bukti", type: "url", required: false },
+      ],
+    },
   ];
 
   for (const def of tabelDefinitions) {
