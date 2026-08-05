@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { hasPermission } from "@/lib/utils/permissions";
+import { Role } from "@prisma/client";
 import {
   Document,
   Packer,
@@ -6,112 +10,289 @@ import {
   Table,
   TableRow,
   TableCell,
-  TextRun,
-  HeadingLevel,
+  WidthType,
   AlignmentType,
+  HeadingLevel,
+  BorderStyle,
+  ShadingType,
+  TextRun,
 } from "docx";
+
+type DocChild = Paragraph | Table;
 
 export async function GET() {
   try {
-    const laporanData = [
-      { bab: "BAB 1", title: "Tata Pamong", filled: 4, total: 4 },
-      { bab: "BAB 2", title: "Pendidikan", filled: 5, total: 6 },
-      { bab: "BAB 3", title: "Penelitian", filled: 3, total: 5 },
-      { bab: "BAB 4", title: "Pengabdian", filled: 3, total: 4 },
-      { bab: "BAB 5 & 6", title: "Tata Kelola & Visi Misi", filled: 7, total: 12 },
-    ];
-
-    const totalTables = laporanData.reduce((sum, item) => sum + item.total, 0);
-    const totalFilled = laporanData.reduce((sum, item) => sum + item.filled, 0);
-    const totalProgress = Math.round((totalFilled / totalTables) * 100);
-
-    const children: (Paragraph | Table)[] = [];
-
-    // Title
-    const titlePara = new Paragraph({
-      text: "LAPORAN KINERJA PROGRAM STUDI (LKPS)",
-      heading: HeadingLevel.TITLE,
-      alignment: AlignmentType.CENTER,
-    });
-    children.push(titlePara);
-
-    const subtitlePara = new Paragraph({
-      text: "SIM-LKPS - Universitas Bina Bangsa Getsempena",
-      alignment: AlignmentType.CENTER,
-    });
-    children.push(subtitlePara);
-
-    const summaryPara = new Paragraph({
-      children: [
-        new TextRun({ text: "RINGKASAN: ", bold: true }),
-        new TextRun({ text: `${totalFilled} dari ${totalTables} tabel terisi (${totalProgress}%)` }),
-      ],
-    });
-    children.push(summaryPara);
-
-    // BAB sections
-    for (const section of laporanData) {
-      const progress = Math.round((section.filled / section.total) * 100);
-
-      const headingPara = new Paragraph({
-        text: `${section.bab} - ${section.title}`,
-        heading: HeadingLevel.HEADING_1,
-      });
-      children.push(headingPara);
-
-      // Table header row
-      const headerRow = new TableRow({
-        children: [
-          new TableCell({ children: [new Paragraph({ text: "No" })] }),
-          new TableCell({ children: [new Paragraph({ text: "Nama BAB" })] }),
-          new TableCell({ children: [new Paragraph({ text: "Jumlah" })] }),
-          new TableCell({ children: [new Paragraph({ text: "Progress" })] }),
-        ],
-      });
-
-      // Data row
-      const dataRow = new TableRow({
-        children: [
-          new TableCell({ children: [new Paragraph({ text: section.bab.replace("BAB ", "") })] }),
-          new TableCell({ children: [new Paragraph({ text: section.title })] }),
-          new TableCell({ children: [new Paragraph({ text: `${section.filled}/${section.total}` })] }),
-          new TableCell({ children: [new Paragraph({ text: `${progress}%` })] }),
-        ],
-      });
-
-      const table = new Table({
-        rows: [headerRow, dataRow],
-      });
-      children.push(table);
-      children.push(new Paragraph({ text: "" }));
+    // Check authentication
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Total Summary
-    children.push(new Paragraph({
-      text: "RINGKASAN TOTAL",
-      heading: HeadingLevel.HEADING_1,
-    }));
+    // Check permission
+    const role = session.user.role as Role;
+    if (!hasPermission(role, "report.export")) {
+      return NextResponse.json(
+        { error: "Anda tidak memiliki izin untuk export laporan" },
+        { status: 403 }
+      );
+    }
 
-    const summaryTable = new Table({
-      rows: [
-        new TableRow({ children: [
-          new TableCell({ children: [new Paragraph({ text: "Total Tabel" })] }),
-          new TableCell({ children: [new Paragraph({ text: String(totalTables) })] }),
-        ]}),
-        new TableRow({ children: [
-          new TableCell({ children: [new Paragraph({ text: "Terisi" })] }),
-          new TableCell({ children: [new Paragraph({ text: String(totalFilled) })] }),
-        ]}),
-        new TableRow({ children: [
-          new TableCell({ children: [new Paragraph({ text: "Progress" })] }),
-          new TableCell({ children: [new Paragraph({ text: `${totalProgress}%` })] }),
-        ]}),
-      ],
+    // Get active tahun akademik
+    const tahunAktif = await db.tahunAkademik.findFirst({
+      where: { isActive: true },
+      include: { prodi: true },
     });
-    children.push(summaryTable);
 
+    if (!tahunAktif) {
+      return NextResponse.json(
+        { error: "Tahun akademik tidak ditemukan" },
+        { status: 404 }
+      );
+    }
+
+    // Get all table definitions
+    const definitions = await db.tabelDefinition.findMany({
+      orderBy: [{ bab: "asc" }, { urutan: "asc" }],
+    });
+
+    // Get filled data for each table
+    const tabelLkps = await db.tabelLkps.findMany({
+      where: { tahunAkademikId: tahunAktif.id },
+      include: {
+        rows: { orderBy: { rowOrder: "asc" } },
+        tabelDefinition: true,
+      },
+    });
+
+    // Build lookup map
+    const dataMap: Record<string, typeof tabelLkps[0] | undefined> = {};
+    for (const item of tabelLkps) {
+      if (item.tabelDefinition) {
+        dataMap[item.tabelDefinition.kode] = item;
+      }
+    }
+
+    // Group by BAB
+    const groupedByBab: Record<number, typeof definitions> = {};
+    for (const def of definitions) {
+      if (!groupedByBab[def.bab]) {
+        groupedByBab[def.bab] = [];
+      }
+      groupedByBab[def.bab]!.push(def);
+    }
+
+    const babNames: Record<number, string> = {
+      1: "Tata Pamong",
+      2: "Pendidikan",
+      3: "Penelitian",
+      4: "Pengabdian",
+      5: "Tata Kelola",
+      6: "Visi dan Misi",
+    };
+
+    // Build document content
+    const children: DocChild[] = [];
+
+    // Title
+    children.push(
+      new Paragraph({
+        text: "LAPORAN KINERJA PROGRAM STUDI (LKPS)",
+        heading: HeadingLevel.TITLE,
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 200 },
+      })
+    );
+
+    // Info
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({ text: "Perguruan Tinggi: ", bold: true }),
+          new TextRun("Universitas Bina Bangsa Getsempena"),
+        ],
+        spacing: { after: 100 },
+      })
+    );
+
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({ text: "Program Studi: ", bold: true }),
+          new TextRun(`${tahunAktif.prodi.nama} (${tahunAktif.prodi.jenjang})`),
+        ],
+        spacing: { after: 100 },
+      })
+    );
+
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({ text: "Tahun Akademik: ", bold: true }),
+          new TextRun(`${tahunAktif.tahun} / ${tahunAktif.semester}`),
+        ],
+        spacing: { after: 400 },
+      })
+    );
+
+    // Summary table
+    children.push(
+      new Paragraph({
+        text: "RINGKASAN PENGISIAN TABEL",
+        heading: HeadingLevel.HEADING_1,
+        spacing: { after: 200 },
+      })
+    );
+
+    const headerCellStyle = {
+      shading: { fill: "6366F1", type: ShadingType.CLEAR },
+      borders: {
+        top: { style: BorderStyle.SINGLE, size: 1, color: "6366F1" },
+        bottom: { style: BorderStyle.SINGLE, size: 1, color: "6366F1" },
+        left: { style: BorderStyle.SINGLE, size: 1, color: "6366F1" },
+        right: { style: BorderStyle.SINGLE, size: 1, color: "6366F1" },
+      },
+    };
+
+    const summaryRows: TableRow[] = [
+      new TableRow({
+        tableHeader: true,
+        children: [
+          new TableCell({
+            children: [new Paragraph({ text: "BAB", alignment: AlignmentType.CENTER })],
+            ...headerCellStyle,
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: "Nama BAB" })],
+            ...headerCellStyle,
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: "Total Tabel", alignment: AlignmentType.CENTER })],
+            ...headerCellStyle,
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: "Terisi", alignment: AlignmentType.CENTER })],
+            ...headerCellStyle,
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: "Jumlah Data", alignment: AlignmentType.CENTER })],
+            ...headerCellStyle,
+          }),
+        ],
+      }),
+    ];
+
+    let grandTotal = 0;
+    let grandFilled = 0;
+    let grandData = 0;
+
+    for (const [babNum, defs] of Object.entries(groupedByBab)) {
+      let total = defs.length;
+      let filled = 0;
+      let dataCount = 0;
+
+      for (const def of defs) {
+        const data = dataMap[def.kode];
+        if (data && data.rows.length > 0) {
+          filled++;
+          dataCount += data.rows.length;
+        }
+      }
+
+      grandTotal += total;
+      grandFilled += filled;
+      grandData += dataCount;
+
+      summaryRows.push(
+        new TableRow({
+          children: [
+            new TableCell({ children: [new Paragraph({ text: `BAB ${babNum}` })] }),
+            new TableCell({ children: [new Paragraph({ text: babNames[Number(babNum)] || "" })] }),
+            new TableCell({ children: [new Paragraph({ text: String(total), alignment: AlignmentType.CENTER })] }),
+            new TableCell({ children: [new Paragraph({ text: String(filled), alignment: AlignmentType.CENTER })] }),
+            new TableCell({ children: [new Paragraph({ text: String(dataCount), alignment: AlignmentType.CENTER })] }),
+          ],
+        })
+      );
+    }
+
+    // Grand total row
+    summaryRows.push(
+      new TableRow({
+        children: [
+          new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "", bold: true })] })] }),
+          new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "TOTAL", bold: true })] })] }),
+          new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: String(grandTotal), bold: true })], alignment: AlignmentType.CENTER })] }),
+          new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: String(grandFilled), bold: true })], alignment: AlignmentType.CENTER })] }),
+          new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: String(grandData), bold: true })], alignment: AlignmentType.CENTER })] }),
+        ],
+      })
+    );
+
+    children.push(
+      new Table({
+        width: { size: 100, type: WidthType.PERCENTAGE },
+        rows: summaryRows,
+      })
+    );
+
+    // Detail per BAB
+    children.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+
+    for (const [babNum, defs] of Object.entries(groupedByBab)) {
+      children.push(
+        new Paragraph({
+          text: `BAB ${babNum} — ${babNames[Number(babNum)] || ""}`,
+          heading: HeadingLevel.HEADING_1,
+          spacing: { before: 400, after: 200 },
+        })
+      );
+
+      for (const def of defs) {
+        const data = dataMap[def.kode];
+        const hasData = data && data.rows.length > 0;
+        const statusText = hasData ? `${data!.rows.length} data` : "Belum ada data";
+        const statusColor = hasData ? "059669" : "EF4444";
+
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({ text: `${def.kode} — ${def.nama}`, bold: true }),
+              new TextRun({ text: ` (${statusText})`, color: statusColor }),
+            ],
+            spacing: { before: 100, after: 50 },
+          })
+        );
+      }
+    }
+
+    // Footer
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: `Generated: ${new Date().toLocaleString("id-ID")} | SIM-LKPS v0.1.0`,
+            italics: true,
+            color: "94A3B8",
+            size: 18,
+          }),
+        ],
+        alignment: AlignmentType.RIGHT,
+        spacing: { before: 500 },
+      })
+    );
+
+    // Create document
     const doc = new Document({
-      sections: [{ properties: {}, children }],
+      sections: [
+        {
+          properties: {
+            page: {
+              margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
+            },
+          },
+          children,
+        },
+      ],
     });
 
     const buffer = await Packer.toBuffer(doc);
@@ -121,7 +302,7 @@ export async function GET() {
       status: 200,
       headers: {
         "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "Content-Disposition": `attachment; filename="LKPS_Report_${dateStr}.docx"`,
+        "Content-Disposition": `attachment; filename="SIM-LKPS_Laporan_${dateStr}.docx"`,
       },
     });
   } catch (error) {

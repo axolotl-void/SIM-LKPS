@@ -1,8 +1,14 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { createAuditLog } from "@/lib/utils/audit";
+
+function revalidateAkademik() {
+  revalidatePath("/dashboard");
+  revalidatePath("/master/mahasiswa");
+}
 
 export async function createMahasiswa(data: {
   nim: string;
@@ -25,6 +31,8 @@ export async function createMahasiswa(data: {
     entityId: mahasiswa.id,
     newValue: { nim: mahasiswa.nim, nama: mahasiswa.nama, angkatan: mahasiswa.angkatan },
   });
+
+  revalidateAkademik();
 
   return { id: mahasiswa.id, nim: mahasiswa.nim, nama: mahasiswa.nama };
 }
@@ -51,6 +59,8 @@ export async function updateMahasiswa(id: string, data: {
     newValue: { nama: updated.nama, status: updated.status, angkatan: updated.angkatan },
   });
 
+  revalidateAkademik();
+
   return { id: updated.id, nim: updated.nim, nama: updated.nama };
 }
 
@@ -69,6 +79,8 @@ export async function deleteMahasiswa(id: string) {
     entityId: id,
     oldValue: { nim: existing.nim, nama: existing.nama, angkatan: existing.angkatan },
   });
+
+  revalidateAkademik();
 
   return { success: true };
 }

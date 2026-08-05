@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Role, TabelStatus } from "@prisma/client";
 
 /**
  * Permission definitions per role
@@ -7,6 +7,7 @@ const PERMISSIONS: Record<Role, string[]> = {
   ADMIN: [
     "user.*",
     "master_data.*",
+    "master_dosen.*",
     "tabel_lkps.*",
     "evidence.*",
     "settings.*",
@@ -22,6 +23,7 @@ const PERMISSIONS: Record<Role, string[]> = {
     "evidence.create",
     "evidence.read",
     "master_data.read",
+    "master_dosen.create",
     "dashboard.read",
     "report.read",
   ],
@@ -94,3 +96,47 @@ export const ROLE_LABELS: Record<Role, string> = {
   VALIDATOR: "Validator / Kaprodi",
   PIMPINAN: "Pimpinan",
 };
+
+/**
+ * Table status labels for UI display
+ */
+export const STATUS_LABELS: Record<TabelStatus, string> = {
+  DRAFT: "Draft",
+  DIAJUKAN: "Diajukan",
+  DIREVISI: "Direvisi",
+  DISETUJUI: "Disetujui",
+  DITOLAK: "Ditolak",
+};
+
+/**
+ * Status colors for badges
+ */
+export const STATUS_COLORS: Record<TabelStatus, { bg: string; text: string; border: string }> = {
+  DRAFT: { bg: "bg-slate-100", text: "text-slate-700", border: "border-slate-300" },
+  DIAJUKAN: { bg: "bg-amber-100", text: "text-amber-700", border: "border-amber-300" },
+  DIREVISI: { bg: "bg-orange-100", text: "text-orange-700", border: "border-orange-300" },
+  DISETUJUI: { bg: "bg-emerald-100", text: "text-emerald-700", border: "border-emerald-300" },
+  DITOLAK: { bg: "bg-red-100", text: "text-red-700", border: "border-red-300" },
+};
+
+/**
+ * Check if user can edit a table based on status and role
+ * ADMIN: can edit all statuses
+ * OPERATOR: can edit DRAFT, DIREVISI, DITOLAK only
+ * VALIDATOR, PIMPINAN: cannot edit any
+ */
+export function canEditTable(role: Role, status: TabelStatus): boolean {
+  if (role === "ADMIN") return true;
+  if (role === "OPERATOR") {
+    return ["DRAFT", "DIREVISI", "DITOLAK"].includes(status);
+  }
+  return false;
+}
+
+/**
+ * Check if user can delete rows from a table based on status and role
+ * Same rules as canEditTable
+ */
+export function canDeleteRow(role: Role, status: TabelStatus): boolean {
+  return canEditTable(role, status);
+}

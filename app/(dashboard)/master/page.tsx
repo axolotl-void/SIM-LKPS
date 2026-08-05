@@ -10,7 +10,6 @@ import {
   Calendar,
   Building2,
   UserCog,
-  ArrowRight,
   Download,
   Search,
   Database,
@@ -280,14 +279,7 @@ export default async function MasterDataPage() {
 
               {/* Action Buttons */}
               <div className="mt-4 flex gap-2">
-                <MasterActions type="dosen" />
-                <Link
-                  href="/master/dosen"
-                  className="relative z-10 flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 transition-all hover:border-slate-300 hover:bg-slate-50 cursor-pointer"
-                >
-                  Lihat Detail
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-                </Link>
+                <MasterActions type="dosen" withDetailLink />
               </div>
             </div>
 

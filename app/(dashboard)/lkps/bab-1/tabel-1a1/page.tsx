@@ -36,6 +36,19 @@ export default async function Tabel1A1Page() {
     );
   }
 
+  // Fetch dosens for dropdown
+  const dosens = await db.dosen.findMany({
+    where: { isActive: true },
+    select: {
+      id: true,
+      nidn: true,
+      nama: true,
+      jabatanFungsional: true,
+      pendidikanTerakhir: true,
+    },
+    orderBy: { nama: "asc" },
+  });
+
   const lkps = await db.tabelLkps.findUnique({
     where: {
       tabelDefinitionId_tahunAkademikId: {
@@ -108,6 +121,7 @@ export default async function Tabel1A1Page() {
           }))}
           tahunAkademikId={activeTa.id}
           tabelKode={def.kode}
+          dosens={dosens}
         />
       </ErrorBoundary>
 
