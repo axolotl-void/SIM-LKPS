@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import { DosenSelect } from "@/components/shared/DosenSelect";
 
 interface Tabel1A1ClientProps {
   initialRows: {
@@ -20,9 +21,16 @@ interface Tabel1A1ClientProps {
   }[];
   tahunAkademikId: string;
   tabelKode: string;
+  dosens: {
+    id: string;
+    nidn: string;
+    nama: string;
+    jabatanFungsional: string | null;
+    pendidikanTerakhir: string;
+  }[];
 }
 
-export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode }: Tabel1A1ClientProps) {
+export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode, dosens }: Tabel1A1ClientProps) {
   const [rows, setRows] = useState(initialRows);
   const router = useRouter();
 
@@ -334,25 +342,14 @@ export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode }: Tabe
                       </div>
                     </div>
 
-                    {/* Nama Ketua / Pejabat */}
-                    <div>
-                      <label className="block text-2xs font-bold text-slate-700 mb-1.5">
-                        Nama Ketua / Pejabat <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                          <User className="h-4 w-4 text-blue-500" />
-                        </span>
-                        <input
-                          type="text"
-                          required
-                          placeholder="Nama lengkap beserta gelar akademik"
-                          value={namaKetua}
-                          onChange={(e) => setNamaKetua(e.target.value)}
-                          className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-xs transition-all focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-3xs"
-                        />
-                      </div>
-                    </div>
+                    {/* Nama Ketua / Pejabat - menggunakan DosenSelect */}
+                    <DosenSelect
+                      value={namaKetua}
+                      onChange={(val) => setNamaKetua(val)}
+                      dosens={dosens}
+                      placeholder="Ketik atau pilih nama dosen..."
+                      required
+                    />
 
                     {/* Periode Jabatan */}
                     <div>

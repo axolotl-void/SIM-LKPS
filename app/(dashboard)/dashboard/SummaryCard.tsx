@@ -1,315 +1,234 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { GraduationCap, BookOpen, Users } from "lucide-react";
 
 interface SummaryCardProps {
-  totalUsers: number;
   dosenAktif: number;
   mahasiswaAktif: number;
-  penggunaAktif: number;
+  mataKuliahAktif: number;
 }
 
-// Easing functions
-const easeOutExpo = (t: number): number => {
-  return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-};
+function clampNonNegative(n: number): number {
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+}
 
-const easeInOutCubic = (t: number): number => {
-  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-};
-
-export function SummaryCard({
-  totalUsers,
-  dosenAktif,
-  mahasiswaAktif,
-  penggunaAktif,
-}: SummaryCardProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const hasAnimated = useRef(false);
-  const animationRef = useRef<number | null>(null);
-  const progressArcRef = useRef<SVGCircleElement>(null);
-  const glowArcRef = useRef<SVGCircleElement>(null);
-  const highlightArcRef = useRef<SVGCircleElement>(null);
-  const counterRef = useRef<HTMLDivElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
-
-  // Static state — only changes twice: initial load + animation complete
-  const [, setIsAnimating] = useState(false);
-
-  const circumference = 2 * Math.PI * 50;
-  const targetPercentage = Math.round((dosenAktif / totalUsers) * 100);
-  const targetValue = totalUsers;
-
-  // Pre-calculate final values ONCE at render — no recalculation during animation
-  const finalOffset = circumference - (targetPercentage / 100) * circumference;
-  const finalGlowOpacity = 0.1;
-  const finalGlowScale = 1 + (targetPercentage / 100) * 0.15;
-
-  // Apply final values to DOM directly — no React re-render
-  const applyFinalState = () => {
-    if (progressArcRef.current) {
-      progressArcRef.current.style.strokeDashoffset = String(finalOffset);
-    }
-    if (glowArcRef.current) {
-      glowArcRef.current.style.strokeDashoffset = String(finalOffset);
-      glowArcRef.current.style.opacity = String(finalGlowOpacity * 0.25);
-    }
-    if (highlightArcRef.current) {
-      highlightArcRef.current.style.strokeDashoffset = String(finalOffset);
-    }
-    if (counterRef.current) {
-      counterRef.current.textContent = String(targetValue);
-    }
-    if (glowRef.current) {
-      glowRef.current.style.opacity = String(finalGlowOpacity);
-      glowRef.current.style.transform = `scale(${finalGlowScale})`;
-    }
-  };
-
-  const runAnimation = () => {
-    if (hasAnimated.current) return;
-    hasAnimated.current = true;
-    setIsAnimating(true);
-
-    // Cancel any existing animation
-    if (animationRef.current !== null) {
-      cancelAnimationFrame(animationRef.current);
-    }
-
-    // Timeline
-    const fillDuration = 1800;
-    const holdDuration = 700;
-    const settleDuration = 1700;
-    const totalDuration = fillDuration + holdDuration + settleDuration;
-
-    const startTime = performance.now();
-
-    const animate = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-
-      if (elapsed >= totalDuration) {
-        // Animation complete — apply final values and stop
-        animationRef.current = null;
-        setIsAnimating(false);
-        applyFinalState();
-        return;
-      }
-
-      let progress: number;
-
-      if (elapsed < fillDuration) {
-        const t = elapsed / fillDuration;
-        progress = easeOutExpo(t) * 100;
-      } else if (elapsed < fillDuration + holdDuration) {
-        progress = 100;
-      } else {
-        const t = (elapsed - fillDuration - holdDuration) / settleDuration;
-        const eased = easeInOutCubic(t);
-        progress = 100 - eased * (100 - targetPercentage);
-      }
-
-      // Clamp progress
-      progress = Math.max(0, Math.min(100, progress));
-
-      // Compute current offset
-      const currentOffset = circumference - (progress / 100) * circumference;
-
-      // Apply to DOM directly — NO React state update
-      if (progressArcRef.current) {
-        progressArcRef.current.style.strokeDashoffset = String(currentOffset);
-      }
-      if (glowArcRef.current) {
-        glowArcRef.current.style.strokeDashoffset = String(currentOffset);
-        const glowOpacity = 0.1 + (progress / 100) * 0.4;
-        glowArcRef.current.style.opacity = String(glowOpacity * 0.25);
-      }
-      if (highlightArcRef.current) {
-        highlightArcRef.current.style.strokeDashoffset = String(currentOffset);
-      }
-
-      // Counter
-      const currentValue = Math.round((progress / 100) * targetValue);
-      if (counterRef.current) {
-        counterRef.current.textContent = String(currentValue);
-      }
-
-      // Glow element
-      if (glowRef.current) {
-        const glowOpacity = 0.1 + (progress / 100) * 0.4;
-        const glowScale = 1 + (progress / 100) * 0.15;
-        glowRef.current.style.opacity = String(glowOpacity);
-        glowRef.current.style.transform = `scale(${glowScale})`;
-      }
-
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    animationRef.current = requestAnimationFrame(animate);
-  };
-
+function useCountUp(target: number, durationMs = 600) {
+  const [value, setValue] = useState(0);
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry?.isIntersecting && !hasAnimated.current) {
-          const timer = setTimeout(runAnimation, 200);
-          return () => clearTimeout(timer);
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    if (ref.current) observer.observe(ref.current);
-
-    return () => {
-      observer.disconnect();
-      if (animationRef.current !== null) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = null;
-      }
+    const safe = clampNonNegative(target);
+    let frame = 0;
+    const start = performance.now();
+    const animate = (now: number) => {
+      const t = Math.min(1, (now - start) / durationMs);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(Math.round(eased * safe));
+      if (t < 1) frame = requestAnimationFrame(animate);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, [target, durationMs]);
+  return value;
+}
+
+function StatRow({
+  icon: Icon,
+  label,
+  value,
+  tone,
+  delay = 0,
+  reduced,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  value: number;
+  tone: "indigo" | "sky" | "violet";
+  delay?: number;
+  reduced: boolean;
+}) {
+  const animated = useCountUp(value, 600);
+  const display = reduced ? clampNonNegative(value) : animated;
+  const toneStyles: Record<typeof tone, { bg: string; ring: string; text: string }> = {
+    indigo: { bg: "bg-indigo-50", ring: "ring-indigo-100", text: "text-indigo-600" },
+    sky: { bg: "bg-sky-50", ring: "ring-sky-100", text: "text-sky-600" },
+    violet: { bg: "bg-violet-50", ring: "ring-violet-100", text: "text-violet-600" },
+  };
+  const s = toneStyles[tone];
+
+  const variants: Variants = {
+    hidden: { opacity: 0, y: 8 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1], delay } },
+  };
 
   return (
-    <div
-      className="bg-white border border-gray-200 rounded-xl overflow-hidden"
+    <motion.div
+      variants={reduced ? undefined : variants}
+      initial={reduced ? false : "hidden"}
+      animate={reduced ? undefined : "show"}
+      className="flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-slate-50"
+    >
+      <span
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ring-1 ${s.bg} ${s.ring}`}
+        aria-hidden
+      >
+        <Icon className={`h-4 w-4 ${s.text}`} />
+      </span>
+      <div className="flex flex-1 items-center justify-between gap-2">
+        <span className="text-[12px] font-medium text-slate-500">{label}</span>
+        <span className="text-[15px] font-bold tabular-nums text-slate-900">{display}</span>
+      </div>
+    </motion.div>
+  );
+}
+
+export function SummaryCard({ dosenAktif, mahasiswaAktif, mataKuliahAktif }: SummaryCardProps) {
+  const reduced = useReducedMotion() ?? false;
+
+  const d = clampNonNegative(dosenAktif);
+  const m = clampNonNegative(mahasiswaAktif);
+  const k = clampNonNegative(mataKuliahAktif);
+  const total = d + m + k;
+
+  const totalAnimated = useCountUp(total, 700);
+  const totalDisplay = reduced ? total : totalAnimated;
+
+  const cardVariants: Variants = {
+    hidden: { opacity: 0, y: 10 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+  };
+  const circleVariants: Variants = {
+    hidden: { opacity: 0, scale: 0.85 },
+    show: { opacity: 1, scale: 1, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.1 } },
+  };
+
+  return (
+    <motion.section
+      aria-labelledby="ringkasan-akademik-title"
+      variants={reduced ? undefined : cardVariants}
+      initial={reduced ? false : "hidden"}
+      animate={reduced ? undefined : "show"}
+      className="rounded-2xl border border-slate-100 bg-white"
       style={{
-        boxShadow: "0 1px 2px rgba(0,0,0,0.02), 0 1px 4px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.02)",
+        boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 2px 8px rgba(15,23,42,0.04)",
       }}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
-        <h3 className="text-[14px] font-semibold text-gray-900" style={{ letterSpacing: "-0.1px" }}>
-          Ringkasan Data Kampus
+      <header className="border-b border-slate-100 px-4 py-3.5">
+        <h3
+          id="ringkasan-akademik-title"
+          className="text-[14px] font-semibold tracking-tight text-slate-900"
+        >
+          Ringkasan Data Akademik
         </h3>
-      </div>
+        <p className="mt-0.5 text-[11px] text-slate-400">Data aktif dari database</p>
+      </header>
 
-      {/* Content */}
       <div className="p-4">
-        <div className="flex gap-4 items-center">
-          {/* Donut */}
-          <div ref={ref} className="relative w-[130px] h-[130px] flex-shrink-0">
-            {/* Ambient glow — controlled by DOM ref */}
+        <div className="flex items-center gap-4">
+          <motion.div
+            variants={reduced ? undefined : circleVariants}
+            initial={reduced ? false : "hidden"}
+            animate={reduced ? undefined : "show"}
+            className="relative flex h-[120px] w-[120px] flex-shrink-0 items-center justify-center rounded-full"
+            style={{
+              background: "linear-gradient(135deg, #6366F1 0%, #818CF8 55%, #A78BFA 100%)",
+              boxShadow: "0 8px 20px rgba(99,102,241,0.22), inset 0 1px 0 rgba(255,255,255,0.18)",
+            }}
+            aria-label="Total entri akademik"
+          >
             <div
-              ref={glowRef}
-              className="absolute inset-0 rounded-full pointer-events-none"
+              className="absolute inset-1 rounded-full"
               style={{
-                background: `radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 70%)`,
-                filter: "blur(16px)",
-                opacity: 0.1,
+                background:
+                  "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.18) 0%, transparent 55%)",
               }}
+              aria-hidden
             />
-
-            <svg className="w-full h-full" style={{ transform: "rotate(-90deg)" }}>
-              {/* Background track */}
-              <circle
-                cx="65"
-                cy="65"
-                r="50"
-                fill="none"
-                stroke="#F8F9FB"
-                strokeWidth="14"
-              />
-
-              {/* Outer glow ring */}
-              <circle
-                ref={glowArcRef}
-                cx="65"
-                cy="65"
-                r="50"
-                fill="none"
-                stroke="url(#donutGlow)"
-                strokeWidth="22"
-                strokeLinecap="round"
-                strokeDasharray={circumference}
-                strokeDashoffset={circumference}
-                style={{ filter: "blur(6px)" }}
-              />
-
-              {/* Main progress arc */}
-              <circle
-                ref={progressArcRef}
-                cx="65"
-                cy="65"
-                r="50"
-                fill="none"
-                stroke="url(#donutGrad)"
-                strokeWidth="14"
-                strokeLinecap="round"
-                strokeDasharray={circumference}
-                strokeDashoffset={circumference}
-              />
-
-              {/* Inner highlight */}
-              <circle
-                ref={highlightArcRef}
-                cx="65"
-                cy="65"
-                r="50"
-                fill="none"
-                stroke="rgba(255,255,255,0.12)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeDasharray={circumference}
-                strokeDashoffset={circumference}
-              />
-
-              <defs>
-                <linearGradient id="donutGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#6366F1" />
-                  <stop offset="100%" stopColor="#06B6D4" />
-                </linearGradient>
-                <linearGradient id="donutGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#6366F1" />
-                  <stop offset="100%" stopColor="#06B6D4" />
-                </linearGradient>
-              </defs>
-            </svg>
-
-            {/* Center counter — controlled by DOM ref */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-              <div
-                ref={counterRef}
-                className="text-[32px] font-bold text-gray-900 leading-none"
-                style={{ letterSpacing: "-0.8px" }}
-              >
-                0
+            <div className="relative text-center text-white">
+              <div className="text-[28px] font-bold leading-none tabular-nums tracking-tight">
+                {totalDisplay}
               </div>
-              <div className="text-[10px] font-medium text-gray-400 mt-1 uppercase tracking-wide">
-                Total Pengguna
+              <div className="mt-1 text-[10px] font-medium uppercase tracking-wider text-white/85">
+                Total Entri Akademik
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Legend */}
-          <div className="flex-1 flex flex-col gap-3.5">
-            <div className="flex items-center gap-2.5 p-1.5 -mx-1.5 rounded-lg hover:bg-gray-50 cursor-pointer">
-              <span className="w-[9px] h-[9px] rounded-full bg-indigo-500 flex-shrink-0" />
-              <div className="flex-1">
-                <div className="text-[12px] text-gray-500">Dosen Aktif</div>
-              </div>
-              <div className="text-[15px] font-bold text-gray-900">{dosenAktif}</div>
-            </div>
-
-            <div className="flex items-center gap-2.5 p-1.5 -mx-1.5 rounded-lg hover:bg-gray-50 cursor-pointer">
-              <span className="w-[9px] h-[9px] rounded-full bg-cyan-500 flex-shrink-0" />
-              <div className="flex-1">
-                <div className="text-[12px] text-gray-500">Mahasiswa Aktif</div>
-              </div>
-              <div className="text-[15px] font-bold text-gray-900">{mahasiswaAktif}</div>
-            </div>
-
-            <div className="flex items-center gap-2.5 p-1.5 -mx-1.5 rounded-lg hover:bg-gray-50 cursor-pointer">
-              <span className="w-[9px] h-[9px] rounded-full bg-gray-200 flex-shrink-0" />
-              <div className="flex-1">
-                <div className="text-[12px] text-gray-500">Pengguna Aktif</div>
-              </div>
-              <div className="text-[15px] font-bold text-gray-900">{penggunaAktif}</div>
-            </div>
+          <div className="flex flex-1 flex-col gap-1">
+            <StatRow
+              icon={GraduationCap}
+              label="Dosen Aktif"
+              value={d}
+              tone="indigo"
+              delay={0.15}
+              reduced={reduced}
+            />
+            <StatRow
+              icon={Users}
+              label="Mahasiswa Aktif"
+              value={m}
+              tone="sky"
+              delay={0.25}
+              reduced={reduced}
+            />
+            <StatRow
+              icon={BookOpen}
+              label="Mata Kuliah Aktif"
+              value={k}
+              tone="violet"
+              delay={0.35}
+              reduced={reduced}
+            />
           </div>
         </div>
       </div>
+    </motion.section>
+  );
+}
+
+export function SummaryCardSkeleton() {
+  return (
+    <div
+      className="rounded-2xl border border-slate-100 bg-white"
+      style={{ boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 2px 8px rgba(15,23,42,0.04)" }}
+      aria-hidden
+    >
+      <div className="border-b border-slate-100 px-4 py-3.5">
+        <div className="h-4 w-44 animate-pulse rounded bg-slate-200" />
+        <div className="mt-1.5 h-3 w-28 animate-pulse rounded bg-slate-100" />
+      </div>
+      <div className="flex items-center gap-4 p-4">
+        <div className="h-[120px] w-[120px] flex-shrink-0 animate-pulse rounded-full bg-slate-100" />
+        <div className="flex flex-1 flex-col gap-2">
+          <div className="h-9 animate-pulse rounded-lg bg-slate-100" />
+          <div className="h-9 animate-pulse rounded-lg bg-slate-100" />
+          <div className="h-9 animate-pulse rounded-lg bg-slate-100" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SummaryCardError({ onRetry }: { onRetry?: () => void }) {
+  return (
+    <div
+      className="rounded-2xl border border-red-100 bg-white p-4"
+      style={{ boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 2px 8px rgba(15,23,42,0.04)" }}
+      role="alert"
+    >
+      <div className="text-[13px] font-semibold text-slate-900">Gagal memuat ringkasan</div>
+      <p className="mt-1 text-[12px] text-slate-500">
+        Data akademik tidak dapat ditampilkan. Coba segarkan halaman.
+      </p>
+      {onRetry ? (
+        <button
+          type="button"
+          onClick={onRetry}
+          className="mt-3 rounded-lg bg-slate-100 px-3 py-1.5 text-[12px] font-medium text-slate-700 transition-colors hover:bg-slate-200"
+        >
+          Coba lagi
+        </button>
+      ) : null}
     </div>
   );
 }

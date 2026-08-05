@@ -9,6 +9,43 @@ import { createNotification } from "@/lib/actions/notification";
 import { Role, TabelStatus } from "@prisma/client";
 
 // ──────────────────────────────────────────────
+// VALIDATION HELPERS
+// ──────────────────────────────────────────────
+
+/**
+ * Check if user can edit a table based on status and role
+ * ADMIN: can edit all statuses
+ * OPERATOR: can edit DRAFT, DIREVISI, DITOLAK only
+ * VALIDATOR, PIMPINAN: cannot edit any
+ */
+function canEditTable(role: Role, status: TabelStatus): boolean {
+  if (role === "ADMIN") return true;
+  if (role === "OPERATOR") {
+    return ["DRAFT", "DIREVISI", "DITOLAK"].includes(status);
+  }
+  return false;
+}
+
+/**
+ * Check if user can delete rows from a table based on status and role
+ * Same rules as canEditTable
+ */
+function canDeleteRow(role: Role, status: TabelStatus): boolean {
+  return canEditTable(role, status);
+}
+
+/**
+ * Status labels for error messages
+ */
+const STATUS_LABELS: Record<TabelStatus, string> = {
+  DRAFT: "Draft",
+  DIAJUKAN: "Diajukan untuk validasi",
+  DIREVISI: "Direvisi",
+  DISETUJUI: "Disetujui",
+  DITOLAK: "Ditolak",
+};
+
+// ──────────────────────────────────────────────
 // Helper: resolve revalidation path from kode
 // ──────────────────────────────────────────────
 
@@ -64,12 +101,15 @@ export async function upsertLkpsRow(params: {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
+  const role = session.user.role as Role;
   const lkps = await getOrCreateLkps(params.tabelKode, params.tahunAkademikId);
 
-  // VALIDASI DIHAPUS - Semua orang bisa edit
-  // if (lkps.status === "DISETUJUI" || lkps.status === "DIAJUKAN") {
-  //   throw new Error("Tidak dapat mengubah data tabel yang sudah disetujui atau sedang diajukan.");
-  // }
+  // VALIDASI: Role-based edit permission
+  if (!canEditTable(role, lkps.status)) {
+    throw new Error(
+      `Tidak dapat mengubah data pada tabel berstatus ${STATUS_LABELS[lkps.status]}.`
+    );
+  }
 
   let savedRow;
   const isUpdate = !!params.rowId;
@@ -122,17 +162,19 @@ export async function deleteLkpsRow(params: { rowId: string; tabelKode: string }
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
+  const role = session.user.role as Role;
   const row = await db.tabelLkpsRow.findUnique({
     where: { id: params.rowId },
     include: { tabelLkps: { include: { tabelDefinition: true } } },
   });
   if (!row) throw new Error("Row not found");
 
-  // Blokir hapus jika DIAJUKAN atau DISETUJUI
-  // VALIDASI DIHAPUS - Semua orang bisa hapus
-  // if (row.tabelLkps.status === "DIAJUKAN" || row.tabelLkps.status === "DISETUJUI") {
-  //   throw new Error("Tidak dapat menghapus data pada tabel yang sedang diproses.");
-  // }
+  // VALIDASI: Role-based delete permission
+  if (!canDeleteRow(role, row.tabelLkps.status)) {
+    throw new Error(
+      `Tidak dapat menghapus data pada tabel berstatus ${STATUS_LABELS[row.tabelLkps.status]}.`
+    );
+  }
 
   // Simpan data sebelum hapus untuk audit log
   const deletedData = { tabelKode: row.tabelLkps.tabelDefinition.kode, rowData: row.rowData };
@@ -335,6 +377,9 @@ export async function createDosen(nama: string) {
     newValue: { nama, nidn, status: "Tetap" },
   });
 
+  revalidatePath("/dashboard");
+  revalidatePath("/master/dosen");
+
   return {
     id: newDosen.id,
     nidn: newDosen.nidn,
@@ -362,6 +407,9 @@ export async function updateDosen(id: string, data: { nama?: string; status?: st
     newValue: { nama: updated.nama, status: updated.status },
   });
 
+  revalidatePath("/dashboard");
+  revalidatePath("/master/dosen");
+
   return { id: updated.id, nama: updated.nama, status: updated.status };
 }
 
@@ -380,6 +428,9 @@ export async function deleteDosen(id: string) {
     entityId: id,
     oldValue: { nama: existing.nama, nidn: existing.nidn },
   });
+
+  revalidatePath("/dashboard");
+  revalidatePath("/master/dosen");
 
   return { success: true };
 }

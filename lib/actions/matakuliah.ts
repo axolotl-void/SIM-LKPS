@@ -1,8 +1,14 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { createAuditLog } from "@/lib/utils/audit";
+
+function revalidateAkademik() {
+  revalidatePath("/dashboard");
+  revalidatePath("/master/mata-kuliah");
+}
 
 export async function createMatakuliah(data: {
   kode: string;
@@ -25,6 +31,8 @@ export async function createMatakuliah(data: {
     entityId: matakuliah.id,
     newValue: { kode: matakuliah.kode, nama: matakuliah.nama, sks: matakuliah.sks },
   });
+
+  revalidateAkademik();
 
   return { id: matakuliah.id, kode: matakuliah.kode, nama: matakuliah.nama };
 }
@@ -51,6 +59,8 @@ export async function updateMatakuliah(id: string, data: {
     newValue: { nama: updated.nama, sks: updated.sks },
   });
 
+  revalidateAkademik();
+
   return { id: updated.id, kode: updated.kode, nama: updated.nama };
 }
 
@@ -69,6 +79,8 @@ export async function deleteMatakuliah(id: string) {
     entityId: id,
     oldValue: { kode: existing.kode, nama: existing.nama, sks: existing.sks },
   });
+
+  revalidateAkademik();
 
   return { success: true };
 }

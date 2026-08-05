@@ -129,9 +129,10 @@ function KPICard({
 }
 
 export function KPICards({ totalTables, filledTables, approved, pending }: KPICardsProps) {
-  const filledPercentage = totalTables > 0 ? Math.round((filledTables / totalTables) * 100) : 0;
-  const pendingPercentage = totalTables > 0 ? Math.round((pending / totalTables) * 100) : 0;
-  const approvedPercentage = totalTables > 0 ? Math.round((approved / totalTables) * 100) : 0;
+  // Clamp percentage to max 100%
+  const filledPercentage = Math.min(100, totalTables > 0 ? Math.round((filledTables / totalTables) * 100) : 0);
+  const pendingPercentage = Math.min(100, totalTables > 0 ? Math.round((pending / totalTables) * 100) : 0);
+  const approvedPercentage = Math.min(100, totalTables > 0 ? Math.round((approved / totalTables) * 100) : 0);
 
   const cards = [
     { title: "Total Tabel LKPS", subtitle: `${totalTables} tabel`, value: totalTables, percentage: 100, trend: "up" as const, icon: Target, gradient: ["#6366F1", "#8B5CF6"] as [string, string], ringColor: "#A78BFA", delay: 0 },

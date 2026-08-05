@@ -14,6 +14,8 @@ interface ProgressItem {
   percentage: number;
   color: string;
   glowColor: string;
+  disetujui: number;
+  diajukan: number;
 }
 
 interface DashboardData {
@@ -25,7 +27,7 @@ interface DashboardData {
     diajukan: number;
     ditolak: number;
   };
-  quickStats: { dosenCount: number; mahasiswaCount: number; userCount: number };
+  quickStats: { dosenCount: number; mahasiswaCount: number; mataKuliahCount: number; userCount: number };
   isAdmin: boolean;
   recentLogs: Array<{
     id: string;
@@ -97,10 +99,9 @@ export function DashboardClient({ data }: { data: DashboardData }) {
         <div className="hidden lg:flex w-80 xl:w-[340px] flex-shrink-0 flex-col gap-4 min-h-0">
           {/* Summary Card */}
           <SummaryCard
-            totalUsers={quickStats.userCount}
             dosenAktif={quickStats.dosenCount}
             mahasiswaAktif={quickStats.mahasiswaCount}
-            penggunaAktif={quickStats.userCount - quickStats.dosenCount - quickStats.mahasiswaCount}
+            mataKuliahAktif={quickStats.mataKuliahCount}
           />
 
           {/* Activity Card */}
