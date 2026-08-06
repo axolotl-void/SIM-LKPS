@@ -14,7 +14,9 @@ import {
   Settings,
   ClipboardList,
   ChevronRight,
+  UserCircle2,
 } from "lucide-react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 interface MenuItem {
@@ -231,19 +233,59 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
 
       {/* Footer - Info Card Only */}
       <div className="p-4">
-        {/* Program Info Card */}
-        <div
-          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 p-4 text-white shadow-lg"
+        {/* Program Info Card — ambient gradient + breathing pulse + shimmer */}
+        <motion.div
+          animate={{
+            backgroundPosition: [
+              "0% 50%, center",
+              "100% 50%, center",
+              "0% 50%, center",
+            ],
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-600 p-4 text-white shadow-lg [background-size:200%_200%,cover]"
           style={{
-            backgroundImage: "linear-gradient(135deg, rgba(37, 99, 235, 0.9) 0%, rgba(67, 56, 202, 0.9) 100%), url('/img/gedung-ubbg_11zon.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundImage:
+              "linear-gradient(135deg, rgba(37, 99, 235, 0.92) 0%, rgba(67, 56, 202, 0.92) 50%, rgba(8, 145, 178, 0.92) 100%), url('/img/gedung-ubbg_11zon.png')",
+            backgroundSize: "200% 200%, cover",
+            backgroundPosition: "0% 50%, center",
           }}
         >
-          <p className="text-[11px] font-bold uppercase tracking-wider text-blue-100">Program Studi</p>
-          <p className="mt-0.5 text-sm font-bold">Ilmu Komputer UBBG</p>
-          <p className="mt-2 text-[11px] text-blue-200">Versi 0.1.0 (Soft UI)</p>
-        </div>
+          {/* Breathing pulse layer */}
+          <motion.div
+            aria-hidden
+            animate={{ scale: [1, 1.04, 1], opacity: [0.5, 0.8, 0.5] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="pointer-events-none absolute inset-0 rounded-2xl bg-blue-400/20 blur-xl"
+          />
+
+          {/* Shimmer sweep layer */}
+          <motion.div
+            aria-hidden
+            initial={{ x: "-120%" }}
+            animate={{ x: "220%" }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.5 }}
+            className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+          />
+
+          <div className="relative">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-blue-100">
+              Program Studi
+            </p>
+            <p className="mt-0.5 text-sm font-bold">Ilmu Komputer UBBG</p>
+            <p className="mt-2 text-[11px] text-blue-200">
+              Versi 0.1.0 (Soft UI)
+            </p>
+
+            <Link
+              href="/developer"
+              className="mt-3 inline-flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-white/30 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:bg-white/20 hover:border-white/50 hover:shadow-md"
+            >
+              <UserCircle2 className="h-3.5 w-3.5" />
+              Developer
+            </Link>
+          </div>
+        </motion.div>
       </div>
     </motion.aside>
   );

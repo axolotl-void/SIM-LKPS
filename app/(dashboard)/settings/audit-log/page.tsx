@@ -5,6 +5,7 @@ import { Role } from "@prisma/client";
 import { db } from "@/lib/db";
 import { formatDateTime } from "@/lib/utils/format";
 import type { Metadata } from "next";
+import { ScrollText, Activity, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Audit Log",
@@ -39,64 +40,184 @@ export default async function AuditLogPage({ searchParams }: Props) {
     db.auditLog.count(),
   ]);
 
-  const actionColors: Record<string, string> = {
-    CREATE: "bg-emerald-100 text-emerald-700",
-    UPDATE: "bg-blue-100 text-blue-700",
-    DELETE: "bg-red-100 text-red-700",
-    LOGIN: "bg-indigo-100 text-indigo-700",
-    LOGOUT: "bg-gray-100 text-gray-700",
+  const actionColors: Record<
+    string,
+    { bg: string; text: string; ring: string }
+  > = {
+    CREATE: {
+      bg: "bg-emerald-50",
+      text: "text-emerald-700",
+      ring: "ring-emerald-200/60",
+    },
+    UPDATE: {
+      bg: "bg-blue-50",
+      text: "text-blue-700",
+      ring: "ring-blue-200/60",
+    },
+    DELETE: {
+      bg: "bg-rose-50",
+      text: "text-rose-700",
+      ring: "ring-rose-200/60",
+    },
+    LOGIN: {
+      bg: "bg-indigo-50",
+      text: "text-indigo-700",
+      ring: "ring-indigo-200/60",
+    },
+    LOGOUT: {
+      bg: "bg-slate-50",
+      text: "text-slate-600",
+      ring: "ring-slate-200/60",
+    },
   };
 
+  const todayCount = logs.filter((log) => {
+    const logDate = new Date(log.createdAt);
+    const today = new Date();
+    return logDate.toDateString() === today.toDateString();
+  }).length;
+
+  const uniqueUsers = new Set(logs.map((log) => log.userId).filter(Boolean)).size;
+
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Audit Log</h1>
-        <p className="text-sm text-gray-500">Riwayat aktivitas sistem ({total} entri)</p>
+    <div className="space-y-6">
+      {/* Section Header */}
+      <div className="flex items-start gap-4">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-indigo-100 bg-indigo-50 text-indigo-600">
+          <ScrollText className="h-5 w-5" strokeWidth={2} />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold tracking-tight text-slate-900">
+            Riwayat Aktivitas
+          </h2>
+          <p className="mt-0.5 text-sm text-slate-500">
+            Jejak audit sistem untuk transparansi dan akuntabilitas.
+          </p>
+        </div>
       </div>
 
-      <div className="rounded-xl border bg-white shadow-sm">
+      {/* Stat Strip */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="rounded-2xl border border-slate-200/60 bg-white p-4 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+              <Activity className="h-4 w-4" strokeWidth={2} />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-slate-500">
+                Total Entri
+              </p>
+              <p className="mt-0.5 text-lg font-bold text-slate-900">
+                {total.toLocaleString("id-ID")}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="rounded-2xl border border-slate-200/60 bg-white p-4 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+              <Clock className="h-4 w-4" strokeWidth={2} />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-slate-500">
+                Hari Ini
+              </p>
+              <p className="mt-0.5 text-lg font-bold text-slate-900">
+                {todayCount}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="rounded-2xl border border-slate-200/60 bg-white p-4 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+              <ScrollText className="h-4 w-4" strokeWidth={2} />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-slate-500">
+                User Aktif (halaman)
+              </p>
+              <p className="mt-0.5 text-lg font-bold text-slate-900">
+                {uniqueUsers}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Table Card */}
+      <div className="overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="border-b bg-gray-50 text-xs uppercase text-gray-500">
+            <thead className="border-b border-slate-200/60 bg-slate-50/60 text-xs font-semibold uppercase tracking-wider text-slate-500">
               <tr>
-                <th className="px-4 py-3">Waktu</th>
-                <th className="px-4 py-3">User</th>
-                <th className="px-4 py-3">Aksi</th>
-                <th className="px-4 py-3">Entitas</th>
-                <th className="px-4 py-3">Detail</th>
+                <th className="px-5 py-3.5">Waktu</th>
+                <th className="px-5 py-3.5">User</th>
+                <th className="px-5 py-3.5">Aksi</th>
+                <th className="px-5 py-3.5">Entitas</th>
+                <th className="px-5 py-3.5">Detail</th>
               </tr>
             </thead>
-            <tbody className="divide-y">
+            <tbody className="divide-y divide-slate-100">
               {logs.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-gray-400">
-                    Belum ada aktivitas
+                  <td
+                    colSpan={5}
+                    className="px-5 py-16 text-center text-sm text-slate-400"
+                  >
+                    <div className="mx-auto flex max-w-xs flex-col items-center gap-2">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
+                        <ScrollText
+                          className="h-5 w-5 text-slate-400"
+                          strokeWidth={1.5}
+                        />
+                      </div>
+                      <p className="font-medium text-slate-500">
+                        Belum ada aktivitas
+                      </p>
+                      <p className="text-xs text-slate-400">
+                        Log aktivitas akan muncul di sini begitu ada aksi yang
+                        tercatat.
+                      </p>
+                    </div>
                   </td>
                 </tr>
               ) : (
-                logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-gray-50">
-                    <td className="whitespace-nowrap px-4 py-3 text-gray-500">
-                      {formatDateTime(log.createdAt)}
-                    </td>
-                    <td className="px-4 py-3 text-gray-900">
-                      {log.user?.name || "System"}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
-                          actionColors[log.action] || "bg-gray-100 text-gray-700"
-                        }`}
-                      >
-                        {log.action}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-gray-600">{log.entity}</td>
-                    <td className="max-w-xs truncate px-4 py-3 text-xs text-gray-400">
-                      {log.entityId || "—"}
-                    </td>
-                  </tr>
-                ))
+                logs.map((log) => {
+                  const color: {
+                    bg: string;
+                    text: string;
+                    ring: string;
+                  } = actionColors[log.action] ?? actionColors.LOGOUT!;
+                  return (
+                    <tr
+                      key={log.id}
+                      className="transition-colors duration-150 hover:bg-slate-50/60"
+                    >
+                      <td className="whitespace-nowrap px-5 py-3.5 text-slate-500">
+                        {formatDateTime(log.createdAt)}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span className="font-medium text-slate-800">
+                          {log.user?.name || "System"}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span
+                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset ${color.bg} ${color.text} ${color.ring}`}
+                        >
+                          {log.action}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5 text-slate-600">
+                        {log.entity}
+                      </td>
+                      <td className="max-w-xs truncate px-5 py-3.5 font-mono text-xs text-slate-400">
+                        {log.entityId || "—"}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

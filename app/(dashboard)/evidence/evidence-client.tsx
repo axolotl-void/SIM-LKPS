@@ -168,9 +168,17 @@ export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidenc
       ) : (
         filteredData.map((item) => (
           <div key={item.id} className="rounded-2xl bg-white shadow-soft border border-slate-100/50 overflow-hidden">
-            <button
+            <div
+              role="button"
+              tabIndex={0}
               onClick={() => toggleExpand(item.id)}
-              className="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  toggleExpand(item.id);
+                }
+              }}
+              className="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors cursor-pointer"
             >
               <div className="flex items-center gap-3">
                 <div className={`w-2 h-2 rounded-full ${item.evidence.length > 0 ? "bg-emerald-500" : "bg-slate-300"}`} />
@@ -185,9 +193,10 @@ export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidenc
               </div>
               <div className="flex items-center gap-2">
                 <button
+                  type="button"
                   onClick={(e) => { e.stopPropagation(); handleUpload(item.id); }}
                   disabled={uploadingId === item.id}
-                  className="flex items-center gap-1 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50"
+                  className="flex items-center gap-1 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50 cursor-pointer"
                 >
                   {uploadingId === item.id ? (
                     <><Loader2 className="h-3 w-3 animate-spin" /> Uploading...</>
@@ -202,7 +211,7 @@ export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidenc
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
-            </button>
+            </div>
 
             <AnimatePresence>
               {expandedId === item.id && (
