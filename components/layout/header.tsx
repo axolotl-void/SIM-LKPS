@@ -204,12 +204,6 @@ export function Header({ user }: HeaderProps) {
               title={user?.name || "User"}
             >
               {getInitials(user?.name)}
-              {/* Online Indicator */}
-              <motion.span
-                animate={{ scale: [1, 1.2, 1], opacity: [1, 0.5, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-emerald-400 ring-2 ring-white"
-              />
             </motion.div>
 
             {/* Logout */}
