@@ -124,11 +124,6 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
         >
           <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20">
             <span className="text-sm font-bold text-white">SL</span>
-            <motion.span
-              animate={{ scale: [1, 1.3, 1], opacity: [1, 0.6, 1] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-white"
-            />
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-bold text-slate-800 tracking-tight">SIM-LKPS</span>
