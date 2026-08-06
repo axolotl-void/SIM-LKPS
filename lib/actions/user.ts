@@ -166,27 +166,58 @@ export async function updateUser(userId: string, formData: FormData): Promise<Ac
 }
 
 /**
- * Delete (deactivate) a user
+ * Delete a user permanently (hard delete).
+ *
+ * Blocked when the user still owns data referenced by other tables
+ * (submitted/validated LKPS, uploaded evidence). User must reassign or
+ * remove those records first.
  */
 export async function deleteUser(userId: string): Promise<ActionResult> {
-  await requirePermission("user.delete");
+  const { userId: currentUserId } = await requirePermission("user.delete");
+
+  // Self-delete guard: cannot delete the account that is currently logged in.
+  if (userId === currentUserId) {
+    return {
+      success: false,
+      error: "Anda tidak dapat menghapus akun Anda sendiri yang sedang login.",
+    };
+  }
 
   const user = await db.user.findUnique({ where: { id: userId } });
   if (!user) {
     return { success: false, error: "User tidak ditemukan" };
   }
 
-  await db.user.update({
-    where: { id: userId },
-    data: { isActive: false },
-  });
+  // Reference checks — block hard-delete if user still owns relational data.
+  const [submittedCount, validatedCount, evidenceCount] = await Promise.all([
+    db.tabelLkps.count({ where: { submittedById: userId } }),
+    db.tabelLkps.count({ where: { validatedById: userId } }),
+    db.evidence.count({ where: { uploadedById: userId } }),
+  ]);
+
+  const blockers: string[] = [];
+  if (submittedCount > 0) blockers.push(`${submittedCount} LKPS diajukan`);
+  if (validatedCount > 0) blockers.push(`${validatedCount} LKPS divalidasi`);
+  if (evidenceCount > 0) blockers.push(`${evidenceCount} bukti pendukung`);
+
+  if (blockers.length > 0) {
+    return {
+      success: false,
+      error: `User masih memiliki data terkait: ${blockers.join(", ")}. Hapus atau alihkan data tersebut terlebih dahulu.`,
+    };
+  }
+
+  await db.$transaction([
+    db.session.deleteMany({ where: { userId } }),
+    db.account.deleteMany({ where: { userId } }),
+    db.user.delete({ where: { id: userId } }),
+  ]);
 
   await createAuditLog({
     action: "DELETE",
     entity: "User",
     entityId: userId,
-    oldValue: { name: user.name, isActive: true },
-    newValue: { isActive: false },
+    oldValue: { name: user.name, email: user.email, role: user.role },
   });
 
   revalidatePath("/settings/users");

@@ -1,7 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 import { Building2, Sparkles } from "lucide-react";
+import { DeveloperBadge } from "@/components/layout/developer-badge";
 
 export interface ProdiItem {
   id: string;
@@ -62,35 +64,203 @@ const emptyVariants: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
 };
 
+// Generate deterministic star positions so SSR + client match
+function makeStars(count: number) {
+  return Array.from({ length: count }, (_, i) => {
+    const seed = (i * 9301 + 49297) % 233280;
+    const size = 2 + ((seed >> 3) % 3);
+    const delay = ((seed >> 5) % 100) / 100;
+    const duration = 3 + ((seed >> 7) % 30) / 10;
+    return { id: i, size, delay, duration };
+  });
+}
+
+const STARS = makeStars(14);
+
+type ConfettiPiece = {
+  id: number;
+  x: number;
+  y: number;
+  angle: number;
+  distance: number;
+  color: string;
+  size: number;
+};
+
+const CONFETTI_COLORS = [
+  "#60A5FA",
+  "#818CF8",
+  "#A78BFA",
+  "#F472B6",
+  "#38BDF8",
+  "#34D399",
+];
+
 export function ProdiView({ items }: { items: ProdiItem[] }) {
   const reduced = useReducedMotion() ?? false;
   const motionProps = reduced
     ? {}
     : { initial: "hidden" as const, animate: "show" as const };
+  const [confetti, setConfetti] = useState<ConfettiPiece[]>([]);
+  const idRef = useRef(0);
+
+  // Cleanup confetti
+  useEffect(() => {
+    if (confetti.length === 0) return;
+    const t = setTimeout(() => setConfetti([]), 1100);
+    return () => clearTimeout(t);
+  }, [confetti]);
+
+  function burstConfetti() {
+    if (reduced) return;
+    const next: ConfettiPiece[] = Array.from({ length: 18 }, () => {
+      idRef.current += 1;
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 60 + Math.random() * 90;
+      const color =
+        CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)] ?? "#60A5FA";
+      return {
+        id: idRef.current,
+        x: Math.cos(angle) * distance,
+        y: Math.sin(angle) * distance,
+        angle: (Math.random() - 0.5) * 360,
+        distance,
+        color,
+        size: 4 + Math.random() * 4,
+      };
+    });
+    setConfetti(next);
+  }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
+      {/* Developer badge (above the blue header) */}
+      <DeveloperBadge />
+
       {/* Header */}
       <motion.header
         variants={reduced ? undefined : headerVariants}
         {...motionProps}
-        className="relative overflow-hidden rounded-2xl border-none bg-gradient-to-tr from-slate-900 via-slate-800 to-indigo-950 p-6 text-white shadow-soft"
+        onClick={burstConfetti}
+        className="relative overflow-hidden rounded-2xl border-none bg-gradient-to-tr from-slate-900 via-slate-800 to-indigo-950 p-6 text-white shadow-soft cursor-pointer select-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-300/40"
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            burstConfetti();
+          }
+        }}
+        aria-label="Kotak info Program Studi. Tekan untuk efek confetti."
       >
-        {/* Subtle moving accent */}
+        {/* Wave gradient layer 1 (pink) */}
         <motion.div
           aria-hidden
           className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full"
           style={{
             background:
-              "radial-gradient(circle, rgba(244,114,182,0.25) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(244,114,182,0.30) 0%, transparent 70%)",
           }}
           animate={
             reduced
               ? undefined
-              : { scale: [1, 1.15, 1], opacity: [0.6, 0.9, 0.6] }
+              : { scale: [1, 1.18, 1], opacity: [0.55, 0.95, 0.55] }
           }
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         />
+        {/* Wave gradient layer 2 (sky) */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute -left-24 -bottom-24 h-64 w-64 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(56,189,248,0.30) 0%, transparent 70%)",
+          }}
+          animate={
+            reduced
+              ? undefined
+              : { scale: [1, 1.22, 1], opacity: [0.4, 0.85, 0.4] }
+          }
+          transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+        />
+        {/* Wave gradient layer 3 (violet) */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute right-1/3 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(167,139,250,0.22) 0%, transparent 70%)",
+            filter: "blur(8px)",
+          }}
+          animate={
+            reduced
+              ? undefined
+              : { x: [-12, 12, -12], opacity: [0.5, 0.8, 0.5] }
+          }
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Star field */}
+        {!reduced && (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+          >
+            {STARS.map((s) => (
+              <motion.span
+                key={s.id}
+                className="absolute left-1/2 top-1/2 block rounded-full bg-white"
+                style={{
+                  width: s.size,
+                  height: s.size,
+                  marginLeft: -s.size / 2,
+                  marginTop: -s.size / 2,
+                  transform: `rotate(${s.id * 25}deg) translateY(-${18 + (s.id % 4) * 4}%) translateX(-${20 + (s.id % 5) * 4}%)`,
+                }}
+                animate={{
+                  opacity: [0.15, 0.9, 0.15],
+                  scale: [0.8, 1.2, 0.8],
+                }}
+                transition={{
+                  duration: s.duration,
+                  delay: s.delay,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Confetti burst on click */}
+        <AnimatePresence>
+          {confetti.map((p) => (
+            <motion.span
+              key={p.id}
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-1/2 block rounded-full"
+              style={{
+                width: p.size,
+                height: p.size,
+                marginLeft: -p.size / 2,
+                marginTop: -p.size / 2,
+                background: p.color,
+                boxShadow: `0 0 6px ${p.color}`,
+              }}
+              initial={{ x: 0, y: 0, opacity: 1, scale: 0.5, rotate: 0 }}
+              animate={{
+                x: p.x,
+                y: p.y,
+                opacity: [1, 1, 0],
+                scale: 1,
+                rotate: p.angle,
+              }}
+              transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0 }}
+            />
+          ))}
+        </AnimatePresence>
+
         <div className="relative flex items-center gap-3">
           <span
             className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/15 backdrop-blur-sm"
