@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { uploadFile, getDownloadUrl, deleteFile } from "@/lib/minio";
 import { revalidatePath } from "next/cache";
 import { createAuditLog } from "@/lib/utils/audit";
+import { notifyMutation } from "@/lib/actions/notification";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
@@ -87,6 +88,13 @@ export async function uploadEvidence(tabelLkpsId: string, formData: FormData) {
         size: file.size,
         uploadedById: session.user.id,
       },
+    });
+
+    await notifyMutation({
+      action: "CREATE",
+      entity: "Evidence",
+      entityLabel: safeFilename,
+      link: "/evidence",
     });
 
     revalidatePath(`/evidence`);
@@ -172,6 +180,13 @@ export async function deleteEvidence(evidenceId: string) {
 
     await deleteFile(evidence.minioKey);
     await db.evidence.delete({ where: { id: evidenceId } });
+
+    await notifyMutation({
+      action: "DELETE",
+      entity: "Evidence",
+      entityLabel: evidence.filename,
+      link: "/evidence",
+    });
 
     await createAuditLog({
       action: "DELETE",

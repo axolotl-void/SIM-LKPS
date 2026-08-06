@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { createAuditLog } from "@/lib/utils/audit";
+import { notifyMutation } from "@/lib/actions/notification";
 
 function revalidateAkademik() {
   revalidatePath("/dashboard");
@@ -30,6 +31,13 @@ export async function createMahasiswa(data: {
     entity: "Mahasiswa",
     entityId: mahasiswa.id,
     newValue: { nim: mahasiswa.nim, nama: mahasiswa.nama, angkatan: mahasiswa.angkatan },
+  });
+
+  await notifyMutation({
+    action: "CREATE",
+    entity: "Mahasiswa",
+    entityLabel: `${mahasiswa.nama} (NIM ${mahasiswa.nim})`,
+    link: "/master/mahasiswa",
   });
 
   revalidateAkademik();
@@ -59,6 +67,13 @@ export async function updateMahasiswa(id: string, data: {
     newValue: { nama: updated.nama, status: updated.status, angkatan: updated.angkatan },
   });
 
+  await notifyMutation({
+    action: "UPDATE",
+    entity: "Mahasiswa",
+    entityLabel: `${updated.nama} (NIM ${updated.nim})`,
+    link: "/master/mahasiswa",
+  });
+
   revalidateAkademik();
 
   return { id: updated.id, nim: updated.nim, nama: updated.nama };
@@ -78,6 +93,13 @@ export async function deleteMahasiswa(id: string) {
     entity: "Mahasiswa",
     entityId: id,
     oldValue: { nim: existing.nim, nama: existing.nama, angkatan: existing.angkatan },
+  });
+
+  await notifyMutation({
+    action: "DELETE",
+    entity: "Mahasiswa",
+    entityLabel: `${existing.nama} (NIM ${existing.nim})`,
+    link: "/master/mahasiswa",
   });
 
   revalidateAkademik();

@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { hasPermission } from "@/lib/utils/permissions";
 import { createAuditLog } from "@/lib/utils/audit";
-import { createNotification } from "@/lib/actions/notification";
+import { createNotification, notifyMutation } from "@/lib/actions/notification";
 import { Role, TabelStatus } from "@prisma/client";
 
 // ──────────────────────────────────────────────
@@ -126,6 +126,12 @@ export async function upsertLkpsRow(params: {
       entityId: savedRow.id,
       newValue: { tabelKode: params.tabelKode, rowData: params.rowData },
     });
+    await notifyMutation({
+      action: "UPDATE",
+      entity: "TabelLkpsRow",
+      entityLabel: `Tabel ${params.tabelKode}`,
+      link: `/lkps/${lkps.tabelDefinition.bab}/${params.tabelKode}`,
+    });
   } else {
     const lastRow = await db.tabelLkpsRow.findFirst({
       where: { tabelLkpsId: lkps.id },
@@ -141,6 +147,12 @@ export async function upsertLkpsRow(params: {
       entity: "TabelLkpsRow",
       entityId: savedRow.id,
       newValue: { tabelKode: params.tabelKode, rowData: params.rowData },
+    });
+    await notifyMutation({
+      action: "CREATE",
+      entity: "TabelLkpsRow",
+      entityLabel: `Tabel ${params.tabelKode}`,
+      link: `/lkps/${lkps.tabelDefinition.bab}/${params.tabelKode}`,
     });
   }
 
@@ -180,6 +192,13 @@ export async function deleteLkpsRow(params: { rowId: string; tabelKode: string }
   const deletedData = { tabelKode: row.tabelLkps.tabelDefinition.kode, rowData: row.rowData };
 
   await db.tabelLkpsRow.delete({ where: { id: params.rowId } });
+
+  await notifyMutation({
+    action: "DELETE",
+    entity: "TabelLkpsRow",
+    entityLabel: `Tabel ${params.tabelKode}`,
+    link: `/lkps/${row.tabelLkps.tabelDefinition.bab}/${params.tabelKode}`,
+  });
 
   // Audit log untuk DELETE
   await createAuditLog({
@@ -377,6 +396,13 @@ export async function createDosen(nama: string) {
     newValue: { nama, nidn, status: "Tetap" },
   });
 
+  await notifyMutation({
+    action: "CREATE",
+    entity: "Dosen",
+    entityLabel: `${nama} (NIDN ${nidn})`,
+    link: "/master/dosen",
+  });
+
   revalidatePath("/dashboard");
   revalidatePath("/master/dosen");
 
@@ -407,6 +433,13 @@ export async function updateDosen(id: string, data: { nama?: string; status?: st
     newValue: { nama: updated.nama, status: updated.status },
   });
 
+  await notifyMutation({
+    action: "UPDATE",
+    entity: "Dosen",
+    entityLabel: `${updated.nama} (NIDN ${updated.nidn})`,
+    link: "/master/dosen",
+  });
+
   revalidatePath("/dashboard");
   revalidatePath("/master/dosen");
 
@@ -427,6 +460,13 @@ export async function deleteDosen(id: string) {
     entity: "Dosen",
     entityId: id,
     oldValue: { nama: existing.nama, nidn: existing.nidn },
+  });
+
+  await notifyMutation({
+    action: "DELETE",
+    entity: "Dosen",
+    entityLabel: `${existing.nama} (NIDN ${existing.nidn})`,
+    link: "/master/dosen",
   });
 
   revalidatePath("/dashboard");
