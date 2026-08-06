@@ -7,6 +7,7 @@ import { auth } from "@/lib/auth";
 import { createUserSchema, updateUserSchema } from "@/lib/validations/auth";
 import { hasPermission } from "@/lib/utils/permissions";
 import { createAuditLog } from "@/lib/utils/audit";
+import { notifyMutation } from "@/lib/actions/notification";
 import { Role } from "@prisma/client";
 
 interface ActionResult {
@@ -117,6 +118,13 @@ export async function createUser(formData: FormData): Promise<ActionResult> {
     newValue: { name: user.name, email: user.email, role: user.role },
   });
 
+  await notifyMutation({
+    action: "CREATE",
+    entity: "User",
+    entityLabel: `${user.name} (${user.email})`,
+    link: "/settings/users",
+  });
+
   revalidatePath("/settings/users");
   return { success: true, data: { id: user.id, name: user.name } };
 }
@@ -159,6 +167,13 @@ export async function updateUser(userId: string, formData: FormData): Promise<Ac
     entityId: userId,
     oldValue: { name: oldUser.name, email: oldUser.email, role: oldUser.role, isActive: oldUser.isActive },
     newValue: { name: updatedUser.name, email: updatedUser.email, role: updatedUser.role, isActive: updatedUser.isActive },
+  });
+
+  await notifyMutation({
+    action: "UPDATE",
+    entity: "User",
+    entityLabel: `${updatedUser.name} (${updatedUser.email})`,
+    link: "/settings/users",
   });
 
   revalidatePath("/settings/users");
@@ -218,6 +233,13 @@ export async function deleteUser(userId: string): Promise<ActionResult> {
     entity: "User",
     entityId: userId,
     oldValue: { name: user.name, email: user.email, role: user.role },
+  });
+
+  await notifyMutation({
+    action: "DELETE",
+    entity: "User",
+    entityLabel: `${user.name} (${user.email})`,
+    link: "/settings/users",
   });
 
   revalidatePath("/settings/users");

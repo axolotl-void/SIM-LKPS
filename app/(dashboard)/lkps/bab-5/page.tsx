@@ -109,7 +109,7 @@ export default async function Bab5Page() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {bab6Tables.map((table, index) => (
-            <TableCard key={table.kode} table={table} definitions={definitions} instanceMap={instanceMap} hrefBase="/lkps/bab-5" staggerIndex={index + 2} />
+            <TableCard key={table.kode} table={table} definitions={definitions} instanceMap={instanceMap} hrefBase="/lkps/bab-6" staggerIndex={index + 2} />
           ))}
         </div>
       </div>

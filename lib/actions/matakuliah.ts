@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { createAuditLog } from "@/lib/utils/audit";
+import { notifyMutation } from "@/lib/actions/notification";
 
 function revalidateAkademik() {
   revalidatePath("/dashboard");
@@ -30,6 +31,13 @@ export async function createMatakuliah(data: {
     entity: "MataKuliah",
     entityId: matakuliah.id,
     newValue: { kode: matakuliah.kode, nama: matakuliah.nama, sks: matakuliah.sks },
+  });
+
+  await notifyMutation({
+    action: "CREATE",
+    entity: "MataKuliah",
+    entityLabel: `${matakuliah.kode} - ${matakuliah.nama}`,
+    link: "/master/mata-kuliah",
   });
 
   revalidateAkademik();
@@ -59,6 +67,13 @@ export async function updateMatakuliah(id: string, data: {
     newValue: { nama: updated.nama, sks: updated.sks },
   });
 
+  await notifyMutation({
+    action: "UPDATE",
+    entity: "MataKuliah",
+    entityLabel: `${updated.kode} - ${updated.nama}`,
+    link: "/master/mata-kuliah",
+  });
+
   revalidateAkademik();
 
   return { id: updated.id, kode: updated.kode, nama: updated.nama };
@@ -78,6 +93,13 @@ export async function deleteMatakuliah(id: string) {
     entity: "MataKuliah",
     entityId: id,
     oldValue: { kode: existing.kode, nama: existing.nama, sks: existing.sks },
+  });
+
+  await notifyMutation({
+    action: "DELETE",
+    entity: "MataKuliah",
+    entityLabel: `${existing.kode} - ${existing.nama}`,
+    link: "/master/mata-kuliah",
   });
 
   revalidateAkademik();
