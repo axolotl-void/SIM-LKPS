@@ -4,17 +4,19 @@ import { useState } from "react";
 import {
   Upload, FileText, Trash2, Download, Loader2,
   X, CheckCircle2, File, Image as ImageIcon, FileSpreadsheet, Search,
+  Link as LinkIcon, ExternalLink,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { uploadEvidence, getEvidenceList, deleteEvidence } from "@/lib/actions/evidence";
+import { uploadEvidence, getEvidenceList, deleteEvidence, addEvidenceLink } from "@/lib/actions/evidence";
 
 interface EvidenceItem {
   id: string;
   filename: string;
-  mimeType: string;
-  size: number;
+  mimeType: string | null;
+  size: number | null;
   version: number;
   description: string | null;
+  linkUrl: string | null;
   downloadUrl: string;
   createdAt: Date | string;
 }
@@ -46,6 +48,11 @@ export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidenc
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [deleteModal, setDeleteModal] = useState<{ evidenceId: string; tabelLkpsId: string; filename: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [linkModal, setLinkModal] = useState<{ tabelLkpsId: string } | null>(null);
+  const [linkUrl, setLinkUrl] = useState("");
+  const [linkLabel, setLinkLabel] = useState("");
+  const [isAddingLink, setIsAddingLink] = useState(false);
+  const [inputMode, setInputMode] = useState<"upload" | "link">("upload");
 
   // Filter data based on search
   const filteredData = allData.filter((item) => {
@@ -60,6 +67,32 @@ export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidenc
   const triggerToast = (message: string, type: "success" | "error") => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3500);
+  };
+
+  const handleAddLink = async () => {
+    if (!linkModal || !linkUrl.trim()) return;
+    setIsAddingLink(true);
+
+    const result = await addEvidenceLink(linkModal.tabelLkpsId, linkUrl.trim(), linkLabel.trim() || undefined);
+    if (result.success) {
+      triggerToast("Link berhasil ditambahkan", "success");
+      const list = await getEvidenceList(linkModal.tabelLkpsId);
+      if (list.success && list.data) {
+        setAllData((prev) =>
+          prev.map((t) =>
+            t.id === linkModal.tabelLkpsId
+              ? { ...t, evidence: list.data as EvidenceItem[] }
+              : t
+          )
+        );
+      }
+      setLinkModal(null);
+      setLinkUrl("");
+      setLinkLabel("");
+    } else {
+      triggerToast(result.error || "Gagal menambahkan link", "error");
+    }
+    setIsAddingLink(false);
   };
 
   const handleUpload = async (tabelLkpsId: string) => {
@@ -192,18 +225,35 @@ export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidenc
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={(e) => { e.stopPropagation(); handleUpload(item.id); }}
-                  disabled={uploadingId === item.id}
-                  className="flex items-center gap-1 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50 cursor-pointer"
-                >
-                  {uploadingId === item.id ? (
-                    <><Loader2 className="h-3 w-3 animate-spin" /> Uploading...</>
-                  ) : (
-                    <><Upload className="h-3 w-3" /> Upload</>
-                  )}
-                </button>
+                <div className="flex rounded-xl overflow-hidden border border-blue-200">
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); handleUpload(item.id); }}
+                    disabled={uploadingId === item.id || inputMode !== "upload"}
+                    className={`flex items-center gap-1 px-3 py-2 text-xs font-bold transition-all cursor-pointer ${
+                      inputMode === "upload"
+                        ? "bg-gradient-to-tr from-blue-500 to-indigo-600 text-white shadow-soft-sm"
+                        : "bg-white text-slate-500 hover:bg-slate-50"
+                    } disabled:opacity-50`}
+                  >
+                    {uploadingId === item.id ? (
+                      <><Loader2 className="h-3 w-3 animate-spin" /> Upload...</>
+                    ) : (
+                      <><Upload className="h-3 w-3" /> File</>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); setLinkModal({ tabelLkpsId: item.id }); }}
+                    className={`flex items-center gap-1 px-3 py-2 text-xs font-bold transition-all cursor-pointer ${
+                      inputMode === "link"
+                        ? "bg-gradient-to-tr from-blue-500 to-indigo-600 text-white shadow-soft-sm"
+                        : "bg-white text-slate-500 hover:bg-slate-50"
+                    }`}
+                  >
+                    <LinkIcon className="h-3 w-3" /> Link
+                  </button>
+                </div>
                 <svg
                   className={`w-5 h-5 text-slate-400 transition-transform ${expandedId === item.id ? "rotate-180" : ""}`}
                   fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -232,14 +282,29 @@ export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidenc
                         {item.evidence.map((ev: EvidenceItem) => (
                           <div key={ev.id} className="flex items-center justify-between px-6 py-3 hover:bg-slate-50/50">
                             <div className="flex items-center gap-3 min-w-0">
-                              {getFileIcon(ev.mimeType)}
+                              {ev.linkUrl ? (
+                                <LinkIcon className="h-5 w-5 text-blue-500" />
+                              ) : (
+                                getFileIcon(ev.mimeType || "")
+                              )}
                               <div className="min-w-0">
                                 <p className="text-xs font-bold text-slate-700 truncate max-w-[300px]">{ev.filename}</p>
-                                <p className="text-xs font-semibold text-slate-400">{formatSize(ev.size)}</p>
+                                <p className="text-xs font-semibold text-slate-400">
+                                  {ev.linkUrl ? "Link eksternal" : formatSize(ev.size || 0)}
+                                </p>
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
-                              {ev.downloadUrl && (
+                              {ev.linkUrl ? (
+                                <a
+                                  href={ev.linkUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 text-xs font-bold text-blue-600 hover:bg-blue-100 transition-colors"
+                                >
+                                  <ExternalLink className="h-3 w-3" /> Buka
+                                </a>
+                              ) : ev.downloadUrl ? (
                                 <a
                                   href={ev.downloadUrl}
                                   download={ev.filename}
@@ -247,7 +312,7 @@ export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidenc
                                 >
                                   <Download className="h-3 w-3" /> Download
                                 </a>
-                              )}
+                              ) : null}
                               <button
                                 onClick={() => setDeleteModal({ evidenceId: ev.id, tabelLkpsId: item.id, filename: ev.filename })}
                                 className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-xs font-bold text-red-600 hover:bg-red-100 transition-colors"
@@ -312,6 +377,82 @@ export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidenc
                     <>
                       <Trash2 className="h-4 w-4" /> Hapus
                     </>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Link Modal */}
+      <AnimatePresence>
+        {linkModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/30 backdrop-blur-sm p-4">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 15 }}
+              transition={{ type: "spring", damping: 25, stiffness: 350 }}
+              className="w-full max-w-md rounded-3xl bg-white p-6 shadow-soft-lg relative"
+            >
+              <button
+                onClick={() => !isAddingLink && setLinkModal(null)}
+                disabled={isAddingLink}
+                className="absolute top-4 right-4 rounded-xl p-1.5 text-slate-400 hover:bg-slate-50 transition-colors disabled:opacity-50"
+              >
+                <X className="h-4 w-4" />
+              </button>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-500 shadow-soft-sm">
+                  <LinkIcon className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-800">Tambah Link</h3>
+                  <p className="text-xs font-semibold text-slate-400">Google Drive, gambar, atau URL lainnya</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 mb-1.5">URL</label>
+                  <input
+                    type="url"
+                    value={linkUrl}
+                    onChange={(e) => setLinkUrl(e.target.value)}
+                    placeholder="https://drive.google.com/..."
+                    disabled={isAddingLink}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all disabled:opacity-50"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 mb-1.5">Label (opsional)</label>
+                  <input
+                    type="text"
+                    value={linkLabel}
+                    onChange={(e) => setLinkLabel(e.target.value)}
+                    placeholder="Dokumen Sertifikat Akreditasi"
+                    disabled={isAddingLink}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all disabled:opacity-50"
+                  />
+                </div>
+              </div>
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={() => { setLinkModal(null); setLinkUrl(""); setLinkLabel(""); }}
+                  disabled={isAddingLink}
+                  className="flex-1 rounded-xl border border-slate-100 bg-white py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-50 shadow-soft-sm transition-colors disabled:opacity-50"
+                >
+                  Batal
+                </button>
+                <button
+                  onClick={handleAddLink}
+                  disabled={isAddingLink || !linkUrl.trim()}
+                  className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isAddingLink ? (
+                    <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</>
+                  ) : (
+                    <><LinkIcon className="h-4 w-4" /> Simpan Link</>
                   )}
                 </button>
               </div>

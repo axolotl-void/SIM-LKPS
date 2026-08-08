@@ -3,7 +3,8 @@
 import { useState } from "react";
 import {
   Plus, Edit2, Trash2, CheckCircle2, X,
-  FileText, ArrowLeft, Loader2, AlertTriangle, Info
+  FileText, ArrowLeft, Loader2, AlertTriangle, Info,
+  HelpCircle
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -50,6 +51,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
   const [frekuensiAuditMonev, setFrekuensiAuditMonev] = useState("");
   const [buktiCertifiedAuditor, setBuktiCertifiedAuditor] = useState("");
   const [laporanAudit, setLaporanAudit] = useState("");
+  const [showGuide, setShowGuide] = useState(false);
 
   const triggerToast = (message: string, type: "success" | "error") => {
     setToast({ message, type });
@@ -545,11 +547,20 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                    Bukti Certified Auditor
-                  </label>
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                      Bukti Certified Auditor
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowGuide(true)}
+                      className="flex items-center gap-1 text-3xs font-bold text-indigo-600 hover:text-indigo-700 transition-colors cursor-pointer"
+                    >
+                      <HelpCircle className="h-3.5 w-3.5" />
+                      Lihat Panduan
+                    </button>
+                  </div>
                   <textarea
-                    required
                     rows={2}
                     value={buktiCertifiedAuditor}
                     onChange={(e) => setBuktiCertifiedAuditor(e.target.value)}
@@ -580,6 +591,116 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                   </button>
                 </div>
               </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Panduan Modal */}
+      <AnimatePresence>
+        {showGuide && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowGuide(false)}
+              className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              className="relative z-10 w-full max-w-lg rounded-3xl bg-white p-6 shadow-soft-lg border border-slate-100"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
+                    <HelpCircle className="h-5 w-5" />
+                  </div>
+                  <h3 className="text-base font-bold text-slate-800">Panduan Pengisian</h3>
+                </div>
+                <button
+                  onClick={() => setShowGuide(false)}
+                  className="rounded-lg p-1 text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-colors cursor-pointer"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="space-y-4 text-xs">
+                <div>
+                  <h4 className="font-bold text-slate-700 mb-1">Apa yang dimaksud Bukti Certified Auditor?</h4>
+                  <p className="text-slate-500 leading-relaxed">
+                    Field ini digunakan untuk mencatat bukti bahwa auditor memiliki sertifikat AMI/SPMI, seperti nama dokumen atau tautan ke sertifikat.
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4">
+                  <h4 className="font-bold text-emerald-700 mb-2">Contoh Pengisian yang Benar:</h4>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-3xs">
+                      <thead>
+                        <tr className="border-b border-emerald-200">
+                          <th className="text-left py-1.5 pr-2 font-bold text-emerald-700 whitespace-nowrap">Unit</th>
+                          <th className="text-left py-1.5 pr-2 font-bold text-emerald-700">Nama Unit</th>
+                          <th className="text-left py-1.5 pr-2 font-bold text-emerald-700">Dokumen</th>
+                          <th className="text-center py-1.5 pr-2 font-bold text-emerald-700">AMI</th>
+                          <th className="text-center py-1.5 pr-2 font-bold text-emerald-700">Cert</th>
+                          <th className="text-center py-1.5 pr-2 font-bold text-emerald-700">Non</th>
+                          <th className="text-left py-1.5 pr-2 font-bold text-emerald-700">Frekuensi</th>
+                          <th className="text-left py-1.5 font-bold text-emerald-700">Bukti</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-emerald-800">
+                        <tr className="border-b border-emerald-100">
+                          <td className="py-1.5 pr-2 font-semibold">PT</td>
+                          <td className="py-1.5 pr-2">LPM UBBG</td>
+                          <td className="py-1.5 pr-2">Kebijakan Mutu, Manual Mutu, Standar SPMI</td>
+                          <td className="py-1.5 pr-2 text-center">10</td>
+                          <td className="py-1.5 pr-2 text-center">4</td>
+                          <td className="py-1.5 pr-2 text-center">6</td>
+                          <td className="py-1.5 pr-2">2x/Tahun</td>
+                          <td className="py-1.5">Sertifikat Auditor AMI</td>
+                        </tr>
+                        <tr>
+                          <td className="py-1.5 pr-2 font-semibold">UPPS</td>
+                          <td className="py-1.5 pr-2">SJMF</td>
+                          <td className="py-1.5 pr-2">SOP Akademik, Standar Fak.</td>
+                          <td className="py-1.5 pr-2 text-center">4</td>
+                          <td className="py-1.5 pr-2 text-center">1</td>
+                          <td className="py-1.5 pr-2 text-center">3</td>
+                          <td className="py-1.5 pr-2">2x/Tahun</td>
+                          <td className="py-1.5">Sertifikat Auditor Internal</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="rounded-xl bg-red-50 border border-red-200 p-4">
+                  <h4 className="font-bold text-red-700 mb-2">Contoh Pengisian yang Salah:</h4>
+                  <p className="text-red-600 font-semibold">X "Sertifikat Auditor AMI"</p>
+                  <p className="text-red-600 font-semibold">X "Ada 5 auditor tersertifikasi"</p>
+                  <p className="text-red-600 font-semibold">X "-" atau dikosongkan</p>
+                </div>
+
+                <div className="rounded-xl bg-blue-50 border border-blue-200 p-4">
+                  <h4 className="font-bold text-blue-700 mb-2">Tips:</h4>
+                  <ul className="text-blue-600 space-y-1">
+                    <li>• Isikan nama unit SPMI</li>
+                    <li>• Cantumkan nama dokumen SPMI yang dimiliki</li>
+                    <li>• Isikan jumlah auditor dengan benar</li>
+                  </ul>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowGuide(false)}
+                className="mt-5 w-full rounded-xl bg-indigo-600 py-2.5 text-xs font-bold text-white hover:bg-indigo-700 transition-colors cursor-pointer"
+              >
+                Mengerti, Tutup
+              </button>
             </motion.div>
           </div>
         )}
