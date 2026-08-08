@@ -138,10 +138,12 @@ export async function getEvidenceList(tabelLkpsId: string) {
     const evidenceList = await Promise.all(
       records.map(async (record) => {
         let downloadUrl = "";
-        try {
-          downloadUrl = await getDownloadUrl(record.minioKey);
-        } catch {
-          // if MinIO unavailable, return empty url
+        if (record.minioKey) {
+          try {
+            downloadUrl = await getDownloadUrl(record.minioKey);
+          } catch {
+            // if MinIO unavailable, return empty url
+          }
         }
 
         return {
@@ -151,7 +153,8 @@ export async function getEvidenceList(tabelLkpsId: string) {
           size: record.size,
           version: record.version,
           description: record.description,
-          downloadUrl,
+          linkUrl: record.linkUrl,
+          downloadUrl: record.minioKey ? downloadUrl : "",
           createdAt: record.createdAt,
         };
       }),
@@ -178,7 +181,10 @@ export async function deleteEvidence(evidenceId: string) {
       return { success: false, error: "Evidence tidak ditemukan" };
     }
 
-    await deleteFile(evidence.minioKey);
+    // Only delete from MinIO if it's a file (not a link)
+    if (evidence.minioKey) {
+      await deleteFile(evidence.minioKey);
+    }
     await db.evidence.delete({ where: { id: evidenceId } });
 
     await notifyMutation({
@@ -202,6 +208,59 @@ export async function deleteEvidence(evidenceId: string) {
   } catch (error) {
     console.error("deleteEvidence error:", error);
     return { success: false, error: "Gagal menghapus file" };
+  }
+}
+
+export async function addEvidenceLink(tabelLkpsId: string, linkUrl: string, label?: string) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    // Validate URL
+    let url: URL;
+    try {
+      url = new URL(linkUrl);
+    } catch {
+      return { success: false, error: "URL tidak valid" };
+    }
+
+    // Only allow http/https
+    if (!["http:", "https:"].includes(url.protocol)) {
+      return { success: false, error: "Hanya URL http/https yang diizinkan" };
+    }
+
+    const evidence = await db.evidence.create({
+      data: {
+        tabelLkpsId,
+        filename: label || `Link: ${url.hostname}`,
+        linkUrl: url.toString(),
+        uploadedById: session.user.id,
+      },
+    });
+
+    await notifyMutation({
+      action: "CREATE",
+      entity: "Evidence",
+      entityLabel: url.hostname,
+      link: "/evidence",
+    });
+
+    revalidatePath(`/evidence`);
+    revalidatePath(`/lkps`);
+
+    await createAuditLog({
+      action: "ADD_LINK",
+      entity: "Evidence",
+      entityId: evidence.id,
+      newValue: { linkUrl: url.toString(), tabelLkpsId },
+    });
+
+    return { success: true, evidence: { id: evidence.id } };
+  } catch (error) {
+    console.error("addEvidenceLink error:", error);
+    return { success: false, error: "Gagal menambahkan link" };
   }
 }
 

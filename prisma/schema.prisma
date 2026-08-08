@@ -289,10 +289,11 @@ model TabelLkpsRow {
 model Evidence {
   id          String   @id @default(cuid())
   tabelLkpsId String
-  filename    String   // Original filename
-  minioKey    String   // Object key in MinIO
-  mimeType    String   // "application/pdf", "image/jpeg", etc.
-  size        Int      // File size in bytes
+  filename    String   // Original filename (for uploaded files) or "Link Drive" for links
+  minioKey    String?  // Object key in MinIO (null for links)
+  mimeType    String?  // "application/pdf", "image/jpeg", etc. (null for links)
+  size        Int?     // File size in bytes (null for links)
+  linkUrl     String?  // External URL (Google Drive, image URL, etc.)
   version     Int      @default(1)
   description String?
   uploadedById String
