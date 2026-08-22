@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#1e40af"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#60a5fa" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e40af" stroke-width="0.5" opacity="0.3"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="300" fill="url(#bg)"/>
+  <rect width="1200" height="300" fill="url(#grid)"/>
+
+  <!-- Decorative accent line -->
+  <rect x="0" y="270" width="1200" height="2" fill="url(#accent)"/>
+
+  <!-- Logo badge -->
+  <g transform="translate(80, 80)">
+    <rect x="0" y="0" width="140" height="140" rx="20" fill="#1e40af" opacity="0.4" stroke="#60a5fa" stroke-width="2"/>
+    <text x="70" y="95" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="700" fill="#ffffff">S</text>
+    <text x="70" y="118" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="500" fill="#93c5fd" letter-spacing="2">LKPS</text>
+  </g>
+
+  <!-- Main title -->
+  <text x="260" y="130" font-family="ui-sans-serif, system-ui, sans-serif" font-size="52" font-weight="700" fill="#ffffff">SIM-LKPS</text>
+
+  <!-- Subtitle -->
+  <text x="260" y="170" font-family="ui-sans-serif, system-ui, sans-serif" font-size="20" font-weight="400" fill="#93c5fd">Sistem Informasi Manajemen Laporan Kinerja Program Studi</text>
+
+  <!-- Description -->
+  <text x="260" y="210" font-family="ui-sans-serif, system-ui, sans-serif" font-size="15" font-weight="400" fill="#cbd5e1">31 Tabel BAN-PT LKPS · Prodi Ilmu Komputer UBBG</text>
+
+  <!-- Version badge -->
+  <g transform="translate(1060, 240)">
+    <rect x="0" y="0" width="80" height="26" rx="13" fill="#1e40af" stroke="#60a5fa" stroke-width="1"/>
+    <text x="40" y="18" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" font-weight="600" fill="#bfdbfe">v1.0</text>
+  </g>
+</svg>
