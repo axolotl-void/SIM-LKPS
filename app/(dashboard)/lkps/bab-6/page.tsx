@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import Link from "next/link";
 import { FileText, ArrowRight, Calendar, BookOpen } from "lucide-react";
 import type { Metadata } from "next";
+import { STATUS_LABELS, STATUS_COLORS } from "@/lib/utils/permissions";
+import { TabelStatus } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "BAB 6 — Visi dan Misi",
@@ -39,11 +41,13 @@ export default async function Bab6Page() {
     instances.map((inst) => [inst.tabelDefinitionId, inst])
   );
 
-  // VALIDASI DIHAPUS - Semua tabel selalu tampil Draft
-  const getStatusBadge = () => {
+  const getStatusBadge = (status: TabelStatus | null | undefined) => {
+    const s = (status ?? "DRAFT") as TabelStatus;
+    const label = STATUS_LABELS[s];
+    const colors = STATUS_COLORS[s];
     return (
-      <span className="flex items-center gap-1 rounded-lg bg-slate-50 px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider text-slate-500 border border-slate-100/30">
-        Draft
+      <span className={`flex items-center gap-1 rounded-lg px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider border ${colors.bg} ${colors.text} ${colors.border}`}>
+        {label}
       </span>
     );
   };
@@ -91,7 +95,7 @@ export default async function Bab6Page() {
         {definitions.map((def) => {
           const inst = instanceMap[def.id];
           const rowCount = inst?._count.rows || 0;
-          void inst;
+          const currentStatus = inst?.status ?? null;
 
           return (
             <Link
@@ -105,7 +109,7 @@ export default async function Bab6Page() {
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 text-white shadow-soft-sm group-hover:bg-white/20 group-hover:from-white/20 group-hover:to-white/10 transition-all duration-300">
                     <FileText className="h-5 w-5" />
                   </div>
-                  <div>{getStatusBadge()}</div>
+                  <div>{getStatusBadge(currentStatus)}</div>
                 </div>
                 <div className="mt-4">
                   <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg group-hover:bg-white/20 group-hover:text-white transition-all duration-300">

@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 import { DosenSelect } from "@/components/shared/DosenSelect";
+import { canEditTable } from "@/lib/utils/permissions";
+import { Role, TabelStatus } from "@prisma/client";
 
 interface Tabel1A1ClientProps {
   initialRows: {
@@ -21,6 +23,8 @@ interface Tabel1A1ClientProps {
   }[];
   tahunAkademikId: string;
   tabelKode: string;
+  status: TabelStatus;
+  userRole: Role;
   dosens: {
     id: string;
     nidn: string;
@@ -30,12 +34,19 @@ interface Tabel1A1ClientProps {
   }[];
 }
 
-export function Tabel1A1Client({ initialRows, tahunAkademikId, tabelKode, dosens }: Tabel1A1ClientProps) {
+export function Tabel1A1Client({
+  initialRows,
+  tahunAkademikId,
+  tabelKode,
+  status,
+  userRole,
+  dosens,
+}: Tabel1A1ClientProps) {
   const [rows, setRows] = useState(initialRows);
   const router = useRouter();
 
-  // VALIDASI DIHAPUS - Selalu bisa edit
-  const canEdit = true;
+  // Role + status based permission check (single source: lib/utils/permissions)
+  const canEdit = canEditTable(userRole, status);
   
   // Modals & Toast States
   const [isOpen, setIsOpen] = useState(false);

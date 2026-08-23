@@ -3,41 +3,19 @@
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
-import { hasPermission } from "@/lib/utils/permissions";
+import {
+  hasPermission,
+  canEditTable,
+  canDeleteRow,
+} from "@/lib/utils/permissions";
 import { createAuditLog } from "@/lib/utils/audit";
 import { createNotification, notifyMutation } from "@/lib/actions/notification";
 import { Role, TabelStatus } from "@prisma/client";
 
-// ──────────────────────────────────────────────
-// VALIDATION HELPERS
-// ──────────────────────────────────────────────
-
 /**
- * Check if user can edit a table based on status and role
- * ADMIN: can edit all statuses
- * OPERATOR: can edit DRAFT, DIREVISI, DITOLAK only
- * VALIDATOR, PIMPINAN: cannot edit any
+ * Status labels for error messages (verbose variant for clarity)
  */
-function canEditTable(role: Role, status: TabelStatus): boolean {
-  if (role === "ADMIN") return true;
-  if (role === "OPERATOR") {
-    return ["DRAFT", "DIREVISI", "DITOLAK"].includes(status);
-  }
-  return false;
-}
-
-/**
- * Check if user can delete rows from a table based on status and role
- * Same rules as canEditTable
- */
-function canDeleteRow(role: Role, status: TabelStatus): boolean {
-  return canEditTable(role, status);
-}
-
-/**
- * Status labels for error messages
- */
-const STATUS_LABELS: Record<TabelStatus, string> = {
+const STATUS_LABELS_ERROR: Record<TabelStatus, string> = {
   DRAFT: "Draft",
   DIAJUKAN: "Diajukan untuk validasi",
   DIREVISI: "Direvisi",
@@ -107,7 +85,7 @@ export async function upsertLkpsRow(params: {
   // VALIDASI: Role-based edit permission
   if (!canEditTable(role, lkps.status)) {
     throw new Error(
-      `Tidak dapat mengubah data pada tabel berstatus ${STATUS_LABELS[lkps.status]}.`
+      `Tidak dapat mengubah data pada tabel berstatus ${STATUS_LABELS_ERROR[lkps.status]}.`
     );
   }
 
@@ -184,7 +162,7 @@ export async function deleteLkpsRow(params: { rowId: string; tabelKode: string }
   // VALIDASI: Role-based delete permission
   if (!canDeleteRow(role, row.tabelLkps.status)) {
     throw new Error(
-      `Tidak dapat menghapus data pada tabel berstatus ${STATUS_LABELS[row.tabelLkps.status]}.`
+      `Tidak dapat menghapus data pada tabel berstatus ${STATUS_LABELS_ERROR[row.tabelLkps.status]}.`
     );
   }
 
