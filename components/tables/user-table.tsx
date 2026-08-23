@@ -33,7 +33,7 @@ interface UserTableProps {
 const roleBadgeColors: Record<string, string> = {
   ADMIN: "bg-rose-50 text-rose-700 ring-rose-200/60",
   OPERATOR: "bg-blue-50 text-blue-700 ring-blue-200/60",
-  VALIDATOR: "bg-amber-50 text-amber-700 ring-amber-200/60",
+  VALIDATOR: "bg-amber-50 text-amber-700 ring-amber-200/60", // legacy — kept for type-safety fallback
   PIMPINAN: "bg-emerald-50 text-emerald-700 ring-emerald-200/60",
 };
 

@@ -185,7 +185,7 @@ export function EditUserDialog({ user, trigger }: EditUserDialogProps) {
                     >
                       <option value="ADMIN">Administrator</option>
                       <option value="OPERATOR">Operator / Tim LKPS</option>
-                      <option value="VALIDATOR">Validator / Kaprodi</option>
+                      <option value="PIMPINAN">Pimpinan</option>
                       <option value="PIMPINAN">Pimpinan</option>
                     </select>
                   </div>

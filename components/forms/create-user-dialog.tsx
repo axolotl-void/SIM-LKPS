@@ -127,7 +127,7 @@ export function CreateUserDialog() {
                 <option value="">Pilih Role</option>
                 <option value="ADMIN">Administrator</option>
                 <option value="OPERATOR">Operator / Tim LKPS</option>
-                <option value="VALIDATOR">Validator / Kaprodi</option>
+                <option value="PIMPINAN">Pimpinan</option>
                 <option value="PIMPINAN">Pimpinan</option>
               </select>
             </div>

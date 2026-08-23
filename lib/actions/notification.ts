@@ -31,7 +31,7 @@ export async function createNotification(input: CreateNotificationInput) {
 
 /**
  * Centralized helper for data-mutation notifications.
- * Sends to ADMIN + VALIDATOR by default, or to a specific userId.
+ * Sends to ADMIN + PIMPINAN by default, or to a specific userId.
  * Fire-and-forget (does not block mutation response).
  */
 type MutationKind = "CREATE" | "UPDATE" | "DELETE";
@@ -55,11 +55,10 @@ export async function notifyMutation(input: MutationNotifyInput) {
     if (input.recipientUserIds && input.recipientUserIds.length > 0) {
       recipients = input.recipientUserIds;
     } else {
-      // Default: kirim ke ADMIN + VALIDATOR + PIMPINAN (semua stakeholder
-      // non-operator). Actor TIDAK dikecualikan — dia juga perlu history.
+      // Default: kirim ke ADMIN + PIMPINAN (semua stakeholder selain actor).
       const others = await db.user.findMany({
         where: {
-          role: { in: ["ADMIN", "VALIDATOR", "PIMPINAN"] },
+          role: { in: ["ADMIN", "PIMPINAN"] },
           isActive: true,
         },
         select: { id: true },

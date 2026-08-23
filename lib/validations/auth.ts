@@ -9,7 +9,7 @@ export const createUserSchema = z.object({
   name: z.string().min(2, "Nama minimal 2 karakter"),
   email: z.string().email("Format email tidak valid"),
   password: z.string().min(8, "Password minimal 8 karakter"),
-  role: z.enum(["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"], {
+  role: z.enum(["ADMIN", "OPERATOR", "PIMPINAN"], {
     required_error: "Role wajib dipilih",
   }),
 });
@@ -17,7 +17,7 @@ export const createUserSchema = z.object({
 export const updateUserSchema = z.object({
   name: z.string().min(2, "Nama minimal 2 karakter").optional(),
   email: z.string().email("Format email tidak valid").optional(),
-  role: z.enum(["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"]).optional(),
+  role: z.enum(["ADMIN", "OPERATOR", "PIMPINAN"]).optional(),
   isActive: z.boolean().optional(),
 });
 
