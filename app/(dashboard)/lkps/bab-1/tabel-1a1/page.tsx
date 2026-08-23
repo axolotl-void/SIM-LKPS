@@ -5,6 +5,7 @@ import { Tabel1A1Client } from "@/components/tables/tabel-1a1-client";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, Calendar, FileText } from "lucide-react";
 import type { Metadata } from "next";
+import { Role } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Tabel 1.A.1 — Pimpinan dan Tupoksi UPPS dan PS",
@@ -67,6 +68,8 @@ export default async function Tabel1A1Page() {
   });
 
   const initialRows = lkps?.rows || [];
+  const currentStatus = lkps?.status ?? "DRAFT";
+  const userRole = (session.user.role as Role) ?? "PIMPINAN";
 
   return (
     <div className="space-y-6">
@@ -121,6 +124,8 @@ export default async function Tabel1A1Page() {
           }))}
           tahunAkademikId={activeTa.id}
           tabelKode={def.kode}
+          status={currentStatus}
+          userRole={userRole}
           dosens={dosens}
         />
       </ErrorBoundary>
