@@ -17,7 +17,6 @@ interface HeaderProps {
 const ROLE_DISPLAY: Record<string, string> = {
   ADMIN: "Administrator",
   OPERATOR: "Operator",
-  VALIDATOR: "Validator",
   PIMPINAN: "Pimpinan",
 };
 

@@ -241,9 +241,15 @@ export async function submitLkpsTabel(tabelKode: string, tahunAkademikId: string
     newValue: { status: "DIAJUKAN" },
   });
 
-  // Notifikasi ke semua VALIDATOR
-  const validators = await db.user.findMany({ where: { role: "VALIDATOR", isActive: true } });
-  for (const v of validators) {
+  // Notifikasi ke semua OPERATOR + ADMIN (reviewers, selain actor)
+  const reviewers = await db.user.findMany({
+    where: {
+      role: { in: ["OPERATOR", "ADMIN"] },
+      isActive: true,
+      id: { not: session.user.id },
+    },
+  });
+  for (const v of reviewers) {
     await createNotification({
       userId: v.id,
       title: "Tabel Diajukan",

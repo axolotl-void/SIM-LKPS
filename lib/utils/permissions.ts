@@ -2,6 +2,11 @@ import { Role, TabelStatus } from "@prisma/client";
 
 /**
  * Permission definitions per role
+ *
+ * 3-role system (per RANCANGAN-007):
+ * - ADMIN: superuser
+ * - OPERATOR: input data + submit + validate (trusted user, replaces old VALIDATOR role)
+ * - PIMPINAN: read-only + export
  */
 const PERMISSIONS: Record<Role, string[]> = {
   ADMIN: [
@@ -20,19 +25,12 @@ const PERMISSIONS: Record<Role, string[]> = {
     "tabel_lkps.create",
     "tabel_lkps.update",
     "tabel_lkps.submit",
+    "tabel_lkps.validate",
+    "tabel_lkps.comment",
     "evidence.create",
     "evidence.read",
     "master_data.read",
     "master_dosen.create",
-    "dashboard.read",
-    "report.read",
-  ],
-  VALIDATOR: [
-    "tabel_lkps.read",
-    "tabel_lkps.validate",
-    "tabel_lkps.comment",
-    "evidence.read",
-    "master_data.read",
     "dashboard.read",
     "report.read",
   ],
@@ -93,7 +91,6 @@ export function getRolePermissions(role: Role): string[] {
 export const ROLE_LABELS: Record<Role, string> = {
   ADMIN: "Administrator",
   OPERATOR: "Operator / Tim LKPS",
-  VALIDATOR: "Validator / Kaprodi",
   PIMPINAN: "Pimpinan",
 };
 
@@ -123,7 +120,7 @@ export const STATUS_COLORS: Record<TabelStatus, { bg: string; text: string; bord
  * Check if user can edit a table based on status and role
  * ADMIN: can edit all statuses
  * OPERATOR: can edit DRAFT, DIREVISI, DITOLAK only
- * VALIDATOR, PIMPINAN: cannot edit any
+ * PIMPINAN: cannot edit any
  */
 export function canEditTable(role: Role, status: TabelStatus): boolean {
   if (role === "ADMIN") return true;

@@ -35,25 +35,25 @@ const menuGroups: MenuGroup[] = [
   {
     group: "Menu Utama",
     items: [
-      { label: "Dashboard", href: "/", icon: LayoutDashboard, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
+      { label: "Dashboard", href: "/", icon: LayoutDashboard, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
       { label: "Master Data", href: "/master", icon: Database, roles: ["ADMIN"] },
     ],
   },
   {
     group: "Instrumen LKPS",
     items: [
-      { label: "BAB 1 — Tata Pamong", href: "/lkps/bab-1", icon: FileText, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
-      { label: "BAB 2 — Pendidikan", href: "/lkps/bab-2", icon: GraduationCap, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
-      { label: "BAB 3 — Penelitian", href: "/lkps/bab-3", icon: BookOpen, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
-      { label: "BAB 4 — Pengabdian", href: "/lkps/bab-4", icon: Users, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
-      { label: "BAB 5 & 6", href: "/lkps/bab-5", icon: ClipboardList, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
+      { label: "BAB 1 — Tata Pamong", href: "/lkps/bab-1", icon: FileText, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "BAB 2 — Pendidikan", href: "/lkps/bab-2", icon: GraduationCap, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "BAB 3 — Penelitian", href: "/lkps/bab-3", icon: BookOpen, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "BAB 4 — Pengabdian", href: "/lkps/bab-4", icon: Users, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "BAB 5 & 6", href: "/lkps/bab-5", icon: ClipboardList, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
     ],
   },
   {
     group: "Fitur",
     items: [
-      { label: "Bukti Pendukung", href: "/evidence", icon: Upload, roles: ["ADMIN", "OPERATOR", "VALIDATOR"] },
-      { label: "Laporan", href: "/laporan", icon: BarChart3, roles: ["ADMIN", "OPERATOR", "VALIDATOR", "PIMPINAN"] },
+      { label: "Bukti Pendukung", href: "/evidence", icon: Upload, roles: ["ADMIN", "OPERATOR"] },
+      { label: "Laporan", href: "/laporan", icon: BarChart3, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
       { label: "Pengaturan", href: "/settings", icon: Settings, roles: ["ADMIN"] },
     ],
   },

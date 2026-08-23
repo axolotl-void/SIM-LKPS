@@ -14,8 +14,8 @@ export default async function ValidasiPage() {
   if (!session?.user) redirect("/login");
 
   const role = session.user.role;
-  // Only VALIDATOR, ADMIN, PIMPINAN can view
-  if (role !== "VALIDATOR" && role !== "ADMIN" && role !== "PIMPINAN") {
+  // OPERATOR + ADMIN + PIMPINAN can view pending reviews
+  if (role !== "OPERATOR" && role !== "ADMIN" && role !== "PIMPINAN") {
     redirect("/forbidden");
   }
 

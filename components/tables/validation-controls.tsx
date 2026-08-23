@@ -35,7 +35,7 @@ export default function ValidationControls({
   const [isValidating, setIsValidating] = useState(false);
 
   const canSubmit = ["DRAFT", "DIREVISI"].includes(currentStatus) && ["OPERATOR", "ADMIN"].includes(userRole);
-  const canValidate = currentStatus === "DIAJUKAN" && ["VALIDATOR", "ADMIN"].includes(userRole);
+  const canValidate = currentStatus === "DIAJUKAN" && ["OPERATOR", "ADMIN"].includes(userRole);
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
