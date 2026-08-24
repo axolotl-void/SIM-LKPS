@@ -10,6 +10,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import { Role, TabelStatus } from "@prisma/client";
+import { canEditTable } from "@/lib/utils/permissions";
 
 interface Row {
   id: string;
@@ -22,7 +24,7 @@ interface Props {
   tahunAkademikId: string;
   tabelKode: string;
   status: string;
-  userRole: string;
+  userRole: Role;
 }
 
 const DEFAULT_KEMAMPUAN = [
@@ -35,9 +37,9 @@ const DEFAULT_KEMAMPUAN = [
   { key: "etosKerja", label: "Etos Kerja", icon: Briefcase },
 ];
 
-export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: Props) {
-  const [currentStatus] = useState(status);
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
+  const [currentStatus] = useState<TabelStatus>(status as TabelStatus);
+  const canEdit = canEditTable(userRole, currentStatus);
   const [rows, setRows] = useState<Row[]>(() => {
     if (initialRows.length > 0) return initialRows;
     // Seed default 7 rows

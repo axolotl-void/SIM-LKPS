@@ -200,7 +200,7 @@ export function LaporanClient({
       {/* Full Report Export */}
       <div className="rounded-xl border-2 border-dashed border-indigo-200 bg-indigo-50/50 p-6 text-center">
         <h3 className="text-lg font-semibold text-indigo-800 mb-2">Export Laporan Lengkap</h3>
-        <p className="text-sm text-indigo-600 mb-4">Unduh semua 31 tabel LKPS dalam satu file</p>
+        <p className="text-sm text-indigo-600 mb-4">Unduh semua {globalStats.totalTables} tabel LKPS dalam satu file</p>
         <div className="flex justify-center gap-3">
           {(["excel", "word", "pdf"] as const).map((format) => {
             const fmt = formatIcon(format);

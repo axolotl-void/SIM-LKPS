@@ -9,6 +9,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { Role, TabelStatus } from "@prisma/client";
+import { canEditTable } from "@/lib/utils/permissions";
 import { upsertLkpsRow, deleteLkpsRow, createDosen } from "@/lib/actions/lkps";
 
 interface DosenOption {
@@ -27,15 +29,15 @@ interface Tabel1A4ClientProps {
   tahunAkademikId: string;
   tabelKode: string;
   status: string;
-  userRole: string;
+  userRole: Role;
 }
 
-export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelKode, status, userRole: _userRole }: Tabel1A4ClientProps) {
+export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelKode, status, userRole }: Tabel1A4ClientProps) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus] = useState(status);
+  const [currentStatus] = useState<TabelStatus>(status as TabelStatus);
   const router = useRouter();
 
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+  const canEdit = canEditTable(userRole, currentStatus);
 
   // Modals & Toast States
   const [isOpen, setIsOpen] = useState(false);

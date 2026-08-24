@@ -10,6 +10,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import { Role, TabelStatus } from "@prisma/client";
+import { canEditTable } from "@/lib/utils/permissions";
 
 const TYPES = [
   { key: "mahasiswaAktif", label: "Jumlah Mahasiswa Aktif", icon: Users, color: "from-cyan-500 to-teal-500" },
@@ -27,13 +29,13 @@ interface Props {
   rowsTs1: Record<string, any>;
   rowsTs2: Record<string, any>;
   status: string;
-  userRole: string;
+  userRole: Role;
 }
 
-export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, rowsTs2, status, userRole: _userRole }: Props) {
-  const [currentStatus] = useState(status);
+export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, rowsTs2, status, userRole }: Props) {
+  const [currentStatus] = useState<TabelStatus>(status as TabelStatus);
   const router = useRouter();
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+  const canEdit = canEditTable(userRole, currentStatus);
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [formLink, setFormLink] = useState("");

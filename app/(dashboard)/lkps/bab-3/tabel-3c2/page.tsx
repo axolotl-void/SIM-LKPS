@@ -5,6 +5,7 @@ import { Tabel3C2Client } from "@/components/tables/tabel-3c2-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { FileText as FileTextIcon, CheckCircle2, Clock, AlertCircle, XCircle, Calendar, BookOpen } from "lucide-react";
+import { Role } from "@prisma/client";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -126,7 +127,7 @@ export default async function Tabel3C2Page() {
       </div>
 
       <ErrorBoundary>
-        <Tabel3C2Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role} />
+        <Tabel3C2Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role as Role} />
       </ErrorBoundary>
 
       {history.length > 0 && (

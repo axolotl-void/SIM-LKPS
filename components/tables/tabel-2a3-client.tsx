@@ -10,6 +10,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import { Role, TabelStatus } from "@prisma/client";
+import { canEditTable } from "@/lib/utils/permissions";
 
 interface Tabel2A3ClientProps {
   initialRows: {
@@ -20,15 +22,15 @@ interface Tabel2A3ClientProps {
   tahunAkademikId: string;
   tabelKode: string;
   status: string;
-  userRole: string;
+  userRole: Role;
 }
 
-export function Tabel2A3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: Tabel2A3ClientProps) {
+export function Tabel2A3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Tabel2A3ClientProps) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus] = useState(status);
+  const [currentStatus] = useState<TabelStatus>(status as TabelStatus);
   const router = useRouter();
 
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+  const canEdit = canEditTable(userRole, currentStatus);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
