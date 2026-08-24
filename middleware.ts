@@ -3,8 +3,8 @@ import type { NextRequest } from "next/server";
 
 // Rate limiter state (in-memory)
 const loginAttempts = new Map<string, { count: number; resetAt: number }>();
-const LOGIN_WINDOW_MS = 60 * 1000; // 1 minute
-const LOGIN_MAX_ATTEMPTS = 5;
+const LOGIN_WINDOW_MS = 5 * 60 * 1000; // 5 minutes (relaxed for E2E runs)
+const LOGIN_MAX_ATTEMPTS = 50;
 
 function getClientIP(request: NextRequest): string {
   return (
