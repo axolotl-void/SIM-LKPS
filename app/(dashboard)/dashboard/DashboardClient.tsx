@@ -88,7 +88,6 @@ export function DashboardClient({ data }: { data: DashboardData }) {
             totalTables={stats.totalDefinitions}
             filledTables={stats.terisi}
             approved={stats.disetujui}
-            pending={stats.diajukan}
           />
 
           {/* Progress Section */}
