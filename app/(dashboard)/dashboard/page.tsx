@@ -18,6 +18,7 @@ export default async function DashboardPage() {
   const mahasiswaCount = await db.mahasiswa.count({ where: { isActive: true } });
   const mataKuliahCount = await db.mataKuliah.count({ where: { isActive: true } });
   const userCount = await db.user.count({ where: { isActive: true } });
+  const evidenceCount = await db.evidence.count();
   const recentLogs = await db.auditLog.findMany({
     include: { user: { select: { name: true } } },
     orderBy: { createdAt: "desc" },
@@ -135,7 +136,7 @@ export default async function DashboardPage() {
       diajukan: globalStats.diajukan,
       ditolak: globalStats.ditolak
     },
-    quickStats: { dosenCount, mahasiswaCount, mataKuliahCount, userCount },
+    quickStats: { dosenCount, mahasiswaCount, mataKuliahCount, userCount, evidenceCount },
     isAdmin: userRole === "ADMIN",
     recentLogs: recentLogs.map((log) => ({
       id: log.id,
