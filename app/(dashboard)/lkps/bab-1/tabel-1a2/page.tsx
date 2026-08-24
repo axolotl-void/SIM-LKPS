@@ -7,6 +7,7 @@ import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
+import { Role } from "@prisma/client";
 
 type LkpsRow = {
   id: string;
@@ -122,7 +123,7 @@ export default async function Tabel1A2Page() {
       </div>
 
       <ErrorBoundary>
-        <Tabel1A2Client initialRows={initialRows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role} />
+        <Tabel1A2Client initialRows={initialRows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role as Role} />
       </ErrorBoundary>
       {history.length > 0 && (
         <ValidationHistory history={history.map((h) => ({ id: h.id, action: h.action, comment: h.comment, createdAt: h.createdAt.toISOString(), user: h.user }))} />

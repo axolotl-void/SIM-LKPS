@@ -10,6 +10,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import { Role, TabelStatus } from "@prisma/client";
+import { canEditTable } from "@/lib/utils/permissions";
 
 interface VisiMisiRow {
   id: string;
@@ -29,12 +31,12 @@ interface Props {
   tahunAkademikId: string;
   tabelKode: string;
   status: string;
-  userRole: string;
+  userRole: Role;
 }
 
 export function Tabel6Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
   const [rows, setRows] = useState<VisiMisiRow[]>(initialRows);
-  const [currentStatus, setCurrentStatus] = useState(status);
+  const [currentStatus, setCurrentStatus] = useState<TabelStatus>(status as TabelStatus);
   const router = useRouter();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -53,7 +55,7 @@ export function Tabel6Client({ initialRows, tahunAkademikId, tabelKode, status, 
   const [isDeleting, setIsDeleting] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+  const canEdit = canEditTable(userRole, currentStatus);
 
   const triggerToast = (message: string, type: "success" | "error") => {
     setToast({ message, type });

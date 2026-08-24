@@ -8,6 +8,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { Role, TabelStatus } from "@prisma/client";
+import { canEditTable } from "@/lib/utils/permissions";
 import { upsertLkpsRow } from "@/lib/actions/lkps";
 
 interface Row {
@@ -30,14 +32,14 @@ interface Props {
   tahunAkademikId: string;
   tabelKode: string;
   status: string;
-  userRole: string;
+  userRole: Role;
 }
 
-export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: Props) {
+export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus] = useState(status);
+  const [currentStatus] = useState<TabelStatus>(status as TabelStatus);
   const router = useRouter();
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+  const canEdit = canEditTable(userRole, currentStatus);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [form, setForm] = useState<Record<string, string>>({});

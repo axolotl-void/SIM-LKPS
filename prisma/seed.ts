@@ -21,6 +21,35 @@ async function main() {
   });
   console.log(`  ✅ Admin user: ${admin.email}`);
 
+  // 1b. Seed Operator + Pimpinan users (for E2E test multi-role login)
+  const operatorPassword = await bcrypt.hash("Operator@2026!", 12);
+  const operator = await db.user.upsert({
+    where: { email: "operator@ubbg.ac.id" },
+    update: { role: Role.OPERATOR, isActive: true },
+    create: {
+      name: "Operator LKPS",
+      email: "operator@ubbg.ac.id",
+      password: operatorPassword,
+      role: Role.OPERATOR,
+      isActive: true,
+    },
+  });
+  console.log(`  ✅ Operator user: ${operator.email}`);
+
+  const pimpinanPassword = await bcrypt.hash("Pimpinan@2026!", 12);
+  const pimpinan = await db.user.upsert({
+    where: { email: "pimpinan@ubbg.ac.id" },
+    update: { role: Role.PIMPINAN, isActive: true },
+    create: {
+      name: "Pimpinan Prodi",
+      email: "pimpinan@ubbg.ac.id",
+      password: pimpinanPassword,
+      role: Role.PIMPINAN,
+      isActive: true,
+    },
+  });
+  console.log(`  ✅ Pimpinan user: ${pimpinan.email}`);
+
   // 2. Seed Program Studi
   const prodi = await db.prodi.upsert({
     where: { kode: "55201" },

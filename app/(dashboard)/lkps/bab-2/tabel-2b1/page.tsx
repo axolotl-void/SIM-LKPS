@@ -5,6 +5,7 @@ import { Tabel2B1Client } from "@/components/tables/tabel-2b1-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import { Role } from "@prisma/client";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Tabel 2.B.1 — Isi Pembelajaran" };
@@ -48,7 +49,7 @@ export default async function Tabel2B1Page() {
         <h2 className="text-xl font-bold text-slate-800">{def.nama}</h2>
       </div>
       <ErrorBoundary>
-        <Tabel2B1Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role} />
+        <Tabel2B1Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role as Role} />
       </ErrorBoundary>
       {history.length > 0 && (
         <ValidationHistory history={history.map((h) => ({ id: h.id, action: h.action, comment: h.comment, createdAt: h.createdAt.toISOString(), user: h.user }))} />

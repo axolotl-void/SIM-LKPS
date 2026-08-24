@@ -5,6 +5,7 @@ import { Tabel4A2Client } from "@/components/tables/tabel-4a2-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { Users, Calendar, BookOpen, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import { Role } from "@prisma/client";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -127,7 +128,7 @@ export default async function Tabel4A2Page() {
       </div>
 
       <ErrorBoundary>
-        <Tabel4A2Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role} />
+        <Tabel4A2Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role as Role} />
       </ErrorBoundary>
 
       {history.length > 0 && (

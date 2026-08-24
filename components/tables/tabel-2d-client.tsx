@@ -9,6 +9,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { Role, TabelStatus } from "@prisma/client";
+import { canEditTable } from "@/lib/utils/permissions";
 import { upsertLkpsRow } from "@/lib/actions/lkps";
 
 interface Props {
@@ -19,7 +21,7 @@ interface Props {
   rowsTs1: Record<string, any>;
   rowsTs2: Record<string, any>;
   status: string;
-  userRole: string;
+  userRole: Role;
 }
 
 const SOURCE_ICONS: Record<string, any> = {
@@ -36,10 +38,10 @@ const SOURCE_COLORS: Record<string, string> = {
   duniaKerja: "from-cyan-600 to-teal-600",
 };
 
-export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rowsTs, rowsTs1, rowsTs2, status, userRole: _userRole }: Props) {
-  const [currentStatus] = useState(status);
+export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rowsTs, rowsTs1, rowsTs2, status, userRole }: Props) {
+  const [currentStatus] = useState<TabelStatus>(status as TabelStatus);
   const router = useRouter();
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+  const canEdit = canEditTable(userRole, currentStatus);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   const [modalOpen, setModalOpen] = useState(false);

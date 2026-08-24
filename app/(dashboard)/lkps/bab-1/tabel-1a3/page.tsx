@@ -7,6 +7,7 @@ import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, Calendar, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
+import { Role } from "@prisma/client";
 
 type LkpsRow = {
   id: string;
@@ -211,7 +212,7 @@ export default async function Tabel1A3Page() {
           tahunAkademikId={activeTa.id}
           tabelKode={def.kode}
           status={status}
-          userRole={session.user.role}
+          userRole={session.user.role as Role}
         />
       </ErrorBoundary>
 

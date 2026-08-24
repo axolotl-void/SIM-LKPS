@@ -8,7 +8,7 @@ import {
   canEditTable,
   canDeleteRow,
 } from "@/lib/utils/permissions";
-import { createAuditLog } from "@/lib/utils/audit";
+import { createAuditLog, logAccessDenied } from "@/lib/utils/audit";
 import { createNotification, notifyMutation } from "@/lib/actions/notification";
 import { Role, TabelStatus } from "@prisma/client";
 
@@ -84,6 +84,12 @@ export async function upsertLkpsRow(params: {
 
   // VALIDASI: Role-based edit permission
   if (!canEditTable(role, lkps.status)) {
+    logAccessDenied("UPSERT", "TabelLkpsRow", "role_or_status_denied", {
+      role,
+      status: lkps.status,
+      tabelKode: params.tabelKode,
+      isUpdate: !!params.rowId,
+    });
     throw new Error(
       `Tidak dapat mengubah data pada tabel berstatus ${STATUS_LABELS_ERROR[lkps.status]}.`
     );
@@ -161,6 +167,11 @@ export async function deleteLkpsRow(params: { rowId: string; tabelKode: string }
 
   // VALIDASI: Role-based delete permission
   if (!canDeleteRow(role, row.tabelLkps.status)) {
+    logAccessDenied("DELETE", "TabelLkpsRow", "role_or_status_denied", {
+      role,
+      status: row.tabelLkps.status,
+      tabelKode: params.tabelKode,
+    });
     throw new Error(
       `Tidak dapat menghapus data pada tabel berstatus ${STATUS_LABELS_ERROR[row.tabelLkps.status]}.`
     );
@@ -200,18 +211,25 @@ export async function submitLkpsTabel(tabelKode: string, tahunAkademikId: string
 
   const role = session.user.role as Role;
   if (!hasPermission(role, "tabel_lkps.submit")) {
+    logAccessDenied("SUBMIT", "TabelLkps", "missing_permission", { role, tabelKode });
     throw new Error("Anda tidak memiliki izin untuk submit tabel.");
   }
 
   const lkps = await getOrCreateLkps(tabelKode, tahunAkademikId);
 
   if (lkps.status !== "DRAFT" && lkps.status !== "DIREVISI") {
+    logAccessDenied("SUBMIT", "TabelLkps", "wrong_status_for_submit", {
+      role,
+      status: lkps.status,
+      tabelKode,
+    });
     throw new Error("Status tabel harus DRAFT atau DIREVISI untuk diajukan.");
   }
 
   // Minimal 1 baris
   const rowCount = await db.tabelLkpsRow.count({ where: { tabelLkpsId: lkps.id } });
   if (rowCount === 0) {
+    logAccessDenied("SUBMIT", "TabelLkps", "empty_table_submit", { role, tabelKode });
     throw new Error("Tidak dapat mengajukan tabel kosong. Tambahkan minimal 1 data.");
   }
 
@@ -280,17 +298,33 @@ export async function validateLkpsTabel(
 
   const role = session.user.role as Role;
   if (!hasPermission(role, "tabel_lkps.validate")) {
+    logAccessDenied("VALIDATE", "TabelLkps", "missing_permission", {
+      role,
+      tabelKode,
+      validateAction: action,
+    });
     throw new Error("Anda tidak memiliki izin untuk validasi.");
   }
 
   const lkps = await getOrCreateLkps(tabelKode, tahunAkademikId);
 
   if (lkps.status !== "DIAJUKAN") {
+    logAccessDenied("VALIDATE", "TabelLkps", "wrong_status_for_validate", {
+      role,
+      status: lkps.status,
+      tabelKode,
+      validateAction: action,
+    });
     throw new Error("Hanya tabel berstatus Diajukan yang dapat divalidasi.");
   }
 
   // REJECT dan REVISE wajib komentar
   if ((action === "REJECT" || action === "REVISE") && (!comment || !comment.trim())) {
+    logAccessDenied("VALIDATE", "TabelLkps", "missing_comment_for_reject", {
+      role,
+      tabelKode,
+      validateAction: action,
+    });
     throw new Error("Komentar wajib diisi untuk menolak atau meminta revisi.");
   }
 

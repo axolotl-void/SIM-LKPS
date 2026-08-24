@@ -5,11 +5,13 @@ import { Plus, Edit2, Trash2, ArrowLeft, Network } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import { Role, TabelStatus } from "@prisma/client";
+import { canEditTable } from "@/lib/utils/permissions";
 
-export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: any) {
+export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: any) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus] = useState(status);
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+  const [currentStatus] = useState<TabelStatus>(status as TabelStatus);
+  const canEdit = canEditTable(userRole, currentStatus);
   const [isOpen, setIsOpen] = useState(false);
   const [editId, setEditId] = useState<string | undefined>();
   const [form, setForm] = useState({ kodeCpl: "", rumusanCpl: "", kodeCpmk: "", rumusanCpmk: "", mataKuliah: "" });

@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import { Role, TabelStatus } from "@prisma/client";
+import { canEditTable } from "@/lib/utils/permissions";
 
 type JenisPublikasi = "IB" | "I" | "S1" | "S2" | "S3" | "S4" | "T";
 
@@ -29,7 +31,7 @@ interface Props {
   tahunAkademikId: string;
   tabelKode: string;
   status: string;
-  userRole: string;
+  userRole: Role;
 }
 
 const JENIS_OPTIONS: { value: JenisPublikasi; label: string }[] = [
@@ -44,8 +46,8 @@ const JENIS_OPTIONS: { value: JenisPublikasi; label: string }[] = [
 
 export function Tabel3C2Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
   const [rows, setRows] = useState(initialRows);
-  const [currentStatus, setCurrentStatus] = useState(status);
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+  const [currentStatus, setCurrentStatus] = useState<TabelStatus>(status as TabelStatus);
+  const canEdit = canEditTable(userRole, currentStatus);
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState<PublikasiItem | null>(null);

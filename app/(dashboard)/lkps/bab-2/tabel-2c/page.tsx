@@ -6,6 +6,7 @@ import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, CheckCircle2, Clock, AlertCircle, XCircle, Calendar } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { Role } from "@prisma/client";
 import type { Metadata } from "next";
 
 type LkpsRow = {
@@ -115,7 +116,7 @@ export default async function Tabel2CPage() {
           rowsTs1={rowsTs1}
           rowsTs2={rowsTs2}
           status={status}
-          userRole={session.user.role}
+          userRole={session.user.role as Role}
         />
       </ErrorBoundary>
       {history.length > 0 && (

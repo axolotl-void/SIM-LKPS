@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
+import { Role, TabelStatus } from "@prisma/client";
+import { canEditTable } from "@/lib/utils/permissions";
 
 interface SaranaItem {
   id: string;
@@ -30,14 +32,14 @@ interface Props {
   tahunAkademikId: string;
   tabelKode: string;
   status: string;
-  userRole: string;
+  userRole: Role;
 }
 
 export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
   const [rows, setRows] = useState<SaranaItem[]>(initialRows);
-  const [currentStatus, setCurrentStatus] = useState(status);
+  const [currentStatus, setCurrentStatus] = useState<TabelStatus>(status as TabelStatus);
   const router = useRouter();
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+  const canEdit = canEditTable(userRole, currentStatus);
 
   // --- Modal tambah / edit ---
   const [modalOpen, setModalOpen] = useState(false);

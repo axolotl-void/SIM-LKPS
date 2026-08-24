@@ -8,6 +8,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { Role, TabelStatus } from "@prisma/client";
+import { canEditTable } from "@/lib/utils/permissions";
 import { upsertLkpsRow } from "@/lib/actions/lkps";
 
 interface RowData {
@@ -21,7 +23,7 @@ interface Props {
   tahunAkademikId: string;
   tabelKode: string;
   status: string;
-  userRole: string;
+  userRole: Role;
 }
 
 const TS_LABELS = ["TS-3", "TS-2", "TS-1", "TS"];
@@ -80,9 +82,9 @@ const FIELD_GROUPS = [
   },
 ];
 
-export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole: _userRole }: Props) {
-  const [currentStatus] = useState(status);
-  const canEdit = ["DRAFT", "DIREVISI", "DITOLAK"].includes(currentStatus);
+export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
+  const [currentStatus] = useState<TabelStatus>(status as TabelStatus);
+  const canEdit = canEditTable(userRole, currentStatus);
   const router = useRouter();
 
   const [rows, setRows] = useState<RowData[]>(() => {

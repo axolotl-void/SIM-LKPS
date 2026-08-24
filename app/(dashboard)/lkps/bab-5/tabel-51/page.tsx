@@ -5,6 +5,7 @@ import { Tabel51Client } from "@/components/tables/tabel-51-client";
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { Shield, Calendar, BookOpen, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
+import { Role } from "@prisma/client";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Tabel 5.1 — Sistem Tata Kelola" };
@@ -99,7 +100,7 @@ export default async function Tabel51Page() {
         </div>
       </div>
       <ErrorBoundary>
-        <Tabel51Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role} />
+        <Tabel51Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role as Role} />
       </ErrorBoundary>
 
       {history.length > 0 && (

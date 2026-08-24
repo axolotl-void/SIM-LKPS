@@ -58,12 +58,13 @@ function ProgressRing({ progress, color, size = 48 }: {
 
 // Single KPI card with consistent height
 function KPICard({
-  title, subtitle, value, percentage, trend, icon: Icon,
+  title, subtitle, value, totalTables = 0, percentage, trend, icon: Icon,
   gradient, ringColor, delay = 0,
 }: {
   title: string;
   subtitle: string;
   value: number;
+  totalTables?: number;
   percentage: number;
   trend: "up" | "down";
   icon: React.ElementType;
@@ -111,7 +112,7 @@ function KPICard({
           <span className="text-4xl font-black text-white" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.2)", letterSpacing: "-2px" }}>
             <AnimatedNumber value={value} delay={delay + 200} />
           </span>
-          <span className="text-lg font-bold text-white/60">/ 31</span>
+          <span className="text-lg font-bold text-white/60">/ {totalTables}</span>
         </div>
 
         <div className="relative" style={{ width: 56, height: 56 }}>
@@ -135,7 +136,7 @@ export function KPICards({ totalTables, filledTables, approved, pending }: KPICa
   const approvedPercentage = Math.min(100, totalTables > 0 ? Math.round((approved / totalTables) * 100) : 0);
 
   const cards = [
-    { title: "Total Tabel LKPS", subtitle: `${totalTables} tabel`, value: totalTables, percentage: 100, trend: "up" as const, icon: Target, gradient: ["#6366F1", "#8B5CF6"] as [string, string], ringColor: "#A78BFA", delay: 0 },
+    { title: "Total Tabel LKPS", subtitle: `${totalTables} tabel`, value: totalTables, totalTables, percentage: 100, trend: "up" as const, icon: Target, gradient: ["#6366F1", "#8B5CF6"] as [string, string], ringColor: "#A78BFA", delay: 0 },
     { title: "Sudah Diisi", subtitle: `${filledPercentage}% dari total`, value: filledTables, percentage: filledPercentage, trend: "up" as const, icon: Sparkles, gradient: ["#10B981", "#059669"] as [string, string], ringColor: "#34D399", delay: 100 },
     { title: "Menunggu Validasi", subtitle: `${pendingPercentage}% dari total`, value: pending, percentage: pendingPercentage, trend: pending > 0 ? "down" as const : "up" as const, icon: Clock, gradient: ["#F59E0B", "#D97706"] as [string, string], ringColor: "#FCD34D", delay: 200 },
     { title: "Disetujui", subtitle: `${approvedPercentage}% dari total`, value: approved, percentage: approvedPercentage, trend: "up" as const, icon: Award, gradient: ["#06B6D4", "#0891B2"] as [string, string], ringColor: "#22D3EE", delay: 300 },
