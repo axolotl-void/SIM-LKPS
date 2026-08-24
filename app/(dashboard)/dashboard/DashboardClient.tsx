@@ -27,7 +27,7 @@ interface DashboardData {
     diajukan: number;
     ditolak: number;
   };
-  quickStats: { dosenCount: number; mahasiswaCount: number; mataKuliahCount: number; userCount: number };
+  quickStats: { dosenCount: number; mahasiswaCount: number; mataKuliahCount: number; userCount: number; evidenceCount: number };
   isAdmin: boolean;
   recentLogs: Array<{
     id: string;
@@ -87,7 +87,7 @@ export function DashboardClient({ data }: { data: DashboardData }) {
           <KPICards
             totalTables={stats.totalDefinitions}
             filledTables={stats.terisi}
-            approved={stats.disetujui}
+            evidenceCount={quickStats.evidenceCount}
             totalAkun={quickStats.userCount}
           />
 

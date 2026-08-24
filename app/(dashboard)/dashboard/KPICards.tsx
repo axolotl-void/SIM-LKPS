@@ -1,12 +1,12 @@
 "use client";
 
-import { Sparkles, Target, Award, Users } from "lucide-react";
+import { Sparkles, Target, FileCheck, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface KPICardsProps {
   totalTables: number;
   filledTables: number;
-  approved: number;
+  evidenceCount: number;
   totalAkun: number;
 }
 
@@ -129,15 +129,15 @@ function KPICard({
   );
 }
 
-export function KPICards({ totalTables, filledTables, approved, totalAkun }: KPICardsProps) {
+export function KPICards({ totalTables, filledTables, evidenceCount, totalAkun }: KPICardsProps) {
   // Clamp percentage to max 100%
   const filledPercentage = Math.min(100, totalTables > 0 ? Math.round((filledTables / totalTables) * 100) : 0);
-  const approvedPercentage = Math.min(100, totalTables > 0 ? Math.round((approved / totalTables) * 100) : 0);
+  const evidencePercentage = Math.min(100, totalTables > 0 ? Math.round((evidenceCount / totalTables) * 100) : 0);
 
   const cards = [
     { title: "Total Tabel LKPS", subtitle: `${totalTables} tabel`, value: totalTables, totalTables, percentage: 100, trend: "up" as const, icon: Target, gradient: ["#6366F1", "#8B5CF6"] as [string, string], ringColor: "#A78BFA", delay: 0 },
     { title: "Sudah Diisi", subtitle: `${filledPercentage}% dari total`, value: filledTables, percentage: filledPercentage, trend: "up" as const, icon: Sparkles, gradient: ["#10B981", "#059669"] as [string, string], ringColor: "#34D399", delay: 100 },
-    { title: "Disetujui", subtitle: `${approvedPercentage}% dari total`, value: approved, percentage: approvedPercentage, trend: "up" as const, icon: Award, gradient: ["#06B6D4", "#0891B2"] as [string, string], ringColor: "#22D3EE", delay: 200 },
+    { title: "Bukti Pendukung", subtitle: `${evidencePercentage}% dari tabel`, value: evidenceCount, percentage: evidencePercentage, trend: evidenceCount > 0 ? "up" as const : "down" as const, icon: FileCheck, gradient: ["#06B6D4", "#0891B2"] as [string, string], ringColor: "#22D3EE", delay: 200 },
     { title: "Total Akun", subtitle: `${totalAkun} pengguna aktif`, value: totalAkun, percentage: Math.min(100, totalAkun > 0 ? Math.round((totalAkun / Math.max(totalAkun, 1)) * 100) : 0), trend: "up" as const, icon: Users, gradient: ["#F59E0B", "#D97706"] as [string, string], ringColor: "#FCD34D", delay: 300 },
   ];
 
