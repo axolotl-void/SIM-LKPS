@@ -88,6 +88,7 @@ export function DashboardClient({ data }: { data: DashboardData }) {
             totalTables={stats.totalDefinitions}
             filledTables={stats.terisi}
             approved={stats.disetujui}
+            totalAkun={quickStats.userCount}
           />
 
           {/* Progress Section */}
