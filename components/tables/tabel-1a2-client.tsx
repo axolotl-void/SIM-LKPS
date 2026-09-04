@@ -38,10 +38,12 @@ export function Tabel1A2Client({ initialRows, tahunAkademikId, tabelKode, status
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   
-  // Form State (Single Nominal for TS - Rollover logic handles TS-1 and TS-2)
+  // Form State (Nominal for TS, TS-1, TS-2 - semua bisa diedit manual)
   const [editId, setEditId] = useState<string | undefined>(undefined);
   const [sumberPendanaan, setSumberPendanaan] = useState("");
-  const [nominal, setNominal] = useState(""); // Formatted with dots as string
+  const [nominalTs, setNominalTs] = useState(""); // TS - Tahun Sekarang
+  const [nominalTs1, setNominalTs1] = useState(""); // TS-1 - Satu tahun sebelum
+  const [nominalTs2, setNominalTs2] = useState(""); // TS-2 - Dua tahun sebelum
   const [linkBukti, setLinkBukti] = useState("");
 
   const triggerToast = (message: string, type: "success" | "error") => {
@@ -58,9 +60,14 @@ export function Tabel1A2Client({ initialRows, tahunAkademikId, tabelKode, status
     return new Intl.NumberFormat("id-ID").format(Number(clean));
   };
 
-  const handleNominalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatThousand(e.target.value);
-    setNominal(formatted);
+  const handleNominalTsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNominalTs(formatThousand(e.target.value));
+  };
+  const handleNominalTs1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNominalTs1(formatThousand(e.target.value));
+  };
+  const handleNominalTs2Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNominalTs2(formatThousand(e.target.value));
   };
 
   // Predefined sources for consistency
@@ -78,7 +85,9 @@ export function Tabel1A2Client({ initialRows, tahunAkademikId, tabelKode, status
   const handleOpenAdd = () => {
     setEditId(undefined);
     setSumberPendanaan("");
-    setNominal("");
+    setNominalTs("");
+    setNominalTs1("");
+    setNominalTs2("");
     setLinkBukti("");
     setIsOpen(true);
   };
@@ -86,7 +95,9 @@ export function Tabel1A2Client({ initialRows, tahunAkademikId, tabelKode, status
   const handleOpenEdit = (row: any) => {
     setEditId(row.id);
     setSumberPendanaan(row.rowData.sumberPendanaan || "");
-    setNominal(row.rowData.ts !== undefined ? formatThousand(String(row.rowData.ts)) : "");
+    setNominalTs(row.rowData.ts !== undefined ? formatThousand(String(row.rowData.ts)) : "");
+    setNominalTs1(row.rowData.ts1 !== undefined ? formatThousand(String(row.rowData.ts1)) : "");
+    setNominalTs2(row.rowData.ts2 !== undefined ? formatThousand(String(row.rowData.ts2)) : "");
     setLinkBukti(row.rowData.linkBukti || "");
     setIsOpen(true);
   };
@@ -96,12 +107,17 @@ export function Tabel1A2Client({ initialRows, tahunAkademikId, tabelKode, status
     setIsLoading(true);
 
     try {
-      // Parse formatted string back to raw number
-      const rawNominal = Number(nominal.replace(/\./g, "")) || 0;
+      // Parse formatted strings back to raw numbers
+      const parseNum = (v: string) => Number(v.replace(/\./g, "")) || 0;
+      const rawTs = parseNum(nominalTs);
+      const rawTs1 = parseNum(nominalTs1);
+      const rawTs2 = parseNum(nominalTs2);
 
       const rowData = {
         sumberPendanaan,
-        nominal: rawNominal,
+        nominal: rawTs,
+        nominalTs1: rawTs1,
+        nominalTs2: rawTs2,
         linkBukti,
       };
 
@@ -119,8 +135,8 @@ export function Tabel1A2Client({ initialRows, tahunAkademikId, tabelKode, status
         rowData: {
           sumberPendanaan: (result.rowData as any)?.sumberPendanaan ?? "",
           ts: Number((result.rowData as any)?.nominal) || 0,
-          ts1: editId ? (rows.find(r => r.id === editId)?.rowData as any)?.ts1 || 0 : 0,
-          ts2: editId ? (rows.find(r => r.id === editId)?.rowData as any)?.ts2 || 0 : 0,
+          ts1: Number((result.rowData as any)?.nominalTs1) || 0,
+          ts2: Number((result.rowData as any)?.nominalTs2) || 0,
           linkBukti: (result.rowData as any)?.linkBukti ?? "",
         }
       };
@@ -399,8 +415,52 @@ export function Tabel1A2Client({ initialRows, tahunAkademikId, tabelKode, status
                           type="text"
                           required
                           placeholder="0"
-                          value={nominal}
-                          onChange={handleNominalChange}
+                          value={nominalTs}
+                          onChange={handleNominalTsChange}
+                          className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-20 text-xs transition-all focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-3xs"
+                        />
+                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 font-semibold text-3xs uppercase">
+                          Juta Rp
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Nominal (TS-1) */}
+                    <div>
+                      <label className="block text-2xs font-bold text-slate-700 mb-1.5">
+                        Nominal Satu Tahun Sebelum (TS-1)
+                      </label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 font-bold text-2xs">
+                          Rp
+                        </span>
+                        <input
+                          type="text"
+                          placeholder="0"
+                          value={nominalTs1}
+                          onChange={handleNominalTs1Change}
+                          className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-20 text-xs transition-all focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-3xs"
+                        />
+                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 font-semibold text-3xs uppercase">
+                          Juta Rp
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Nominal (TS-2) */}
+                    <div>
+                      <label className="block text-2xs font-bold text-slate-700 mb-1.5">
+                        Nominal Dua Tahun Sebelum (TS-2)
+                      </label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 font-bold text-2xs">
+                          Rp
+                        </span>
+                        <input
+                          type="text"
+                          placeholder="0"
+                          value={nominalTs2}
+                          onChange={handleNominalTs2Change}
                           className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-20 text-xs transition-all focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-3xs"
                         />
                         <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 font-semibold text-3xs uppercase">
