@@ -1,7 +1,10 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { Tabel1A4Client } from "@/components/tables/tabel-1a4-client";
+import dynamic from "next/dynamic";
+const Tabel1A4Client = dynamic(() =>
+  import("@/components/tables/tabel-1a4-client").then((m) => m.Tabel1A4Client)
+);
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, Calendar, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
@@ -52,7 +55,9 @@ export default async function Tabel1A4Page() {
   }
 
   // Query active Dosen Tetap from Master Data
-  let dosenList = await db.dosen.findMany({
+  // Auto-seed DTPR master di-handle di prisma/seed.ts (jalan sekali via `npm run db:seed`)
+  // — tidak di-runtime per request, agar navigasi tabel tidak insert berulang-ulang ke DB.
+  const dosenList = await db.dosen.findMany({
     where: { status: "Tetap", isActive: true },
     orderBy: { nama: "asc" },
     select: {
@@ -61,49 +66,6 @@ export default async function Tabel1A4Page() {
       nama: true,
     },
   });
-
-  // Proactive Auto-Seed for DTPR Master Data if database table is empty or missing entries
-  if (dosenList.length < 18) {
-    const seedDosenData = [
-      { nidn: "0102030401", nama: "Rossiana Br Ginting, S.Kom, M.Pd", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030402", nama: "Mukhroji, S.ST., M.T.", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030403", nama: "Ully Muzakir, MT", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030404", nama: "Khairuman, S.Kom, M.Kom", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030405", nama: "Mohd. Iqbal Muttaqin", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030406", nama: "Bakruddin, S.Si. M.T", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030407", nama: "Miftahul Jannah, M.Pd", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030408", nama: "Muhajir, M.T", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030409", nama: "Ir. Muhibul Jamal, S.T., M.T.", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030410", nama: "Mulyati, S.Si, M.Kom", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030411", nama: "Nazuarsyah, ST, MT", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030412", nama: "Oktalia Triananda Lovita, S.ST. MT", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030413", nama: "Nur Aynun Siregar,. S.kom., M.Kom", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030414", nama: "Prof. Dr. Sariakin, S.Pd., M.Pd", pendidikanTerakhir: "S3", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030415", nama: "Satria Prayudi, S.TI, M.Kom", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030416", nama: "Teuku Muhammad Mirza Keumala, S.Kom, M.T", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" },
-      { nidn: "0102030417", nama: "Zharifah Muthi'ah, S.T., M.T", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "P" },
-      { nidn: "0102030418", nama: "Ahmad Mufti, S.Pd", pendidikanTerakhir: "S2", status: "Tetap", jenisKelamin: "L" }
-    ];
-
-    for (const d of seedDosenData) {
-      await db.dosen.upsert({
-        where: { nidn: d.nidn },
-        update: { nama: d.nama, status: d.status, pendidikanTerakhir: d.pendidikanTerakhir },
-        create: d,
-      });
-    }
-
-    // Re-fetch after seeding
-    dosenList = await db.dosen.findMany({
-      where: { status: "Tetap", isActive: true },
-      orderBy: { nama: "asc" },
-      select: {
-        id: true,
-        nidn: true,
-        nama: true,
-      },
-    });
-  }
 
   // Query existing row records for current year (TS)
   const lkpsTs = await db.tabelLkps.findUnique({
