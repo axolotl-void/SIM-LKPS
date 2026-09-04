@@ -1,7 +1,10 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { Tabel1A1Client } from "@/components/tables/tabel-1a1-client";
+import dynamic from "next/dynamic";
+const Tabel1A1Client = dynamic(() =>
+  import("@/components/tables/tabel-1a1-client").then((m) => m.Tabel1A1Client)
+);
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, Calendar, FileText } from "lucide-react";
 import type { Metadata } from "next";
