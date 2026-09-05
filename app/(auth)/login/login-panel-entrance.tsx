@@ -34,9 +34,14 @@ const cardVariants: Variants = {
 
 /**
  * Entrance choreography for the right (form) panel.
- * Stagger: lockup → subtitle → heading → card → footer.
+ * Stagger: lockup -> subtitle -> heading -> card -> footer.
  * Card has slightly heavier motion (scale + translate) to feel "anchored".
  * Honors prefers-reduced-motion (no initial offset, instant show).
+ *
+ * NOTE: We intentionally do NOT use `display: contents` here. Framer Motion
+ * applies transform/opacity to the wrapper element, and `display: contents`
+ * strips the element from the layout tree, breaking the animation entirely.
+ * Instead, items stack naturally inside the flex column container.
  */
 export function LoginPanelEntrance({ children }: { children: ReactNode }) {
   const reduced = useReducedMotion() ?? false;
@@ -50,7 +55,6 @@ export function LoginPanelEntrance({ children }: { children: ReactNode }) {
       initial="hidden"
       animate="show"
       variants={containerVariants}
-      className="contents"
     >
       {children}
     </motion.div>
@@ -70,38 +74,6 @@ export function LoginPanelItem({
   return (
     <motion.div
       variants={reduced ? undefined : variants}
-      className="contents"
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-const shellVariants: Variants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
-/**
- * Wraps <main>. Subtle page-level fade so the whole layout
- * doesn't pop in instantly. Children animate via LoginPanelEntrance.
- */
-export function LoginShellEntrance({ children }: { children: ReactNode }) {
-  const reduced = useReducedMotion() ?? false;
-
-  if (reduced) {
-    return <>{children}</>;
-  }
-
-  return (
-    <motion.div
-      initial="hidden"
-      animate="show"
-      variants={shellVariants}
-      className="contents"
     >
       {children}
     </motion.div>

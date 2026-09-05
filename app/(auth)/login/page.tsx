@@ -44,17 +44,9 @@ export default function LoginPage() {
               </h1>
             </LoginPanelItem>
 
-            {/* Card — heavier entrance (scale + translate) */}
+            {/* Card — plain bordered, no glassmorphism */}
             <LoginPanelItem variant="card">
-              <div
-                className="mt-6 rounded-3xl border border-slate-200/70 p-7 sm:p-8"
-                style={{
-                  background:
-                    "linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(248,250,255,0.85) 100%)",
-                  boxShadow:
-                    "0 24px 60px -16px rgba(15,23,42,0.12), 0 1px 0 rgba(255,255,255,0.95) inset",
-                }}
-              >
+              <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-7 sm:p-8 shadow-sm">
                 <ErrorBoundary>
                   <LoginForm />
                 </ErrorBoundary>

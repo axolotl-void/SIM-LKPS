@@ -147,7 +147,7 @@ export function LoginForm() {
       "focus:ring-4 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500",
       hasError
         ? "h-14 border-red-300 focus:border-red-400 focus:ring-red-100"
-        : "h-14 border-slate-200/80 hover:border-slate-300 focus:border-indigo-500 focus:ring-indigo-100",
+        : "h-14 border-slate-200 hover:border-slate-300 focus:border-slate-900 focus:ring-slate-100",
     ].join(" ");
 
   return (
@@ -282,7 +282,7 @@ export function LoginForm() {
             disabled={isLoading}
             aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
             aria-pressed={showPassword}
-            className="absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-r-2xl text-slate-400 transition-colors duration-150 hover:text-slate-600 focus-visible:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+            className="absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-r-2xl text-slate-400 transition-colors duration-150 hover:text-slate-600 focus-visible:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
           >
             {showPassword ? (
               <EyeOff className="h-[18px] w-[18px]" aria-hidden />
@@ -312,11 +312,11 @@ export function LoginForm() {
           type="submit"
           disabled={isLoading}
           aria-busy={isLoading}
-          className="group relative inline-flex h-14 w-full min-h-[56px] items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 px-4 text-[14px] font-semibold tracking-tight text-white shadow-[0_10px_24px_-8px_rgba(79,70,229,0.55)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-10px_rgba(79,70,229,0.65)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-200 active:translate-y-0 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-80 disabled:hover:translate-y-0"
+          className="group relative inline-flex h-14 w-full min-h-[56px] items-center justify-center gap-2 overflow-hidden rounded-2xl bg-slate-900 px-4 text-[14px] font-semibold tracking-tight text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-200 active:translate-y-0 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-80 disabled:hover:translate-y-0"
         >
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-indigo-500 to-violet-500 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+            className="pointer-events-none absolute inset-0 bg-slate-800 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
           />
           <span className="relative inline-flex items-center gap-2">
             {isLoading ? (
@@ -353,7 +353,7 @@ export function LoginForm() {
         variants={reduced ? undefined : fieldVariants}
         custom={4}
         type="button"
-        className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white/60 px-4 text-[13px] font-medium text-slate-700 transition-all duration-200 hover:border-slate-300 hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-100 active:scale-[0.98]"
+        className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-[13px] font-medium text-slate-700 transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-100 active:scale-[0.98]"
       >
         <Headphones className="h-4 w-4 text-slate-500" aria-hidden />
         <span>Hubungi Administrator</span>
