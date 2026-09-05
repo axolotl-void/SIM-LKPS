@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { LoginForm } from "@/components/forms/login-form";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { LoginVisual } from "./login-visual";
 import { LoginPanelEntrance, LoginPanelItem } from "./login-panel-entrance";
+import { LoginShellClient } from "./login-shell-client";
+import { LoginFormSection } from "./login-form-section";
 
 export const metadata: Metadata = {
   title: "Masuk - SIM-LKPS",
@@ -13,37 +14,14 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <main className="relative min-h-[100dvh] w-full overflow-hidden bg-slate-50 lg:grid lg:grid-cols-[56fr_44fr]">
-      <LoginVisual />
-
-      <section
-        className="relative flex min-h-[100dvh] w-full flex-col justify-center overflow-hidden bg-white px-6 py-10 sm:px-8 lg:py-12"
-        aria-labelledby="login-heading"
-      >
-        {/* Soft ambient glow behind the card */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 -z-0 h-[460px] w-[460px] -translate-x-1/2 -translate-y-1/2"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(59,130,246,0.10) 0%, rgba(255,255,255,0) 70%)",
-            filter: "blur(40px)",
-          }}
-        />
-
-        <div className="relative z-10 mx-auto w-full max-w-[460px]">
+    <LoginShellClient
+      left={<LoginVisual />}
+      right={
+        <LoginFormSection>
           <LoginPanelEntrance>
             {/* Header lockup */}
             <LoginPanelItem>
               <div className="mb-6 flex items-center gap-2.5">
-                <Image
-                  src="/logo-ubbg.svg"
-                  alt="Logo Universitas Bina Bangsa Getsempena"
-                  width={40}
-                  height={40}
-                  priority
-                  className="h-10 w-10"
-                />
                 <span className="text-[16px] font-bold tracking-tight text-slate-900">
                   SIM-LKPS
                 </span>
@@ -90,8 +68,8 @@ export default function LoginPage() {
               </p>
             </LoginPanelItem>
           </LoginPanelEntrance>
-        </div>
-      </section>
-    </main>
+        </LoginFormSection>
+      }
+    />
   );
 }
