@@ -15,6 +15,11 @@ export const metadata: Metadata = {
   },
   description:
     "Sistem Informasi Manajemen Laporan Kinerja Program Studi berbasis web untuk Program Studi Ilmu Komputer UBBG",
+  icons: {
+    icon: "/logo-ubbg.svg",
+    shortcut: "/logo-ubbg.svg",
+    apple: "/logo-ubbg.svg",
+  },
 };
 
 export default function RootLayout({

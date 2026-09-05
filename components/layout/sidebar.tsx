@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, memo } from "react";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
@@ -122,9 +123,14 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
           transition={{ duration: 0.4, ease: "backOut" }}
           className="flex items-center gap-3"
         >
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20">
-            <span className="text-sm font-bold text-white">SL</span>
-          </div>
+          <Image
+            src="/logo-ubbg.svg"
+            alt="Logo Universitas Bina Bangsa Getsempena"
+            width={40}
+            height={40}
+            priority
+            className="h-10 w-10"
+          />
           <div className="flex flex-col">
             <span className="text-sm font-bold text-slate-800 tracking-tight">SIM-LKPS</span>
             <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">UBBG</span>
