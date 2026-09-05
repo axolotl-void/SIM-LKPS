@@ -1,7 +1,10 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { Tabel2B4Client } from "@/components/tables/tabel-2b4-client";
+import dynamic from "next/dynamic";
+const Tabel2B4Client = dynamic(() =>
+  import("@/components/tables/tabel-2b4-client").then((m) => m.Tabel2B4Client)
+);
 import { ValidationHistory } from "@/components/tables/validation-history";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { BookOpen, Calendar, FileText, CheckCircle2, Clock, AlertCircle, XCircle } from "lucide-react";
