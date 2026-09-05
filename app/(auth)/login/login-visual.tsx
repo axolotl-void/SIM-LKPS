@@ -30,6 +30,26 @@ export function LoginVisual() {
       aria-hidden
       className="relative hidden isolate min-h-[100dvh] overflow-hidden bg-gradient-to-br from-[#eff5ff] via-[#e7eeff] to-[#dbe8ff] lg:flex lg:flex-col"
     >
+      {/* Background photo: gedung UBBG full-bleed behind everything */}
+      <Image
+        src="/img/gedung-ubbg_11zon.png"
+        alt=""
+        aria-hidden
+        fill
+        priority
+        sizes="(min-width: 1024px) 56vw, 100vw"
+        className="object-cover object-center"
+      />
+
+      {/* White overlay — softens the photo so it reads as ambient, not focal */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(239,245,255,0.65) 50%, rgba(219,232,255,0.78) 100%)",
+        }}
+      />
+
       {/* Ambient decorative blurs */}
       <div className="pointer-events-none absolute -top-16 -left-16 h-80 w-80 rounded-full bg-blue-200/60 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-16 -right-16 h-80 w-80 rounded-full bg-sky-200/60 blur-3xl" />
@@ -52,7 +72,7 @@ export function LoginVisual() {
         />
       </div>
 
-      {/* Content */}
+      {/* Content — sits above background + overlay */}
       <motion.div
         variants={reduced ? undefined : stagger}
         {...motionProps}
@@ -86,28 +106,11 @@ export function LoginVisual() {
           </div>
         </motion.div>
 
-        {/* Middle: illustration + summary */}
+        {/* Middle: floating Evaluasi Terpadu card over background */}
         <div className="my-auto flex flex-col items-center justify-center py-6">
-          {/* Gedung UBBG */}
           <motion.div
             variants={reduced ? undefined : item}
-            className="relative w-full max-w-sm overflow-hidden rounded-2xl bg-white p-2 shadow-sm transition-all duration-300 hover:shadow-md"
-          >
-            <Image
-              src="/img/gedung-ubbg_11zon.png"
-              alt="Gedung Universitas Bina Bangsa Getsempena"
-              width={1075}
-              height={618}
-              priority
-              sizes="(min-width: 1024px) 28vw, 100vw"
-              className="h-auto w-full rounded-xl object-cover"
-            />
-          </motion.div>
-
-          {/* Feature summary card */}
-          <motion.div
-            variants={reduced ? undefined : item}
-            className="mt-4 flex w-full max-w-sm items-center gap-3 rounded-xl border border-white/60 bg-white/95 p-3 shadow-sm backdrop-blur-md"
+            className="flex w-full max-w-sm items-center gap-3 rounded-xl border border-white/60 bg-white/90 p-3 shadow-md backdrop-blur-md transition-all duration-300 hover:shadow-lg"
           >
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
               <BarChart3 className="h-[22px] w-[22px]" strokeWidth={2} />
