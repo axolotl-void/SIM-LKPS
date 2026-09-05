@@ -23,9 +23,9 @@ export function LoginVisual() {
   return (
     <aside
       aria-hidden
-      className="relative hidden isolate min-h-[100dvh] overflow-hidden bg-gradient-to-br from-[#f5f3ff] via-[#ede9fe] to-[#ddd6fe] lg:flex lg:flex-col"
+      className="relative hidden isolate min-h-[100dvh] overflow-hidden bg-slate-50 lg:flex lg:flex-col"
     >
-      {/* Background photo: gedung UBBG full-bleed behind everything */}
+      {/* Background photo: gedung UBBG full-bleed, low contrast */}
       <Image
         src="/img/gedung-ubbg_11zon.png"
         alt=""
@@ -33,34 +33,25 @@ export function LoginVisual() {
         fill
         priority
         sizes="(min-width: 1024px) 56vw, 100vw"
-        className="object-cover object-center"
+        className="object-cover object-center opacity-[0.18]"
       />
 
-      {/* White overlay — softens the photo so it reads as ambient, not focal */}
+      {/* Subtle horizontal hairline rule at top (no decorative blurs, no AI-slop glow) */}
       <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(245,243,255,0.65) 50%, rgba(221,214,254,0.78) 100%)",
-        }}
+        aria-hidden
+        className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-slate-300/60 to-transparent"
       />
 
-      {/* Ambient decorative blurs */}
-      <div className="pointer-events-none absolute -top-16 -left-16 h-80 w-80 rounded-full bg-indigo-200/60 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-16 -right-16 h-80 w-80 rounded-full bg-violet-200/60 blur-3xl" />
-      <div className="pointer-events-none absolute top-0 right-0 h-48 w-48 rounded-full bg-purple-100/40 blur-2xl" />
-      <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-fuchsia-100/50 blur-xl" />
-
-      {/* Content — sits above background + overlay */}
+      {/* Content */}
       <motion.div
         variants={reduced ? undefined : stagger}
         {...motionProps}
-        className="relative z-10 flex h-full flex-col justify-between gap-8 p-10 xl:p-14"
+        className="relative z-10 flex h-full flex-col justify-between gap-12 p-12 xl:p-16"
       >
-        {/* Top: logo + 2 badges (no pulse dot) */}
+        {/* Top: logo + academic year */}
         <motion.div
           variants={reduced ? undefined : item}
-          className="flex items-center justify-between gap-3"
+          className="flex items-center justify-between"
         >
           <div className="flex items-center gap-2.5">
             <Image
@@ -71,256 +62,148 @@ export function LoginVisual() {
               priority
               className="h-9 w-9"
             />
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-[12px] font-semibold text-indigo-600 shadow-sm">
-              Tahun Akademik 2026/2027
-            </div>
+            <span className="text-[14px] font-semibold tracking-tight text-slate-900">
+              SIM-LKPS
+            </span>
           </div>
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-fuchsia-100 px-3 py-1 text-[12px] font-semibold text-fuchsia-900 shadow-sm">
-            <CheckCircle2 className="h-[15px] w-[15px]" strokeWidth={2.4} />
-            Akreditasi Unggul
-          </div>
+          <span className="text-[12px] font-medium tracking-wider text-slate-500 uppercase">
+            2026 / 2027
+          </span>
         </motion.div>
 
-        {/* Middle: kartun + headline */}
-        <div className="my-auto flex flex-col items-center justify-center gap-5 py-4">
-          <motion.div variants={reduced ? undefined : item}>
-            <StudentIllustration />
+        {/* Middle: editorial headline + abstract data illustration */}
+        <div className="my-auto flex flex-col gap-10">
+          <motion.div variants={reduced ? undefined : item} className="max-w-md">
+            <p className="mb-3 text-[11px] font-semibold tracking-[0.18em] text-slate-500 uppercase">
+              Program Studi Ilmu Komputer
+            </p>
+            <h2 className="text-balance text-[34px] font-semibold leading-[1.1] tracking-tight text-slate-900 xl:text-[40px]">
+              Laporan Kinerja Program Studi,
+              <span className="block text-slate-600">
+                terstruktur dan siap audit.
+              </span>
+            </h2>
+            <p className="mt-5 max-w-[36ch] text-pretty text-[14px] leading-relaxed text-slate-600">
+              Sistem terintegrasi untuk mengelola seluruh tabel LKPS sesuai
+              standar BAN-PT, dengan workflow validasi yang tercatat.
+            </p>
           </motion.div>
 
           <motion.div
             variants={reduced ? undefined : item}
-            className="max-w-md text-center"
+            className="flex items-center gap-6"
           >
-            <h2 className="text-balance text-[26px] font-bold leading-tight tracking-tight text-indigo-950 xl:text-[30px]">
-              Wujudkan Akreditasi Unggul,
-              <span className="block bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
-                Mulai dari Data yang Akurat.
-              </span>
-            </h2>
-            <p className="mt-3 text-pretty text-[13.5px] leading-relaxed text-slate-600">
-              Kelola laporan kinerja program studi secara terpadu, transparan,
-              dan siap audit setiap saat.
-            </p>
+            <DataIllustration />
+            <div className="flex flex-col gap-3 text-[13px]">
+              <div className="flex items-center gap-2.5 text-slate-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-900" />
+                <span>31 tabel LKPS</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-slate-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-900" />
+                <span>Workflow validasi 4 tahap</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-slate-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-900" />
+                <span>Audit log otomatis</span>
+              </div>
+            </div>
           </motion.div>
         </div>
 
-        {/* Bottom spacer (was micro-indicators — removed) */}
-        <div className="h-2" />
+        {/* Bottom: institutional footer */}
+        <motion.div
+          variants={reduced ? undefined : item}
+          className="flex items-end justify-between border-t border-slate-200/80 pt-6 text-[12px] text-slate-500"
+        >
+          <div className="flex items-center gap-2 text-slate-700">
+            <CheckCircle2 className="h-4 w-4 text-slate-700" strokeWidth={2} />
+            <span className="font-medium">Akreditasi Unggul</span>
+          </div>
+          <span>Universitas Bina Bangsa Getsempena</span>
+        </motion.div>
       </motion.div>
 
-      {/* === ORGANIC WAVE DIVIDER (left → right boundary) === */}
-      <svg
-        aria-hidden
-        className="pointer-events-none absolute inset-y-0 -right-5 hidden h-full w-20 overflow-visible lg:block"
-        viewBox="0 0 80 600"
-        preserveAspectRatio="none"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <filter id="waveDropShadow" x="-20%" y="-10%" width="140%" height="120%">
-            <feDropShadow
-              dx="-4"
-              dy="0"
-              floodColor="#4c1d95"
-              floodOpacity="0.08"
-              stdDeviation="5"
-            />
-          </filter>
-        </defs>
-        <path
-          d="M50 0 C 15 110, 80 200, 35 320 C -10 440, 70 520, 40 600 L 80 600 L 80 0 Z"
-          fill="#ffffff"
-          fillOpacity="0.38"
-        />
-        <path
-          d="M35 0 C 70 120, 10 230, 55 350 C 90 450, 15 530, 38 600 L 80 600 L 80 0 Z"
-          fill="#ffffff"
-          fillOpacity="0.75"
-        />
-        <path
-          d="M22 0 C 58 130, -2 240, 42 360 C 76 460, 2 540, 25 600 L 80 600 L 80 0 Z"
-          fill="#ffffff"
-          filter="url(#waveDropShadow)"
-        />
-      </svg>
-
-      {/* Floating particles along wave */}
+      {/* Subtle vertical divider on right edge (no organic wave, no floating particles) */}
       <div
-        className="absolute top-16 right-3 h-2.5 w-2.5 rounded-full bg-indigo-500/70 shadow-sm"
-        style={{ animation: "float-gentle 4s ease-in-out infinite" }}
         aria-hidden
-      />
-      <div
-        className="absolute top-36 right-7 h-2 w-2 rounded-full bg-violet-500/80 shadow-sm"
-        style={{ animation: "float-gentle 4s ease-in-out infinite", animationDelay: "1.2s" }}
-        aria-hidden
-      />
-      <div
-        className="absolute top-1/2 right-4 flex h-3 w-3 items-center justify-center rounded-full border border-indigo-400/50 bg-white/80 shadow-sm"
-        style={{ animation: "float-slow 7s ease-in-out infinite" }}
-        aria-hidden
-      >
-        <span className="h-1 w-1 rounded-full bg-indigo-500" />
-      </div>
-      <div
-        className="absolute top-2/3 right-8 h-2 w-2 rotate-45 border border-violet-400/60"
-        style={{ animation: "float-slow 7s ease-in-out infinite", animationDelay: "2.1s" }}
-        aria-hidden
-      />
-      <div
-        className="absolute bottom-28 right-4 h-2 w-2 rounded-full bg-purple-300/90"
-        style={{ animation: "float-gentle 4s ease-in-out infinite", animationDelay: "0.7s" }}
-        aria-hidden
-      />
-      <div
-        className="absolute bottom-12 right-8 h-1.5 w-1.5 rounded-full bg-indigo-400/60"
-        style={{ animation: "float-gentle 4s ease-in-out infinite", animationDelay: "2.8s" }}
-        aria-hidden
+        className="pointer-events-none absolute inset-y-0 right-0 w-px bg-slate-200/80"
       />
     </aside>
   );
 }
 
 /**
- * Inline SVG illustration of a student working on a laptop with academic
- * motifs (books, graduation cap floating). Self-hosted, no external asset.
- * Style: flat illustration, indigo/violet palette to match login page theme.
+ * Minimalist data-driven illustration: a stacked bar chart and document
+ * with a checkmark. Single-tone (slate-900) on light background. Reads as
+ * editorial/financial-report, not playful or cartoonish.
  */
-function StudentIllustration() {
+function DataIllustration() {
   return (
     <svg
-      viewBox="0 0 320 240"
-      className="h-44 w-auto xl:h-52"
+      viewBox="0 0 120 96"
+      className="h-24 w-30 shrink-0 xl:h-28"
       role="img"
-      aria-label="Mahasiswa mengerjakan laporan LKPS di laptop"
+      aria-label="Ilustrasi data tabel LKPS"
+      fill="none"
     >
-      <defs>
-        <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ede9fe" />
-          <stop offset="100%" stopColor="#ddd6fe" />
-        </linearGradient>
-        <linearGradient id="laptopBase" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#c4b5fd" />
-          <stop offset="100%" stopColor="#a78bfa" />
-        </linearGradient>
-        <linearGradient id="laptopScreen" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#6366f1" />
-          <stop offset="100%" stopColor="#8b5cf6" />
-        </linearGradient>
-      </defs>
+      {/* Document outline */}
+      <rect
+        x="6"
+        y="6"
+        width="58"
+        height="78"
+        rx="2"
+        stroke="#0f172a"
+        strokeWidth="1.4"
+        fill="#ffffff"
+      />
+      {/* Document header lines */}
+      <rect x="14" y="14" width="34" height="3" rx="1.5" fill="#0f172a" />
+      <rect x="14" y="22" width="22" height="2" rx="1" fill="#94a3b8" />
+      {/* Table rows */}
+      <line x1="14" y1="34" x2="56" y2="34" stroke="#cbd5e1" strokeWidth="1" />
+      <rect x="14" y="40" width="20" height="2" rx="1" fill="#cbd5e1" />
+      <rect x="38" y="40" width="12" height="2" rx="1" fill="#cbd5e1" />
+      <rect x="14" y="48" width="24" height="2" rx="1" fill="#cbd5e1" />
+      <rect x="42" y="48" width="8" height="2" rx="1" fill="#cbd5e1" />
+      <line x1="14" y1="56" x2="56" y2="56" stroke="#cbd5e1" strokeWidth="1" />
+      <rect x="14" y="62" width="18" height="2" rx="1" fill="#cbd5e1" />
+      <rect x="36" y="62" width="14" height="2" rx="1" fill="#cbd5e1" />
+      <rect x="14" y="70" width="22" height="2" rx="1" fill="#cbd5e1" />
+      <rect x="40" y="70" width="10" height="2" rx="1" fill="#cbd5e1" />
 
-      {/* Floor circle (platform) */}
-      <ellipse cx="160" cy="218" rx="120" ry="14" fill="url(#floorGrad)" />
+      {/* Bar chart card (overlapping bottom-right) */}
+      <rect
+        x="56"
+        y="44"
+        width="58"
+        height="46"
+        rx="2"
+        stroke="#0f172a"
+        strokeWidth="1.4"
+        fill="#ffffff"
+      />
+      <rect x="62" y="50" width="22" height="2.5" rx="1.25" fill="#0f172a" />
+      {/* Bars */}
+      <rect x="62" y="80" width="6" height="6" rx="0.5" fill="#0f172a" />
+      <rect x="72" y="74" width="6" height="12" rx="0.5" fill="#0f172a" />
+      <rect x="82" y="68" width="6" height="18" rx="0.5" fill="#0f172a" />
+      <rect x="92" y="62" width="6" height="24" rx="0.5" fill="#0f172a" />
+      <rect x="102" y="72" width="6" height="14" rx="0.5" fill="#0f172a" />
+      {/* Axis */}
+      <line x1="60" y1="88" x2="112" y2="88" stroke="#0f172a" strokeWidth="1" />
 
-      {/* Floating decorative dots */}
-      <circle cx="42" cy="48" r="4" fill="#c4b5fd" />
-      <circle cx="278" cy="62" r="3" fill="#a78bfa" />
-      <circle cx="58" cy="92" r="2.5" fill="#ddd6fe" />
-      <circle cx="288" cy="108" r="3.5" fill="#c4b5fd" />
-
-      {/* Floating graduation cap top-right */}
-      <g transform="translate(232, 22)">
-        <path
-          d="M0 12 L18 4 L36 12 L18 20 Z"
-          fill="#4f46e5"
-        />
-        <path
-          d="M10 14 L10 22 C10 25, 26 25, 26 22 L26 14"
-          fill="none"
-          stroke="#4f46e5"
-          strokeWidth="1.6"
-        />
-        <line x1="34" y1="13" x2="34" y2="22" stroke="#4f46e5" strokeWidth="1.4" />
-        <circle cx="34" cy="23" r="1.6" fill="#fbbf24" />
-      </g>
-
-      {/* Stack of books left */}
-      <g transform="translate(36, 158)">
-        <rect x="0" y="20" width="56" height="10" rx="2" fill="#7c3aed" />
-        <rect x="4" y="10" width="50" height="10" rx="2" fill="#a78bfa" />
-        <rect x="2" y="0" width="52" height="10" rx="2" fill="#c4b5fd" />
-        <line x1="6" y1="5" x2="50" y2="5" stroke="#fff" strokeWidth="1" />
-        <line x1="6" y1="15" x2="48" y2="15" stroke="#fff" strokeWidth="1" />
-        <line x1="6" y1="25" x2="50" y2="25" stroke="#fff" strokeWidth="1" />
-      </g>
-
-      {/* Desk */}
-      <rect x="100" y="170" width="160" height="6" rx="2" fill="#a78bfa" />
-      <line x1="108" y1="176" x2="108" y2="218" stroke="#a78bfa" strokeWidth="3" />
-      <line x1="252" y1="176" x2="252" y2="218" stroke="#a78bfa" strokeWidth="3" />
-
-      {/* Laptop */}
-      <g transform="translate(132, 110)">
-        {/* Screen */}
-        <rect x="0" y="0" width="100" height="64" rx="4" fill="url(#laptopScreen)" />
-        <rect x="4" y="4" width="92" height="56" rx="2" fill="#1e1b4b" />
-        {/* Screen content — bar chart */}
-        <rect x="10" y="38" width="8" height="14" rx="1" fill="#a78bfa" />
-        <rect x="22" y="30" width="8" height="22" rx="1" fill="#a78bfa" />
-        <rect x="34" y="22" width="8" height="30" rx="1" fill="#818cf8" />
-        <rect x="46" y="26" width="8" height="26" rx="1" fill="#a78bfa" />
-        <rect x="58" y="18" width="8" height="34" rx="1" fill="#818cf8" />
-        <rect x="70" y="14" width="8" height="38" rx="1" fill="#c4b5fd" />
-        <rect x="82" y="20" width="8" height="32" rx="1" fill="#818cf8" />
-        {/* Base */}
-        <rect x="-6" y="62" width="112" height="6" rx="3" fill="url(#laptopBase)" />
-      </g>
-
-      {/* Student body — sits behind laptop */}
-      <g>
-        {/* Head */}
-        <circle cx="182" cy="86" r="14" fill="#fde7d2" />
-        {/* Hair */}
-        <path
-          d="M168 84 C 168 72, 196 72, 196 84 L 196 80 C 196 70, 168 70, 168 80 Z"
-          fill="#1e1b4b"
-        />
-        {/* Smile */}
-        <path
-          d="M178 90 Q 182 94, 186 90"
-          fill="none"
-          stroke="#7c3aed"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-        {/* Eyes */}
-        <circle cx="178" cy="84" r="1.5" fill="#1e1b4b" />
-        <circle cx="186" cy="84" r="1.5" fill="#1e1b4b" />
-        {/* Body / shirt */}
-        <path
-          d="M158 110 Q 158 100, 182 100 Q 206 100, 206 110 L 208 130 L 156 130 Z"
-          fill="#6366f1"
-        />
-        {/* Arms reaching to laptop */}
-        <path
-          d="M158 116 Q 152 122, 146 130"
-          fill="none"
-          stroke="#fde7d2"
-          strokeWidth="6"
-          strokeLinecap="round"
-        />
-        <path
-          d="M206 116 Q 212 122, 218 130"
-          fill="none"
-          stroke="#fde7d2"
-          strokeWidth="6"
-          strokeLinecap="round"
-        />
-      </g>
-
-      {/* Floating checkmark badge bottom-left near books */}
-      <g transform="translate(86, 132)">
-        <circle cx="0" cy="0" r="11" fill="#10b981" />
-        <path
-          d="M-5 0 L-1 4 L5 -3"
-          fill="none"
-          stroke="#fff"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </g>
+      {/* Checkmark badge top-right corner of document */}
+      <circle cx="64" cy="6" r="6" fill="#0f172a" />
+      <path
+        d="M60.5 6 L63 8.5 L67.5 4"
+        stroke="#ffffff"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
     </svg>
   );
 }
