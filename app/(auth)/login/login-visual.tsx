@@ -28,7 +28,7 @@ export function LoginVisual() {
   return (
     <aside
       aria-hidden
-      className="relative hidden isolate min-h-[100dvh] overflow-hidden bg-gradient-to-br from-[#eff5ff] via-[#e7eeff] to-[#dbe8ff] lg:flex lg:flex-col"
+      className="relative hidden isolate min-h-[100dvh] overflow-hidden bg-gradient-to-br from-[#f5f3ff] via-[#ede9fe] to-[#ddd6fe] lg:flex lg:flex-col"
     >
       {/* Background photo: gedung UBBG full-bleed behind everything */}
       <Image
@@ -46,28 +46,28 @@ export function LoginVisual() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(239,245,255,0.65) 50%, rgba(219,232,255,0.78) 100%)",
+            "linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(245,243,255,0.65) 50%, rgba(221,214,254,0.78) 100%)",
         }}
       />
 
       {/* Ambient decorative blurs */}
-      <div className="pointer-events-none absolute -top-16 -left-16 h-80 w-80 rounded-full bg-blue-200/60 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-16 -right-16 h-80 w-80 rounded-full bg-sky-200/60 blur-3xl" />
-      <div className="pointer-events-none absolute top-0 right-0 h-48 w-48 rounded-full bg-blue-100/40 blur-2xl" />
-      <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-cyan-100/50 blur-xl" />
+      <div className="pointer-events-none absolute -top-16 -left-16 h-80 w-80 rounded-full bg-indigo-200/60 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-16 -right-16 h-80 w-80 rounded-full bg-violet-200/60 blur-3xl" />
+      <div className="pointer-events-none absolute top-0 right-0 h-48 w-48 rounded-full bg-purple-100/40 blur-2xl" />
+      <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-fuchsia-100/50 blur-xl" />
 
       {/* Live data stream accent lines */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-70">
         <div
-          className="absolute top-1/4 left-6 h-[2px] w-32 origin-left bg-gradient-to-r from-transparent via-blue-600/40 to-transparent"
+          className="absolute top-1/4 left-6 h-[2px] w-32 origin-left bg-gradient-to-r from-transparent via-indigo-600/40 to-transparent"
           style={{ animation: "pulse-stream 3s ease-in-out infinite" }}
         />
         <div
-          className="absolute top-2/3 left-16 h-[2px] w-44 origin-left bg-gradient-to-r from-transparent via-sky-500/30 to-transparent"
+          className="absolute top-2/3 left-16 h-[2px] w-44 origin-left bg-gradient-to-r from-transparent via-violet-500/30 to-transparent"
           style={{ animation: "pulse-stream 3s ease-in-out infinite", animationDelay: "1.5s" }}
         />
         <div
-          className="absolute bottom-24 right-12 h-[2px] w-28 origin-left bg-gradient-to-r from-transparent via-cyan-500/35 to-transparent"
+          className="absolute bottom-24 right-12 h-[2px] w-28 origin-left bg-gradient-to-r from-transparent via-purple-500/35 to-transparent"
           style={{ animation: "pulse-stream 3s ease-in-out infinite", animationDelay: "0.8s" }}
         />
       </div>
@@ -92,15 +92,15 @@ export function LoginVisual() {
               priority
               className="h-9 w-9"
             />
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-[12px] font-semibold text-blue-600 shadow-sm">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-[12px] font-semibold text-indigo-600 shadow-sm">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-500" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-500 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-indigo-500" />
               </span>
               Tahun Akademik 2023/2024
             </div>
           </div>
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-cyan-100 px-3 py-1 text-[12px] font-semibold text-cyan-900 shadow-sm">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-fuchsia-100 px-3 py-1 text-[12px] font-semibold text-fuchsia-900 shadow-sm">
             <CheckCircle2 className="h-[15px] w-[15px]" strokeWidth={2.4} />
             Akreditasi Unggul
           </div>
@@ -112,7 +112,7 @@ export function LoginVisual() {
             variants={reduced ? undefined : item}
             className="flex w-full max-w-sm items-center gap-3 rounded-xl border border-white/60 bg-white/90 p-3 shadow-md backdrop-blur-md transition-all duration-300 hover:shadow-lg"
           >
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600">
               <BarChart3 className="h-[22px] w-[22px]" strokeWidth={2} />
             </div>
             <div className="min-w-0">
@@ -133,14 +133,14 @@ export function LoginVisual() {
         >
           <div className="flex items-center gap-1.5">
             <span className="relative flex h-2.5 w-2.5 items-center justify-center">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500 opacity-60" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-blue-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-500 opacity-60" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-indigo-500" />
             </span>
-            <Cloud className="h-4 w-4 text-blue-600" strokeWidth={2} />
+            <Cloud className="h-4 w-4 text-indigo-600" strokeWidth={2} />
             <span>Real-time BAN-PT Sync</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Lock className="h-4 w-4 text-cyan-700" strokeWidth={2} />
+            <Lock className="h-4 w-4 text-violet-700" strokeWidth={2} />
             <span>Enkripsi Institusi SSL</span>
           </div>
         </motion.div>
@@ -160,7 +160,7 @@ export function LoginVisual() {
             <feDropShadow
               dx="-4"
               dy="0"
-              floodColor="#004ac6"
+              floodColor="#4c1d95"
               floodOpacity="0.08"
               stdDeviation="5"
             />
@@ -188,38 +188,37 @@ export function LoginVisual() {
 
       {/* Floating particles along wave */}
       <div
-        className="absolute top-16 right-3 h-2.5 w-2.5 rounded-full bg-blue-500/70 shadow-sm"
+        className="absolute top-16 right-3 h-2.5 w-2.5 rounded-full bg-indigo-500/70 shadow-sm"
         style={{ animation: "float-gentle 4s ease-in-out infinite" }}
         aria-hidden
       />
       <div
-        className="absolute top-36 right-7 h-2 w-2 rounded-full bg-sky-500/80 shadow-sm"
+        className="absolute top-36 right-7 h-2 w-2 rounded-full bg-violet-500/80 shadow-sm"
         style={{ animation: "float-gentle 4s ease-in-out infinite", animationDelay: "1.2s" }}
         aria-hidden
       />
       <div
-        className="absolute top-1/2 right-4 flex h-3 w-3 items-center justify-center rounded-full border border-blue-400/50 bg-white/80 shadow-sm"
+        className="absolute top-1/2 right-4 flex h-3 w-3 items-center justify-center rounded-full border border-indigo-400/50 bg-white/80 shadow-sm"
         style={{ animation: "float-slow 7s ease-in-out infinite" }}
         aria-hidden
       >
-        <span className="h-1 w-1 rounded-full bg-blue-500" />
+        <span className="h-1 w-1 rounded-full bg-indigo-500" />
       </div>
       <div
-        className="absolute top-2/3 right-8 h-2 w-2 rotate-45 border border-sky-400/60"
+        className="absolute top-2/3 right-8 h-2 w-2 rotate-45 border border-violet-400/60"
         style={{ animation: "float-slow 7s ease-in-out infinite", animationDelay: "2.1s" }}
         aria-hidden
       />
       <div
-        className="absolute bottom-28 right-4 h-2 w-2 rounded-full bg-cyan-300/90"
+        className="absolute bottom-28 right-4 h-2 w-2 rounded-full bg-purple-300/90"
         style={{ animation: "float-gentle 4s ease-in-out infinite", animationDelay: "0.7s" }}
         aria-hidden
       />
       <div
-        className="absolute bottom-12 right-8 h-1.5 w-1.5 rounded-full bg-blue-400/60"
+        className="absolute bottom-12 right-8 h-1.5 w-1.5 rounded-full bg-indigo-400/60"
         style={{ animation: "float-gentle 4s ease-in-out infinite", animationDelay: "2.8s" }}
         aria-hidden
       />
     </aside>
   );
 }
-
