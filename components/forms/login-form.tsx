@@ -123,6 +123,12 @@ export function LoginForm() {
       }
 
       setSuccess(true);
+      // Set flag so LoginShellClient knows to play exit animation
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("login-exit", "1");
+      }
+      // Brief delay so user sees the success toast + exit slide-out before navigation
+      await new Promise((r) => setTimeout(r, 400));
       router.push("/");
       router.refresh();
     } catch {
