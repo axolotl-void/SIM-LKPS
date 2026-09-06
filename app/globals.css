@@ -456,6 +456,113 @@
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   }
 
+  /* ── Login Page Animations ──────────────────────── */
+  @keyframes loginBlueBgSlide {
+    from {
+      transform: translate3d(100%, 0, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes loginCardSlide {
+    from {
+      transform: translate3d(120%, 0, 0);
+      opacity: 0.3;
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes loginCascadeStagger {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes loginIllustrationEntrance {
+    from {
+      opacity: 0;
+      transform: translateY(24px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes loginIllustrationFloat {
+    from {
+      transform: translateY(0px);
+    }
+    to {
+      transform: translateY(-9px);
+    }
+  }
+
+  .animate-login-blue-bg {
+    animation: loginBlueBgSlide 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform;
+  }
+
+  .animate-login-card {
+    animation: loginCardSlide 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity;
+  }
+
+  .animate-login-illustration-entrance {
+    animation: loginIllustrationEntrance 0.9s cubic-bezier(0.16, 1, 0.3, 1)
+      0.2s forwards;
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  .animate-login-illustration-float {
+    animation: loginIllustrationFloat 4.5s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  .login-stagger-item {
+    opacity: 0;
+    animation: loginCascadeStagger 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity, filter;
+  }
+
+  .login-stagger-1 {
+    animation-delay: 1.52s;
+  }
+  .login-stagger-2 {
+    animation-delay: 1.64s;
+  }
+  .login-stagger-3 {
+    animation-delay: 1.76s;
+  }
+  .login-stagger-4 {
+    animation-delay: 1.88s;
+  }
+  .login-stagger-5 {
+    animation-delay: 2s;
+  }
+  .login-stagger-6 {
+    animation-delay: 2.12s;
+  }
+  .login-stagger-7 {
+    animation-delay: 2.24s;
+  }
+  .login-stagger-8 {
+    animation-delay: 2.36s;
+  }
+
   /* ── Reduced Motion ─────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
     .animate-fade-in-up,
@@ -464,6 +571,16 @@
       animation: none;
       opacity: 1;
       transform: none;
+    }
+    .animate-login-blue-bg,
+    .animate-login-card,
+    .animate-login-illustration-entrance,
+    .animate-login-illustration-float,
+    .login-stagger-item {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      filter: none;
     }
   }
 }

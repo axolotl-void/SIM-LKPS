@@ -27,12 +27,14 @@ const exitRightStyle: CSSProperties = {
 };
 
 /**
- * Login shell with entrance + exit animations driven by CSS keyframes.
- * - Entrance: <main> fade, left pane slide-from-left, right pane slide-from-right (with 0.1s lag)
+ * Full-bleed login shell. Left pane + right pane are absolutely positioned
+ * to mirror the original Stitch design (no grid splitting that crops the
+ * right-side card or left-side illustration).
+ *
+ * - Entrance: <main> fade, left pane slide-from-left, right pane slide-from-right
  * - Exit: triggered when navigating to dashboard (LoginForm sets sessionStorage flag
  *   then router.push — this shell starts in exit state and plays reverse slide+fade)
  * - Honors prefers-reduced-motion: skipped entirely
- * - No Framer Motion: avoids variants inheritance conflicts with children
  */
 export function LoginShellClient({
   left,
@@ -42,7 +44,6 @@ export function LoginShellClient({
   right: ReactNode;
 }) {
   const [reduced, setReduced] = useState(false);
-  // Skip entrance on mount if user is returning from a successful login
   const [exiting, setExiting] = useState(false);
 
   useEffect(() => {
@@ -51,8 +52,6 @@ export function LoginShellClient({
     if (sessionStorage.getItem("login-exit") === "1") {
       setExiting(true);
       sessionStorage.removeItem("login-exit");
-      // After exit animation completes, return to entrance state so the
-      // shell is ready for re-entry (refresh, back nav, etc.)
       const timer = window.setTimeout(() => setExiting(false), 500);
       return () => window.clearTimeout(timer);
     }
@@ -64,11 +63,21 @@ export function LoginShellClient({
 
   return (
     <main
-      className="relative min-h-[100dvh] w-full overflow-hidden bg-slate-50 lg:grid lg:grid-cols-[56fr_44fr]"
+      className="relative h-screen w-screen overflow-hidden bg-white"
       style={reduced ? undefined : mainCss}
     >
-      <div style={reduced ? undefined : leftCss}>{left}</div>
-      <div style={reduced ? undefined : rightCss}>{right}</div>
+      <div
+        style={reduced ? undefined : leftCss}
+        className="fixed inset-0 z-0 flex pointer-events-none"
+      >
+        {left}
+      </div>
+      <div
+        style={reduced ? undefined : rightCss}
+        className="fixed inset-0 z-10 flex items-center justify-end pointer-events-none"
+      >
+        {right}
+      </div>
     </main>
   );
 }
