@@ -13,6 +13,39 @@ import { createNotification, notifyMutation } from "@/lib/actions/notification";
 import { Role, TabelStatus } from "@prisma/client";
 
 /**
+ * Wrap server actions to convert unhandled DB/network errors into user-friendly
+ * Indonesian messages. Authorization/validation throws (with specific messages)
+ * pass through unchanged. Caller doesn't need to change — still uses throw.
+ */
+async function withErrorHandling<T>(fn: () => Promise<T>): Promise<T> {
+  try {
+    return await fn();
+  } catch (err) {
+    if (err instanceof Error) {
+      // Re-throw known friendly errors (auth, validation, permission)
+      const known = [
+        "Unauthorized",
+        "Tidak terautentikasi",
+        "Tidak memiliki izin",
+        "Tidak dapat",
+        "Hanya tabel",
+        "Komentar wajib",
+        "tidak ditemukan",
+        "tidak boleh kosong",
+        "tidak valid",
+        "sudah terdaftar",
+        "tidak ditemukan",
+      ];
+      if (known.some((m) => err.message.includes(m))) throw err;
+      // Log unexpected
+      console.error("[lkps action]", err);
+      throw new Error("Terjadi kesalahan pada server. Silakan coba lagi atau hubungi administrator.");
+    }
+    throw err;
+  }
+}
+
+/**
  * Status labels for error messages (verbose variant for clarity)
  */
 const STATUS_LABELS_ERROR: Record<TabelStatus, string> = {
@@ -76,6 +109,7 @@ export async function upsertLkpsRow(params: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rowData: any;
 }) {
+  return withErrorHandling(async () => {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
@@ -152,9 +186,11 @@ export async function upsertLkpsRow(params: {
   revalidateTabel(params.tabelKode, bab);
 
   return { id: savedRow.id, rowOrder: savedRow.rowOrder, rowData: savedRow.rowData };
+  });
 }
 
 export async function deleteLkpsRow(params: { rowId: string; tabelKode: string }) {
+  return withErrorHandling(async () => {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
@@ -199,6 +235,7 @@ export async function deleteLkpsRow(params: { rowId: string; tabelKode: string }
 
   const { kode, bab } = row.tabelLkps.tabelDefinition;
   revalidateTabel(kode, bab);
+  });
 }
 
 // ──────────────────────────────────────────────
@@ -206,6 +243,7 @@ export async function deleteLkpsRow(params: { rowId: string; tabelKode: string }
 // ──────────────────────────────────────────────
 
 export async function submitLkpsTabel(tabelKode: string, tahunAkademikId: string) {
+  return withErrorHandling(async () => {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
@@ -281,6 +319,7 @@ export async function submitLkpsTabel(tabelKode: string, tahunAkademikId: string
   revalidateTabel(tabelKode, bab);
 
   return { status: "DIAJUKAN" as const };
+  });
 }
 
 // ──────────────────────────────────────────────
@@ -293,6 +332,7 @@ export async function validateLkpsTabel(
   action: "APPROVE" | "REJECT" | "REVISE",
   comment?: string
 ) {
+  return withErrorHandling(async () => {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
@@ -377,9 +417,11 @@ export async function validateLkpsTabel(
   revalidateTabel(tabelKode, bab);
 
   return { status: statusMap[action] };
+  });
 }
 
 export async function createDosen(nama: string) {
+  return withErrorHandling(async () => {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
@@ -429,9 +471,11 @@ export async function createDosen(nama: string) {
     nidn: newDosen.nidn,
     nama: newDosen.nama,
   };
+  });
 }
 
 export async function updateDosen(id: string, data: { nama?: string; status?: string; pendidikanTerakhir?: string }) {
+  return withErrorHandling(async () => {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
@@ -462,9 +506,11 @@ export async function updateDosen(id: string, data: { nama?: string; status?: st
   revalidatePath("/master/dosen");
 
   return { id: updated.id, nama: updated.nama, status: updated.status };
+  });
 }
 
 export async function deleteDosen(id: string) {
+  return withErrorHandling(async () => {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
@@ -491,4 +537,5 @@ export async function deleteDosen(id: string) {
   revalidatePath("/master/dosen");
 
   return { success: true };
+  });
 }

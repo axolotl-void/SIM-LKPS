@@ -111,7 +111,7 @@ export default async function Tabel1A2Page() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl bg-white p-7 shadow-soft border border-slate-100/50">
+      <div className="rounded-2xl bg-white p-4 shadow-soft-sm border border-slate-100/60">
         <div className="flex items-center gap-3 mb-2">
           <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">Tabel {def.kode}</span>
           <span className="flex items-center gap-1 text-2xs font-bold px-2.5 py-1 rounded-lg bg-slate-50 text-slate-600 border border-slate-100/50">
