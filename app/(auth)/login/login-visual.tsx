@@ -16,8 +16,15 @@ export function LoginVisual() {
     >
       {/* Header Logo / Universitas Branding */}
       <div className="login-stagger-item login-stagger-1 flex items-center gap-3.5">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-sky-500 text-white shadow-md shadow-blue-500/20 2xl:h-[52px] 2xl:w-[52px]">
-          <span className="material-symbols-outlined text-2xl 2xl:text-3xl">school</span>
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white shadow-md shadow-blue-500/10 ring-1 ring-slate-200/80 2xl:h-[52px] 2xl:w-[52px]">
+          <Image
+            src="/logo-ubbg.svg"
+            alt="Logo Universitas Bina Bangsa Getsempena"
+            width={32}
+            height={32}
+            priority
+            className="h-7 w-7 object-contain 2xl:h-8 2xl:w-8"
+          />
         </div>
         <div>
           <p className="text-xs font-bold tracking-wider text-blue-600 uppercase">
@@ -31,29 +38,38 @@ export function LoginVisual() {
 
       {/* Middle: headline + sub + paragraph + ilustrasi */}
       <div className="relative my-auto flex flex-col justify-center py-2 xl:py-4">
-        {/* Main heading */}
-        <h1 className="login-stagger-item login-stagger-2 text-4xl font-black tracking-tight leading-[1.08] text-slate-900 sm:text-5xl lg:text-[3.2rem] xl:text-[3.6rem] 2xl:text-6xl">
+        {/* Main heading — Geist display */}
+        <h1
+          className="login-stagger-item login-stagger-2 font-sans font-light tracking-[-0.04em] leading-[0.92] text-slate-900"
+          style={{ fontFamily: "'Geist', 'Plus Jakarta Sans', system-ui, sans-serif", fontSize: "clamp(3.5rem, 8vw, 7rem)", letterSpacing: "-0.045em" }}
+        >
           SIM
-          <span className="bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-br from-blue-600 via-sky-500 to-cyan-400 bg-clip-text font-medium text-transparent">
             LKPS
           </span>
         </h1>
 
         {/* Sub heading with gradient bar */}
-        <div className="login-stagger-item login-stagger-3 mt-3 flex items-start gap-3">
-          <div className="mt-0.5 h-10 w-1 shrink-0 rounded-full bg-gradient-to-b from-blue-600 to-sky-400 sm:h-11" />
+        <div className="login-stagger-item login-stagger-3 mt-5 flex items-start gap-3.5">
+          <div className="mt-1.5 h-14 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-blue-600 via-sky-500 to-cyan-400 sm:h-16" />
           <div>
-            <h2 className="text-base font-bold tracking-tight leading-snug text-slate-800 sm:text-lg xl:text-xl">
+            <h2
+              className="font-sans font-semibold tracking-tight leading-[1.15] text-slate-800"
+              style={{ fontFamily: "'Geist', 'Plus Jakarta Sans', system-ui, sans-serif", fontSize: "clamp(1.25rem, 1.8vw, 1.625rem)" }}
+            >
               Sistem Manajemen Laporan Kinerja Program Studi
             </h2>
-            <p className="mt-0.5 text-xs font-semibold tracking-wide text-blue-600 xl:text-sm">
+            <p className="mt-1.5 text-sm font-semibold tracking-wide text-blue-600 xl:text-base">
               Jurusan Ilmu Komputer &nbsp;Universitas Bina Bangsa Getsempena
             </p>
           </div>
         </div>
 
         {/* Paragraph */}
-        <p className="login-stagger-item login-stagger-4 mt-3.5 max-w-lg text-xs font-normal leading-relaxed text-slate-600 sm:text-sm">
+        <p
+          className="login-stagger-item login-stagger-4 mt-5 max-w-xl font-normal leading-[1.65] text-slate-600"
+          style={{ fontSize: "clamp(0.95rem, 1.1vw, 1.0625rem)" }}
+        >
           Platform terintegrasi untuk pelaporan capaian tridharma, pemantauan
           akreditasi program studi, dan tata kelola administrasi akademik yang
           mutakhir, presisi, serta transparan.
@@ -74,9 +90,32 @@ export function LoginVisual() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="login-stagger-item login-stagger-5 flex items-center gap-2 text-xs font-medium text-slate-400">
-        <span>© 2026 BTIK</span>
+      {/* Footer — mini brand row */}
+      <div className="login-stagger-item login-stagger-5 flex items-center justify-between gap-4 pt-4">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-slate-200/80">
+            <Image
+              src="/logo-ubbg.svg"
+              alt="Logo UBBG"
+              width={22}
+              height={22}
+              className="h-5 w-5 object-contain"
+            />
+          </div>
+          <div className="flex flex-col leading-tight">
+            <span className="text-[11px] font-bold tracking-wider text-slate-700 uppercase">
+              BTIK UBBG
+            </span>
+            <span className="text-[10px] font-medium tracking-wide text-slate-400">
+              Badan TI &amp; Komunikasi
+            </span>
+          </div>
+        </div>
+        <div className="flex items-center gap-1.5 text-[11px] font-medium tracking-wide text-slate-400 uppercase">
+          <span className="font-mono">v1.0.0</span>
+          <span className="text-slate-300">·</span>
+          <span>© 2026</span>
+        </div>
       </div>
     </aside>
   );
