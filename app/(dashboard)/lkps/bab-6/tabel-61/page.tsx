@@ -86,15 +86,15 @@ export default async function Tabel61Page() {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-white p-7 shadow-soft border border-slate-100/50">
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-indigo-50/50 via-purple-50/20 to-transparent pointer-events-none rounded-r-3xl" />
+      <div className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-soft-sm border border-slate-100/60">
+        
         <div className="absolute right-12 top-1/2 -translate-y-1/2 hidden md:block pointer-events-none">
           <div className="flex h-20 w-16 rotate-12 items-center justify-center rounded-2xl bg-white shadow-soft-lg border border-slate-100/40 text-indigo-500">
             <Eye className="h-10 w-10 text-indigo-400" />
           </div>
         </div>
 
-        <div className="relative z-10 flex flex-col gap-5 md:max-w-xl">
+        <div className="relative z-10 flex flex-col gap-2.5 md:max-w-2xl">
           <div className="flex items-center gap-3">
             <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg">
               Tabel {def.kode}
@@ -103,25 +103,25 @@ export default async function Tabel61Page() {
               {statusCfg.icon} {statusCfg.label}
             </span>
           </div>
-          <h2 className="text-lg font-bold text-slate-800 tracking-tight">{def.nama}</h2>
+          <h2 className="text-base font-bold text-slate-800 tracking-tight">{def.nama}</h2>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 text-indigo-600 shadow-soft-2xs">
-                <Calendar className="h-5 w-5" />
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-2 rounded-lg bg-slate-50/70 p-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-50 text-blue-600">
+                <Calendar className="h-3.5 w-3.5" />
               </div>
               <div>
-                <div className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">Tahun Akademik</div>
-                <div className="text-xs font-bold text-slate-800 mt-0.5">{activeTa.tahun} ({activeTa.semester})</div>
+                <div className="text-2xs font-semibold text-slate-500">Tahun Akademik</div>
+                <div className="text-xs font-semibold text-slate-700 mt-px">{activeTa.tahun} ({activeTa.semester})</div>
               </div>
             </div>
-            <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 text-indigo-600 shadow-soft-2xs">
-                <BookOpen className="h-5 w-5" />
+            <div className="flex items-center gap-2 rounded-lg bg-slate-50/70 p-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-50 text-blue-600">
+                <BookOpen className="h-3.5 w-3.5" />
               </div>
               <div>
-                <div className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">Program Studi</div>
-                <div className="text-xs font-bold text-slate-800 mt-0.5">{activeTa.prodi.nama} ({activeTa.prodi.jenjang})</div>
+                <div className="text-2xs font-semibold text-slate-500">Program Studi</div>
+                <div className="text-xs font-semibold text-slate-700 mt-px">{activeTa.prodi.nama} ({activeTa.prodi.jenjang})</div>
               </div>
             </div>
           </div>

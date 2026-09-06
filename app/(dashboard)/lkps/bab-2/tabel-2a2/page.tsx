@@ -79,16 +79,16 @@ export default async function Tabel2A2Page() {
 
   return (
     <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-3xl bg-white p-7 shadow-soft border border-slate-100/50">
+      <div className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-soft-sm border border-slate-100/60">
         <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-cyan-50/50 via-purple-50/20 to-transparent pointer-events-none rounded-r-3xl" />
-        <div className="relative z-10 flex flex-col gap-5 md:max-w-xl">
+        <div className="relative z-10 flex flex-col gap-2.5 md:max-w-2xl">
           <div className="flex items-center gap-3">
             <span className="text-3xs font-black uppercase tracking-wider text-cyan-600 bg-cyan-50/80 px-2.5 py-1 rounded-lg">Tabel {def.kode}</span>
             <span className={`flex items-center gap-1 text-2xs font-bold px-2.5 py-1 rounded-lg bg-${statusCfg.color}-50 text-${statusCfg.color}-600 border border-${statusCfg.color}-100/50`}>
               {statusCfg.icon} {statusCfg.label}
             </span>
           </div>
-          <h2 className="text-lg font-bold text-slate-800 tracking-tight">{def.nama}</h2>
+          <h2 className="text-base font-bold text-slate-800 tracking-tight">{def.nama}</h2>
           <p className="text-xs font-semibold text-slate-500">Data sebaran asal daerah mahasiswa baru {activeTa.tahun} ({activeTa.semester})</p>
         </div>
       </div>

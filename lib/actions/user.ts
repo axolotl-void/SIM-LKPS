@@ -100,7 +100,7 @@ export async function createUser(formData: FormData): Promise<ActionResult> {
     return { success: false, error: "Email sudah terdaftar" };
   }
 
-  const hashedPassword = await bcrypt.hash(parsed.data.password, 12);
+  const hashedPassword = await bcrypt.hash(parsed.data.password, 10);
 
   const user = await db.user.create({
     data: {
@@ -261,7 +261,7 @@ export async function resetUserPassword(userId: string, newPassword: string): Pr
     return { success: false, error: "User tidak ditemukan" };
   }
 
-  const hashedPassword = await bcrypt.hash(newPassword, 12);
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
   await db.user.update({
     where: { id: userId },
     data: { password: hashedPassword },
