@@ -113,7 +113,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
     <div className="space-y-8">
       {/* Top actions */}
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
+        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
         <div className="flex items-center gap-2.5">
@@ -142,7 +142,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
           <div className="flex items-start justify-between">
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-700">
                 <GraduationCap className="h-4 w-4 text-blue-500" />
                 Total Lulusan
               </div>
@@ -152,7 +152,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
               <Users className="h-6 w-6" />
             </div>
           </div>
-          <div className="mt-4 flex items-center gap-1 text-2xs font-semibold text-slate-400">
+          <div className="mt-4 flex items-center gap-1 text-2xs font-semibold text-slate-700">
             <TrendingUp className="h-3 w-3" />
             <span>TS: {fmt(tsRow?.rowData.jumlahLulusan || 0)} lulusan</span>
           </div>
@@ -161,7 +161,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
           <div className="flex items-start justify-between">
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-700">
                 <Target className="h-4 w-4 text-indigo-500" />
                 Lulusan Terlacak
               </div>
@@ -171,7 +171,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
               <BarChart3 className="h-6 w-6" />
             </div>
           </div>
-          <div className="mt-4 flex items-center gap-1 text-2xs font-semibold text-slate-400">
+          <div className="mt-4 flex items-center gap-1 text-2xs font-semibold text-slate-700">
             <span>Tingkat terlacak: <strong className="text-indigo-600">{tracePct}%</strong></span>
           </div>
         </div>
@@ -179,17 +179,17 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
           <div className="flex items-start justify-between">
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-700">
                 <Clock className="h-4 w-4 text-purple-500" />
                 Rata-rata Tunggu
               </div>
-              <p className="text-3xl font-black text-slate-800">{allAvgRata.toFixed(1)} <span className="text-lg font-bold text-slate-400">bulan</span></p>
+              <p className="text-3xl font-black text-slate-800">{allAvgRata.toFixed(1)} <span className="text-lg font-bold text-slate-700">bulan</span></p>
             </div>
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-500 text-white shadow-soft-sm">
               <Clock className="h-6 w-6" />
             </div>
           </div>
-          <div className="mt-4 flex items-center gap-1 text-2xs font-semibold text-slate-400">
+          <div className="mt-4 flex items-center gap-1 text-2xs font-semibold text-slate-700">
             <span>TS: <strong className="text-purple-600">{tsRow?.rowData.rataRata || 0} bulan</strong></span>
           </div>
         </div>
@@ -267,18 +267,18 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
 
         {/* Total summary bar */}
         <div className="border-t border-slate-100 mx-7 py-4 flex items-center justify-between">
-          <span className="text-xs font-black text-slate-500 uppercase tracking-wider">Gabungan Seluruh Data</span>
+          <span className="text-xs font-black text-slate-800 uppercase tracking-wider">Gabungan Seluruh Data</span>
           <div className="flex items-center gap-8">
             <div className="text-right">
-              <p className="text-2xs font-semibold text-slate-400">Total Lulusan</p>
+              <p className="text-2xs font-semibold text-slate-700">Total Lulusan</p>
               <p className="text-sm font-black text-slate-800">{fmt(allJumlahLulusan)}</p>
             </div>
             <div className="text-right">
-              <p className="text-2xs font-semibold text-slate-400">Total Terlacak</p>
+              <p className="text-2xs font-semibold text-slate-700">Total Terlacak</p>
               <p className="text-sm font-black text-slate-800">{fmt(allJumlahTerlacak)}</p>
             </div>
             <div className="text-right">
-              <p className="text-2xs font-semibold text-slate-400">Rata-rata</p>
+              <p className="text-2xs font-semibold text-slate-700">Rata-rata</p>
               <p className="text-sm font-black text-indigo-600">{allAvgRata.toFixed(1)} bln</p>
             </div>
           </div>
@@ -302,7 +302,7 @@ export function Tabel2B4Client({ initialRows, tahunAkademikId, tabelKode, status
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">Edit Data Masa Tunggu</h3>
-                  <p className="text-xs text-slate-500 font-semibold mt-0.5">Tahun Sekarang (TS) — Program Studi Ilmu Komputer</p>
+                  <p className="text-xs text-slate-800 font-semibold mt-0.5">Tahun Sekarang (TS) — Program Studi Ilmu Komputer</p>
                 </div>
               </div>
 

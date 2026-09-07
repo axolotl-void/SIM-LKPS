@@ -190,7 +190,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center justify-between">
         <Link
           href="/lkps/bab-3"
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-purple-600 transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-purple-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 3
         </Link>
@@ -200,7 +200,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
             disabled={!canEdit}
             className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${
               canEdit
-                ? "bg-gradient-to-tr from-purple-500 to-cyan-600 text-white"
+                ? "bg-gradient-to-tr from-cyan-500 to-blue-600 text-white"
                 : "bg-slate-100 text-slate-400 cursor-not-allowed"
             }`}
           >
@@ -209,33 +209,9 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
         </div>
       </div>
 
-      {/* Info banner */}
-      <div className="flex items-center gap-3 rounded-2xl bg-teal-50/60 border border-teal-100/60 px-5 py-4 text-xs font-semibold text-purple-700">
-        <Lightbulb className="h-5 w-5 shrink-0 text-purple-500" />
-        <span>
-          Klik <strong>&ldquo;Tambah Penelitian&rdquo;</strong> untuk menambahkan data. Isi data penelitian DTPR
-          termasuk jenis hibah dan pendanaan per tahun (TS-2, TS-1, TS).
-        </span>
-      </div>
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-4">
-        {[
-          { label: "Jumlah Penelitian", value: rows.length, color: "text-slate-800" },
-          { label: "Total Dana TS", value: `${totalDanaTs.toLocaleString("id-ID")} jt`, color: "text-purple-600" },
-          { label: "Total Dana TS-1", value: `${totalDanaTs1.toLocaleString("id-ID")} jt`, color: "text-cyan-600" },
-          { label: "Total Dana TS-2", value: `${totalDanaTs2.toLocaleString("id-ID")} jt`, color: "text-violet-600" },
-        ].map((card) => (
-          <div key={card.label} className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400">{card.label}</div>
-            <p className={`text-3xl font-black mt-2 ${card.color}`}>{card.value}</p>
-          </div>
-        ))}
-      </div>
-
       {/* Table card */}
-      <div className="rounded-2xl border-2 border-teal-200/70 bg-white shadow-soft overflow-hidden">
-        <div className="bg-gradient-to-r from-purple-500 to-cyan-600 px-7 py-4">
+      <div className="rounded-2xl border-2 border-cyan-200/70 bg-white shadow-soft overflow-hidden">
+        <div className="bg-gradient-to-r from-cyan-500 to-blue-600 px-7 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
@@ -255,31 +231,31 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
         {rows.length === 0 ? (
           <div className="p-12 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
-              <FlaskConical className="h-8 w-8 text-slate-400" />
+              <FlaskConical className="h-8 w-8 text-slate-700" />
             </div>
-            <p className="text-sm font-semibold text-slate-500">Belum ada data penelitian.</p>
-            <p className="text-xs text-slate-400 mt-1">Klik &ldquo;Tambah Penelitian&rdquo; di atas untuk memulai.</p>
+            <p className="text-sm font-semibold text-slate-800">Belum ada data penelitian.</p>
+            <p className="text-xs text-slate-700 mt-1">Klik &ldquo;Tambah Penelitian&rdquo; di atas untuk memulai.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50/50">
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">No</th>
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Nama DTPR</th>
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Judul Penelitian</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Mhs</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Hibah</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS-2 (jt)</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS-1 (jt)</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS (jt)</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Aksi</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">No</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Nama DTPR</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Judul Penelitian</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Mhs</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Hibah</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS-2 (jt)</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS-1 (jt)</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS (jt)</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((item, idx) => (
                   <tr key={item.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                    <td className="px-4 py-3 font-semibold text-slate-400">{idx + 1}</td>
+                    <td className="px-4 py-3 font-semibold text-slate-700">{idx + 1}</td>
                     <td className="px-4 py-3 font-bold text-slate-800">{item.rowData.namaDtpr || "—"}</td>
                     <td className="px-4 py-3 text-slate-600 max-w-[200px] truncate">{item.rowData.judulPenelitian || "—"}</td>
                     <td className="px-4 py-3 text-center font-semibold text-slate-600">{item.rowData.jumlahMahasiswa || "—"}</td>
@@ -367,14 +343,14 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
             >
               {/* Header modal */}
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-cyan-600 text-white shadow-soft-sm">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white shadow-soft-sm">
                   {editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">
                     {editItem ? "Edit Penelitian" : "Tambah Penelitian"}
                   </h3>
-                  <p className="text-xs font-semibold text-slate-400 mt-0.5">
+                  <p className="text-xs font-semibold text-slate-700 mt-0.5">
                     DTPR, Hibah dan Pembiayaan Penelitian
                   </p>
                 </div>
@@ -434,7 +410,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
                             onClick={() => setForm((p) => ({ ...p, jenisHibah: v }))}
                             className={`flex-1 rounded-xl px-2 py-2.5 text-xs font-bold transition-all ${
                               form.jenisHibah === v
-                                ? "bg-gradient-to-tr from-purple-500 to-cyan-600 text-white shadow-soft-sm"
+                                ? "bg-gradient-to-tr from-cyan-500 to-blue-600 text-white shadow-soft-sm"
                                 : "bg-white border border-slate-200 text-slate-600 hover:border-teal-300"
                             }`}
                           >
@@ -506,7 +482,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-purple-500 to-cyan-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
+                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
                   >
                     {isLoading ? (
                       <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</>
@@ -538,7 +514,7 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
                 </div>
               </div>
               <h3 className="text-base font-bold text-slate-800 text-center">Hapus Penelitian?</h3>
-              <p className="text-xs font-semibold text-slate-500 text-center mt-1.5">
+              <p className="text-xs font-semibold text-slate-800 text-center mt-1.5">
                 Tindakan ini tidak dapat dibatalkan.
               </p>
               <div className="mt-5 rounded-xl bg-red-50/70 border border-red-100 px-4 py-3 text-center">

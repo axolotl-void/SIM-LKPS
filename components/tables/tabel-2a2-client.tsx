@@ -138,7 +138,7 @@ export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode, status
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors">
+        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-indigo-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
         <div className="flex items-center gap-2.5">
@@ -157,7 +157,7 @@ export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode, status
       </div>
 
       <div className="space-y-3">
-        <div className="grid grid-cols-12 px-6 py-2.5 text-2xs font-bold uppercase tracking-wider text-slate-400">
+        <div className="grid grid-cols-12 px-6 py-2.5 text-2xs font-bold uppercase tracking-wider text-slate-700">
           <div className="col-span-1">No</div>
           <div className="col-span-4">Asal Mahasiswa</div>
           <div className="col-span-2 text-center">TS-2</div>
@@ -168,7 +168,7 @@ export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode, status
         </div>
 
         {rows.length === 0 ? (
-          <div className="rounded-3xl bg-white border border-slate-100 p-10 text-center text-xs font-semibold text-slate-400">
+          <div className="rounded-3xl bg-white border border-slate-100 p-10 text-center text-xs font-semibold text-slate-700">
             Belum ada data.
           </div>
         ) : (
@@ -176,15 +176,15 @@ export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode, status
             {rows.map((row, index) => (
               <div key={row.id} className="grid grid-cols-12 items-center rounded-3xl bg-white p-4 border border-slate-100/50 shadow-soft hover:shadow-soft-lg transition-all gap-4">
                 <div className="col-span-1 flex justify-center">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 text-xs font-bold text-slate-500 border border-slate-100">{index + 1}</div>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 text-xs font-bold text-slate-800 border border-slate-100">{index + 1}</div>
                 </div>
                 <div className="col-span-4 text-xs font-bold text-slate-800">{row.rowData.asalMahasiswa}</div>
-                <div className="col-span-2 text-xs font-bold text-slate-400 text-center">{row.rowData.ts2}</div>
-                <div className="col-span-2 text-xs font-bold text-slate-400 text-center">{row.rowData.ts1}</div>
+                <div className="col-span-2 text-xs font-bold text-slate-700 text-center">{row.rowData.ts2}</div>
+                <div className="col-span-2 text-xs font-bold text-slate-700 text-center">{row.rowData.ts1}</div>
                 <div className="col-span-1 text-xs font-bold text-indigo-600 text-center">{row.rowData.ts}</div>
                 <div className="col-span-1 flex justify-center">
                   {row.rowData.linkBukti ? (
-                    <a href={row.rowData.linkBukti} target="_blank" className="text-slate-400 hover:text-indigo-600"><LinkIcon className="h-4 w-4" /></a>
+                    <a href={row.rowData.linkBukti} target="_blank" className="text-slate-700 hover:text-indigo-600"><LinkIcon className="h-4 w-4" /></a>
                   ) : "-"}
                 </div>
                 <div className="col-span-1 flex justify-center gap-1.5">
@@ -211,22 +211,22 @@ export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode, status
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2"><MapPin className="h-5 w-5 text-indigo-600" /> {editId ? "Edit Asal Mahasiswa" : "Tambah Asal Mahasiswa"}</h3>
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="block text-2xs font-bold text-slate-500 uppercase mb-1.5">Asal Mahasiswa</label>
+                  <label className="block text-2xs font-bold text-slate-800 uppercase mb-1.5">Asal Mahasiswa</label>
                   <select required value={asalMahasiswa} onChange={(e) => setAsalMahasiswa(e.target.value)} className="w-full rounded-xl border border-slate-200 p-2.5 text-xs focus:ring-2 focus:ring-indigo-500/20 outline-none">
                     <option value="" disabled>Pilih Kategori</option>
                     {kategoriAsal.map(k => <option key={k} value={k}>{k}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-2xs font-bold text-slate-500 uppercase mb-1.5">Jumlah Mahasiswa (TS)</label>
+                  <label className="block text-2xs font-bold text-slate-800 uppercase mb-1.5">Jumlah Mahasiswa (TS)</label>
                   <input type="number" required min="0" value={jumlah} onChange={(e) => setJumlah(e.target.value)} className="w-full rounded-xl border border-slate-200 p-2.5 text-xs focus:ring-2 focus:ring-indigo-500/20 outline-none" />
                 </div>
                 <div>
-                  <label className="block text-2xs font-bold text-slate-500 uppercase mb-1.5">Link Bukti</label>
+                  <label className="block text-2xs font-bold text-slate-800 uppercase mb-1.5">Link Bukti</label>
                   <input type="url" value={linkBukti} onChange={(e) => setLinkBukti(e.target.value)} className="w-full rounded-xl border border-slate-200 p-2.5 text-xs focus:ring-2 focus:ring-indigo-500/20 outline-none" placeholder="https://..." />
                 </div>
                 <div className="flex justify-end gap-2 pt-4">
-                  <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 text-xs font-bold text-slate-400">Batal</button>
+                  <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 text-xs font-bold text-slate-700">Batal</button>
                   <button type="submit" disabled={isLoading} className="rounded-xl bg-indigo-600 px-6 py-2 text-xs font-bold text-white shadow-soft hover:bg-indigo-700 disabled:opacity-50">
                     {isLoading ? "Proses..." : "Simpan"}
                   </button>
@@ -250,14 +250,14 @@ export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode, status
               transition={{ type: "spring", damping: 25, stiffness: 350 }}
               className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-soft-lg text-center relative"
             >
-              <button onClick={() => setDeleteId(null)} className="absolute top-4 right-4 rounded-xl p-1.5 text-slate-400 hover:bg-slate-50 transition-colors">
+              <button onClick={() => setDeleteId(null)} className="absolute top-4 right-4 rounded-xl p-1.5 text-slate-700 hover:bg-slate-50 transition-colors">
                 <X className="h-4 w-4" />
               </button>
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-50 text-red-500 mb-4 shadow-soft-sm">
                 <Trash2 className="h-6 w-6" />
               </div>
               <h3 className="text-base font-bold text-slate-800">Hapus Data</h3>
-              <p className="mt-2 text-xs text-slate-400 font-semibold leading-relaxed px-2">
+              <p className="mt-2 text-xs text-slate-700 font-semibold leading-relaxed px-2">
                 Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.
               </p>
               <div className="mt-6 flex gap-3">
@@ -293,7 +293,7 @@ export function Tabel2A2Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <div className="flex-1 text-left">
                 <p className="text-xs font-bold text-slate-800">{toast.type === "success" ? "Berhasil!" : "Gagal!"}</p>
-                <p className="text-2xs font-semibold text-slate-400 mt-0.5">{toast.message}</p>
+                <p className="text-2xs font-semibold text-slate-700 mt-0.5">{toast.message}</p>
               </div>
               <button onClick={() => setToast(null)} className="text-slate-300 hover:text-slate-500 rounded-lg p-1">
                 <X className="h-3.5 w-3.5" />

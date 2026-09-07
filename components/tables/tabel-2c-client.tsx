@@ -128,7 +128,7 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
+        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
         <div className="flex items-center gap-2.5">
@@ -156,11 +156,11 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
           <table className="w-full text-xs">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="px-4 py-3 font-extrabold text-slate-500 uppercase tracking-wider text-left border-r border-slate-100">Bentuk Pembelajaran</th>
-                <th className="px-3 py-3 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 w-20">TS-2</th>
-                <th className="px-3 py-3 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 w-20">TS-1</th>
-                <th className="px-3 py-3 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 w-20">TS</th>
-                <th className="px-3 py-3 font-extrabold text-slate-500 uppercase tracking-wider text-left border-r border-slate-100">Link Bukti</th>
+                <th className="px-4 py-3 font-extrabold text-slate-800 uppercase tracking-wider text-left border-r border-slate-100">Bentuk Pembelajaran</th>
+                <th className="px-3 py-3 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 w-20">TS-2</th>
+                <th className="px-3 py-3 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 w-20">TS-1</th>
+                <th className="px-3 py-3 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 w-20">TS</th>
+                <th className="px-3 py-3 font-extrabold text-slate-800 uppercase tracking-wider text-left border-r border-slate-100">Link Bukti</th>
                 <th className="px-3 py-3 text-center w-20">Aksi</th>
               </tr>
             </thead>
@@ -181,8 +181,8 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
                         <span className="text-xs font-bold text-slate-800">{item.label}</span>
                       </div>
                     </td>
-                    <td className="px-3 py-3.5 text-center font-bold text-slate-400 border-r border-slate-100">{getNum(ts2)}</td>
-                    <td className="px-3 py-3.5 text-center font-bold text-slate-400 border-r border-slate-100">{getNum(ts1)}</td>
+                    <td className="px-3 py-3.5 text-center font-bold text-slate-700 border-r border-slate-100">{getNum(ts2)}</td>
+                    <td className="px-3 py-3.5 text-center font-bold text-slate-700 border-r border-slate-100">{getNum(ts1)}</td>
                     <td className="px-3 py-3.5 text-center font-black text-indigo-600 border-r border-slate-100">{getNum(ts)}</td>
                     <td className="px-3 py-3.5 border-r border-slate-100">
                       {link ? (
@@ -192,13 +192,13 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
                           <span className="truncate">{link.replace(/^https?:\/\//, "").replace(/\/$/, "")}</span>
                         </a>
                       ) : (
-                        <span className="text-slate-300 text-2xs font-semibold">-</span>
+                        <span className="text-slate-800 text-2xs font-semibold">-</span>
                       )}
                     </td>
                     <td className="px-3 py-3.5 text-center">
                       <button
                         onClick={() => { if (rowsTs[item.key]?.id) setDeleteKey(item.key); }}
-                        className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all"
+                        className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white p-1.5 text-slate-700 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all"
                         title="Hapus"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -214,7 +214,7 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
                 <td className="px-3 py-3 text-center font-black text-slate-700 border-r border-slate-200">{totalTs2.toLocaleString("id-ID")}</td>
                 <td className="px-3 py-3 text-center font-black text-slate-700 border-r border-slate-200">{totalTs1.toLocaleString("id-ID")}</td>
                 <td className="px-3 py-3 text-center font-black text-indigo-700 border-r border-slate-200">{totalTs.toLocaleString("id-ID")}</td>
-                <td colSpan={2} className="px-3 py-3 text-xs font-bold text-slate-500">
+                <td colSpan={2} className="px-3 py-3 text-xs font-bold text-slate-800">
                   {mhsAktif > 0 ? (
                     <span>Persentase partisipasi: <strong className="text-indigo-600">{((totalTs / mhsAktif) * 100).toFixed(1)}%</strong> dari {mhsAktif.toLocaleString("id-ID")} mahasiswa aktif</span>
                   ) : "Isi Jumlah Mahasiswa Aktif untuk melihat persentase"}
@@ -242,7 +242,7 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">Edit Fleksibilitas Pembelajaran — TS</h3>
-                  <p className="text-xs text-slate-500 font-semibold mt-0.5">Isi jumlah mahasiswa untuk setiap bentuk pembelajaran</p>
+                  <p className="text-xs text-slate-800 font-semibold mt-0.5">Isi jumlah mahasiswa untuk setiap bentuk pembelajaran</p>
                 </div>
               </div>
 
@@ -280,7 +280,7 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
                     onChange={(e) => setFormLink(e.target.value)}
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm placeholder:text-slate-300"
                   />
-                  <p className="mt-1.5 text-2xs font-semibold text-slate-400">Link akan diterapkan ke semua jenis pembelajaran</p>
+                  <p className="mt-1.5 text-2xs font-semibold text-slate-700">Link akan diterapkan ke semua jenis pembelajaran</p>
                 </div>
 
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
@@ -314,7 +314,7 @@ export function Tabel2CClient({ tahunAkademikId, tabelKode, rowsTs, rowsTs1, row
                 <Trash2 className="h-6 w-6" />
               </div>
               <h3 className="text-base font-bold text-slate-800">Hapus Data</h3>
-              <p className="mt-2 text-xs text-slate-400 font-semibold">Apakah Anda yakin ingin menghapus data ini?</p>
+              <p className="mt-2 text-xs text-slate-700 font-semibold">Apakah Anda yakin ingin menghapus data ini?</p>
               <div className="mt-6 flex gap-3">
                 <button onClick={() => setDeleteKey(null)}
                   className="flex-1 rounded-xl border border-slate-100 bg-white py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-50 transition-colors">Batal</button>

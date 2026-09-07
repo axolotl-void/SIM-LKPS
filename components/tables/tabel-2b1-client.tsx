@@ -73,7 +73,7 @@ export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode, status
   return (
     <div className="space-y-6">
       <div className="flex justify-between">
-        <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-500 hover:text-indigo-600"><ArrowLeft className="h-4 w-4" /> BAB 2</Link>
+        <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-800 hover:text-indigo-600"><ArrowLeft className="h-4 w-4" /> BAB 2</Link>
         <div className="flex items-center gap-2.5">
           <button
             onClick={handleOpenAdd}
@@ -90,7 +90,7 @@ export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode, status
       </div>
 
       <div className="space-y-3">
-        <div className="grid grid-cols-12 px-6 py-2.5 text-2xs font-bold uppercase tracking-wider text-slate-400">
+        <div className="grid grid-cols-12 px-6 py-2.5 text-2xs font-bold uppercase tracking-wider text-slate-700">
           <div className="col-span-1">No</div>
           <div className="col-span-2">Kode MK</div>
           <div className="col-span-3">Nama Mata Kuliah</div>
@@ -100,16 +100,27 @@ export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode, status
           <div className="col-span-1 text-center">Aksi</div>
         </div>
 
-        {rows.length === 0 ? <div className="text-center p-10 text-xs font-semibold text-slate-400 bg-white rounded-3xl border border-slate-100">Kosong.</div> : 
+        {rows.length === 0 ? <div className="text-center p-10 text-xs font-semibold text-slate-700 bg-white rounded-3xl border border-slate-100">Kosong.</div> :
           rows.map((row: any, i: number) => (
             <div key={row.id} className="grid grid-cols-12 items-center rounded-3xl bg-white p-4 border border-slate-100/50 shadow-soft gap-4">
-              <div className="col-span-1 text-xs font-bold text-slate-400 text-center">{i + 1}</div>
+              <div className="col-span-1 text-xs font-bold text-slate-700 text-center">{i + 1}</div>
               <div className="col-span-2 text-xs font-bold text-slate-700">{row.rowData.kodeMk}</div>
               <div className="col-span-3 text-xs font-bold text-slate-800">{row.rowData.namaMk}</div>
-              <div className="col-span-1 text-xs text-slate-500 text-center">{row.rowData.semester}</div>
-              <div className="col-span-1 text-xs text-slate-500 text-center">{row.rowData.sks}</div>
-              <div className="col-span-3 flex justify-center gap-3">
-                <CheckMark v={row.rowData.pl01} /><CheckMark v={row.rowData.pl02} /><CheckMark v={row.rowData.pl03} /><CheckMark v={row.rowData.pl04} /><CheckMark v={row.rowData.pl05} />
+              <div className="col-span-1 text-xs text-slate-800 text-center">{row.rowData.semester}</div>
+              <div className="col-span-1 text-xs text-slate-800 text-center">{row.rowData.sks}</div>
+              <div className="col-span-3">
+                <div className="grid grid-cols-5 gap-1 text-center">
+                  {[1, 2, 3, 4, 5].map((n) => {
+                    const v = !!row.rowData[`pl0${n}`];
+                    const label = `PL0${n}`;
+                    return (
+                      <div key={n} className="flex flex-col items-center gap-0.5">
+                        <span className="text-3xs font-bold text-slate-700">{label}</span>
+                        <CheckMark v={v} />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
               <div className="col-span-1 flex justify-center gap-1.5">
                 <button onClick={() => handleOpenEdit(row)} disabled={!canEdit} className={`p-1.5 ${canEdit ? "text-slate-400 hover:text-blue-600" : "text-slate-300 cursor-not-allowed"}`} title={canEdit ? "Edit" : "Tidak bisa diedit"}><Edit2 className="h-3.5 w-3.5" /></button>
@@ -145,7 +156,7 @@ export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode, status
                   </div>
                 </div>
                 <div className="flex justify-end gap-2 pt-4">
-                  <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 text-xs font-bold text-slate-400">Batal</button>
+                  <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 text-xs font-bold text-slate-700">Batal</button>
                   <button type="submit" className="rounded-xl bg-indigo-600 px-6 py-2 text-xs font-bold text-white">Simpan</button>
                 </div>
               </form>

@@ -190,7 +190,7 @@ export function Tabel4A2Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center justify-between">
         <Link
           href="/lkps/bab-4"
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-red-600 transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-red-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 4
         </Link>
@@ -227,7 +227,7 @@ export function Tabel4A2Client({ initialRows, tahunAkademikId, tabelKode, status
           { label: "Total Dana TS-2", value: `${totalDanaTs2.toLocaleString("id-ID")} jt`, color: "text-amber-600" },
         ].map((card) => (
           <div key={card.label} className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400">{card.label}</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-700">{card.label}</div>
             <p className={`text-3xl font-black mt-2 ${card.color}`}>{card.value}</p>
           </div>
         ))}
@@ -255,31 +255,31 @@ export function Tabel4A2Client({ initialRows, tahunAkademikId, tabelKode, status
         {rows.length === 0 ? (
           <div className="p-12 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
-              <HeartHandshake className="h-8 w-8 text-slate-400" />
+              <HeartHandshake className="h-8 w-8 text-slate-700" />
             </div>
-            <p className="text-sm font-semibold text-slate-500">Belum ada data PkM.</p>
-            <p className="text-xs text-slate-400 mt-1">Klik &ldquo;Tambah PkM&rdquo; di atas untuk memulai.</p>
+            <p className="text-sm font-semibold text-slate-800">Belum ada data PkM.</p>
+            <p className="text-xs text-slate-700 mt-1">Klik &ldquo;Tambah PkM&rdquo; di atas untuk memulai.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50/50">
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">No</th>
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Nama DTPR</th>
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Judul PkM</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Mhs</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Hibah</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS-2 (jt)</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS-1 (jt)</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS (jt)</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Aksi</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">No</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Nama DTPR</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Judul PkM</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Mhs</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Hibah</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS-2 (jt)</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS-1 (jt)</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS (jt)</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((item, idx) => (
                   <tr key={item.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                    <td className="px-4 py-3 font-semibold text-slate-400">{idx + 1}</td>
+                    <td className="px-4 py-3 font-semibold text-slate-700">{idx + 1}</td>
                     <td className="px-4 py-3 font-bold text-slate-800">{item.rowData.namaDtpr || "—"}</td>
                     <td className="px-4 py-3 text-slate-600 max-w-[200px] truncate">{item.rowData.judulPkm || "—"}</td>
                     <td className="px-4 py-3 text-center font-semibold text-slate-600">{item.rowData.jumlahMahasiswa || "—"}</td>
@@ -374,7 +374,7 @@ export function Tabel4A2Client({ initialRows, tahunAkademikId, tabelKode, status
                   <h3 className="text-lg font-bold text-slate-800">
                     {editItem ? "Edit PkM" : "Tambah PkM"}
                   </h3>
-                  <p className="text-xs font-semibold text-slate-400 mt-0.5">
+                  <p className="text-xs font-semibold text-slate-700 mt-0.5">
                     DTPR, Hibah dan Pembiayaan PkM
                   </p>
                 </div>
@@ -538,7 +538,7 @@ export function Tabel4A2Client({ initialRows, tahunAkademikId, tabelKode, status
                 </div>
               </div>
               <h3 className="text-base font-bold text-slate-800 text-center">Hapus Data PkM?</h3>
-              <p className="text-xs font-semibold text-slate-500 text-center mt-1.5">
+              <p className="text-xs font-semibold text-slate-800 text-center mt-1.5">
                 Tindakan ini tidak dapat dibatalkan.
               </p>
               <div className="mt-5 rounded-xl bg-red-50/70 border border-red-100 px-4 py-3 text-center">

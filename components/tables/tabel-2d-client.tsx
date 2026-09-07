@@ -93,7 +93,7 @@ export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rows
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
+        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
       </div>
@@ -108,12 +108,12 @@ export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rows
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
-                <th className="px-4 py-3 font-extrabold text-slate-500 uppercase tracking-wider text-left border-r border-slate-100">Sumber Rekognisi</th>
-                <th className="px-4 py-3 font-extrabold text-slate-500 uppercase tracking-wider text-left border-r border-slate-100">Jenis Pengakuan</th>
-                <th className="px-4 py-3 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 w-24">TS-2</th>
-                <th className="px-4 py-3 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 w-24">TS-1</th>
-                <th className="px-4 py-3 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 w-24">TS</th>
-                <th className="px-4 py-3 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 w-24">Link</th>
+                <th className="px-4 py-3 font-extrabold text-slate-800 uppercase tracking-wider text-left border-r border-slate-100">Sumber Rekognisi</th>
+                <th className="px-4 py-3 font-extrabold text-slate-800 uppercase tracking-wider text-left border-r border-slate-100">Jenis Pengakuan</th>
+                <th className="px-4 py-3 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 w-24">TS-2</th>
+                <th className="px-4 py-3 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 w-24">TS-1</th>
+                <th className="px-4 py-3 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 w-24">TS</th>
+                <th className="px-4 py-3 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 w-24">Link</th>
                 <th className="px-4 py-3 text-center w-20">Aksi</th>
               </tr>
             </thead>
@@ -134,16 +134,16 @@ export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rows
                         <span className="text-xs font-bold text-slate-800">{item.label}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-xs font-semibold text-slate-500 border-r border-slate-100">{tsRow.jenis || "-"}</td>
-                    <td className="px-4 py-3 text-center font-bold text-slate-400 border-r border-slate-100">{fmt(ts2Row.ts)}</td>
-                    <td className="px-4 py-3 text-center font-bold text-slate-400 border-r border-slate-100">{fmt(ts1Row.ts)}</td>
+                    <td className="px-4 py-3 text-xs font-semibold text-slate-800 border-r border-slate-100">{tsRow.jenis || "-"}</td>
+                    <td className="px-4 py-3 text-center font-bold text-slate-700 border-r border-slate-100">{fmt(ts2Row.ts)}</td>
+                    <td className="px-4 py-3 text-center font-bold text-slate-700 border-r border-slate-100">{fmt(ts1Row.ts)}</td>
                     <td className="px-4 py-3 text-center font-black text-emerald-600 border-r border-slate-100">{fmt(tsRow.ts)}</td>
                     <td className="px-4 py-3 text-center border-r border-slate-100">
                       {tsRow.linkBukti ? (
                         <a href={tsRow.linkBukti} target="_blank" className="text-emerald-500 hover:text-emerald-700">
                           <LinkIcon className="h-4 w-4 inline" />
                         </a>
-                      ) : <span className="text-slate-300">-</span>}
+                      ) : <span className="text-slate-700">-</span>}
                     </td>
                     <td className="px-4 py-3 text-center">
                       <button onClick={() => openEdit(item.key, item.label)}
@@ -176,13 +176,13 @@ export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rows
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">Edit Rekognisi</h3>
-                  <p className="text-xs text-slate-500 font-semibold mt-0.5">{editLabel}</p>
+                  <p className="text-xs text-slate-800 font-semibold mt-0.5">{editLabel}</p>
                 </div>
               </div>
 
               <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-5">
                 <div>
-                  <label className="block text-2xs font-bold text-slate-500 uppercase mb-1">Jenis Pengakuan (Rekognisi)</label>
+                  <label className="block text-2xs font-bold text-slate-800 uppercase mb-1">Jenis Pengakuan (Rekognisi)</label>
                   <input type="text" placeholder="cth: Sertifikat Kompetensi" value={formJenis}
                     onChange={(e) => setFormJenis(e.target.value)}
                     className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-bold text-slate-700 transition-all focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/30 shadow-3xs placeholder:text-slate-300" />
@@ -190,16 +190,16 @@ export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rows
 
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-2xs font-bold text-slate-500 uppercase mb-1">TS-2</label>
+                    <label className="block text-2xs font-bold text-slate-800 uppercase mb-1">TS-2</label>
                     <input type="number" min="0" placeholder="0" value={formTs}
                       onChange={(e) => setFormTs(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-bold text-slate-400 transition-all focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500/30 shadow-3xs" />
+                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-bold text-slate-700 transition-all focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500/30 shadow-3xs" />
                   </div>
                   <div>
-                    <label className="block text-2xs font-bold text-slate-500 uppercase mb-1">TS-1</label>
+                    <label className="block text-2xs font-bold text-slate-800 uppercase mb-1">TS-1</label>
                     <input type="number" min="0" placeholder="0" value={formTs}
                       onChange={(e) => setFormTs(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-bold text-slate-400 transition-all focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500/30 shadow-3xs" />
+                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-bold text-slate-700 transition-all focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500/30 shadow-3xs" />
                   </div>
                   <div>
                     <label className="block text-2xs font-bold text-emerald-600 uppercase mb-1">TS *</label>
@@ -210,7 +210,7 @@ export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rows
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-bold text-slate-500 uppercase mb-1">Link Bukti</label>
+                  <label className="block text-2xs font-bold text-slate-800 uppercase mb-1">Link Bukti</label>
                   <input type="url" placeholder="https://..." value={linkBukti}
                     onChange={(e) => setLinkBukti(e.target.value)}
                     className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-bold text-slate-700 transition-all focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/30 shadow-3xs placeholder:text-slate-300" />

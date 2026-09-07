@@ -206,7 +206,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
               <FileText className="h-8 w-8" />
             </div>
             <h3 className="text-sm font-bold text-slate-800">Belum ada data Unit SPMI</h3>
-            <p className="mt-2 text-xs font-medium text-slate-400">
+            <p className="mt-2 text-xs font-medium text-slate-700">
               Mulai tambahkan data untuk {tabelKode}.
             </p>
           </div>
@@ -227,7 +227,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                       {row.rowData.namaUnitSpmi || "N/A"}
                     </h3>
                     <div className="mt-1 flex items-center gap-2">
-                      <span className="inline-flex items-center rounded-lg bg-slate-50 px-2 py-0.5 text-3xs font-bold text-slate-500 border border-slate-100">
+                      <span className="inline-flex items-center rounded-lg bg-slate-50 px-2 py-0.5 text-3xs font-bold text-slate-800 border border-slate-100">
                         {row.rowData.frekuensiAuditMonev || "Frekuensi belum diset"}
                       </span>
                     </div>
@@ -240,7 +240,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                     disabled={!canEdit}
                     className={`flex h-8 w-8 items-center justify-center rounded-xl border transition-all shadow-3xs ${
                       canEdit
-                        ? "border-slate-200 bg-white text-slate-400 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50/20"
+                        ? "border-slate-200 bg-white text-slate-700 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50/20"
                         : "border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed"
                     }`}
                     title={canEdit ? "Edit" : "Tidak bisa diedit"}
@@ -252,7 +252,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                     disabled={!canEdit}
                     className={`flex h-8 w-8 items-center justify-center rounded-xl border transition-all shadow-3xs ${
                       canEdit
-                        ? "border-slate-200 bg-white text-slate-400 hover:text-red-600 hover:border-red-200 hover:bg-red-50/20"
+                        ? "border-slate-200 bg-white text-slate-700 hover:text-red-600 hover:border-red-200 hover:bg-red-50/20"
                         : "border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed"
                     }`}
                     title={canEdit ? "Hapus" : "Tidak bisa dihapus"}
@@ -269,7 +269,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-3">
                   <div className="rounded-2xl bg-slate-50/50 p-3.5 border border-slate-100/60 shadow-3xs">
-                    <h4 className="text-3xs font-extrabold uppercase tracking-wider text-slate-400 mb-1.5">
+                    <h4 className="text-3xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5">
                       Dokumen SPMI
                     </h4>
                     <p className="text-xs font-semibold text-slate-700 whitespace-pre-wrap">
@@ -278,7 +278,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                   </div>
                   
                   <div className="rounded-2xl bg-slate-50/50 p-3.5 border border-slate-100/60 shadow-3xs">
-                    <h4 className="text-3xs font-extrabold uppercase tracking-wider text-slate-400 mb-1.5">
+                    <h4 className="text-3xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5">
                       Laporan Audit / Monev
                     </h4>
                     <p className="text-xs font-semibold text-slate-700 whitespace-pre-wrap">
@@ -316,7 +316,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                   </div>
 
                   <div className="rounded-2xl bg-slate-50/50 p-3.5 border border-slate-100/60 shadow-3xs">
-                    <h4 className="text-3xs font-extrabold uppercase tracking-wider text-slate-400 mb-1.5">
+                    <h4 className="text-3xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5">
                       Bukti Certified Auditor
                     </h4>
                     <p className="text-xs font-semibold text-slate-700 whitespace-pre-wrap">
@@ -375,7 +375,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                 <AlertTriangle className="h-6 w-6" />
               </div>
               <h3 className="text-base font-bold text-slate-850">Hapus Data Unit SPMI?</h3>
-              <p className="mt-2 text-xs font-semibold text-slate-500 leading-relaxed">
+              <p className="mt-2 text-xs font-semibold text-slate-800 leading-relaxed">
                 Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.
               </p>
               <div className="mt-6 flex items-center gap-3">
@@ -422,7 +422,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                 </h3>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="rounded-lg p-1 text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-colors"
+                  className="rounded-lg p-1 text-slate-700 hover:bg-slate-50 hover:text-slate-600 transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -432,7 +432,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                    <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
                       Tingkat Unit
                     </label>
                     <select
@@ -446,7 +446,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                   </div>
                   
                   <div className="space-y-1.5">
-                    <label className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                    <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
                       Nama Unit SPMI
                     </label>
                     <input
@@ -461,7 +461,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                  <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
                     Dokumen SPMI
                   </label>
                   <textarea
@@ -476,7 +476,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
 
                 {/* Subtitle Auditor */}
                 <div className="pt-2 border-t border-slate-100/80">
-                  <h4 className="text-2xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                  <h4 className="text-2xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                     <Info className="h-4 w-4 text-indigo-500" />
                     Data Auditor Mutu Internal
                   </h4>
@@ -484,7 +484,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                 
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">Total Auditor</label>
+                    <label className="text-3xs font-extrabold text-slate-700 uppercase tracking-wider">Total Auditor</label>
                     <input
                       type="number"
                       min="0"
@@ -495,7 +495,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">Certified</label>
+                    <label className="text-3xs font-extrabold text-slate-700 uppercase tracking-wider">Certified</label>
                     <input
                       type="number"
                       min="0"
@@ -506,7 +506,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">Non-Certified</label>
+                    <label className="text-3xs font-extrabold text-slate-700 uppercase tracking-wider">Non-Certified</label>
                     <input
                       type="number"
                       min="0"
@@ -520,7 +520,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                    <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
                       Frekuensi Audit/Monev per Tahun
                     </label>
                     <input
@@ -534,7 +534,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                    <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
                       Laporan Audit
                     </label>
                     <input
@@ -550,7 +550,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
 
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                    <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
                       Bukti Certified Auditor
                     </label>
                     <button
@@ -624,7 +624,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
                 </div>
                 <button
                   onClick={() => setShowGuide(false)}
-                  className="rounded-lg p-1 text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-colors cursor-pointer"
+                  className="rounded-lg p-1 text-slate-700 hover:bg-slate-50 hover:text-slate-600 transition-colors cursor-pointer"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -633,7 +633,7 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
               <div className="space-y-4 text-xs">
                 <div>
                   <h4 className="font-bold text-slate-700 mb-1">Apa yang dimaksud Bukti Certified Auditor?</h4>
-                  <p className="text-slate-500 leading-relaxed">
+                  <p className="text-slate-800 leading-relaxed">
                     Field ini digunakan untuk mencatat bukti bahwa auditor memiliki sertifikat AMI/SPMI, seperti nama dokumen atau tautan ke sertifikat.
                   </p>
                 </div>

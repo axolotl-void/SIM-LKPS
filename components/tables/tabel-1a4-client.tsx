@@ -213,7 +213,7 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
       <div className="flex items-center justify-between">
         <Link
           href="/lkps/bab-1"
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke Daftar Tabel
         </Link>
@@ -235,20 +235,20 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
 
       {/* Card List Table Header */}
       <div className="space-y-3">
-        <div className="grid grid-cols-12 px-6 py-2.5 text-2xs font-bold uppercase tracking-wider text-slate-400 select-none">
+        <div className="grid grid-cols-12 px-6 py-2.5 text-2xs font-bold uppercase tracking-wider text-slate-700 select-none">
           <div className="col-span-1">No</div>
           <div className="col-span-3">Nama DTPR</div>
           <div className="col-span-2 text-center">Pengajaran (PS/Lain/PT)</div>
           <div className="col-span-1.5 text-center">Penelitian</div>
           <div className="col-span-1.5 text-center">PkM</div>
           <div className="col-span-1.5 text-center">Manajemen (PT/Lain)</div>
-          <div className="col-span-1 text-center font-bold text-slate-500">Total</div>
+          <div className="col-span-1 text-center font-bold text-slate-800">Total</div>
           <div className="col-span-0.5 text-center">Aksi</div>
         </div>
 
         {/* Card Rows */}
         {rows.length === 0 ? (
-          <div className="rounded-3xl bg-white border border-slate-100 p-10 text-center text-xs font-semibold text-slate-400 shadow-soft">
+          <div className="rounded-3xl bg-white border border-slate-100 p-10 text-center text-xs font-semibold text-slate-700 shadow-soft">
             Belum ada data beban kerja DTPR. Silakan tambah data baru.
           </div>
         ) : (
@@ -330,16 +330,16 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
               <div className="col-span-4 text-xs text-slate-800 text-left font-extrabold pl-2">
                 Rata-rata Beban SKS
               </div>
-              <div className="col-span-2 text-center text-xs text-slate-500 font-extrabold">
+              <div className="col-span-2 text-center text-xs text-slate-800 font-extrabold">
                 {avgPsSendiri.toFixed(1)} / {avgPsLain.toFixed(1)} / {avgPtLain.toFixed(1)}
               </div>
-              <div className="col-span-1.5 text-center text-xs text-slate-500 font-extrabold">
+              <div className="col-span-1.5 text-center text-xs text-slate-800 font-extrabold">
                 {avgPenelitian.toFixed(1)} SKS
               </div>
-              <div className="col-span-1.5 text-center text-xs text-slate-500 font-extrabold">
+              <div className="col-span-1.5 text-center text-xs text-slate-800 font-extrabold">
                 {avgPkm.toFixed(1)} SKS
               </div>
-              <div className="col-span-1.5 text-center text-xs text-slate-500 font-extrabold">
+              <div className="col-span-1.5 text-center text-xs text-slate-800 font-extrabold">
                 {avgManajemenPt.toFixed(1)} / {avgManajemenLain.toFixed(1)}
               </div>
               <div className="col-span-1 text-center text-xs text-indigo-700 font-black">
@@ -353,17 +353,17 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
 
       {/* Pagination & Summary Info */}
       <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
-        <div className="text-xs font-semibold text-slate-400">
+        <div className="text-xs font-semibold text-slate-700">
           Menampilkan 1 - {rows.length} dari {rows.length} data
         </div>
         <div className="flex items-center gap-1">
-          <button className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:bg-slate-50 transition-colors">
+          <button className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors">
             &lt;
           </button>
           <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-600 text-white font-bold text-xs shadow-soft-sm">
             1
           </button>
-          <button className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:bg-slate-50 transition-colors">
+          <button className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors">
             &gt;
           </button>
         </div>
@@ -390,7 +390,7 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
                   <h3 className="text-lg font-bold text-slate-800 tracking-tight">
                     {editId ? "Ubah Beban Kerja DTPR" : "Tambah Beban Kerja DTPR"}
                   </h3>
-                  <p className="text-xs text-slate-500 font-semibold mt-0.5">
+                  <p className="text-xs text-slate-800 font-semibold mt-0.5">
                     Lengkapi alokasi SKS beban mengajar dan tridharma dosen
                   </p>
                 </div>
@@ -430,7 +430,7 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
                         placeholder="Ketik untuk mencari atau menambah dosen baru..."
                         className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-10 text-xs transition-all focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-3xs"
                       />
-                      <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                      <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-700">
                         <ChevronDown className="h-4 w-4" />
                       </span>
 
@@ -458,7 +458,7 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
                                 </button>
                               ))
                             ) : (
-                              <div className="px-3 py-2 text-xs text-slate-400 font-medium">
+                              <div className="px-3 py-2 text-xs text-slate-700 font-medium">
                                 Dosen tidak ditemukan
                               </div>
                             )}
@@ -658,7 +658,7 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
               {/* Close Button */}
               <button 
                 onClick={() => setDeleteId(null)} 
-                className="absolute top-4 right-4 rounded-xl p-1.5 text-slate-400 hover:bg-slate-50 transition-colors"
+                className="absolute top-4 right-4 rounded-xl p-1.5 text-slate-700 hover:bg-slate-50 transition-colors"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -670,7 +670,7 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
 
               {/* Title & Body */}
               <h3 className="text-base font-bold text-slate-800">Hapus Data</h3>
-              <p className="mt-2 text-xs text-slate-400 font-semibold leading-relaxed px-2">
+              <p className="mt-2 text-xs text-slate-700 font-semibold leading-relaxed px-2">
                 Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.
               </p>
 
@@ -721,7 +721,7 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
                 <p className="text-xs font-bold text-slate-800">
                   {toast.type === "success" ? "Berhasil!" : "Gagal!"}
                 </p>
-                <p className="text-2xs font-semibold text-slate-400 mt-0.5 leading-snug">
+                <p className="text-2xs font-semibold text-slate-700 mt-0.5 leading-snug">
                   {toast.message}
                 </p>
               </div>

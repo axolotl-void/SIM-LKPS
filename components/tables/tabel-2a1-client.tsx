@@ -175,7 +175,7 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center justify-between">
         <Link
           href="/lkps/bab-2"
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-cyan-600 transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-cyan-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
@@ -206,30 +206,30 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
-                <th rowSpan={2} className="px-3 py-2.5 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-slate-100/50 w-16">TS</th>
-                <th colSpan={4} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-cyan-50/50">Calon Mahasiswa</th>
-                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-teal-50/50">Maba Reguler</th>
-                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-cyan-50/50">Maba Transfer/RPL</th>
-                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100 bg-teal-50/50">Aktif Reguler</th>
-                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center bg-cyan-50/50">Aktif Transfer/RPL</th>
+                <th rowSpan={2} className="px-3 py-2.5 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 bg-slate-100/50 w-16">TS</th>
+                <th colSpan={4} className="px-3 py-2 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 bg-cyan-50/50">Calon Mahasiswa</th>
+                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 bg-teal-50/50">Maba Reguler</th>
+                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 bg-cyan-50/50">Maba Transfer/RPL</th>
+                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100 bg-teal-50/50">Aktif Reguler</th>
+                <th colSpan={3} className="px-3 py-2 font-extrabold text-slate-800 uppercase tracking-wider text-center bg-cyan-50/50">Aktif Transfer/RPL</th>
               </tr>
               <tr className="border-b border-slate-200">
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Daya Tampung</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Pendaftar</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Lulus Seleksi</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Kebutuhan Khusus</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Diterima</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Afirmasi</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Kebutuhan Khusus</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Diterima</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Afirmasi</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Kebutuhan Khusus</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Jumlah</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Afirmasi</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Kebutuhan Khusus</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Jumlah</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100">Afirmasi</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center">Kebutuhan Khusus</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Daya Tampung</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Pendaftar</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Lulus Seleksi</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Kebutuhan Khusus</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Diterima</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Afirmasi</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Kebutuhan Khusus</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Diterima</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Afirmasi</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Kebutuhan Khusus</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Jumlah</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Afirmasi</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Kebutuhan Khusus</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Jumlah</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100">Afirmasi</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center">Kebutuhan Khusus</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -250,7 +250,7 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
                     </td>
                     {FIELD_GROUPS.flatMap((g) => g.fields).map((f) => (
                       <td key={f.key} className={`px-2 py-2.5 text-center border-r border-slate-100 last:border-r-0 ${
-                        isTS ? "font-black text-slate-800" : "font-semibold text-slate-400"
+                        isTS ? "font-black text-slate-800" : "font-semibold text-slate-700"
                       }`}>
                         {val(row, f.key)}
                       </td>
@@ -281,27 +281,38 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 350 }}
-              className="w-full max-w-2xl rounded-3xl bg-white shadow-soft-lg border border-slate-100/50 p-7 my-8"
+              className="relative w-full max-w-xl rounded-3xl bg-white shadow-soft-lg border border-slate-100/50 p-5 my-4 max-h-[calc(100vh-2rem)] overflow-y-auto"
             >
+              {/* Close button */}
+              <button
+                type="button"
+                onClick={() => setModalOpen(false)}
+                disabled={isLoading}
+                aria-label="Tutup"
+                className="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-700 transition-colors cursor-pointer"
+              >
+                <X className="h-4 w-4" />
+              </button>
+
               {/* Header */}
-              <div className="flex items-center gap-4 mb-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 shadow-soft-sm">
-                  <Users className="h-6 w-6" />
+              <div className="flex items-center gap-3 mb-4 pr-12">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600 shadow-soft-sm shrink-0">
+                  <Users className="h-5 w-5" />
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold text-slate-800 tracking-tight">Edit Data Mahasiswa — TS</h3>
-                  <p className="text-xs text-slate-500 font-semibold mt-0.5">Isi data mahasiswa untuk Tahun Sekarang (TS)</p>
+                <div className="min-w-0">
+                  <h3 className="text-base font-bold text-slate-800 tracking-tight">Edit Data Mahasiswa — TS</h3>
+                  <p className="text-xs text-slate-800 font-semibold mt-0.5">Isi data mahasiswa untuk Tahun Sekarang (TS)</p>
                 </div>
               </div>
 
               <form
                 onSubmit={(e) => { e.preventDefault(); handleSave(); }}
-                className="space-y-5"
+                className="space-y-3"
               >
                 {FIELD_GROUPS.map((group) => {
                   const Icon = group.icon;
                   return (
-                    <div key={group.label} className="rounded-2xl border border-slate-100 bg-slate-50/30 p-5 space-y-4">
+                    <div key={group.label} className="rounded-2xl border border-slate-100 bg-slate-50/30 p-4 space-y-3">
                       <div className="flex items-center gap-2 text-xs font-bold tracking-wide"
                         style={{ color: group.color.includes("blue") ? "#2563eb" : group.color.includes("indigo") ? "#6366f1" : group.color.includes("purple") ? "#9333ea" : group.color.includes("emerald") ? "#059669" : "#d97706" }}
                       >

@@ -145,7 +145,7 @@ export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status
     <div className="space-y-6">
       {/* Top */}
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
+        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
       </div>
@@ -153,19 +153,19 @@ export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status
       {/* Summary */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-4">
         <div className="rounded-2xl border border-slate-100/50 bg-white p-4 shadow-soft">
-          <p className="text-2xs font-bold uppercase tracking-wider text-slate-400">Total Responden</p>
+          <p className="text-2xs font-bold uppercase tracking-wider text-slate-700">Total Responden</p>
           <p className="mt-1 text-2xl font-black text-slate-700">{t(totalResponden)}</p>
         </div>
         <div className="rounded-2xl border border-slate-100/50 bg-white p-4 shadow-soft">
-          <p className="text-2xs font-bold uppercase tracking-wider text-slate-400">Skor Rata-rata</p>
+          <p className="text-2xs font-bold uppercase tracking-wider text-slate-700">Skor Rata-rata</p>
           <p className="mt-1 text-2xl font-black text-indigo-600">{avgScore}%</p>
         </div>
         <div className="rounded-2xl border border-slate-100/50 bg-white p-4 shadow-soft">
-          <p className="text-2xs font-bold uppercase tracking-wider text-slate-400">Sangat Baik + Baik</p>
+          <p className="text-2xs font-bold uppercase tracking-wider text-slate-700">Sangat Baik + Baik</p>
           <p className="mt-1 text-2xl font-black text-emerald-600">{t(sumCol("sangatBaik") + sumCol("baik"))}</p>
         </div>
         <div className="rounded-2xl border border-slate-100/50 bg-white p-4 shadow-soft">
-          <p className="text-2xs font-bold uppercase tracking-wider text-slate-400">Total Penilaian</p>
+          <p className="text-2xs font-bold uppercase tracking-wider text-slate-700">Total Penilaian</p>
           <p className="mt-1 text-2xl font-black text-slate-700">{t(totalScore)}</p>
         </div>
       </div>
@@ -176,17 +176,17 @@ export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status
           <table className="w-full text-xs">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
-                <th rowSpan={2} className="px-3 py-2.5 font-extrabold text-slate-500 uppercase tracking-wider text-left border-r border-slate-100 w-12">No</th>
-                <th rowSpan={2} className="px-3 py-2.5 font-extrabold text-slate-500 uppercase tracking-wider text-left border-r border-slate-100">Jenis Kemampuan</th>
-                <th colSpan={4} className="px-3 py-2 font-extrabold text-slate-500 uppercase tracking-wider text-center border-r border-slate-100">Tingkat Kepuasan Pengguna (%)</th>
-                <th rowSpan={2} className="px-3 py-2.5 font-extrabold text-slate-500 uppercase tracking-wider text-left border-r border-slate-100">Rencana Tindak Lanjut</th>
+                <th rowSpan={2} className="px-3 py-2.5 font-extrabold text-slate-800 uppercase tracking-wider text-left border-r border-slate-100 w-12">No</th>
+                <th rowSpan={2} className="px-3 py-2.5 font-extrabold text-slate-800 uppercase tracking-wider text-left border-r border-slate-100">Jenis Kemampuan</th>
+                <th colSpan={4} className="px-3 py-2 font-extrabold text-slate-800 uppercase tracking-wider text-center border-r border-slate-100">Tingkat Kepuasan Pengguna (%)</th>
+                <th rowSpan={2} className="px-3 py-2.5 font-extrabold text-slate-800 uppercase tracking-wider text-left border-r border-slate-100">Rencana Tindak Lanjut</th>
                 <th rowSpan={2} className="px-3 py-2.5 text-center w-16">Aksi</th>
               </tr>
               <tr className="border-b border-slate-200">
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100 bg-emerald-50/50">Sangat Baik</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100 bg-blue-50/50">Baik</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100 bg-amber-50/50">Cukup</th>
-                <th className="px-2 py-2 font-bold text-slate-500 text-center border-r border-slate-100 bg-red-50/50">Kurang</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100 bg-emerald-50/50">Sangat Baik</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100 bg-blue-50/50">Baik</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100 bg-amber-50/50">Cukup</th>
+                <th className="px-2 py-2 font-bold text-slate-800 text-center border-r border-slate-100 bg-red-50/50">Kurang</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -198,7 +198,7 @@ export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status
                   <td className="px-2 py-2.5 text-center font-bold text-blue-600 border-r border-slate-100">{t(row.rowData.baik)}</td>
                   <td className="px-2 py-2.5 text-center font-bold text-amber-600 border-r border-slate-100">{t(row.rowData.cukup)}</td>
                   <td className="px-2 py-2.5 text-center font-bold text-red-600 border-r border-slate-100">{t(row.rowData.kurang)}</td>
-                  <td className="px-3 py-2.5 text-xs font-semibold text-slate-500 border-r border-slate-100 max-w-[200px] truncate">
+                  <td className="px-3 py-2.5 text-xs font-semibold text-slate-800 border-r border-slate-100 max-w-[200px] truncate">
                     {row.rowData.rencanaTindakLanjut || "-"}
                   </td>
                   <td className="px-2 py-2.5 text-center">
@@ -215,7 +215,7 @@ export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status
                 <td className="px-2 py-2.5 text-center font-black text-slate-700 border-r border-slate-200">{t(sumCol("baik"))}</td>
                 <td className="px-2 py-2.5 text-center font-black text-slate-700 border-r border-slate-200">{t(sumCol("cukup"))}</td>
                 <td className="px-2 py-2.5 text-center font-black text-slate-700 border-r border-slate-200">{t(sumCol("kurang"))}</td>
-                <td colSpan={2} className="px-3 py-2.5 text-center text-xs font-bold text-slate-500">
+                <td colSpan={2} className="px-3 py-2.5 text-center text-xs font-bold text-slate-800">
                   Rata-rata: {avgScore}%
                 </td>
               </tr>
@@ -226,7 +226,7 @@ export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status
 
       {/* Pagination summary */}
       <div className="flex items-center justify-between border-t border-slate-100 pt-5">
-        <div className="text-xs font-semibold text-slate-400">{rows.filter((r) => r.rowOrder <= 7).length} jenis kemampuan</div>
+        <div className="text-xs font-semibold text-slate-700">{rows.filter((r) => r.rowOrder <= 7).length} jenis kemampuan</div>
       </div>
 
       {/* Modal */}
@@ -246,7 +246,7 @@ export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">Edit Kepuasan Pengguna</h3>
-                  <p className="text-xs text-slate-500 font-semibold mt-0.5">
+                  <p className="text-xs text-slate-800 font-semibold mt-0.5">
                     {rows.find((r) => r.id === editId)?.rowData.labelKemampuan || "Jenis Kemampuan"}
                   </p>
                 </div>
@@ -327,9 +327,9 @@ export function Tabel2B6Client({ initialRows, tahunAkademikId, tabelKode, status
                 <X className="h-6 w-6" />
               </div>
               <h3 className="text-base font-bold text-slate-800">Hapus Data</h3>
-              <p className="mt-2 text-xs text-slate-400">Yakin ingin menghapus?</p>
+              <p className="mt-2 text-xs text-slate-700">Yakin ingin menghapus?</p>
               <div className="mt-6 flex gap-3">
-                <button onClick={() => setDeleteId(null)} className="flex-1 rounded-xl border border-slate-100 bg-white py-2.5 text-xs font-bold text-slate-500">Batal</button>
+                <button onClick={() => setDeleteId(null)} className="flex-1 rounded-xl border border-slate-100 bg-white py-2.5 text-xs font-bold text-slate-800">Batal</button>
                 <button onClick={handleDeleteConfirm} className="flex-1 rounded-xl bg-red-500 py-2.5 text-xs font-bold text-white">Hapus</button>
               </div>
             </motion.div>

@@ -175,7 +175,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center justify-between">
         <Link
           href="/lkps/bab-1"
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke Daftar Tabel
         </Link>
@@ -198,7 +198,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
       {/* Cards List */}
       <div className="space-y-4">
         {rows.length === 0 ? (
-          <div className="rounded-3xl bg-white border border-slate-100 p-10 text-center text-xs font-semibold text-slate-400 shadow-soft">
+          <div className="rounded-3xl bg-white border border-slate-100 p-10 text-center text-xs font-semibold text-slate-700 shadow-soft">
             Belum ada data kualifikasi Tenaga Kependidikan. Silakan tambah data baru.
           </div>
         ) : (
@@ -234,7 +234,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                   <div className="space-y-1.5">
                     {/* Header Info */}
                     <div className="flex items-center gap-2">
-                      <span className="text-3xs font-extrabold uppercase tracking-wider text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">
+                      <span className="text-3xs font-extrabold uppercase tracking-wider text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">
                         NO. {index + 1}
                       </span>
                       <h3 className="text-sm font-bold text-slate-800 tracking-tight">
@@ -243,8 +243,8 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                     </div>
                     
                     {/* Unit Kerja */}
-                    <div className="flex items-center gap-2 text-2xs font-semibold text-slate-500">
-                      <Briefcase className="h-3.5 w-3.5 text-slate-400" />
+                    <div className="flex items-center gap-2 text-2xs font-semibold text-slate-800">
+                      <Briefcase className="h-3.5 w-3.5 text-slate-700" />
                       <span>Unit Kerja:</span>
                       <span className="text-slate-700 font-bold">{rd.unitKerja}</span>
                     </div>
@@ -257,7 +257,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                       disabled={!canEdit}
                       className={`flex h-8 w-8 items-center justify-center rounded-xl border transition-all shadow-3xs ${
                         canEdit
-                          ? "border-slate-200 bg-white text-slate-400 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50/20"
+                          ? "border-slate-200 bg-white text-slate-700 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50/20"
                           : "border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed"
                       }`}
                       title={canEdit ? "Edit" : "Tidak bisa diedit"}
@@ -269,7 +269,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                       disabled={!canEdit}
                       className={`flex h-8 w-8 items-center justify-center rounded-xl border transition-all shadow-3xs ${
                         canEdit
-                          ? "border-slate-200 bg-white text-slate-400 hover:text-red-600 hover:border-red-200 hover:bg-red-50/20"
+                          ? "border-slate-200 bg-white text-slate-700 hover:text-red-600 hover:border-red-200 hover:bg-red-50/20"
                           : "border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed"
                       }`}
                       title={canEdit ? "Hapus" : "Tidak bisa dihapus"}
@@ -285,7 +285,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                 {/* Education Grid & Total Staff */}
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-3xs font-black uppercase text-slate-400 mr-1 tracking-wider">
+                    <span className="text-3xs font-black uppercase text-slate-700 mr-1 tracking-wider">
                       Distribusi Pendidikan:
                     </span>
                     {educations.map((edu) => {
@@ -295,13 +295,13 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                           key={edu.key}
                           className="inline-flex items-center rounded-xl bg-slate-50/80 px-2.5 py-1.5 border border-slate-100 text-2xs font-semibold shadow-3xs"
                         >
-                          <span className="text-slate-400 font-medium mr-1.5">{edu.key}:</span>
+                          <span className="text-slate-700 font-medium mr-1.5">{edu.key}:</span>
                           <span className="text-slate-800 font-bold">{edu.value}</span>
                         </div>
                       );
                     })}
                     {rowTotal === 0 && (
-                      <span className="text-2xs font-medium text-slate-400 italic">
+                      <span className="text-2xs font-medium text-slate-700 italic">
                         Belum diisi
                       </span>
                     )}
@@ -332,35 +332,35 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
           
           <div className="grid grid-cols-2 gap-3.5 mt-5 sm:grid-cols-4 lg:grid-cols-9">
             <div className="rounded-2xl bg-slate-800/80 p-3 border border-slate-700/30 text-center">
-              <div className="text-4xs font-black text-slate-400 uppercase tracking-wider">S3</div>
+              <div className="text-4xs font-black text-slate-700 uppercase tracking-wider">S3</div>
               <div className="text-sm font-extrabold text-white mt-1">{totalS3}</div>
             </div>
             <div className="rounded-2xl bg-slate-800/80 p-3 border border-slate-700/30 text-center">
-              <div className="text-4xs font-black text-slate-400 uppercase tracking-wider">S2</div>
+              <div className="text-4xs font-black text-slate-700 uppercase tracking-wider">S2</div>
               <div className="text-sm font-extrabold text-white mt-1">{totalS2}</div>
             </div>
             <div className="rounded-2xl bg-slate-800/80 p-3 border border-slate-700/30 text-center">
-              <div className="text-4xs font-black text-slate-400 uppercase tracking-wider">S1</div>
+              <div className="text-4xs font-black text-slate-700 uppercase tracking-wider">S1</div>
               <div className="text-sm font-extrabold text-white mt-1">{totalS1}</div>
             </div>
             <div className="rounded-2xl bg-slate-800/80 p-3 border border-slate-700/30 text-center">
-              <div className="text-4xs font-black text-slate-400 uppercase tracking-wider">D4</div>
+              <div className="text-4xs font-black text-slate-700 uppercase tracking-wider">D4</div>
               <div className="text-sm font-extrabold text-white mt-1">{totalD4}</div>
             </div>
             <div className="rounded-2xl bg-slate-800/80 p-3 border border-slate-700/30 text-center">
-              <div className="text-4xs font-black text-slate-400 uppercase tracking-wider">D3</div>
+              <div className="text-4xs font-black text-slate-700 uppercase tracking-wider">D3</div>
               <div className="text-sm font-extrabold text-white mt-1">{totalD3}</div>
             </div>
             <div className="rounded-2xl bg-slate-800/80 p-3 border border-slate-700/30 text-center">
-              <div className="text-4xs font-black text-slate-400 uppercase tracking-wider">D2</div>
+              <div className="text-4xs font-black text-slate-700 uppercase tracking-wider">D2</div>
               <div className="text-sm font-extrabold text-white mt-1">{totalD2}</div>
             </div>
             <div className="rounded-2xl bg-slate-800/80 p-3 border border-slate-700/30 text-center">
-              <div className="text-4xs font-black text-slate-400 uppercase tracking-wider">D1</div>
+              <div className="text-4xs font-black text-slate-700 uppercase tracking-wider">D1</div>
               <div className="text-sm font-extrabold text-white mt-1">{totalD1}</div>
             </div>
             <div className="rounded-2xl bg-slate-800/80 p-3 border border-slate-700/30 text-center col-span-2 sm:col-span-1">
-              <div className="text-4xs font-black text-slate-400 uppercase tracking-wider">SMA/SMK</div>
+              <div className="text-4xs font-black text-slate-700 uppercase tracking-wider">SMA/SMK</div>
               <div className="text-sm font-extrabold text-white mt-1">{totalSma}</div>
             </div>
             <div className="rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 p-3 text-center col-span-2 sm:col-span-4 lg:col-span-1 shadow-md">
@@ -416,7 +416,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                 <AlertTriangle className="h-6 w-6" />
               </div>
               <h3 className="text-base font-bold text-slate-850">Hapus Kualifikasi Tendik?</h3>
-              <p className="mt-2 text-xs font-semibold text-slate-500 leading-relaxed">
+              <p className="mt-2 text-xs font-semibold text-slate-800 leading-relaxed">
                 Apakah Anda yakin ingin menghapus data kualifikasi tenaga kependidikan ini? Tindakan ini tidak dapat dibatalkan.
               </p>
               <div className="mt-6 flex items-center gap-3">
@@ -463,7 +463,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                 </h3>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="rounded-lg p-1 text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-colors"
+                  className="rounded-lg p-1 text-slate-700 hover:bg-slate-50 hover:text-slate-600 transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -474,7 +474,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   {/* Jenis Tendik */}
                   <div className="space-y-1.5 col-span-1">
-                    <label className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                    <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
                       Jenis Tendik
                     </label>
                     <select
@@ -492,7 +492,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
 
                   {/* Unit Kerja */}
                   <div className="space-y-1.5 col-span-1">
-                    <label className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                    <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
                       Unit Kerja
                     </label>
                     <input
@@ -508,7 +508,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                   {/* Custom Jenis Input */}
                   {jenisTendik === "Lainnya" && (
                     <div className="space-y-1.5 col-span-2">
-                      <label className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                      <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
                         Ketik Jenis Tendik Manual
                       </label>
                       <input
@@ -525,7 +525,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
 
                 {/* Subtitle Pendidikan */}
                 <div className="pt-2 border-t border-slate-100/80">
-                  <h4 className="text-2xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                  <h4 className="text-2xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                     <GraduationCap className="h-4 w-4 text-indigo-500" />
                     Jumlah Staf Berdasarkan Pendidikan Terakhir
                   </h4>
@@ -534,7 +534,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                 {/* Grid Inputs for Education */}
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                   <div className="space-y-1.5">
-                    <label className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">S3</label>
+                    <label className="text-3xs font-extrabold text-slate-700 uppercase tracking-wider">S3</label>
                     <input
                       type="number"
                       min="0"
@@ -545,7 +545,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">S2</label>
+                    <label className="text-3xs font-extrabold text-slate-700 uppercase tracking-wider">S2</label>
                     <input
                       type="number"
                       min="0"
@@ -556,7 +556,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">S1</label>
+                    <label className="text-3xs font-extrabold text-slate-700 uppercase tracking-wider">S1</label>
                     <input
                       type="number"
                       min="0"
@@ -567,7 +567,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">D4</label>
+                    <label className="text-3xs font-extrabold text-slate-700 uppercase tracking-wider">D4</label>
                     <input
                       type="number"
                       min="0"
@@ -578,7 +578,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">D3</label>
+                    <label className="text-3xs font-extrabold text-slate-700 uppercase tracking-wider">D3</label>
                     <input
                       type="number"
                       min="0"
@@ -589,7 +589,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">D2</label>
+                    <label className="text-3xs font-extrabold text-slate-700 uppercase tracking-wider">D2</label>
                     <input
                       type="number"
                       min="0"
@@ -600,7 +600,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">D1</label>
+                    <label className="text-3xs font-extrabold text-slate-700 uppercase tracking-wider">D1</label>
                     <input
                       type="number"
                       min="0"
@@ -611,7 +611,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">SMA/SMK</label>
+                    <label className="text-3xs font-extrabold text-slate-700 uppercase tracking-wider">SMA/SMK</label>
                     <input
                       type="number"
                       min="0"

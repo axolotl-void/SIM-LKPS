@@ -158,7 +158,7 @@ export function Tabel62Client({ initialRows, tahunAkademikId, tabelKode, status,
     <div className="space-y-8">
       {/* Action Bar */}
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-6" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors cursor-pointer">
+        <Link href="/lkps/bab-6" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-indigo-600 transition-colors cursor-pointer">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 6
         </Link>
         {canEdit && (
@@ -181,29 +181,29 @@ export function Tabel62Client({ initialRows, tahunAkademikId, tabelKode, status,
           </div>
           <div>
             <h3 className="text-base font-bold text-slate-800">Daftar Strategi Pencapaian</h3>
-            <p className="text-2xs font-semibold text-slate-400">{sortedRows.length} strategi</p>
+            <p className="text-2xs font-semibold text-slate-700">{sortedRows.length} strategi</p>
           </div>
         </div>
 
         {sortedRows.length === 0 ? (
           <div className="p-12 text-center">
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 mb-4">
-              <Target className="h-8 w-8 text-slate-400" />
+              <Target className="h-8 w-8 text-slate-700" />
             </div>
-            <p className="text-xs font-semibold text-slate-500">Belum ada strategi pencapaian.</p>
-            <p className="text-2xs text-slate-400 mt-1">Klik tombol "Tambah Strategi" untuk menambahkan.</p>
+            <p className="text-xs font-semibold text-slate-800">Belum ada strategi pencapaian.</p>
+            <p className="text-2xs text-slate-700 mt-1">Klik tombol "Tambah Strategi" untuk menambahkan.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-slate-50/80 border-b border-slate-100">
                 <tr>
-                  <th className="px-4 py-3 text-left text-2xs font-extrabold uppercase tracking-wider text-slate-500">No</th>
-                  <th className="px-4 py-3 text-left text-2xs font-extrabold uppercase tracking-wider text-slate-500">Strategi</th>
-                  <th className="px-4 py-3 text-left text-2xs font-extrabold uppercase tracking-wider text-slate-500">Sasaran</th>
-                  <th className="px-4 py-3 text-left text-2xs font-extrabold uppercase tracking-wider text-slate-500">Indikator</th>
-                  <th className="px-4 py-3 text-left text-2xs font-extrabold uppercase tracking-wider text-slate-500">Target</th>
-                  {canEdit && <th className="px-4 py-3 text-right text-2xs font-extrabold uppercase tracking-wider text-slate-500">Aksi</th>}
+                  <th className="px-4 py-3 text-left text-2xs font-extrabold uppercase tracking-wider text-slate-800">No</th>
+                  <th className="px-4 py-3 text-left text-2xs font-extrabold uppercase tracking-wider text-slate-800">Strategi</th>
+                  <th className="px-4 py-3 text-left text-2xs font-extrabold uppercase tracking-wider text-slate-800">Sasaran</th>
+                  <th className="px-4 py-3 text-left text-2xs font-extrabold uppercase tracking-wider text-slate-800">Indikator</th>
+                  <th className="px-4 py-3 text-left text-2xs font-extrabold uppercase tracking-wider text-slate-800">Target</th>
+                  {canEdit && <th className="px-4 py-3 text-right text-2xs font-extrabold uppercase tracking-wider text-slate-800">Aksi</th>}
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
@@ -255,7 +255,7 @@ export function Tabel62Client({ initialRows, tahunAkademikId, tabelKode, status,
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">{editItem ? "Ubah Strategi" : "Tambah Strategi"}</h3>
-                  <p className="text-xs text-slate-500 font-semibold mt-0.5">Strategi Pencapaian Tujuan</p>
+                  <p className="text-xs text-slate-800 font-semibold mt-0.5">Strategi Pencapaian Tujuan</p>
                 </div>
               </div>
 
@@ -361,7 +361,7 @@ export function Tabel62Client({ initialRows, tahunAkademikId, tabelKode, status,
                 <Trash2 className="h-6 w-6" />
               </div>
               <h3 className="text-base font-bold text-slate-800">Hapus Strategi?</h3>
-              <p className="mt-2 text-xs text-slate-400 font-semibold leading-relaxed px-2">Data yang dihapus tidak dapat dikembalikan.</p>
+              <p className="mt-2 text-xs text-slate-700 font-semibold leading-relaxed px-2">Data yang dihapus tidak dapat dikembalikan.</p>
               <div className="mt-6 flex gap-3">
                 <button onClick={() => setDeleteConfirmId(null)} disabled={isDeleting} className="flex-1 rounded-xl border border-slate-100 bg-white py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-50 shadow-sm">
                   Batal

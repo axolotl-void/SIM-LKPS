@@ -112,7 +112,7 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">
+        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
         </Link>
         <div className="flex items-center gap-2.5">
@@ -138,25 +138,25 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-4">
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
           <div className="space-y-2">
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Lulusan</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-700">Total Lulusan</div>
             <p className="text-3xl font-black text-slate-800">{t(sumField("jumlahLulusan"))}</p>
           </div>
         </div>
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
           <div className="space-y-2">
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400">Terlacak</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-700">Terlacak</div>
             <p className="text-3xl font-black text-slate-800">{t(sumField("jumlahTerlacak"))}</p>
           </div>
         </div>
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
           <div className="space-y-2">
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400">Bidang Infokom</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-700">Bidang Infokom</div>
             <p className="text-3xl font-black text-indigo-600">{t(sumField("profesiInfokom"))}</p>
           </div>
         </div>
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
           <div className="space-y-2">
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400">Tingkat Terlacak</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-700">Tingkat Terlacak</div>
             <p className="text-3xl font-black text-slate-700">
               {sumField("jumlahLulusan") > 0 ? ((sumField("jumlahTerlacak") / sumField("jumlahLulusan")) * 100).toFixed(0) + "%" : "0%"}
             </p>
@@ -193,11 +193,11 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <div className="space-y-3">
                 <div>
-                  <p className="text-2xs font-semibold text-slate-400">Jumlah Lulusan</p>
+                  <p className="text-2xs font-semibold text-slate-700">Jumlah Lulusan</p>
                   <p className="text-xl font-black text-slate-800">{t(tsRow?.rowData.jumlahLulusan)}</p>
                 </div>
                 <div>
-                  <p className="text-2xs font-semibold text-slate-400">Lulusan Terlacak</p>
+                  <p className="text-2xs font-semibold text-slate-700">Lulusan Terlacak</p>
                   <p className="text-xl font-black text-slate-800">{t(tsRow?.rowData.jumlahTerlacak)}</p>
                 </div>
                 <div className="h-1.5 rounded-full bg-blue-100 overflow-hidden">
@@ -216,11 +216,11 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <div className="space-y-3">
                 <div>
-                  <p className="text-2xs font-semibold text-slate-400">Bidang Infokom</p>
+                  <p className="text-2xs font-semibold text-slate-700">Bidang Infokom</p>
                   <p className="text-xl font-black text-indigo-600">{t(tsRow?.rowData.profesiInfokom)}</p>
                 </div>
                 <div>
-                  <p className="text-2xs font-semibold text-slate-400">Bidang Non-Infokom</p>
+                  <p className="text-2xs font-semibold text-slate-700">Bidang Non-Infokom</p>
                   <p className="text-xl font-black text-slate-800">{t(tsRow?.rowData.profesiNonInfokom)}</p>
                 </div>
               </div>
@@ -235,15 +235,15 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="rounded-xl bg-white/70 border border-purple-100/50 p-3">
-                  <p className="text-2xs font-semibold text-slate-400">Multinasional</p>
+                  <p className="text-2xs font-semibold text-slate-700">Multinasional</p>
                   <p className="text-lg font-black text-purple-700">{t(tsRow?.rowData.internasional)}</p>
                 </div>
                 <div className="rounded-xl bg-white/70 border border-purple-100/50 p-3">
-                  <p className="text-2xs font-semibold text-slate-400">Nasional</p>
+                  <p className="text-2xs font-semibold text-slate-700">Nasional</p>
                   <p className="text-lg font-black text-purple-700">{t(tsRow?.rowData.nasional)}</p>
                 </div>
                 <div className="rounded-xl bg-white/70 border border-purple-100/50 p-3">
-                  <p className="text-2xs font-semibold text-slate-400">Wirausaha</p>
+                  <p className="text-2xs font-semibold text-slate-700">Wirausaha</p>
                   <p className="text-lg font-black text-purple-700">{t(tsRow?.rowData.wirausaha)}</p>
                 </div>
               </div>
@@ -252,18 +252,18 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
         </div>
 
         <div className="border-t border-slate-100 mx-7 py-4 flex items-center justify-between">
-          <span className="text-xs font-black text-slate-500 uppercase tracking-wider">Total Seluruh Data</span>
+          <span className="text-xs font-black text-slate-800 uppercase tracking-wider">Total Seluruh Data</span>
           <div className="flex items-center gap-8">
             <div className="text-right">
-              <p className="text-2xs font-semibold text-slate-400">Lulusan</p>
+              <p className="text-2xs font-semibold text-slate-700">Lulusan</p>
               <p className="text-sm font-black text-slate-800">{t(sumField("jumlahLulusan"))}</p>
             </div>
             <div className="text-right">
-              <p className="text-2xs font-semibold text-slate-400">Terlacak</p>
+              <p className="text-2xs font-semibold text-slate-700">Terlacak</p>
               <p className="text-sm font-black text-slate-800">{t(sumField("jumlahTerlacak"))}</p>
             </div>
             <div className="text-right">
-              <p className="text-2xs font-semibold text-slate-400">Infokom</p>
+              <p className="text-2xs font-semibold text-slate-700">Infokom</p>
               <p className="text-sm font-black text-indigo-600">{t(sumField("profesiInfokom"))}</p>
             </div>
           </div>
@@ -287,7 +287,7 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">Edit Kesesuaian Bidang Kerja</h3>
-                  <p className="text-xs text-slate-500 font-semibold mt-0.5">Tahun Sekarang (TS)</p>
+                  <p className="text-xs text-slate-800 font-semibold mt-0.5">Tahun Sekarang (TS)</p>
                 </div>
               </div>
 

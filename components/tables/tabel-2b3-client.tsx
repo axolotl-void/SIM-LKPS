@@ -32,7 +32,7 @@ export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode, status
   return (
     <div className="space-y-6">
       <div className="flex justify-between">
-        <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-500"><ArrowLeft className="h-4 w-4" /> Kembali</Link>
+        <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-800"><ArrowLeft className="h-4 w-4" /> Kembali</Link>
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => { setEditId(undefined); setForm({ kodeCpl: "", rumusanCpl: "", kodeCpmk: "", rumusanCpmk: "", mataKuliah: "" }); setIsOpen(true); }}
@@ -54,7 +54,7 @@ export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode, status
             <div className="h-10 w-10 flex-shrink-0 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center font-black">{i + 1}</div>
             <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <span className="text-3xs font-black text-slate-400 uppercase tracking-widest">{row.rowData.kodeCpl}</span>
+                <span className="text-3xs font-black text-slate-700 uppercase tracking-widest">{row.rowData.kodeCpl}</span>
                 <p className="mt-1 text-xs text-slate-700 leading-relaxed font-medium">{row.rowData.rumusanCpl}</p>
               </div>
               <div className="border-l border-slate-100 pl-6">
@@ -82,11 +82,11 @@ export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode, status
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-2xs font-bold mb-1 text-slate-500">KODE CPL</label>
+                    <label className="block text-2xs font-bold mb-1 text-slate-800">KODE CPL</label>
                     <input required value={form.kodeCpl} onChange={e => setForm({...form, kodeCpl: e.target.value})} className="w-full border p-2 rounded-xl text-xs bg-slate-50" />
                   </div>
                   <div>
-                    <label className="block text-2xs font-bold mb-1 text-slate-500">KODE CPMK</label>
+                    <label className="block text-2xs font-bold mb-1 text-slate-800">KODE CPMK</label>
                     <input required value={form.kodeCpmk} onChange={e => setForm({...form, kodeCpmk: e.target.value})} className="w-full border p-2 rounded-xl text-xs bg-slate-50" />
                   </div>
                 </div>
@@ -105,7 +105,7 @@ export function Tabel2B3Client({ initialRows, tahunAkademikId, tabelKode, status
                   <textarea required rows={3} value={form.mataKuliah} onChange={e => setForm({...form, mataKuliah: e.target.value})} className="w-full border p-2.5 rounded-xl text-xs font-mono text-emerald-700 bg-emerald-50/30 border-emerald-100" />
                 </div>
                 <div className="flex justify-end gap-2 pt-4">
-                  <button type="button" onClick={() => setIsOpen(false)} className="text-xs font-bold text-slate-400">Batal</button>
+                  <button type="button" onClick={() => setIsOpen(false)} className="text-xs font-bold text-slate-700">Batal</button>
                   <button type="submit" className="rounded-xl bg-indigo-600 px-6 py-2 text-xs font-bold text-white">Simpan Peta</button>
                 </div>
               </form>

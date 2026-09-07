@@ -134,7 +134,7 @@ export function Tabel4C2Client({ initialRows, tahunAkademikId, tabelKode, status
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-4" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-cyan-600 transition-colors">
+        <Link href="/lkps/bab-4" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-cyan-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 4
         </Link>
         <div className="flex items-center gap-2.5">
@@ -151,19 +151,19 @@ export function Tabel4C2Client({ initialRows, tahunAkademikId, tabelKode, status
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-4">
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Diseminasi</div>
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-700">Total Diseminasi</div>
           <p className="text-3xl font-black mt-2 text-slate-800">{rows.length}</p>
         </div>
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-400">Lokal</div>
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-700">Lokal</div>
           <p className="text-3xl font-black mt-2 text-cyan-600">{lokal}</p>
         </div>
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-400">Nasional</div>
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-700">Nasional</div>
           <p className="text-3xl font-black mt-2 text-blue-600">{nasional}</p>
         </div>
         <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-400">Internasional</div>
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-700">Internasional</div>
           <p className="text-3xl font-black mt-2 text-indigo-600">{internasional}</p>
         </div>
       </div>
@@ -186,29 +186,29 @@ export function Tabel4C2Client({ initialRows, tahunAkademikId, tabelKode, status
         {rows.length === 0 ? (
           <div className="p-12 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
-              <Share2 className="h-8 w-8 text-slate-400" />
+              <Share2 className="h-8 w-8 text-slate-700" />
             </div>
-            <p className="text-sm font-semibold text-slate-500">Belum ada data diseminasi.</p>
+            <p className="text-sm font-semibold text-slate-800">Belum ada data diseminasi.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50/50">
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">No</th>
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Nama DTPR</th>
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Judul</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Skala</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS-2</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS-1</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Aksi</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">No</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Nama DTPR</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Judul</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Skala</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS-2</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS-1</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((item, idx) => (
                   <tr key={item.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                    <td className="px-4 py-3 font-semibold text-slate-400">{idx + 1}</td>
+                    <td className="px-4 py-3 font-semibold text-slate-700">{idx + 1}</td>
                     <td className="px-4 py-3 font-bold text-slate-800">{item.rowData.namaDtpr}</td>
                     <td className="px-4 py-3 text-slate-600 max-w-[200px] truncate">{item.rowData.judul}</td>
                     <td className="px-4 py-3 text-center">
@@ -248,7 +248,7 @@ export function Tabel4C2Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
               <div>
                 <h3 className="text-lg font-bold text-slate-800">{editItem ? "Edit Diseminasi" : "Tambah Diseminasi"}</h3>
-                <p className="text-xs font-semibold text-slate-400 mt-0.5">Hasil PkM DTPR</p>
+                <p className="text-xs font-semibold text-slate-700 mt-0.5">Hasil PkM DTPR</p>
               </div>
             </div>
             <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-5">
@@ -311,7 +311,7 @@ export function Tabel4C2Client({ initialRows, tahunAkademikId, tabelKode, status
             <motion.div initial={{ scale: 0.9, opacity: 0, y: 12 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0, y: 12 }} transition={{ type: "spring", damping: 28, stiffness: 380 }} className="w-full max-w-sm rounded-3xl bg-white shadow-soft-lg border border-slate-100/50 p-8">
               <div className="flex justify-center mb-5"><div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 text-red-500"><AlertTriangle className="h-8 w-8" /></div></div>
               <h3 className="text-base font-bold text-slate-800 text-center">Hapus Diseminasi?</h3>
-              <p className="text-xs font-semibold text-slate-500 text-center mt-1.5">Tindakan ini tidak dapat dibatalkan.</p>
+              <p className="text-xs font-semibold text-slate-800 text-center mt-1.5">Tindakan ini tidak dapat dibatalkan.</p>
               <div className="mt-5 rounded-xl bg-red-50/70 border border-red-100 px-4 py-3 text-center">
                 <p className="text-xs font-bold text-red-700">&ldquo;{deleteConfirmName}&rdquo;</p>
               </div>
