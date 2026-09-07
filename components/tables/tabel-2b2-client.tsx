@@ -34,7 +34,7 @@ export function Tabel2B2Client({ initialRows, tahunAkademikId, tabelKode, status
   return (
     <div className="space-y-6">
       <div className="flex justify-between">
-        <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-500"><ArrowLeft className="h-4 w-4" /> Kembali</Link>
+        <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-800"><ArrowLeft className="h-4 w-4" /> Kembali</Link>
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => { setEditId(undefined); setForm({ kodeCpl: "", pl01: false, pl02: false, pl03: false, pl04: false, pl05: false }); setIsOpen(true); }}
@@ -53,7 +53,7 @@ export function Tabel2B2Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="rounded-3xl bg-white shadow-soft border border-slate-100 overflow-hidden">
         <table className="w-full text-center border-collapse">
           <thead>
-            <tr className="bg-slate-50 text-2xs font-black uppercase text-slate-400 border-b">
+            <tr className="bg-slate-50 text-2xs font-black uppercase text-slate-700 border-b">
               <th className="p-4 w-20">No</th>
               <th className="p-4 text-left">Kode CPL</th>
               {[1,2,3,4,5].map(n => <th key={n} className="p-4">PL0{n}</th>)}
@@ -63,7 +63,7 @@ export function Tabel2B2Client({ initialRows, tahunAkademikId, tabelKode, status
           <tbody className="divide-y">
             {rows.map((row: any, i: number) => (
               <tr key={row.id}>
-                <td className="p-4 font-bold text-slate-400">{i + 1}</td>
+                <td className="p-4 font-bold text-slate-700">{i + 1}</td>
                 <td className="p-4 text-left font-black text-indigo-900">{row.rowData.kodeCpl}</td>
                 {[1,2,3,4,5].map(n => <td key={n} className="p-4"><CheckMark v={row.rowData[`pl0${n}`]} /></td>)}
                 <td className="p-4 flex justify-center gap-2">
@@ -85,13 +85,13 @@ export function Tabel2B2Client({ initialRows, tahunAkademikId, tabelKode, status
                 <div className="grid grid-cols-5 gap-2">
                   {[1,2,3,4,5].map(n => (
                     <label key={n} className="flex flex-col items-center gap-2 p-3 border rounded-2xl cursor-pointer hover:bg-slate-50">
-                      <span className="text-[10px] font-black text-slate-400">PL0{n}</span>
+                      <span className="text-[10px] font-black text-slate-700">PL0{n}</span>
                       <input type="checkbox" checked={(form as any)[`pl0${n}`]} onChange={e => setForm({...form, [`pl0${n}`]: e.target.checked})} className="rounded text-indigo-600" />
                     </label>
                   ))}
                 </div>
                 <div className="flex justify-end gap-2 pt-4">
-                  <button type="button" onClick={() => setIsOpen(false)} className="text-xs font-bold text-slate-400">Batal</button>
+                  <button type="button" onClick={() => setIsOpen(false)} className="text-xs font-bold text-slate-700">Batal</button>
                   <button type="submit" className="rounded-xl bg-indigo-600 px-6 py-2 text-xs font-bold text-white">Simpan</button>
                 </div>
               </form>

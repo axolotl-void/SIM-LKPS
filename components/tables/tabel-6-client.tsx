@@ -158,7 +158,7 @@ export function Tabel6Client({ initialRows, tahunAkademikId, tabelKode, status, 
     <div className="space-y-8">
       {/* Action Bar */}
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-6" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors">
+        <Link href="/lkps/bab-6" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-indigo-600 transition-colors">
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 6
         </Link>
         <div className="flex items-center gap-2.5">
@@ -191,7 +191,7 @@ export function Tabel6Client({ initialRows, tahunAkademikId, tabelKode, status, 
             </div>
             <div>
               <h3 className="text-base font-bold text-slate-800">1. Keselarasan Visi</h3>
-              <p className="text-2xs font-semibold text-slate-400">Visi PT vs UPPS vs Keilmuan PS</p>
+              <p className="text-2xs font-semibold text-slate-700">Visi PT vs UPPS vs Keilmuan PS</p>
             </div>
           </div>
           {visiRows.length > 0 && canEdit && (
@@ -203,7 +203,7 @@ export function Tabel6Client({ initialRows, tahunAkademikId, tabelKode, status, 
 
         {visiRows.length === 0 ? (
           <div className="p-8 text-center bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
-            <p className="text-xs font-semibold text-slate-400">Belum ada data Visi yang dimasukkan.</p>
+            <p className="text-xs font-semibold text-slate-700">Belum ada data Visi yang dimasukkan.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -232,7 +232,7 @@ export function Tabel6Client({ initialRows, tahunAkademikId, tabelKode, status, 
             </div>
             <div>
               <h3 className="text-base font-bold text-slate-800">2. Keselarasan Butir Misi</h3>
-              <p className="text-2xs font-semibold text-slate-400">Daftar keselarasan butir-butir misi</p>
+              <p className="text-2xs font-semibold text-slate-700">Daftar keselarasan butir-butir misi</p>
             </div>
           </div>
           <span className="text-2xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-xl">{misiRows.length} Butir</span>
@@ -240,7 +240,7 @@ export function Tabel6Client({ initialRows, tahunAkademikId, tabelKode, status, 
 
         {misiRows.length === 0 ? (
           <div className="p-8 text-center bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
-            <p className="text-xs font-semibold text-slate-400">Belum ada butir Misi yang dimasukkan.</p>
+            <p className="text-xs font-semibold text-slate-700">Belum ada butir Misi yang dimasukkan.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -257,15 +257,15 @@ export function Tabel6Client({ initialRows, tahunAkademikId, tabelKode, status, 
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
                   <div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100/50">
-                    <p className="text-3xs font-extrabold uppercase text-slate-400 mb-1">Misi PT</p>
+                    <p className="text-3xs font-extrabold uppercase text-slate-700 mb-1">Misi PT</p>
                     <p className="text-xs text-slate-700 font-medium leading-relaxed">{item.rowData.pt}</p>
                   </div>
                   <div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100/50">
-                    <p className="text-3xs font-extrabold uppercase text-slate-400 mb-1">Misi UPPS</p>
+                    <p className="text-3xs font-extrabold uppercase text-slate-700 mb-1">Misi UPPS</p>
                     <p className="text-xs text-slate-700 font-medium leading-relaxed">{item.rowData.upps}</p>
                   </div>
                   <div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100/50">
-                    <p className="text-3xs font-extrabold uppercase text-slate-400 mb-1">Misi PS</p>
+                    <p className="text-3xs font-extrabold uppercase text-slate-700 mb-1">Misi PS</p>
                     <p className="text-xs text-slate-700 font-medium leading-relaxed">{item.rowData.ps}</p>
                   </div>
                 </div>
@@ -286,7 +286,7 @@ export function Tabel6Client({ initialRows, tahunAkademikId, tabelKode, status, 
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">{editItem ? `Ubah ${form.kategori}` : `Tambah ${form.kategori}`}</h3>
-                  <p className="text-xs text-slate-500 font-semibold mt-0.5">Kesesuaian dan Keselarasan Visi Misi</p>
+                  <p className="text-xs text-slate-800 font-semibold mt-0.5">Kesesuaian dan Keselarasan Visi Misi</p>
                 </div>
               </div>
 
@@ -336,7 +336,7 @@ export function Tabel6Client({ initialRows, tahunAkademikId, tabelKode, status, 
             <motion.div initial={{ scale: 0.9, opacity: 0, y: 15 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0, y: 15 }} className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-soft-lg text-center">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-50 text-red-500 mb-4"><Trash2 className="h-6 w-6" /></div>
               <h3 className="text-base font-bold text-slate-800">Hapus Butir Misi?</h3>
-              <p className="mt-2 text-xs text-slate-400 font-semibold leading-relaxed px-2">Data yang dihapus tidak dapat dikembalikan.</p>
+              <p className="mt-2 text-xs text-slate-700 font-semibold leading-relaxed px-2">Data yang dihapus tidak dapat dikembalikan.</p>
               <div className="mt-6 flex gap-3">
                 <button onClick={() => setDeleteConfirmId(null)} disabled={isDeleting} className="flex-1 rounded-xl border border-slate-100 bg-white py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-50 shadow-soft-sm">Batal</button>
                 <button onClick={handleDelete} disabled={isDeleting} className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-red-500 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:bg-red-600 disabled:opacity-50">

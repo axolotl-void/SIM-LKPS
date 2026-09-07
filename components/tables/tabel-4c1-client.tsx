@@ -105,7 +105,7 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-4" className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-teal-600 transition-colors"><ArrowLeft className="h-4 w-4" /> Kembali ke BAB 4</Link>
+        <Link href="/lkps/bab-4" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-teal-600 transition-colors"><ArrowLeft className="h-4 w-4" /> Kembali ke BAB 4</Link>
         <div className="flex items-center gap-2.5">
           <button onClick={openAdd} disabled={!canEdit} className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${canEdit ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}><Plus className="h-4 w-4" /> Tambah Kerjasama PkM</button>
         </div>
@@ -117,9 +117,9 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">Jumlah Mitra</div><p className="text-3xl font-black text-slate-800">{totalMitra}</p></div></div>
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Dana TS</div><p className="text-3xl font-black text-teal-600">{totalDanaTs.toLocaleString("id-ID")} jt</p></div></div>
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-400">Skala Internasional</div><p className="text-3xl font-black text-cyan-600">{rows.filter((r) => r.rowData.sumber === "I").length}</p></div></div>
+        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-700">Jumlah Mitra</div><p className="text-3xl font-black text-slate-800">{totalMitra}</p></div></div>
+        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-700">Total Dana TS</div><p className="text-3xl font-black text-teal-600">{totalDanaTs.toLocaleString("id-ID")} jt</p></div></div>
+        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-700">Skala Internasional</div><p className="text-3xl font-black text-cyan-600">{rows.filter((r) => r.rowData.sumber === "I").length}</p></div></div>
       </div>
 
       <div className="rounded-2xl border-2 border-teal-200/70 bg-white shadow-soft overflow-hidden">
@@ -133,23 +133,23 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
           </div>
         </div>
         {rows.length === 0 ? (
-          <div className="p-12 text-center"><div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100"><Handshake className="h-8 w-8 text-slate-400" /></div><p className="text-sm font-semibold text-slate-500">Belum ada data kerjasama PkM.</p></div>
+          <div className="p-12 text-center"><div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100"><Handshake className="h-8 w-8 text-slate-700" /></div><p className="text-sm font-semibold text-slate-800">Belum ada data kerjasama PkM.</p></div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead><tr className="border-b border-slate-100 bg-slate-50/50">
-                <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">No</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Judul Kerjasama</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Mitra</th>
-                <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Skala</th>
-                <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS-2</th>
-                <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS-1</th>
-                <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">TS</th>
-                <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Aksi</th>
+                <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">No</th>
+                <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Judul Kerjasama</th>
+                <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Mitra</th>
+                <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Skala</th>
+                <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS-2</th>
+                <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS-1</th>
+                <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">TS</th>
+                <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Aksi</th>
               </tr></thead>
               <tbody>{rows.map((item, idx) => (
                 <tr key={item.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                  <td className="px-4 py-3 font-semibold text-slate-400">{idx + 1}</td>
+                  <td className="px-4 py-3 font-semibold text-slate-700">{idx + 1}</td>
                   <td className="px-4 py-3 font-bold text-slate-800">{item.rowData.judulKerjasama}</td>
                   <td className="px-4 py-3 text-slate-600">{item.rowData.mitraKerja}</td>
                   <td className="px-4 py-3 text-center"><span className={`inline-flex rounded-lg px-2.5 py-1 text-2xs font-bold ${item.rowData.sumber === "I" ? "bg-purple-100 text-purple-700" : item.rowData.sumber === "N" ? "bg-blue-100 text-blue-700" : "bg-amber-100 text-amber-700"}`}>{item.rowData.sumber === "I" ? "Internasional" : item.rowData.sumber === "N" ? "Nasional" : "Lokal"}</span></td>
@@ -172,7 +172,7 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
           <motion.div initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }} transition={{ type: "spring", damping: 25, stiffness: 350 }} className="w-full max-w-xl rounded-3xl bg-white shadow-soft-lg border border-slate-100/50 p-8 my-8">
             <div className="flex items-center gap-4 mb-6">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-soft-sm">{editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}</div>
-              <div><h3 className="text-lg font-bold text-slate-800">{editItem ? "Edit Kerjasama PkM" : "Tambah Kerjasama PkM"}</h3><p className="text-xs text-slate-500 font-semibold mt-0.5">Mitra dan Pendanaan</p></div>
+              <div><h3 className="text-lg font-bold text-slate-800">{editItem ? "Edit Kerjasama PkM" : "Tambah Kerjasama PkM"}</h3><p className="text-xs text-slate-800 font-semibold mt-0.5">Mitra dan Pendanaan</p></div>
             </div>
             <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-5">
               <div className="rounded-2xl border border-teal-100 bg-teal-50/30 p-5 space-y-4">
@@ -211,7 +211,7 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 text-red-500"><AlertTriangle className="h-8 w-8" /></div>
               </div>
               <h3 className="text-base font-bold text-slate-800 text-center">Hapus Kerjasama PkM?</h3>
-              <p className="text-xs font-semibold text-slate-500 text-center mt-1.5">Tindakan ini tidak dapat dibatalkan.</p>
+              <p className="text-xs font-semibold text-slate-800 text-center mt-1.5">Tindakan ini tidak dapat dibatalkan.</p>
               <div className="mt-5 rounded-xl bg-red-50/70 border border-red-100 px-4 py-3 text-center">
                 <p className="text-xs font-bold text-red-700">&ldquo;{deleteConfirmName}&rdquo;</p>
               </div>

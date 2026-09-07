@@ -153,7 +153,7 @@ export function Tabel1A1Client({
       <div className="flex items-center justify-between">
         <Link
           href="/lkps/bab-1"
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke Daftar Tabel
         </Link>
@@ -176,7 +176,7 @@ export function Tabel1A1Client({
 
       {/* Card List Table Header */}
       <div className="space-y-3">
-        <div className="grid grid-cols-12 px-6 py-2.5 text-2xs font-bold uppercase tracking-wider text-slate-400 select-none">
+        <div className="grid grid-cols-12 px-6 py-2.5 text-2xs font-bold uppercase tracking-wider text-slate-700 select-none">
           <div className="col-span-1">No</div>
           <div className="col-span-2">Unit Kerja</div>
           <div className="col-span-2">Nama Pejabat</div>
@@ -189,7 +189,7 @@ export function Tabel1A1Client({
 
         {/* Card Rows */}
         {rows.length === 0 ? (
-          <div className="rounded-3xl bg-white border border-slate-100 p-10 text-center text-xs font-semibold text-slate-400 shadow-soft">
+          <div className="rounded-3xl bg-white border border-slate-100 p-10 text-center text-xs font-semibold text-slate-700 shadow-soft">
             Belum ada data pimpinan. Silakan tambah data baru.
           </div>
         ) : (
@@ -228,12 +228,12 @@ export function Tabel1A1Client({
               </div>
 
               {/* Jafung */}
-              <div className="col-span-1 text-xs font-semibold text-slate-500">
+              <div className="col-span-1 text-xs font-semibold text-slate-800">
                 {row.rowData.jabatanFungsional}
               </div>
 
               {/* Tupoksi */}
-              <div className="col-span-2 text-xs text-slate-500 truncate pr-4 font-medium" title={row.rowData.tupoksi}>
+              <div className="col-span-2 text-xs text-slate-800 truncate pr-4 font-medium" title={row.rowData.tupoksi}>
                 {row.rowData.tupoksi}
               </div>
 
@@ -271,17 +271,17 @@ export function Tabel1A1Client({
 
       {/* Pagination & Summary info */}
       <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
-        <div className="text-xs font-semibold text-slate-400">
+        <div className="text-xs font-semibold text-slate-700">
           Menampilkan 1 - {rows.length} dari {rows.length} data
         </div>
         <div className="flex items-center gap-1">
-          <button className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:bg-slate-50 transition-colors">
+          <button className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors">
             &lt;
           </button>
           <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-600 text-white font-bold text-xs shadow-soft-sm">
             1
           </button>
-          <button className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:bg-slate-50 transition-colors">
+          <button className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors">
             &gt;
           </button>
         </div>
@@ -308,7 +308,7 @@ export function Tabel1A1Client({
                   <h3 className="text-lg font-bold text-slate-800 tracking-tight">
                     {editId ? "Ubah Data Pimpinan" : "Tambah Data Pimpinan"}
                   </h3>
-                  <p className="text-xs text-slate-500 font-semibold mt-0.5">
+                  <p className="text-xs text-slate-800 font-semibold mt-0.5">
                     Lengkapi informasi pimpinan program studi
                   </p>
                 </div>
@@ -347,7 +347,7 @@ export function Tabel1A1Client({
                           <option value="Ketua Program Studi">Ketua Program Studi</option>
                           <option value="Sekretaris Prodi">Sekretaris Prodi</option>
                         </select>
-                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-700">
                           <ChevronDown className="h-4 w-4" />
                         </span>
                       </div>
@@ -387,7 +387,7 @@ export function Tabel1A1Client({
                           <option value="2026 - Sekarang">2026 - Sekarang</option>
                           <option value="2027 - Sekarang">2027 - Sekarang</option>
                         </select>
-                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-700">
                           <ChevronDown className="h-4 w-4" />
                         </span>
                       </div>
@@ -413,7 +413,7 @@ export function Tabel1A1Client({
                           <option value="Strata 2">S2 (Strata 2)</option>
                           <option value="Strata 1">S1 (Strata 1)</option>
                         </select>
-                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-700">
                           <ChevronDown className="h-4 w-4" />
                         </span>
                       </div>
@@ -440,7 +440,7 @@ export function Tabel1A1Client({
                           <option value="Lektor Kepala">Lektor Kepala</option>
                           <option value="Guru Besar">Guru Besar</option>
                         </select>
-                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-700">
                           <ChevronDown className="h-4 w-4" />
                         </span>
                       </div>
@@ -461,7 +461,7 @@ export function Tabel1A1Client({
                           onChange={(e) => setTupoksi(e.target.value)}
                           className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs transition-all focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none shadow-3xs"
                         />
-                        <div className="absolute bottom-2 right-3 text-2xs font-semibold text-slate-400">
+                        <div className="absolute bottom-2 right-3 text-2xs font-semibold text-slate-700">
                           {tupoksi.length} / 1000
                         </div>
                       </div>
@@ -476,19 +476,19 @@ export function Tabel1A1Client({
                     <span>Tips Pengisian</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5">
-                    <div className="flex items-center gap-2 text-2xs font-semibold text-slate-500">
+                    <div className="flex items-center gap-2 text-2xs font-semibold text-slate-800">
                       <CheckCircle2 className="h-3.5 w-3.5 text-blue-500 shrink-0" />
                       <span>Pastikan semua data diisi dengan benar dan lengkap</span>
                     </div>
-                    <div className="flex items-center gap-2 text-2xs font-semibold text-slate-500">
+                    <div className="flex items-center gap-2 text-2xs font-semibold text-slate-800">
                       <CheckCircle2 className="h-3.5 w-3.5 text-blue-500 shrink-0" />
                       <span>Periode jabatan diisi dengan tahun dan keterangan</span>
                     </div>
-                    <div className="flex items-center gap-2 text-2xs font-semibold text-slate-500">
+                    <div className="flex items-center gap-2 text-2xs font-semibold text-slate-800">
                       <CheckCircle2 className="h-3.5 w-3.5 text-blue-500 shrink-0" />
                       <span>Gunakan gelar akademik sesuai dengan yang dimiliki</span>
                     </div>
-                    <div className="flex items-center gap-2 text-2xs font-semibold text-slate-500">
+                    <div className="flex items-center gap-2 text-2xs font-semibold text-slate-800">
                       <CheckCircle2 className="h-3.5 w-3.5 text-blue-500 shrink-0" />
                       <span>Tupoksi diisi secara ringkas dan jelas</span>
                     </div>
@@ -544,7 +544,7 @@ export function Tabel1A1Client({
               {/* Close Button */}
               <button 
                 onClick={() => setDeleteId(null)} 
-                className="absolute top-4 right-4 rounded-xl p-1.5 text-slate-400 hover:bg-slate-50 transition-colors"
+                className="absolute top-4 right-4 rounded-xl p-1.5 text-slate-700 hover:bg-slate-50 transition-colors"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -556,7 +556,7 @@ export function Tabel1A1Client({
 
               {/* Title & Body */}
               <h3 className="text-base font-bold text-slate-800">Hapus Data</h3>
-              <p className="mt-2 text-xs text-slate-400 font-semibold leading-relaxed px-2">
+              <p className="mt-2 text-xs text-slate-700 font-semibold leading-relaxed px-2">
                 Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.
               </p>
 
@@ -608,7 +608,7 @@ export function Tabel1A1Client({
                 <p className="text-xs font-bold text-slate-800">
                   {toast.type === "success" ? "Berhasil!" : "Gagal!"}
                 </p>
-                <p className="text-2xs font-semibold text-slate-400 mt-0.5 leading-snug">
+                <p className="text-2xs font-semibold text-slate-700 mt-0.5 leading-snug">
                   {toast.message}
                 </p>
               </div>

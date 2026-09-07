@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useCallback, memo } from "react";
+import { useState, memo } from "react";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Database,
@@ -36,7 +36,7 @@ const menuGroups: MenuGroup[] = [
   {
     group: "Menu Utama",
     items: [
-      { label: "Dashboard", href: "/", icon: LayoutDashboard, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
       { label: "Master Data", href: "/master", icon: Database, roles: ["ADMIN"] },
     ],
   },
@@ -101,12 +101,7 @@ interface SidebarProps {
 
 export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const handleNavigation = useCallback((href: string) => {
-    router.push(href);
-  }, [router]);
 
   return (
     <motion.aside
@@ -173,11 +168,14 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
                       onHoverStart={() => setHoveredIndex(globalIndex)}
                       onHoverEnd={() => setHoveredIndex(null)}
                     >
-                      <motion.button
+                      <Link
+                        href={item.href}
+                        className="block"
+                      >
+                      <motion.span
                         variants={itemHoverVariants}
                         initial="rest"
                         animate={hoveredIndex === globalIndex ? "hover" : "rest"}
-                        onClick={() => handleNavigation(item.href)}
                         className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium transition-all duration-200 cursor-pointer ${
                           isActive
                             ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/20"
@@ -222,7 +220,8 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
                             <ChevronRight className="h-3.5 w-3.5 text-slate-400" />
                           </motion.span>
                         )}
-                      </motion.button>
+                      </motion.span>
+                      </Link>
                     </motion.li>
                   );
                 })}

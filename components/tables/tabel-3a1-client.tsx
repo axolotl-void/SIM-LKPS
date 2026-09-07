@@ -181,7 +181,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status
       <div className="flex items-center justify-between">
         <Link
           href="/lkps/bab-3"
-          className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 3
         </Link>
@@ -191,7 +191,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status
             disabled={!canEdit}
             className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm transition-all ${
               canEdit
-                ? "bg-gradient-to-tr from-violet-500 to-purple-600 text-white hover:shadow-soft"
+                ? "bg-gradient-to-tr from-cyan-500 to-blue-600 text-white hover:shadow-soft"
                 : "bg-slate-100 text-slate-400 cursor-not-allowed"
             }`}
           >
@@ -200,37 +200,10 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status
         </div>
       </div>
 
-      {/* Info banner */}
-      <div className="flex items-center gap-3 rounded-2xl bg-violet-50/60 border border-violet-100/60 px-5 py-4 text-xs font-semibold text-violet-700">
-        <Lightbulb className="h-5 w-5 shrink-0 text-violet-500" />
-        <span>
-          Klik <strong>&ldquo;Tambah Prasarana&rdquo;</strong> untuk menambahkan data. Klik{" "}
-          <strong>Edit</strong> untuk mengubah atau <strong>Hapus</strong> untuk menghapus item.
-        </span>
-      </div>
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-4">
-        {[
-          { label: "Total Prasarana", value: rows.length, color: "text-slate-800" },
-          { label: "Total Daya Tampung", value: totalDayaTampung, color: "text-violet-600" },
-          { label: "Total Luas Ruang", value: `${totalLuasRuang} m²`, color: "text-purple-600" },
-          { label: "Milik / Sewa", value: `${milikSendiri} / ${sewa}`, color: "text-slate-700" },
-        ].map((card) => (
-          <div
-            key={card.label}
-            className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"
-          >
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400">{card.label}</div>
-            <p className={`text-3xl font-black mt-2 ${card.color}`}>{card.value}</p>
-          </div>
-        ))}
-      </div>
-
       {/* Table card */}
-      <div className="rounded-2xl border-2 border-violet-200/70 bg-white shadow-soft overflow-hidden">
+      <div className="rounded-2xl border-2 border-cyan-200/70 bg-white shadow-soft overflow-hidden">
         {/* Table header */}
-        <div className="bg-gradient-to-r from-violet-500 to-purple-600 px-7 py-4">
+        <div className="bg-gradient-to-r from-cyan-500 to-blue-600 px-7 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
@@ -250,30 +223,30 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status
         {rows.length === 0 ? (
           <div className="p-12 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
-              <Server className="h-8 w-8 text-slate-400" />
+              <Server className="h-8 w-8 text-slate-700" />
             </div>
-            <p className="text-sm font-semibold text-slate-500">Belum ada data prasarana penelitian.</p>
-            <p className="text-xs text-slate-400 mt-1">Klik &ldquo;Tambah Prasarana&rdquo; di atas untuk memulai.</p>
+            <p className="text-sm font-semibold text-slate-800">Belum ada data prasarana penelitian.</p>
+            <p className="text-xs text-slate-700 mt-1">Klik &ldquo;Tambah Prasarana&rdquo; di atas untuk memulai.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50/50">
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">No</th>
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Nama Prasarana</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Daya Tampung</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Luas (m²)</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Kepemilikan</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Lisensi</th>
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Perangkat</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Aksi</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">No</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Nama Prasarana</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Daya Tampung</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Luas (m²)</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Kepemilikan</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Lisensi</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Perangkat</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((item, idx) => (
                   <tr key={item.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                    <td className="px-4 py-3 font-semibold text-slate-400">{idx + 1}</td>
+                    <td className="px-4 py-3 font-semibold text-slate-700">{idx + 1}</td>
                     <td className="px-4 py-3 font-bold text-slate-800">{item.rowData.namaPrasarana || "—"}</td>
                     <td className="px-4 py-3 text-center font-semibold text-slate-600">
                       {item.rowData.dayaTampung || "—"}
@@ -361,14 +334,14 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status
             >
               {/* Modal header */}
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-soft-sm">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white shadow-soft-sm">
                   {editItem ? <Edit2 className="h-7 w-7" /> : <Plus className="h-7 w-7" />}
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">
                     {editItem ? "Edit Prasarana Penelitian" : "Tambah Prasarana Penelitian"}
                   </h3>
-                  <p className="text-xs font-semibold text-slate-400 mt-0.5">
+                  <p className="text-xs font-semibold text-slate-700 mt-0.5">
                     {editItem ? "Perbarui data sarana/prasarana." : "Tambah sarana/prasarana baru."}
                   </p>
                 </div>
@@ -440,7 +413,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status
                             onClick={() => setForm((p) => ({ ...p, status: v }))}
                             className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${
                               form.status === v
-                                ? "bg-gradient-to-tr from-violet-500 to-purple-600 text-white shadow-soft-sm"
+                                ? "bg-gradient-to-tr from-cyan-500 to-blue-600 text-white shadow-soft-sm"
                                 : "bg-white border border-slate-200 text-slate-600 hover:border-violet-300"
                             }`}
                           >
@@ -459,7 +432,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status
                             onClick={() => setForm((p) => ({ ...p, publicDomain: v }))}
                             className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${
                               form.publicDomain === v
-                                ? "bg-gradient-to-tr from-purple-500 to-cyan-600 text-white shadow-soft-sm"
+                                ? "bg-gradient-to-tr from-cyan-500 to-blue-600 text-white shadow-soft-sm"
                                 : "bg-white border border-slate-200 text-slate-600 hover:border-teal-300"
                             }`}
                           >
@@ -513,7 +486,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-violet-500 to-purple-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
+                    className="flex items-center gap-2 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 px-6 py-2.5 text-xs font-bold text-white shadow-soft-sm hover:shadow-soft transition-all disabled:opacity-60"
                   >
                     {isLoading ? (
                       <><Loader2 className="h-4 w-4 animate-spin" /> Menyimpan...</>
@@ -547,7 +520,7 @@ export function Tabel3A1Client({ initialRows, tahunAkademikId, tabelKode, status
               </div>
 
               <h3 className="text-base font-bold text-slate-800 text-center">Hapus Prasarana?</h3>
-              <p className="text-xs font-semibold text-slate-500 text-center mt-1.5">
+              <p className="text-xs font-semibold text-slate-800 text-center mt-1.5">
                 Tindakan ini tidak dapat dibatalkan.
               </p>
 

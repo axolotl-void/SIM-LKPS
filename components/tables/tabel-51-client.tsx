@@ -199,7 +199,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
 
       {/* Info banner */}
       <div className="flex items-center gap-3 rounded-2xl bg-slate-50/60 border border-slate-100/60 px-5 py-4 text-xs font-semibold text-slate-700">
-        <Lightbulb className="h-5 w-5 shrink-0 text-slate-500" />
+        <Lightbulb className="h-5 w-5 shrink-0 text-slate-800" />
         <span>
           Klik <strong>&ldquo;Tambah Sistem Tata Kelola&rdquo;</strong> untuk menambahkan data. Klik{" "}
           <strong>Edit</strong> untuk mengubah atau <strong>Hapus</strong> untuk menghapus item.
@@ -217,7 +217,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
             key={card.label}
             className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"
           >
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400">{card.label}</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-700">{card.label}</div>
             <p className={`text-3xl font-black mt-2 ${card.color}`}>{card.value}</p>
           </div>
         ))}
@@ -246,29 +246,29 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
         {rows.length === 0 ? (
           <div className="p-12 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
-              <Shield className="h-8 w-8 text-slate-400" />
+              <Shield className="h-8 w-8 text-slate-700" />
             </div>
-            <p className="text-sm font-semibold text-slate-500">Belum ada data sistem tata kelola.</p>
-            <p className="text-xs text-slate-400 mt-1">Klik &ldquo;Tambah Sistem Tata Kelola&rdquo; di atas untuk memulai.</p>
+            <p className="text-sm font-semibold text-slate-800">Belum ada data sistem tata kelola.</p>
+            <p className="text-xs text-slate-700 mt-1">Klik &ldquo;Tambah Sistem Tata Kelola&rdquo; di atas untuk memulai.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50/50">
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">No</th>
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Jenis Tata Kelola</th>
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Nama Sistem</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Akses</th>
-                  <th className="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider">Unit Pengelola</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Link Bukti</th>
-                  <th className="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider">Aksi</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">No</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Jenis Tata Kelola</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Nama Sistem</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Akses</th>
+                  <th className="px-4 py-3 text-left font-bold text-slate-800 uppercase tracking-wider">Unit Pengelola</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Link Bukti</th>
+                  <th className="px-4 py-3 text-center font-bold text-slate-800 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((item, idx) => (
                   <tr key={item.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                    <td className="px-4 py-3 font-semibold text-slate-400">{idx + 1}</td>
+                    <td className="px-4 py-3 font-semibold text-slate-700">{idx + 1}</td>
                     <td className="px-4 py-3 font-bold text-slate-800">{item.rowData.jenisTataKelola || "—"}</td>
                     <td className="px-4 py-3 font-semibold text-slate-700">{item.rowData.namaSistem || "—"}</td>
                     <td className="px-4 py-3 text-center">
@@ -296,7 +296,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
                           <Wifi className="h-3 w-3" /> Bukti
                         </a>
                       ) : (
-                        <span className="text-slate-300">—</span>
+                        <span className="text-slate-700">—</span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-center">
@@ -367,7 +367,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
                   <h3 className="text-lg font-bold text-slate-800">
                     {editItem ? "Edit Sistem Tata Kelola" : "Tambah Sistem Tata Kelola"}
                   </h3>
-                  <p className="text-xs font-semibold text-slate-400 mt-0.5">
+                  <p className="text-xs font-semibold text-slate-700 mt-0.5">
                     {editItem ? "Perbarui data sistem tata kelola." : "Tambah sistem tata kelola baru."}
                   </p>
                 </div>
@@ -519,7 +519,7 @@ export function Tabel51Client({ initialRows, tahunAkademikId, tabelKode, status,
               </div>
 
               <h3 className="text-base font-bold text-slate-800 text-center">Hapus Sistem Tata Kelola?</h3>
-              <p className="text-xs font-semibold text-slate-500 text-center mt-1.5">
+              <p className="text-xs font-semibold text-slate-800 text-center mt-1.5">
                 Tindakan ini tidak dapat dibatalkan.
               </p>
 
