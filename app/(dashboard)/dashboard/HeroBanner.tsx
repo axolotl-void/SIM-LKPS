@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FileText, CheckCircle2 } from "lucide-react";
+import { FileText } from "lucide-react";
 
 interface HeroBannerProps {
   userName: string;
   userRole: string;
   tablesFilled: number;
   totalTables: number;
-  approved: number;
   mahasiswaCount: number;
   dosenCount: number;
 }
@@ -18,7 +17,6 @@ export function HeroBanner({
   userRole,
   tablesFilled,
   totalTables,
-  approved,
   mahasiswaCount,
   dosenCount,
 }: HeroBannerProps) {
@@ -119,14 +117,6 @@ export function HeroBanner({
                 <span className="font-bold">{tablesFilled}</span>/{totalTables} tabel terisi
               </span>
             </div>
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <div className="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] bg-white/15 rounded flex items-center justify-center">
-                <CheckCircle2 className="w-3 h-3 text-white/85" />
-              </div>
-              <span className="text-white/90 font-medium" style={{ fontSize: "clamp(10px, 1.3vw, 12px)" }}>
-                <span className="font-bold">{approved}</span> disetujui
-              </span>
-            </div>
           </div>
         </div>
 
@@ -137,18 +127,12 @@ export function HeroBanner({
         >
           {/* Main Card */}
           <div
-            className="rounded-xl p-3 mb-2"
-            style={{
-              width: "clamp(180px, 20vw, 280px)",
-              background: "rgba(255,255,255,0.97)",
-              backdropFilter: "blur(16px)",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.1), 0 12px 32px rgba(0,0,0,0.15)",
-              border: "1px solid rgba(255,255,255,0.6)",
-            }}
+            className="hero-chip rounded-xl p-3 mb-2"
+            style={{ width: "clamp(180px, 20vw, 280px)", backdropFilter: "blur(16px)" }}
           >
             <div className="flex items-center justify-between mb-2 sm:mb-3">
               <span className="text-[10px] sm:text-[11px] font-semibold text-gray-900">Overview Statistik</span>
-              <div className="w-[22px] h-[22px] sm:w-[26px] sm:h-[26px] rounded flex items-center justify-center" style={{ background: "#EEF0FF" }}>
+              <div className="hero-chip-icon w-[22px] h-[22px] sm:w-[26px] sm:h-[26px] rounded flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3 text-indigo-500">
                   <line x1="18" x2="18" y1="20" y2="10" /><line x1="12" x2="12" y1="20" y2="4" /><line x1="6" x2="6" y1="20" y2="14" />
                 </svg>
@@ -174,14 +158,8 @@ export function HeroBanner({
 
           {/* Small Card */}
           <div
-            className="rounded-xl p-2 sm:p-2.5"
-            style={{
-              width: "clamp(100px, 12vw, 130px)",
-              background: "rgba(255,255,255,0.97)",
-              backdropFilter: "blur(16px)",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-              border: "1px solid rgba(255,255,255,0.6)",
-            }}
+            className="hero-chip rounded-xl p-2 sm:p-2.5"
+            style={{ width: "clamp(100px, 12vw, 130px)", backdropFilter: "blur(16px)" }}
           >
             <div className="flex items-center gap-2 py-1 sm:py-1.5 border-b border-gray-100">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />

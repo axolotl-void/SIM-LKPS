@@ -82,6 +82,22 @@ const FIELD_GROUPS = [
   },
 ];
 
+const GROUP_ACCENT: Record<string, string> = {
+  cyan: "text-cyan-700",
+  teal: "text-teal-700",
+  blue: "text-blue-700",
+  indigo: "text-indigo-700",
+  purple: "text-purple-700",
+  emerald: "text-emerald-700",
+  amber: "text-amber-700",
+};
+
+/** Ambil keluarga warna dari string `from-<fam>-500 to-...` milik FIELD_GROUPS. */
+function groupAccent(color: string): string {
+  const fam = color.match(/^from-([a-z]+)-/)?.[1] ?? "";
+  return GROUP_ACCENT[fam] ?? "text-slate-700";
+}
+
 export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
   const [currentStatus] = useState<TabelStatus>(status as TabelStatus);
   const canEdit = canEditTable(userRole, currentStatus);
@@ -313,9 +329,7 @@ export function Tabel2A1Client({ initialRows, tahunAkademikId, tabelKode, status
                   const Icon = group.icon;
                   return (
                     <div key={group.label} className="rounded-2xl border border-slate-100 bg-slate-50/30 p-4 space-y-3">
-                      <div className="flex items-center gap-2 text-xs font-bold tracking-wide"
-                        style={{ color: group.color.includes("blue") ? "#2563eb" : group.color.includes("indigo") ? "#6366f1" : group.color.includes("purple") ? "#9333ea" : group.color.includes("emerald") ? "#059669" : "#d97706" }}
-                      >
+                      <div className={`flex items-center gap-2 text-xs font-bold tracking-wide ${groupAccent(group.color)}`}>
                         <Icon className="h-4 w-4" />
                         <span>{group.label}</span>
                       </div>

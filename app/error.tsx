@@ -17,7 +17,7 @@ export default function GlobalError({
 
   return (
     <html>
-      <body className="flex min-h-screen items-center justify-center bg-[#f8f9fa] p-4">
+      <body className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
         <div className="w-full max-w-md space-y-6 text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 shadow-soft-sm">
             <AlertCircle className="h-8 w-8 text-red-500" />
@@ -25,13 +25,13 @@ export default function GlobalError({
 
           <div className="space-y-2">
             <h1 className="text-xl font-bold text-slate-800">Terjadi Kesalahan</h1>
-            <p className="text-sm font-medium text-slate-400">
+            <p className="text-sm font-medium text-slate-500">
               Maaf, terjadi kesalahan yang tidak terduga. Tim teknis telah diberitahu.
             </p>
           </div>
 
           {error.digest && (
-            <p className="rounded-xl bg-slate-100 px-3 py-2 text-2xs font-mono text-slate-400">
+            <p className="rounded-xl bg-slate-100 px-3 py-2 text-2xs font-mono text-slate-500">
               Error ID: {error.digest}
             </p>
           )}

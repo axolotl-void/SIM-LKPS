@@ -67,7 +67,7 @@ export function DashboardClient({ data }: { data: DashboardData }) {
   }));
 
   return (
-    <div className="flex flex-col h-full p-4 gap-4" style={{ backgroundColor: "#F5F7FA" }}>
+    <div className="dashboard-shell flex flex-col h-full p-4 gap-4">
       {/* Main Content - Responsive Layout */}
       <div className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0">
         {/* Left Column - Takes full width on mobile, majority on desktop */}
@@ -78,7 +78,6 @@ export function DashboardClient({ data }: { data: DashboardData }) {
             userRole={user.role}
             tablesFilled={stats.terisi}
             totalTables={stats.totalDefinitions}
-            approved={stats.disetujui}
             mahasiswaCount={quickStats.mahasiswaCount}
             dosenCount={quickStats.dosenCount}
           />

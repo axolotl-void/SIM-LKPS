@@ -4,6 +4,7 @@ import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { LogOut, ChevronRight } from "lucide-react";
 import { NotificationBell } from "./NotificationBell";
+import { ThemeToggle } from "./theme-toggle";
 
 interface HeaderProps {
   user: {
@@ -104,6 +105,9 @@ export function Header({ user }: HeaderProps) {
 
       {/* Right: actions */}
       <div className="flex items-center gap-2">
+        {/* Mode terang / gelap */}
+        <ThemeToggle />
+
         {/* Notifications */}
         <NotificationBell />
 

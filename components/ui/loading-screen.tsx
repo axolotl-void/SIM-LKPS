@@ -7,11 +7,7 @@ import Image from "next/image";
 export default function Loading() {
   return (
     <div
-      className="relative flex flex-col items-center justify-center min-h-[60vh] w-full overflow-hidden rounded-3xl"
-      style={{
-        background:
-          "linear-gradient(135deg, #F5F7FA 0%, #E8ECF1 50%, #F0F4F8 100%)",
-      }}
+      className="loading-shell relative flex flex-col items-center justify-center min-h-[60vh] w-full overflow-hidden rounded-3xl"
     >
       {/* Soft ambient blobs (slow drift, low opacity) */}
       <div
@@ -27,7 +23,7 @@ export default function Loading() {
       <div className="relative flex flex-col items-center gap-8">
         {/* Breathing logo badge */}
         <div
-          className="relative flex h-20 w-20 items-center justify-center rounded-3xl bg-white shadow-xl shadow-blue-500/15 ring-1 ring-slate-200/80"
+          className="logo-badge relative flex h-20 w-20 items-center justify-center rounded-3xl bg-white shadow-xl shadow-blue-500/15 ring-1 ring-slate-200/80"
           style={{ animation: "logoBreathe 2.4s ease-in-out infinite" }}
         >
           <Image

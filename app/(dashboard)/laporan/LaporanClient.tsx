@@ -52,15 +52,6 @@ const BAB_ICONS: Record<number, React.ElementType> = {
   6: Eye,
 };
 
-const BAB_COLORS: Record<number, { primary: string; bg: string }> = {
-  1: { primary: "#6366F1", bg: "#EEF2FF" },
-  2: { primary: "#10B981", bg: "#ECFDF5" },
-  3: { primary: "#F59E0B", bg: "#FFFBEB" },
-  4: { primary: "#F43F5E", bg: "#FFF1F2" },
-  5: { primary: "#8B5CF6", bg: "#F5F3FF" },
-  6: { primary: "#06B6D4", bg: "#ECFEFF" },
-};
-
 export function LaporanClient({
   tahunAkademik,
   prodi,
@@ -147,15 +138,16 @@ export function LaporanClient({
 
         {babStats.map((bab) => {
           const Icon = BAB_ICONS[bab.num] || Shield;
-          const colors = BAB_COLORS[bab.num] || { primary: "#6366F1", bg: "#EEF2FF" };
+          // Kelas .bab-tile-<n> didefinisikan di globals.css supaya ikut mode gelap
+          const tileNum = BAB_ICONS[bab.num] ? bab.num : 1;
           const percentage = Math.round((bab.filled / bab.tableCount) * 100);
 
           return (
-            <div key={bab.num} className="rounded-xl border border-slate-200 bg-white p-5 hover:shadow-md transition-shadow">
+            <div key={bab.num} className={`bab-card-${tileNum} rounded-xl border border-slate-200 bg-white p-5 hover:shadow-md transition-shadow`}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: colors.bg }}>
-                    <Icon className="w-6 h-6" style={{ color: colors.primary }} />
+                  <div className="bab-tile w-12 h-12 rounded-xl flex items-center justify-center">
+                    <Icon className="w-6 h-6" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-slate-800">BAB {bab.num} - {bab.title}</h3>
@@ -190,7 +182,7 @@ export function LaporanClient({
               </div>
 
               <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full rounded-full transition-all duration-500" style={{ width: `${percentage}%`, backgroundColor: colors.primary }} />
+                <div className="bab-bar h-full rounded-full transition-all duration-500" style={{ width: `${percentage}%` }} />
               </div>
             </div>
           );
@@ -232,7 +224,10 @@ function StatCard({ label, value, icon: Icon, color }: { label: string; value: n
   return (
     <div className="rounded-xl bg-white border border-slate-200 p-4">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${color}15` }}>
+        <div
+          className="stat-tile w-10 h-10 rounded-lg flex items-center justify-center"
+          style={{ "--tile-color": color } as React.CSSProperties}
+        >
           <Icon className="w-5 h-5" style={{ color }} />
         </div>
         <div>

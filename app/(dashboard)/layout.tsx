@@ -10,12 +10,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const userRole = (session.user as { role: string }).role || "OPERATOR";
 
   return (
-    <div
-      className="min-h-screen p-4 gap-4"
-      style={{
-        background: "linear-gradient(135deg, #F5F7FA 0%, #E8ECF1 50%, #F0F4F8 100%)",
-      }}
-    >
+    <div className="app-shell min-h-screen p-4 gap-4">
       {/* Sidebar - Fixed Position */}
       <Sidebar role={userRole} />
 
