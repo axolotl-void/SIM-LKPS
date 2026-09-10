@@ -65,8 +65,11 @@ export default async function Tabel1A2Page() {
   const ts1Tahun = `${activeYearStart - 1}/${activeYearStart}`;
   const ts2Tahun = `${activeYearStart - 2}/${activeYearStart - 1}`;
 
-  const taTs1 = await db.tahunAkademik.findFirst({ where: { tahun: ts1Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId } });
-  const taTs2 = await db.tahunAkademik.findFirst({ where: { tahun: ts2Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId } });
+  // PERF: dua query di bawah independen → jalankan paralel.
+  const [taTs1, taTs2] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { tahun: ts1Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId } }),
+    await db.tahunAkademik.findFirst({ where: { tahun: ts2Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId } }),
+  ]);
 
   const lkpsTs = await db.tabelLkps.findUnique({
     where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: activeTa.id } },

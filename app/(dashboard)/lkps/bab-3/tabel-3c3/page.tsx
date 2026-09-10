@@ -27,13 +27,14 @@ export default async function Tabel3C3Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true },
-  });
+  // PERF: query di bawah tidak saling bergantung → jalankan paralel (dulu berurutan).
+  const [activeTa, def, dosens] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true }, }),
+    await db.tabelDefinition.findUnique({ where: { kode: "3.C.3" } }),
+    await db.dosen.findMany({ where: { isActive: true }, select: { id: true, nidn: true, nama: true, jabatanFungsional: true, pendidikanTerakhir: true, }, orderBy: { nama: "asc" }, }),
+  ]);
   if (!activeTa) redirect("/dashboard");
 
-  const def = await db.tabelDefinition.findUnique({ where: { kode: "3.C.3" } });
   if (!def) {
     return (
       <div className="rounded-2xl bg-white p-6 shadow-soft text-center text-xs font-semibold text-slate-500">
@@ -41,6 +42,7 @@ export default async function Tabel3C3Page() {
       </div>
     );
   }
+
 
   const lkpsTs = await db.tabelLkps.findUnique({
     where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: activeTa.id } },
@@ -126,7 +128,8 @@ export default async function Tabel3C3Page() {
       </div>
 
       <ErrorBoundary>
-        <Tabel3C3Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status} userRole={session.user.role as Role} />
+        <Tabel3C3Client initialRows={rows} tahunAkademikId={activeTa.id} tabelKode={def.kode} status={status}
+        dosens={dosens} userRole={session.user.role as Role} />
       </ErrorBoundary>
 
       {history.length > 0 && (

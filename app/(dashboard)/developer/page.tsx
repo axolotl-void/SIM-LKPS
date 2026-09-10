@@ -20,7 +20,7 @@ const DEVELOPER = {
   project: "SIM-LKPS",
   institution: "Universitas Bina Bangsa Getsempena",
   bio: "Mahasiswa Program Studi Ilmu Komputer, Universitas Bina Bangsa Getsempena. Pengembang utama sistem SIM-LKPS untuk akreditasi BAN-PT.",
-  photoUrl: "/img/profile-DzHoYrRg.png",
+  photoUrl: "/img/profile.webp",
   repoUrl: "https://github.com/axolotl-void/SIM-LKPS.git",
   stats: {
     tables: 31,

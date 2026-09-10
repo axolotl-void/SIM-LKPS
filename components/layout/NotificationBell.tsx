@@ -62,8 +62,19 @@ export function NotificationBell() {
 
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 60_000);
-    return () => clearInterval(interval);
+    // PERF: hanya polling saat tab benar-benar terlihat — hemat request DB
+    // (dan hemat bangunkan Neon) ketika tab ditinggal di background.
+    const interval = setInterval(() => {
+      if (document.visibilityState === "visible") fetchNotifications();
+    }, 60_000);
+    const onVisible = () => {
+      if (document.visibilityState === "visible") fetchNotifications();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
   }, []);
 
   useEffect(() => {

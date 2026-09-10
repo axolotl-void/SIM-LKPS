@@ -34,10 +34,11 @@ export default async function Tabel2B4Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true },
-  });
+  // PERF: query di bawah tidak saling bergantung → jalankan paralel (dulu berurutan).
+  const [activeTa, def] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true }, }),
+    await db.tabelDefinition.findUnique({ where: { kode: "2.B.4" } }),
+  ]);
 
   if (!activeTa) {
     return (
@@ -47,7 +48,6 @@ export default async function Tabel2B4Page() {
     );
   }
 
-  const def = await db.tabelDefinition.findUnique({ where: { kode: "2.B.4" } });
   if (!def) {
     return (
       <div className="rounded-2xl bg-white p-6 shadow-soft text-center text-xs font-semibold text-slate-500">
@@ -61,12 +61,11 @@ export default async function Tabel2B4Page() {
   const ts1Tahun = `${activeYearStart - 1}/${activeYearStart}`;
   const ts2Tahun = `${activeYearStart - 2}/${activeYearStart - 1}`;
 
-  const taTs1 = await db.tahunAkademik.findFirst({
-    where: { tahun: ts1Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId },
-  });
-  const taTs2 = await db.tahunAkademik.findFirst({
-    where: { tahun: ts2Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId },
-  });
+  // PERF: dua query di bawah independen → jalankan paralel.
+  const [taTs1, taTs2] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { tahun: ts1Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId }, }),
+    await db.tahunAkademik.findFirst({ where: { tahun: ts2Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId }, }),
+  ]);
 
   // Fetch rows for TS, TS-1, TS-2
   const [lkpsTs, lkpsTs1, lkpsTs2] = await Promise.all([

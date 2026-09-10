@@ -13,38 +13,52 @@ export default async function DashboardPage() {
   if (!session?.user) redirect("/login");
   const userRole = (session.user as { role: string }).role;
 
-  const totalDefinitions = await db.tabelDefinition.count();
-  const dosenCount = await db.dosen.count({ where: { isActive: true } });
-  const mahasiswaCount = await db.mahasiswa.count({ where: { isActive: true } });
-  const mataKuliahCount = await db.mataKuliah.count({ where: { isActive: true } });
-  const userCount = await db.user.count({ where: { isActive: true } });
-  const evidenceCount = await db.evidence.count();
-  const recentLogs = await db.auditLog.findMany({
-    include: { user: { select: { name: true } } },
-    orderBy: { createdAt: "desc" },
-    take: 6,
-  });
-
-  const activeTa = await db.tahunAkademik.findFirst({ where: { isActive: true } });
+  // PERF: jalankan seluruh query independen secara paralel (dulu berurutan,
+  // jadi tiap query menunggu round-trip DB selesai dulu sebelum yang berikutnya).
+  const [
+    totalDefinitions,
+    dosenCount,
+    mahasiswaCount,
+    mataKuliahCount,
+    userCount,
+    evidenceCount,
+    recentLogs,
+    activeTa,
+  ] = await Promise.all([
+    db.tabelDefinition.count(),
+    db.dosen.count({ where: { isActive: true } }),
+    db.mahasiswa.count({ where: { isActive: true } }),
+    db.mataKuliah.count({ where: { isActive: true } }),
+    db.user.count({ where: { isActive: true } }),
+    db.evidence.count(),
+    db.auditLog.findMany({
+      include: { user: { select: { name: true } } },
+      orderBy: { createdAt: "desc" },
+      take: 6,
+    }),
+    db.tahunAkademik.findFirst({ where: { isActive: true } }),
+  ]);
   let babStats: { bab: number; filled: number; total: number; disetujui: number; diajukan: number }[] = [];
   let globalStats = { terisi: 0, disetujui: 0, diajukan: 0, ditolak: 0 };
 
   if (activeTa) {
-    // Get all definitions grouped by BAB
-    const definitions = await db.tabelDefinition.findMany({
-      select: { id: true, bab: true, kode: true },
-      orderBy: [{ bab: "asc" }, { urutan: "asc" }],
-    });
-
-    // Get all TabelLkps instances for active year with row counts AND status
-    const instances = await db.tabelLkps.findMany({
-      where: { tahunAkademikId: activeTa.id },
-      select: {
-        tabelDefinitionId: true,
-        status: true,
-        _count: { select: { rows: true } },
-      },
-    });
+    // PERF: dua query di bawah independen satu sama lain → jalankan paralel.
+    const [definitions, instances] = await Promise.all([
+      // Get all definitions grouped by BAB
+      db.tabelDefinition.findMany({
+        select: { id: true, bab: true, kode: true },
+        orderBy: [{ bab: "asc" }, { urutan: "asc" }],
+      }),
+      // Get all TabelLkps instances for active year with row counts AND status
+      db.tabelLkps.findMany({
+        where: { tahunAkademikId: activeTa.id },
+        select: {
+          tabelDefinitionId: true,
+          status: true,
+          _count: { select: { rows: true } },
+        },
+      }),
+    ]);
 
     // Create maps: definitionId -> { hasRows, status }
     const instanceMap = new Map<string, { hasRows: boolean; status: string }>();

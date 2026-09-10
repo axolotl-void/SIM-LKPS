@@ -25,8 +25,11 @@ export default async function Tabel2B2Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const activeTa = await db.tahunAkademik.findFirst({ where: { isActive: true } });
-  const def = await db.tabelDefinition.findUnique({ where: { kode: "2.B.2" } });
+  // PERF: query di bawah tidak saling bergantung → jalankan paralel (dulu berurutan).
+  const [activeTa, def] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { isActive: true } }),
+    await db.tabelDefinition.findUnique({ where: { kode: "2.B.2" } }),
+  ]);
   if (!def || !activeTa) return <div className="p-6 text-center text-xs font-bold">Data tidak ditemukan.</div>;
 
   const lkpsTs = await db.tabelLkps.findUnique({

@@ -11,15 +11,12 @@ export default async function LaporanPage() {
   if (!session?.user) redirect("/login");
 
   // Get active tahun akademik
-  const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true },
-  });
-
   // Get all definitions
-  const definitions = await db.tabelDefinition.findMany({
-    orderBy: [{ bab: "asc" }, { urutan: "asc" }],
-  });
+  // PERF: dua query di bawah independen → jalankan paralel.
+  const [activeTa, definitions] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true }, }),
+    await db.tabelDefinition.findMany({ orderBy: [{ bab: "asc" }, { urutan: "asc" }], }),
+  ]);
 
   // Get instances for active year
   let babStats: BABStats[] = [];
