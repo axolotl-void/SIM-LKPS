@@ -20,6 +20,7 @@
     "test:e2e": "playwright test --config=tests/playwright.config.ts"
   },
   "dependencies": {
+    "@auth/core": "0.41.3",
     "@auth/prisma-adapter": "^2.0.0",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^6.0.0",
@@ -79,5 +80,14 @@
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "esbuild",
+      "prisma",
+      "unrs-resolver"
+    ]
   }
 }
