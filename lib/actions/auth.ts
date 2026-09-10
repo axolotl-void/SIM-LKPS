@@ -3,6 +3,24 @@
 import { signIn, signOut } from "@/lib/auth";
 import { loginSchema } from "@/lib/validations/auth";
 import { AuthError } from "next-auth";
+import { isTransientDbError } from "@/lib/utils/db-retry";
+
+/**
+ * Cari akar error di rantai `cause`.
+ *
+ * NextAuth membungkus error dari `authorize()` di dalam AuthError dengan
+ * type "Configuration"/"CredentialsSignin", sehingga kegagalan database
+ * (mis. Neon sedang bangun) tampak seperti masalah kredensial. Kita telusuri
+ * rantainya supaya bisa membedakan gangguan koneksi dari password salah.
+ */
+function cariErrorDb(e: unknown): unknown {
+  let cur: unknown = e;
+  for (let i = 0; i < 5 && cur; i++) {
+    if (isTransientDbError(cur)) return cur;
+    cur = (cur as { cause?: unknown }).cause;
+  }
+  return null;
+}
 
 export interface LoginState {
   success: boolean | null;
@@ -72,6 +90,19 @@ export async function loginAction(
     // Unreachable on success: signIn throws NEXT_REDIRECT above.
     return { success: true };
   } catch (error) {
+    // Kegagalan database (Neon bangun / koneksi putus sesaat) BUKAN salah
+    // password. Deteksi dulu supaya pesannya tidak menyesatkan, dan catat
+    // penyebab aslinya ke log server supaya bisa ditelusuri.
+    const errorDb = cariErrorDb(error);
+    if (errorDb) {
+      console.error("[login] gangguan koneksi database:", errorDb);
+      return {
+        success: false,
+        error:
+          "Server sedang tidak dapat dihubungi. Coba lagi sebentar lagi.",
+      };
+    }
+
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
@@ -85,6 +116,9 @@ export async function loginAction(
             error: "Akun Anda tidak memiliki akses. Hubungi administrator.",
           };
         default:
+          // Jangan telan penyebabnya: tanpa ini, error tak terduga di
+          // authorize() hilang jejak dan hanya muncul sebagai pesan generik.
+          console.error(`[login] AuthError tak tertangani (${error.type}):`, error);
           return {
             success: false,
             error: "Terjadi kesalahan autentikasi. Coba lagi nanti.",
