@@ -4,10 +4,13 @@ import { useActionState, useEffect, useId, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   AlertCircle,
+  ArrowRight,
   CheckCircle2,
   Eye,
   EyeOff,
+  KeyRound,
   Loader2,
+  Mail,
 } from "lucide-react";
 import { loginAction, type LoginState } from "@/lib/actions/auth";
 
@@ -24,15 +27,12 @@ export function LoginForm() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  // After successful login: set exit-animation flag. Navigation is handled
-  // by the Server Action's signIn redirect.
   useEffect(() => {
     if (state.success === true) {
       sessionStorage.setItem("login-exit", "1");
     }
   }, [state.success]);
 
-  // Soft client-side cooldown after many failed attempts.
   const [failureCount, setFailureCount] = useState(0);
   useEffect(() => {
     if (state.success === false && state.error) {
@@ -61,7 +61,6 @@ export function LoginForm() {
 
   return (
     <form action={action} noValidate className="flex flex-col">
-      {/* Hidden callback URL for post-login redirect */}
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
 
       {/* Error banner */}
@@ -112,9 +111,7 @@ export function LoginForm() {
           Email Pengguna
         </label>
         <div className="relative flex items-center">
-          <span className="material-symbols-outlined pointer-events-none absolute left-3.5 text-lg text-slate-400 2xl:text-xl">
-            badge
-          </span>
+          <Mail className="pointer-events-none absolute left-3.5 h-[18px] w-[18px] text-slate-400 2xl:h-5 2xl:w-5" />
           <input
             id={emailId}
             name="email"
@@ -155,9 +152,7 @@ export function LoginForm() {
           </a>
         </div>
         <div className="relative flex items-center">
-          <span className="material-symbols-outlined pointer-events-none absolute left-3.5 text-lg text-slate-400 2xl:text-xl">
-            key
-          </span>
+          <KeyRound className="pointer-events-none absolute left-3.5 h-[18px] w-[18px] text-slate-400 2xl:h-5 2xl:w-5" />
           <input
             id={passwordId}
             name="password"
@@ -179,9 +174,11 @@ export function LoginForm() {
             aria-pressed={showPassword}
             className="absolute right-3 p-1 text-slate-400 transition-colors duration-150 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
           >
-            <span className="material-symbols-outlined text-lg leading-none 2xl:text-xl">
-              visibility
-            </span>
+            {showPassword ? (
+              <EyeOff className="h-[18px] w-[18px] 2xl:h-5 2xl:w-5" />
+            ) : (
+              <Eye className="h-[18px] w-[18px] 2xl:h-5 2xl:w-5" />
+            )}
           </button>
         </div>
         {passwordError && (
@@ -217,9 +214,7 @@ export function LoginForm() {
           ) : (
             <>
               <span>Masuk ke Akun</span>
-              <span className="material-symbols-outlined text-base transition-transform group-hover/btn:translate-x-0.5 2xl:text-lg">
-                arrow_forward
-              </span>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-0.5 2xl:h-5 2xl:w-5" />
             </>
           )}
         </button>
