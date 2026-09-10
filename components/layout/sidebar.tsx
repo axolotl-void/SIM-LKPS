@@ -124,7 +124,7 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
             width={40}
             height={40}
             priority
-            className="h-10 w-10"
+            className="h-10 w-10 brand-logo"
           />
           <div className="flex flex-col">
             <span className="text-sm font-bold text-slate-800 tracking-tight">SIM-LKPS</span>
@@ -246,7 +246,7 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
           className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-600 p-4 text-white shadow-lg [background-size:200%_200%,cover]"
           style={{
             backgroundImage:
-              "linear-gradient(135deg, rgba(37, 99, 235, 0.92) 0%, rgba(67, 56, 202, 0.92) 50%, rgba(8, 145, 178, 0.92) 100%), url('/img/gedung-ubbg_11zon.png')",
+              "linear-gradient(135deg, rgba(37, 99, 235, 0.92) 0%, rgba(67, 56, 202, 0.92) 50%, rgba(8, 145, 178, 0.92) 100%), url('/img/gedung-ubbg.webp')",
             backgroundSize: "200% 200%, cover",
             backgroundPosition: "0% 50%, center",
           }}

@@ -1,5 +1,25 @@
 import type { Metadata, Viewport } from "next";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeSync } from "@/components/layout/theme-sync";
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-jakarta",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jetbrains",
+  display: "swap",
+  // PERF: font ini hanya dipakai di beberapa halaman (NIDN, audit-log, kode prodi).
+  // Tanpa preload, ~30 kB tidak lagi masuk jalur kritis setiap halaman; font tetap
+  // terpasang lewat @font-face dan dimuat saat benar-benar dipakai.
+  preload: false,
+});
 
 export const metadata: Metadata = {
   title: {
@@ -21,40 +41,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html
+      lang="id"
+      className={`${plusJakarta.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300..900&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        />
-        <style
+        {/* Terapkan tema sebelum paint supaya tidak ada kedipan putih */}
+        <script
           dangerouslySetInnerHTML={{
-            __html: `
-            .material-symbols-outlined {
-              font-family: 'Material Symbols Outlined';
-              font-weight: normal;
-              font-style: normal;
-              line-height: 1;
-              letter-spacing: normal;
-              text-transform: none;
-              display: inline-block;
-              white-space: nowrap;
-              word-wrap: normal;
-              direction: ltr;
-              -webkit-font-feature-settings: 'liga';
-              -webkit-font-smoothing: antialiased;
-            }
-            `,
+            __html: `(function(){try{var p=location.pathname;var r=document.documentElement;if(p==="/login"||p.indexOf("/login/")===0){r.classList.remove("dark");r.style.colorScheme="light";return;}var t=localStorage.getItem("sim-lkps-theme");var d=t==="dark"||(t!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches);r.classList.toggle("dark",d);r.style.colorScheme=d?"dark":"light";}catch(e){}})();`,
           }}
         />
       </head>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <ThemeSync />
+        {children}
+      </body>
     </html>
   );
 }
