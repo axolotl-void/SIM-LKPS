@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 import { Role, TabelStatus } from "@prisma/client";
 import { canEditTable } from "@/lib/utils/permissions";
+import { DosenSelect, type DosenOption } from "@/components/shared/DosenSelect";
 
 type JenisPublikasi = "IB" | "I" | "S1" | "S2" | "S3" | "S4" | "T";
 
@@ -32,6 +33,7 @@ interface Props {
   tabelKode: string;
   status: string;
   userRole: Role;
+  dosens: DosenOption[];
 }
 
 const JENIS_OPTIONS: { value: JenisPublikasi; label: string }[] = [
@@ -44,7 +46,7 @@ const JENIS_OPTIONS: { value: JenisPublikasi; label: string }[] = [
   { value: "T", label: "Tidak Terakreditasi" },
 ];
 
-export function Tabel3C2Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
+export function Tabel3C2Client({ initialRows, tahunAkademikId, tabelKode, status, userRole, dosens }: Props) {
   const [rows, setRows] = useState(initialRows);
   const [currentStatus, setCurrentStatus] = useState<TabelStatus>(status as TabelStatus);
   const canEdit = canEditTable(userRole, currentStatus);
@@ -158,7 +160,16 @@ export function Tabel3C2Client({ initialRows, tahunAkademikId, tabelKode, status
             <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-5">
               <div className="rounded-2xl border border-indigo-100 bg-indigo-50/30 p-5 space-y-4">
                 <div className="flex items-center gap-2 text-xs font-bold text-indigo-700"><BookOpen className="h-4 w-4" /> Data Publikasi</div>
-                <div><label className="block text-2xs font-bold text-slate-600 mb-1">Nama DTPR <span className="text-red-500">*</span></label><input type="text" placeholder="Nama lengkap" value={form.namaDtpr} onChange={(e) => setForm((p) => ({ ...p, namaDtpr: e.target.value }))} className="w-full rounded-xl border border-indigo-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm placeholder:text-slate-300" /></div>
+                <div><DosenSelect
+  value={form.namaDtpr}
+  onChange={(val) => setForm((p) => ({ ...p, namaDtpr: val }))}
+  dosens={dosens}
+  label="Nama DTPR"
+  placeholder="Ketik atau pilih nama dosen..."
+  accent="indigo"
+  size="md"
+  required
+/></div>
                 <div><label className="block text-2xs font-bold text-slate-600 mb-1">Judul Publikasi <span className="text-red-500">*</span></label><input type="text" placeholder="Judul artikel" value={form.judulPublikasi} onChange={(e) => setForm((p) => ({ ...p, judulPublikasi: e.target.value }))} className="w-full rounded-xl border border-indigo-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm placeholder:text-slate-300" /></div>
                 <div>
                   <label className="block text-2xs font-bold text-slate-600 mb-2">Jenis Publikasi <span className="text-red-500">*</span></label>

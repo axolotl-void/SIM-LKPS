@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   Loader2, ArrowLeft, CheckCircle2, X, Save, Plus, Trash2,
-  Handshake, Globe, DollarSign, Edit2, Lightbulb, AlertTriangle
+  Handshake, Globe, DollarSign, Edit2, AlertTriangle
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -104,22 +104,14 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <Link href="/lkps/bab-4" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-teal-600 transition-colors"><ArrowLeft className="h-4 w-4" /> Kembali ke BAB 4</Link>
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-3 py-1.5 shadow-soft-sm"><span className="text-3xs font-bold uppercase tracking-wider text-slate-600">Jumlah Mitra</span><span className="text-sm font-black text-slate-800">{totalMitra}</span></div>
+          <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-3 py-1.5 shadow-soft-sm"><span className="text-3xs font-bold uppercase tracking-wider text-slate-600">Total Dana TS</span><span className="text-sm font-black text-teal-600">{totalDanaTs.toLocaleString("id-ID")} jt</span></div>
+          <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-3 py-1.5 shadow-soft-sm"><span className="text-3xs font-bold uppercase tracking-wider text-slate-600">Skala Internasional</span><span className="text-sm font-black text-cyan-600">{rows.filter((r) => r.rowData.sumber === "I").length}</span></div>
           <button onClick={openAdd} disabled={!canEdit} className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${canEdit ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}><Plus className="h-4 w-4" /> Tambah Kerjasama PkM</button>
         </div>
-      </div>
-
-      <div className="flex items-center gap-3 rounded-2xl bg-teal-50/60 border border-teal-100/60 px-5 py-4 text-xs font-semibold text-teal-700">
-        <Lightbulb className="h-5 w-5 shrink-0 text-teal-500" />
-        <span>Catat kerjasama PkM dengan mitra kerja termasuk sumber pendanaan.</span>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-700">Jumlah Mitra</div><p className="text-3xl font-black text-slate-800">{totalMitra}</p></div></div>
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-700">Total Dana TS</div><p className="text-3xl font-black text-teal-600">{totalDanaTs.toLocaleString("id-ID")} jt</p></div></div>
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"><div className="space-y-2"><div className="text-xs font-bold uppercase tracking-wider text-slate-700">Skala Internasional</div><p className="text-3xl font-black text-cyan-600">{rows.filter((r) => r.rowData.sumber === "I").length}</p></div></div>
       </div>
 
       <div className="rounded-2xl border-2 border-teal-200/70 bg-white shadow-soft overflow-hidden">

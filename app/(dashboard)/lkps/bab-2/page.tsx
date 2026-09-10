@@ -11,25 +11,25 @@ import type { LucideIcon } from "lucide-react";
 
 export const metadata = { title: "BAB 2 — Pendidikan" };
 
-const TABLE_CONFIGS: Record<string, { gradient: string; bg: string; color: string; badge: string }> = {
-  "2.A.1": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Mahasiswa" },
-  "2.A.2": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Kelulusan" },
-  "2.A.3": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Prestasi" },
-  "2.B.1": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Kurikulum" },
-  "2.B.2": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Pembelajaran" },
-  "2.B.3": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Integrasi" },
-  "2.B.4": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Dosen" },
-  "2.B.5": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Biaya" },
-  "2.B.6": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Beasiswa" },
-  "2.C": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Kerja Sama" },
-  "2.D": { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "Luaran" },
-};
-
 const TABLE_ICONS: Record<string, LucideIcon> = {
   "2.A.1": Users, "2.A.2": Map, "2.A.3": BarChart3,
   "2.B.1": BookOpen, "2.B.2": GraduationCap, "2.B.3": FileText,
   "2.B.4": Clock, "2.B.5": Briefcase, "2.B.6": Star,
   "2.C": Shuffle, "2.D": Award,
+};
+
+const TABLE_DESCS: Record<string, string> = {
+  "2.A.1": "Data jumlah dan profil mahasiswa program studi.",
+  "2.A.2": "Data keragaman asal daerah dan sekolah mahasiswa.",
+  "2.A.3": "Data kondisi jumlah mahasiswa per angkatan.",
+  "2.B.1": "Data isi pembelajaran dan bahan kajian kurikulum.",
+  "2.B.2": "Data pemetaan CPL terhadap profil lulusan.",
+  "2.B.3": "Data pemenuhan CPL pada mata kuliah.",
+  "2.B.4": "Data rata-rata masa tunggu lulusan mendapatkan pekerjaan.",
+  "2.B.5": "Data kesesuaian bidang kerja lulusan dengan keilmuan.",
+  "2.B.6": "Data tingkat kepuasan pengguna lulusan.",
+  "2.C": "Data fleksibilitas proses pembelajaran di program studi.",
+  "2.D": "Data rekognisi dan apresiasi kompetensi lulusan.",
 };
 
 export default async function Bab2Page() {
@@ -103,56 +103,70 @@ export default async function Bab2Page() {
       </div>
 
       {/* TABLE CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {definitions.map((def, index) => {
           const inst = instanceMap[def.id];
           const rowCount = inst?._count.rows || 0;
           const hasData = rowCount > 0;
-          const config = TABLE_CONFIGS[def.kode] ?? { gradient: "from-cyan-500 to-teal-500", bg: "bg-cyan-600", color: "text-white", badge: "" };
           const IconComponent = TABLE_ICONS[def.kode] || FileText;
           const staggerClass = `stagger-${Math.min(index + 1, 8)}`;
 
           return (
             <Link key={def.id} href={`/lkps/bab-2/tabel-${def.kode.toLowerCase().replace(/\./g, "")}`} className={`group relative block animate-fade-in-up ${staggerClass}`}>
-              <div className="relative h-full rounded-2xl bg-white shadow-md border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
-                <div className={`h-1.5 bg-gradient-to-r ${config.gradient}`} />
+              <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-cyan-200">
+                <div className="relative h-20 bg-gradient-to-br from-cyan-500 via-teal-500 to-sky-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10" />
 
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="px-2 py-0.5 bg-cyan-50 text-cyan-600 rounded-md text-2xs font-black uppercase tracking-wider">
+                  <div className="absolute -bottom-3 right-4">
+                    <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-white/25 border border-white/40 shadow-lg rotate-12 group-hover:rotate-0 group-hover:scale-105 transition-all duration-300">
+                      <IconComponent className="w-7 h-7 text-white" />
+                    </div>
+                  </div>
+
+                  <div className="absolute top-3 left-3">
+                    <span className="px-3 py-1 bg-white/25 rounded-lg text-white text-xs font-bold border border-white/40">
                       Tabel {def.kode}
                     </span>
-                    <span className={`px-2 py-0.5 rounded-md text-2xs font-bold ${hasData ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
-                      {hasData ? 'Terisi' : 'Empty'}
-                    </span>
                   </div>
 
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className={`flex items-center justify-center w-12 h-12 rounded-xl ${config.bg} shadow-md group-hover:scale-105 transition-transform duration-200`}>
-                      <IconComponent className={`w-6 h-6 ${config.color}`} />
+                  {hasData && (
+                    <div className="absolute top-3 right-3">
+                      <span className="flex items-center gap-1 rounded-full px-2.5 py-1 bg-emerald-500/90 text-white text-xs font-bold">
+                        <CheckCircle2 className="w-3 h-3" /> Terisi
+                      </span>
                     </div>
-                    <h3 className="text-sm font-bold text-slate-700 leading-tight group-hover:text-cyan-700 transition-colors flex-1 pt-1">
-                      {def.nama}
-                    </h3>
-                  </div>
-
-                  <div className={`flex items-center justify-between p-2.5 rounded-xl border-2 ${hasData ? 'bg-cyan-50 border-cyan-100' : 'bg-slate-50 border-dashed border-slate-200'}`}>
-                    <div>
-                      <div className={`text-2xl font-black ${hasData ? 'text-cyan-600' : 'text-slate-300'}`}>{rowCount}</div>
-                      <div className="text-2xs text-slate-400 font-semibold">Data</div>
-                    </div>
-                    {hasData && <CheckCircle2 className="w-6 h-6 text-cyan-500" />}
-                  </div>
-
-                  <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-slate-100">
-                    <span className="text-xs font-bold text-slate-400 group-hover:text-cyan-600 transition-colors">
-                      {hasData ? 'Edit Data' : 'Mulai Isi'}
-                    </span>
-                    <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all duration-200" />
-                  </div>
+                  )}
                 </div>
 
-                <div className={`h-0.5 bg-gradient-to-r ${config.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                <div className="p-5">
+                  <h3 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-cyan-600 transition-colors">
+                    {def.nama}
+                  </h3>
+                  <p className="text-xs text-slate-400 mb-4">{TABLE_DESCS[def.kode] ?? ""}</p>
+
+                  <div className={`rounded-xl p-4 ${hasData
+                    ? 'bg-gradient-to-br from-cyan-500 to-teal-600 text-white'
+                    : 'bg-slate-100 border-2 border-dashed border-slate-200'}`}>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className={`text-3xl font-black ${hasData ? 'text-white' : 'text-slate-300'}`}>{rowCount}</div>
+                        <div className={`text-sm font-medium ${hasData ? 'text-cyan-100' : 'text-slate-400'}`}>Data Entry</div>
+                      </div>
+                      {hasData ? <CheckCircle2 className="w-6 h-6 text-white/80" /> : <IconComponent className="w-6 h-6 text-slate-300" />}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-4">
+                    <span className={`text-sm font-semibold ${hasData ? 'text-cyan-600' : 'text-slate-500'} group-hover:underline`}>
+                      {hasData ? 'Lihat & Edit Data' : 'Mulai Mengisi'}
+                    </span>
+                    <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 ${hasData
+                      ? 'bg-cyan-100 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white'
+                      : 'bg-slate-100 text-slate-400 group-hover:bg-cyan-500 group-hover:text-white'}`}>
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </Link>
           );

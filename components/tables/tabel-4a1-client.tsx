@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   Loader2, ArrowLeft, CheckCircle2, X, Save, Plus, Trash2,
-  Building2, Server, Monitor, Edit2, Lightbulb, AlertTriangle,
+  Building2, Server, Monitor, Edit2, AlertTriangle,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -177,54 +177,43 @@ export function Tabel4A1Client({ initialRows, tahunAkademikId, tabelKode, status
 
   return (
     <div className="space-y-8">
-      {/* Top bar */}
-      <div className="flex items-center justify-between">
+      {/* Top bar — kembali · ringkasan · tambah */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <Link
           href="/lkps/bab-4"
           className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-orange-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 4
         </Link>
-        <div className="flex items-center gap-2.5">
-          <button
-            onClick={openAddModal}
-            disabled={!canEdit}
-            className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${
-              canEdit
-                ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white"
-                : "bg-slate-100 text-slate-400 cursor-not-allowed"
-            }`}
-          >
-            <Plus className="h-4 w-4" /> Tambah Prasarana PkM
-          </button>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {[
+            { label: "Total Prasarana", value: rows.length, color: "text-slate-800" },
+            { label: "Total Daya Tampung", value: totalDayaTampung, color: "text-amber-600" },
+            { label: "Total Luas Ruang", value: `${totalLuasRuang} m²`, color: "text-orange-600" },
+            { label: "Milik / Sewa", value: `${milikSendiri} / ${sewa}`, color: "text-slate-700" },
+          ].map((card) => (
+            <div
+              key={card.label}
+              className="flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-3 py-1.5 shadow-soft-sm"
+            >
+              <span className="text-3xs font-bold uppercase tracking-wider text-slate-600">{card.label}</span>
+              <span className={`text-sm font-black ${card.color}`}>{card.value}</span>
+            </div>
+          ))}
         </div>
-      </div>
 
-      {/* Info banner */}
-      <div className="flex items-center gap-3 rounded-2xl bg-amber-50/60 border border-amber-100/60 px-5 py-4 text-xs font-semibold text-amber-700">
-        <Lightbulb className="h-5 w-5 shrink-0 text-amber-500" />
-        <span>
-          Klik <strong>&ldquo;Tambah Prasarana PkM&rdquo;</strong> untuk menambahkan data. Klik{" "}
-          <strong>Edit</strong> untuk mengubah atau <strong>Hapus</strong> untuk menghapus item.
-        </span>
-      </div>
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-4">
-        {[
-          { label: "Total Prasarana", value: rows.length, color: "text-slate-800" },
-          { label: "Total Daya Tampung", value: totalDayaTampung, color: "text-amber-600" },
-          { label: "Total Luas Ruang", value: `${totalLuasRuang} m²`, color: "text-orange-600" },
-          { label: "Milik / Sewa", value: `${milikSendiri} / ${sewa}`, color: "text-slate-700" },
-        ].map((card) => (
-          <div
-            key={card.label}
-            className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all"
-          >
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-700">{card.label}</div>
-            <p className={`text-3xl font-black mt-2 ${card.color}`}>{card.value}</p>
-          </div>
-        ))}
+        <button
+          onClick={openAddModal}
+          disabled={!canEdit}
+          className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${
+            canEdit
+              ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white"
+              : "bg-slate-100 text-slate-400 cursor-not-allowed"
+          }`}
+        >
+          <Plus className="h-4 w-4" /> Tambah Prasarana PkM
+        </button>
       </div>
 
       {/* Table card */}

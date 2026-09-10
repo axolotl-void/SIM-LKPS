@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   Loader2, ArrowLeft, CheckCircle2, X, Save, Plus, Trash2,
-  Award, FileText, Edit2, Lightbulb, AlertTriangle, CalendarCheck,
+  Award, FileText, Edit2, AlertTriangle, CalendarCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 import { Role, TabelStatus } from "@prisma/client";
 import { canEditTable } from "@/lib/utils/permissions";
+import { DosenSelect, type DosenOption } from "@/components/shared/DosenSelect";
 
 interface HkiPkmItem {
   id: string;
@@ -33,9 +34,10 @@ interface Props {
   tabelKode: string;
   status: string;
   userRole: Role;
+  dosens: DosenOption[];
 }
 
-export function Tabel4C3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
+export function Tabel4C3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole, dosens }: Props) {
   const [rows, setRows] = useState(initialRows);
   const [currentStatus, setCurrentStatus] = useState<TabelStatus>(status as TabelStatus);
   const canEdit = canEditTable(userRole, currentStatus);
@@ -134,35 +136,42 @@ export function Tabel4C3Client({ initialRows, tahunAkademikId, tabelKode, status
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-4" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-pink-600 transition-colors">
+      {/* Top bar — kembali · ringkasan · tambah */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <Link
+          href="/lkps/bab-4"
+          className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-pink-600 transition-colors"
+        >
           <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 4
         </Link>
-        <div className="flex items-center gap-2.5">
-          <button onClick={openAdd} disabled={!canEdit} className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${canEdit ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white" : "bg-slate-100 text-slate-400 cursor-not-allowed"}`}>
-            <Plus className="h-4 w-4" /> Tambah HKI PkM
-          </button>
-        </div>
-      </div>
 
-      <div className="flex items-center gap-3 rounded-2xl bg-pink-50/60 border border-pink-100/60 px-5 py-4 text-xs font-semibold text-pink-700">
-        <Lightbulb className="h-5 w-5 shrink-0 text-pink-500" />
-        <span>Catat perolehan HKI dari hasil PkM. Centang tahun perolehan (TS-2, TS-1, TS).</span>
-      </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {[
+            { label: "Total HKI", value: rows.length, color: "text-slate-800" },
+            { label: "Jenis HKI", value: new Set(rows.map((r) => r.rowData.jenisHki)).size, color: "text-pink-600" },
+            { label: "DTPR Unik", value: new Set(rows.map((r) => r.rowData.namaDtpr)).size, color: "text-rose-600" },
+          ].map((card) => (
+            <div
+              key={card.label}
+              className="flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-3 py-1.5 shadow-soft-sm"
+            >
+              <span className="text-3xs font-bold uppercase tracking-wider text-slate-600">{card.label}</span>
+              <span className={`text-sm font-black ${card.color}`}>{card.value}</span>
+            </div>
+          ))}
+        </div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-700">Total HKI</div>
-          <p className="text-3xl font-black mt-2 text-slate-800">{rows.length}</p>
-        </div>
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-700">Jenis HKI Berbeda</div>
-          <p className="text-3xl font-black mt-2 text-pink-600">{new Set(rows.map((r) => r.rowData.jenisHki)).size}</p>
-        </div>
-        <div className="rounded-2xl border border-slate-100/50 bg-white p-6 shadow-soft hover:shadow-soft-lg transition-all">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-700">DTPR Unik</div>
-          <p className="text-3xl font-black mt-2 text-rose-600">{new Set(rows.map((r) => r.rowData.namaDtpr)).size}</p>
-        </div>
+        <button
+          onClick={openAdd}
+          disabled={!canEdit}
+          className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold shadow-soft-sm hover:shadow-soft transition-all ${
+            canEdit
+              ? "bg-gradient-to-tr from-emerald-500 to-teal-600 text-white"
+              : "bg-slate-100 text-slate-400 cursor-not-allowed"
+          }`}
+        >
+          <Plus className="h-4 w-4" /> Tambah HKI PkM
+        </button>
       </div>
 
       <div className="rounded-2xl border-2 border-pink-200/70 bg-white shadow-soft overflow-hidden">
@@ -256,8 +265,16 @@ export function Tabel4C3Client({ initialRows, tahunAkademikId, tabelKode, status
                   <input type="text" placeholder="cth: Paten, Hak Cipta, Merek" value={form.jenisHki} onChange={(e) => setForm((p) => ({ ...p, jenisHki: e.target.value }))} className="w-full rounded-xl border border-pink-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500/20 shadow-sm placeholder:text-slate-300" />
                 </div>
                 <div>
-                  <label className="block text-2xs font-bold text-slate-600 mb-1">Nama DTPR <span className="text-red-500">*</span></label>
-                  <input type="text" placeholder="Nama lengkap" value={form.namaDtpr} onChange={(e) => setForm((p) => ({ ...p, namaDtpr: e.target.value }))} className="w-full rounded-xl border border-pink-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500/20 shadow-sm placeholder:text-slate-300" />
+<DosenSelect
+                    value={form.namaDtpr}
+                    onChange={(val) => setForm((p) => ({ ...p, namaDtpr: val }))}
+                    dosens={dosens}
+                    label="Nama DTPR"
+                    placeholder="Ketik atau pilih nama dosen..."
+                    accent="pink"
+                    size="md"
+                    required
+                  />
                 </div>
               </div>
               <div className="rounded-2xl border border-rose-100 bg-rose-50/30 p-5 space-y-4">

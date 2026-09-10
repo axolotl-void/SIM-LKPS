@@ -2,8 +2,12 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import Link from "next/link";
-import { FileText, ArrowRight, Calendar, BookOpen } from "lucide-react";
+import {
+  FileText, ArrowRight, Calendar, Eye, Target,
+  CheckCircle2, Clock, Users, Award,
+} from "lucide-react";
 import type { Metadata } from "next";
+import type { LucideIcon } from "lucide-react";
 import { STATUS_LABELS, STATUS_COLORS } from "@/lib/utils/permissions";
 import { TabelStatus } from "@prisma/client";
 
@@ -11,134 +15,173 @@ export const metadata: Metadata = {
   title: "BAB 6 — Visi dan Misi",
 };
 
+const TABLE_ICONS: Record<string, LucideIcon> = {
+  "6.1": Eye,
+  "6.2": Target,
+};
+
+const TABLE_DESCS: Record<string, string> = {
+  "6.1": "Data keselarasan visi, misi, dan tujuan program studi.",
+  "6.2": "Data strategi pencapaian tujuan program studi.",
+};
+
 export default async function Bab6Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true }
-  });
+  const [activeTa, definitions] = await Promise.all([
+    db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true } }),
+    db.tabelDefinition.findMany({ where: { bab: 6 }, orderBy: { urutan: "asc" } }),
+  ]);
 
-  const definitions = await db.tabelDefinition.findMany({
-    where: { bab: 6 },
-    orderBy: { urutan: "asc" },
-  });
+  if (!activeTa) redirect("/dashboard");
 
-  const instances = activeTa
-    ? await db.tabelLkps.findMany({
-        where: {
-          tahunAkademikId: activeTa.id,
-          tabelDefinitionId: { in: definitions.map((d) => d.id) },
-        },
-        include: {
-          _count: { select: { rows: true } },
-        },
-      })
-    : [];
+  const instances = await db.tabelLkps.findMany({
+    where: {
+      tahunAkademikId: activeTa.id,
+      tabelDefinitionId: { in: definitions.map((d) => d.id) },
+    },
+    include: { _count: { select: { rows: true } } },
+  });
 
   const instanceMap = Object.fromEntries(
     instances.map((inst) => [inst.tabelDefinitionId, inst])
   );
 
-  const getStatusBadge = (status: TabelStatus | null | undefined) => {
-    const s = (status ?? "DRAFT") as TabelStatus;
-    const label = STATUS_LABELS[s];
-    const colors = STATUS_COLORS[s];
-    return (
-      <span className={`flex items-center gap-1 rounded-lg px-2 py-0.5 text-3xs font-extrabold uppercase tracking-wider border ${colors.bg} ${colors.text} ${colors.border}`}>
-        {label}
-      </span>
-    );
-  };
+  const totalData = instances.reduce((s, i) => s + i._count.rows, 0);
+  const filledTables = instances.filter((i) => i._count.rows > 0).length;
+  const progressPercent = definitions.length
+    ? Math.round((filledTables / definitions.length) * 100)
+    : 0;
 
   return (
-    <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-3xl bg-white p-7 shadow-soft border border-slate-100/50">
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-indigo-50/50 via-purple-50/20 to-transparent pointer-events-none rounded-r-3xl" />
-        <div className="relative z-10 flex flex-col gap-5 md:max-w-xl">
-          <div>
-            <h2 className="text-lg font-bold text-slate-800 tracking-tight">
-              BAB 6 — Visi dan Misi
-            </h2>
-            <p className="mt-1 text-xs font-semibold text-slate-500">
-              Kesesuaian dan keselarasan visi, misi, dan keilmuan PS
-            </p>
-          </div>
+    <div className="min-h-screen pb-12">
+      {/* HERO */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-600 via-slate-700 to-slate-800 p-5 mb-6 shadow-xl animate-fade-in-up">
+        <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full border-4 border-white/10 transform rotate-12" />
+        <div className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full border-4 border-white/10 transform -rotate-12" />
 
-          {activeTa && (
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 text-indigo-600 shadow-soft-2xs">
-                  <Calendar className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">Tahun Akademik</div>
-                  <div className="text-xs font-bold text-slate-800 mt-0.5">{activeTa.tahun} ({activeTa.semester})</div>
-                </div>
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white/20 border border-white/30 transform hover:scale-105 transition-transform">
+                <Eye className="w-6 h-6 text-white" />
               </div>
-              <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100/50">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 text-indigo-600 shadow-soft-2xs">
-                  <BookOpen className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="text-3xs font-extrabold text-slate-400 uppercase tracking-wider">Program Studi</div>
-                  <div className="text-xs font-bold text-slate-800 mt-0.5">{activeTa.prodi.nama} ({activeTa.prodi.jenjang})</div>
-                </div>
+              <div>
+                <span className="text-white/60 text-xs font-bold uppercase tracking-widest">BAB 6 • Akreditasi</span>
+                <h1 className="text-white text-xl font-black tracking-tight">Visi dan Misi</h1>
               </div>
             </div>
-          )}
+            <div className="relative w-16 h-16">
+              <svg className="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
+                <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="6" />
+                <circle cx="32" cy="32" r="28" fill="none" stroke="white" strokeWidth="6"
+                  strokeDasharray={`${(progressPercent / 100) * 176} 176`} strokeLinecap="round" />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-white text-lg font-black">{progressPercent}%</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <StatCard icon={CheckCircle2} label="Terisi" value={`${filledTables}/${definitions.length}`} color="emerald" />
+            <StatCard icon={FileText} label="Total Data" value={totalData} color="blue" />
+            <StatCard icon={Clock} label="Status" value="Draft" color="amber" />
+            <StatCard icon={Calendar} label="Tahun" value={activeTa.tahun} color="pink" />
+          </div>
+
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-white/80 text-xs font-medium">
+            <span className="px-2 py-1 bg-white/10 rounded-lg border border-white/20">{activeTa.tahun} ({activeTa.semester})</span>
+            <span className="px-2 py-1 bg-white/10 rounded-lg border border-white/20">{activeTa.prodi.nama} ({activeTa.prodi.jenjang})</span>
+            <span className="px-2 py-1 bg-slate-500/30 rounded-lg border border-slate-400/30 text-slate-200">{filledTables}/{definitions.length} tabel</span>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {definitions.map((def) => {
+      {/* TABLE CARDS */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {definitions.map((def, index) => {
           const inst = instanceMap[def.id];
           const rowCount = inst?._count.rows || 0;
-          const currentStatus = inst?.status ?? null;
+          const hasData = rowCount > 0;
+          const status = (inst?.status ?? "DRAFT") as TabelStatus;
+          const colors = STATUS_COLORS[status];
+          const IconComponent = TABLE_ICONS[def.kode] || FileText;
+          const staggerClass = `stagger-${Math.min(index + 1, 8)}`;
 
           return (
-            <Link
-              key={def.id}
-              href={`/lkps/bab-6/tabel-${def.kode.toLowerCase().replace(/\./g, "")}`}
-              className="group relative flex flex-col justify-between rounded-3xl bg-white p-5 shadow-soft border border-slate-100/50 hover:shadow-[0_20px_60px_rgba(59,130,246,0.15)] hover:border-blue-200/60 hover:scale-[1.02] transition-all duration-300 ease-out cursor-pointer overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out rounded-3xl" />
-              <div className="relative z-10">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 text-white shadow-soft-sm group-hover:bg-white/20 group-hover:from-white/20 group-hover:to-white/10 transition-all duration-300">
-                    <FileText className="h-5 w-5" />
+            <Link key={def.id} href={`/lkps/bab-6/tabel-${def.kode.replace(/\./g, "")}`} className={`group relative block animate-fade-in-up ${staggerClass}`}>
+              <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-slate-300">
+                <div className="relative h-20 bg-gradient-to-br from-slate-500 via-slate-600 to-slate-700">
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10" />
+
+                  <div className="absolute -bottom-3 right-4">
+                    <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-white/25 border border-white/40 shadow-lg rotate-12 group-hover:rotate-0 group-hover:scale-105 transition-all duration-300">
+                      <IconComponent className="w-7 h-7 text-white" />
+                    </div>
                   </div>
-                  <div>{getStatusBadge(currentStatus)}</div>
+
+                  <div className="absolute top-3 left-3">
+                    <span className="px-3 py-1 bg-white/25 rounded-lg text-white text-xs font-bold border border-white/40">
+                      Tabel {def.kode}
+                    </span>
+                  </div>
+
+                  <div className="absolute top-3 right-3">
+                    <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold border ${colors.bg} ${colors.text} ${colors.border}`}>
+                      {STATUS_LABELS[status]}
+                    </span>
+                  </div>
                 </div>
-                <div className="mt-4">
-                  <span className="text-3xs font-black uppercase tracking-wider text-blue-600 bg-blue-50/80 px-2.5 py-1 rounded-lg group-hover:bg-white/20 group-hover:text-white transition-all duration-300">
-                    Tabel {def.kode}
-                  </span>
-                  <h3 className="mt-3.5 text-sm font-bold text-slate-800 leading-snug tracking-tight group-hover:text-white transition-colors duration-300">
+
+                <div className="p-5">
+                  <h3 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-slate-600 transition-colors">
                     {def.nama}
                   </h3>
-                </div>
-                <div className="flex items-center gap-3 rounded-2xl bg-slate-50/50 p-3 mt-4 border border-slate-100/60 shadow-3xs group-hover:bg-white/10 group-hover:border-white/20 transition-all duration-300">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-indigo-500 border border-slate-100/40 shadow-2xs group-hover:bg-white/20 group-hover:border-white/10 group-hover:text-white group-hover:shadow-none transition-all duration-300">
-                    <FileText className="h-5 w-5 text-indigo-500" />
+                  <p className="text-xs text-slate-400 mb-4">{TABLE_DESCS[def.kode] ?? ""}</p>
+
+                  <div className={`rounded-xl p-4 ${hasData
+                    ? 'bg-gradient-to-br from-slate-500 to-slate-600 text-white'
+                    : 'bg-slate-100 border-2 border-dashed border-slate-200'}`}>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className={`text-3xl font-black ${hasData ? 'text-white' : 'text-slate-300'}`}>{rowCount}</div>
+                        <div className={`text-sm font-medium ${hasData ? 'text-slate-100' : 'text-slate-400'}`}>Data Entry</div>
+                      </div>
+                      {hasData ? <CheckCircle2 className="w-6 h-6 text-white/80" /> : <IconComponent className="w-6 h-6 text-slate-300" />}
+                    </div>
                   </div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-base font-extrabold text-slate-800 group-hover:text-white transition-colors duration-300">{rowCount}</span>
-                    <span className="text-2xs font-semibold text-slate-400 group-hover:text-blue-100 transition-colors duration-300">data dimasukkan</span>
+
+                  <div className="flex items-center justify-between mt-4">
+                    <span className={`text-sm font-semibold ${hasData ? 'text-slate-600' : 'text-slate-500'} group-hover:underline`}>
+                      {hasData ? 'Lihat & Edit Data' : 'Mulai Mengisi'}
+                    </span>
+                    <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 ${hasData
+                      ? 'bg-slate-100 text-slate-600 group-hover:bg-slate-600 group-hover:text-white'
+                      : 'bg-slate-100 text-slate-400 group-hover:bg-slate-500 group-hover:text-white'}`}>
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="relative z-10 mt-6 pt-4 border-t border-slate-50 group-hover:border-white/20 flex items-center justify-between transition-all duration-300">
-                <span className="text-xs font-bold text-slate-500 group-hover:text-white transition-colors duration-300">Kelola Data</span>
-                <div className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 shadow-2xs group-hover:bg-white/20 group-hover:border-white/30 group-hover:text-white group-hover:translate-x-1 transition-all duration-300">
-                  <ArrowRight className="h-4 w-4" />
                 </div>
               </div>
             </Link>
           );
         })}
       </div>
+    </div>
+  );
+}
+
+function StatCard({ icon: Icon, label, value, color }: { icon: LucideIcon; label: string; value: string | number; color: string }) {
+  const colors: Record<string, string> = { emerald: 'emerald-300', blue: 'blue-300', amber: 'amber-300', pink: 'pink-300' };
+  return (
+    <div className="bg-white/15 rounded-xl p-3 border border-white/20">
+      <div className="flex items-center gap-1.5 mb-0.5">
+        <Icon className={`w-3 h-3 text-${colors[color]}`} />
+        <span className="text-white/70 text-2xs font-semibold">{label}</span>
+      </div>
+      <div className="text-white text-xl font-black">{value}</div>
     </div>
   );
 }

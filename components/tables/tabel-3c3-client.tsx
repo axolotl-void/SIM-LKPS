@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 import { Role, TabelStatus } from "@prisma/client";
 import { canEditTable } from "@/lib/utils/permissions";
+import { DosenSelect, type DosenOption } from "@/components/shared/DosenSelect";
 
 interface HkiItem {
   id: string;
@@ -30,9 +31,10 @@ interface Props {
   tabelKode: string;
   status: string;
   userRole: Role;
+  dosens: DosenOption[];
 }
 
-export function Tabel3C3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
+export function Tabel3C3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole, dosens }: Props) {
   const [rows, setRows] = useState(initialRows);
   const [currentStatus, setCurrentStatus] = useState<TabelStatus>(status as TabelStatus);
   const canEdit = canEditTable(userRole, currentStatus);
@@ -148,7 +150,16 @@ export function Tabel3C3Client({ initialRows, tahunAkademikId, tabelKode, status
                 <div className="flex items-center gap-2 text-xs font-bold text-purple-700"><Award className="h-4 w-4" /> Data HKI</div>
                 <div><label className="block text-2xs font-bold text-slate-600 mb-1">Judul HKI <span className="text-red-500">*</span></label><input type="text" placeholder="cth: Aplikasi X" value={form.judul} onChange={(e) => setForm((p) => ({ ...p, judul: e.target.value }))} className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 shadow-sm placeholder:text-slate-300" /></div>
                 <div><label className="block text-2xs font-bold text-slate-600 mb-1">Jenis HKI</label><input type="text" placeholder="cth: Paten, Hak Cipta, Merek" value={form.jenisHki} onChange={(e) => setForm((p) => ({ ...p, jenisHki: e.target.value }))} className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 shadow-sm placeholder:text-slate-300" /></div>
-                <div><label className="block text-2xs font-bold text-slate-600 mb-1">Nama DTPR <span className="text-red-500">*</span></label><input type="text" placeholder="Nama lengkap" value={form.namaDtpr} onChange={(e) => setForm((p) => ({ ...p, namaDtpr: e.target.value }))} className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 shadow-sm placeholder:text-slate-300" /></div>
+                <div><DosenSelect
+  value={form.namaDtpr}
+  onChange={(val) => setForm((p) => ({ ...p, namaDtpr: val }))}
+  dosens={dosens}
+  label="Nama DTPR"
+  placeholder="Ketik atau pilih nama dosen..."
+  accent="purple"
+  size="md"
+  required
+/></div>
                 <div><label className="block text-2xs font-bold text-slate-600 mb-1">Link Bukti / Sertifikat</label><input type="url" placeholder="https://..." value={form.linkBukti} onChange={(e) => setForm((p) => ({ ...p, linkBukti: e.target.value }))} className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition-all focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 shadow-sm placeholder:text-slate-300" /></div>
               </div>
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">

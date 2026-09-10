@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   FileText, ArrowRight, Calendar,
   Users, Wallet, PieChart, LineChart,
-  UserCheck, ShieldCheck, Target, CheckCircle2, Clock, Sparkles,
+  UserCheck, ShieldCheck, Target, CheckCircle2, Clock,
   type LucideIcon
 } from "lucide-react";
 
@@ -14,6 +14,15 @@ export const metadata = { title: "BAB 1 — Tata Pamong" };
 const TABLE_ICONS: Record<string, LucideIcon> = {
   "1.A.1": Users, "1.A.2": Wallet, "1.A.3": PieChart,
   "1.A.4": LineChart, "1.A.5": UserCheck, "1.B": ShieldCheck,
+};
+
+const TABLE_DESCS: Record<string, string> = {
+  "1.A.1": "Data pimpinan, tugas pokok, dan fungsi UPPS/PS.",
+  "1.A.2": "Data sumber pendanaan UPPS dan program studi.",
+  "1.A.3": "Data penggunaan dana UPPS dan program studi.",
+  "1.A.4": "Data rata-rata beban kerja dosen per semester (EWMP).",
+  "1.A.5": "Data kualifikasi tenaga kependidikan.",
+  "1.B": "Data unit SPMI dan sumber daya manusia pendukung.",
 };
 
 export default async function Bab1Page() {
@@ -99,7 +108,7 @@ export default async function Bab1Page() {
             <Link key={def.id} href={`/lkps/bab-1/tabel-${def.kode.toLowerCase().replace(/\./g, "")}`}
               className={`group relative block animate-fade-in-up ${staggerClass}`}>
               <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-blue-200">
-                <div className="relative h-24 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600">
+                <div className="relative h-20 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600">
                   {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10" />
 
@@ -117,7 +126,7 @@ export default async function Bab1Page() {
 
                   {hasData && (
                     <div className="absolute top-3 right-3">
-                      <span className="px-2.5 py-1 bg-emerald-500/90 rounded-full text-white text-xs font-bold flex items-center gap-1">
+                      <span className="flex items-center gap-1 rounded-full px-2.5 py-1 bg-emerald-500/90 text-white text-xs font-bold">
                         <CheckCircle2 className="w-3 h-3" /> Terisi
                       </span>
                     </div>
@@ -125,27 +134,28 @@ export default async function Bab1Page() {
                 </div>
 
                 <div className="p-5">
-                  <h3 className="text-base font-bold text-slate-800 leading-snug mb-4 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-blue-600 transition-colors">
                     {def.nama}
                   </h3>
+                  <p className="text-xs text-slate-400 mb-4">{TABLE_DESCS[def.kode] ?? ""}</p>
 
-                  <div className={`rounded-xl p-4 mb-4 ${hasData
+                  <div className={`rounded-xl p-4 ${hasData
                     ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white'
                     : 'bg-slate-100 border-2 border-dashed border-slate-200'}`}>
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className={`text-4xl font-black ${hasData ? 'text-white' : 'text-slate-300'}`}>{rowCount}</div>
+                        <div className={`text-3xl font-black ${hasData ? 'text-white' : 'text-slate-300'}`}>{rowCount}</div>
                         <div className={`text-sm font-medium ${hasData ? 'text-blue-100' : 'text-slate-400'}`}>Data Entry</div>
                       </div>
-                      {hasData ? <CheckCircle2 className="w-6 h-6 text-white/80" /> : <Sparkles className="w-6 h-6 text-slate-300" />}
+                      {hasData ? <CheckCircle2 className="w-6 h-6 text-white/80" /> : <IconComponent className="w-6 h-6 text-slate-300" />}
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mt-4">
                     <span className={`text-sm font-semibold ${hasData ? 'text-blue-600' : 'text-slate-500'} group-hover:underline`}>
                       {hasData ? 'Lihat & Edit Data' : 'Mulai Mengisi'}
                     </span>
-                    <div className={`flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-200 ${hasData
+                    <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 ${hasData
                       ? 'bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white'
                       : 'bg-slate-100 text-slate-400 group-hover:bg-blue-500 group-hover:text-white'}`}>
                       <ArrowRight className="w-4 h-4" />
