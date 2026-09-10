@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 
 import { db } from "@/lib/db";
+import { withDbRetry } from "@/lib/utils/db-retry";
 import { Role } from "@prisma/client";
 
 const loginSchema = z.object({
@@ -40,9 +41,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const parsed = loginSchema.safeParse(credentials);
         if (!parsed.success) return null;
 
-        const user = await db.user.findUnique({
-          where: { email: parsed.data.email },
-        });
+        // Neon (serverless) bisa "tidur" lalu bangun saat ada request, dan
+        // percobaan pertama kadang gagal. Retry di sini supaya gangguan
+        // sesaat tidak berujung "login gagal" bagi pengguna.
+        const user = await withDbRetry(
+          () =>
+            db.user.findUnique({
+              where: { email: parsed.data.email },
+            }),
+          { label: "login: findUnique user" }
+        );
 
         if (!user || !user.isActive) return null;
 
