@@ -12,13 +12,11 @@ export default async function TahunAkademikPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const tahunAktif = await db.tahunAkademik.findMany({
-    where: { isActive: true },
-  });
-
-  const allTahun = await db.tahunAkademik.findMany({
-    orderBy: [{ tahun: "desc" }, { semester: "desc" }],
-  });
+  // PERF: dua query di bawah independen → jalankan paralel.
+  const [tahunAktif, allTahun] = await Promise.all([
+    await db.tahunAkademik.findMany({ where: { isActive: true }, }),
+    await db.tahunAkademik.findMany({ orderBy: [{ tahun: "desc" }, { semester: "desc" }], }),
+  ]);
 
   return (
     <div className="space-y-6">

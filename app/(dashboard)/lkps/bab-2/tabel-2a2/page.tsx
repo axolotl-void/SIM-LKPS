@@ -34,19 +34,22 @@ export default async function Tabel2A2Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true },
-  });
+  // PERF: query di bawah tidak saling bergantung → jalankan paralel (dulu berurutan).
+  const [activeTa, def] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true }, }),
+    await db.tabelDefinition.findUnique({ where: { kode: "2.A.2" } }),
+  ]);
 
   if (!activeTa) return <div className="p-6 text-center text-xs font-bold text-slate-400">Tahun Akademik Aktif tidak ditemukan.</div>;
 
-  const def = await db.tabelDefinition.findUnique({ where: { kode: "2.A.2" } });
   if (!def) return <div className="p-6 text-center text-xs font-bold text-slate-400">Definisi tabel 2.A.2 tidak ditemukan.</div>;
 
   const activeYearStart = parseInt(activeTa.tahun.split("/")[0]!);
-  const taTs1 = await db.tahunAkademik.findFirst({ where: { tahun: `${activeYearStart - 1}/${activeYearStart}`, semester: activeTa.semester, prodiId: activeTa.prodiId } });
-  const taTs2 = await db.tahunAkademik.findFirst({ where: { tahun: `${activeYearStart - 2}/${activeYearStart - 1}`, semester: activeTa.semester, prodiId: activeTa.prodiId } });
+  // PERF: dua query di bawah independen → jalankan paralel.
+  const [taTs1, taTs2] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { tahun: `${activeYearStart - 1}/${activeYearStart}`, semester: activeTa.semester, prodiId: activeTa.prodiId } }),
+    await db.tahunAkademik.findFirst({ where: { tahun: `${activeYearStart - 2}/${activeYearStart - 1}`, semester: activeTa.semester, prodiId: activeTa.prodiId } }),
+  ]);
 
   const lkpsTs = await db.tabelLkps.findUnique({ where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: activeTa.id } }, include: { rows: true, validationHistory: { orderBy: { createdAt: "desc" }, take: 10, include: { user: { select: { name: true, role: true } } } } } });
   const lkpsTs1 = taTs1 ? await db.tabelLkps.findUnique({ where: { tabelDefinitionId_tahunAkademikId: { tabelDefinitionId: def.id, tahunAkademikId: taTs1.id } }, include: { rows: true } }) : null;

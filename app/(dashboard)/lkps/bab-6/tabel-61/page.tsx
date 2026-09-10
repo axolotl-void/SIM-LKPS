@@ -27,10 +27,11 @@ export default async function Tabel61Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true },
-  });
+  // PERF: query di bawah tidak saling bergantung → jalankan paralel (dulu berurutan).
+  const [activeTa, def] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true }, }),
+    await db.tabelDefinition.findUnique({ where: { kode: "6.1" } }),
+  ]);
 
   if (!activeTa) {
     return (
@@ -40,7 +41,6 @@ export default async function Tabel61Page() {
     );
   }
 
-  const def = await db.tabelDefinition.findUnique({ where: { kode: "6.1" } });
   if (!def) {
     return (
       <div className="rounded-2xl bg-white p-6 shadow-soft text-center text-xs font-semibold text-slate-500">

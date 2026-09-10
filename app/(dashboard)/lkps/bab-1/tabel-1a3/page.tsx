@@ -35,10 +35,11 @@ export default async function Tabel1A3Page() {
   if (!session?.user) redirect("/login");
 
   // Get active academic year
-  const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true },
-  });
+  // PERF: query di bawah tidak saling bergantung → jalankan paralel (dulu berurutan).
+  const [activeTa, def] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true }, }),
+    await db.tabelDefinition.findUnique({ where: { kode: "1.A.3" }, }),
+  ]);
 
   if (!activeTa) {
     return (
@@ -48,10 +49,6 @@ export default async function Tabel1A3Page() {
     );
   }
 
-  // Get definition for 1.A.3
-  const def = await db.tabelDefinition.findUnique({
-    where: { kode: "1.A.3" },
-  });
 
   if (!def) {
     return (
@@ -66,13 +63,11 @@ export default async function Tabel1A3Page() {
   const ts1Tahun = `${activeYearStart - 1}/${activeYearStart}`;
   const ts2Tahun = `${activeYearStart - 2}/${activeYearStart - 1}`;
 
-  const taTs1 = await db.tahunAkademik.findFirst({
-    where: { tahun: ts1Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId },
-  });
-
-  const taTs2 = await db.tahunAkademik.findFirst({
-    where: { tahun: ts2Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId },
-  });
+  // PERF: dua query di bawah independen → jalankan paralel.
+  const [taTs1, taTs2] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { tahun: ts1Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId }, }),
+    await db.tahunAkademik.findFirst({ where: { tahun: ts2Tahun, semester: activeTa.semester, prodiId: activeTa.prodiId }, }),
+  ]);
 
   // Get current year (TS) TabelLkps
   const lkpsTs = await db.tabelLkps.findUnique({

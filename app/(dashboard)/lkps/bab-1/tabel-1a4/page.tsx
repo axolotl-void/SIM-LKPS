@@ -28,10 +28,12 @@ export default async function Tabel1A4Page() {
   if (!session?.user) redirect("/login");
 
   // Get active academic year
-  const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true },
-  });
+  // PERF: query di bawah tidak saling bergantung → jalankan paralel (dulu berurutan).
+  const [activeTa, def, dosenList] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true }, }),
+    await db.tabelDefinition.findUnique({ where: { kode: "1.A.4" }, }),
+    await db.dosen.findMany({ where: { status: "Tetap", isActive: true }, orderBy: { nama: "asc" }, select: { id: true, nidn: true, nama: true, }, }),
+  ]);
 
   if (!activeTa) {
     return (
@@ -41,10 +43,6 @@ export default async function Tabel1A4Page() {
     );
   }
 
-  // Get definition for 1.A.4
-  const def = await db.tabelDefinition.findUnique({
-    where: { kode: "1.A.4" },
-  });
 
   if (!def) {
     return (
@@ -56,16 +54,6 @@ export default async function Tabel1A4Page() {
 
   // Query active Dosen Tetap from Master Data
   // Auto-seed DTPR master di-handle di prisma/seed.ts (jalan sekali via `npm run db:seed`)
-  // — tidak di-runtime per request, agar navigasi tabel tidak insert berulang-ulang ke DB.
-  const dosenList = await db.dosen.findMany({
-    where: { status: "Tetap", isActive: true },
-    orderBy: { nama: "asc" },
-    select: {
-      id: true,
-      nidn: true,
-      nama: true,
-    },
-  });
 
   // Query existing row records for current year (TS)
   const lkpsTs = await db.tabelLkps.findUnique({

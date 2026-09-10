@@ -18,10 +18,12 @@ export default async function Tabel1A1Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true },
-  });
+  // PERF: query di bawah tidak saling bergantung → jalankan paralel (dulu berurutan).
+  const [activeTa, def, dosens] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true }, }),
+    await db.tabelDefinition.findUnique({ where: { kode: "1.A.1" } }),
+    await db.dosen.findMany({ where: { isActive: true }, select: { id: true, nidn: true, nama: true, jabatanFungsional: true, pendidikanTerakhir: true, }, orderBy: { nama: "asc" }, }),
+  ]);
 
   if (!activeTa) {
     return (
@@ -31,7 +33,6 @@ export default async function Tabel1A1Page() {
     );
   }
 
-  const def = await db.tabelDefinition.findUnique({ where: { kode: "1.A.1" } });
   if (!def) {
     return (
       <div className="rounded-2xl bg-white p-6 shadow-soft text-center text-xs font-semibold text-slate-500">
@@ -40,18 +41,6 @@ export default async function Tabel1A1Page() {
     );
   }
 
-  // Fetch dosens for dropdown
-  const dosens = await db.dosen.findMany({
-    where: { isActive: true },
-    select: {
-      id: true,
-      nidn: true,
-      nama: true,
-      jabatanFungsional: true,
-      pendidikanTerakhir: true,
-    },
-    orderBy: { nama: "asc" },
-  });
 
   const lkps = await db.tabelLkps.findUnique({
     where: {

@@ -27,14 +27,14 @@ export default async function Tabel2B6Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true },
-  });
+  // PERF: query di bawah tidak saling bergantung → jalankan paralel (dulu berurutan).
+  const [activeTa, def] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true }, }),
+    await db.tabelDefinition.findUnique({ where: { kode: "2.B.6" } }),
+  ]);
 
   if (!activeTa) return <div className="p-6 text-center text-xs font-bold text-slate-400">Tahun Akademik Aktif tidak ditemukan.</div>;
 
-  const def = await db.tabelDefinition.findUnique({ where: { kode: "2.B.6" } });
   if (!def) return <div className="p-6 text-center text-xs font-bold text-slate-400">Definisi tabel 2.B.6 tidak ditemukan.</div>;
 
   const lkpsTs = await db.tabelLkps.findUnique({

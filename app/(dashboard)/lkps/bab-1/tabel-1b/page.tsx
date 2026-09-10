@@ -28,10 +28,11 @@ export default async function Tabel1BPage() {
   if (!session?.user) redirect("/login");
 
   // Get active academic year
-  const activeTa = await db.tahunAkademik.findFirst({
-    where: { isActive: true },
-    include: { prodi: true },
-  });
+  // PERF: query di bawah tidak saling bergantung → jalankan paralel (dulu berurutan).
+  const [activeTa, def] = await Promise.all([
+    await db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true }, }),
+    await db.tabelDefinition.findUnique({ where: { kode: "1.B" }, }),
+  ]);
 
   if (!activeTa) {
     return (
@@ -41,10 +42,6 @@ export default async function Tabel1BPage() {
     );
   }
 
-  // Get definition for 1.B
-  const def = await db.tabelDefinition.findUnique({
-    where: { kode: "1.B" },
-  });
 
   if (!def) {
     return (
