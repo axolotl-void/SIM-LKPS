@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import { LockOpen } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { LoginVisual } from "./login-visual";
@@ -14,14 +15,6 @@ export const metadata: Metadata = {
     "Sistem Informasi Manajemen Laporan Kinerja Program Studi, Universitas Bina Bangsa Getsempena.",
 };
 
-/**
- * Login page — Server Component.
- *
- * - Fast-path: if already authenticated, redirect to "/" before any animation
- *   plays (avoids flashing the login UI to authenticated users)
- * - Otherwise renders the same split layout + card with the LoginForm client
- *   component. The form uses `useSearchParams` (wrapped in Suspense).
- */
 export default async function LoginPage() {
   const session = await auth();
   if (session?.user) {
@@ -36,9 +29,7 @@ export default async function LoginPage() {
           {/* Sequence 1: header lockup */}
           <div className="login-stagger-item login-stagger-1 mb-4 flex items-center gap-3.5 sm:mb-5 2xl:mb-6">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-sky-400 text-white shadow-md shadow-blue-500/25 sm:h-11 sm:w-11 2xl:h-[52px] 2xl:w-[52px]">
-              <span className="material-symbols-outlined text-[22px] sm:text-[24px] 2xl:text-[28px]">
-                lock_open
-              </span>
+              <LockOpen className="h-[22px] w-[22px] sm:h-6 sm:w-6 2xl:h-7 2xl:w-7" strokeWidth={2.25} />
             </div>
             <div>
               <p className="text-[11px] font-bold tracking-wider text-blue-600 uppercase sm:text-xs 2xl:text-sm">

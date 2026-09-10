@@ -71,16 +71,16 @@ export function middleware(request: NextRequest) {
   response.headers.set("X-XSS-Protection", "1; mode=block");
   response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
 
-  // Strict CSP in production
+  // Strict CSP in production (allow Google Fonts for Plus Jakarta Sans body font)
   if (process.env.NODE_ENV === "production") {
     response.headers.set(
       "Content-Security-Policy",
       "default-src 'self'; " +
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-      "style-src 'self' 'unsafe-inline'; " +
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
       "img-src 'self' data: blob: https:; " +
-      "font-src 'self'; " +
-      "connect-src 'self'; " +
+      "font-src 'self' https://fonts.gstatic.com; " +
+      "connect-src 'self' https://fonts.gstatic.com; " +
       "frame-ancestors 'none';"
     );
   }
