@@ -122,6 +122,14 @@ export default async function Bab3Page() {
                       Tabel {table.kode}
                     </span>
                   </div>
+
+                  {hasData && (
+                    <div className="absolute top-3 right-3">
+                      <span className="flex items-center gap-1 rounded-full px-2.5 py-1 bg-emerald-500/90 text-white text-xs font-bold">
+                        <CheckCircle2 className="w-3 h-3" /> Terisi
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-5">

@@ -97,7 +97,7 @@ export default async function Bab5Page() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {bab5Tables.map((table, index) => (
-            <TableCard key={table.kode} table={table} definitions={definitions} instanceMap={instanceMap} hrefBase="/lkps/bab-5" staggerIndex={index} />
+            <TableCard key={table.kode} table={table} definitions={definitions} instanceMap={instanceMap} hrefBase="/lkps/bab-5" staggerIndex={index} section="BAB5" />
           ))}
         </div>
       </div>
@@ -109,7 +109,7 @@ export default async function Bab5Page() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {bab6Tables.map((table, index) => (
-            <TableCard key={table.kode} table={table} definitions={definitions} instanceMap={instanceMap} hrefBase="/lkps/bab-6" staggerIndex={index + 2} />
+            <TableCard key={table.kode} table={table} definitions={definitions} instanceMap={instanceMap} hrefBase="/lkps/bab-6" staggerIndex={index + 2} section="BAB6" />
           ))}
         </div>
       </div>
@@ -117,12 +117,37 @@ export default async function Bab5Page() {
   );
 }
 
-function TableCard({ table, definitions, instanceMap, hrefBase, staggerIndex }: {
+// Kartu tabel — struktur identik dengan kartu di BAB 1/2/3/4 (band gradient + ikon tile + blok data + CTA)
+const SECTION_THEMES = {
+  BAB5: {
+    grad: "from-slate-500 via-slate-600 to-slate-700",
+    hoverBorder: "group-hover:border-slate-300",
+    hoverText: "group-hover:text-slate-700",
+    statOn: "from-slate-500 to-slate-600",
+    statSubOn: "text-slate-100",
+    ctaOn: "text-slate-600",
+    arrowOn: "bg-slate-100 text-slate-600 group-hover:bg-slate-600 group-hover:text-white",
+    arrowOff: "bg-slate-100 text-slate-400 group-hover:bg-slate-500 group-hover:text-white",
+  },
+  BAB6: {
+    grad: "from-indigo-500 via-indigo-600 to-blue-600",
+    hoverBorder: "group-hover:border-indigo-200",
+    hoverText: "group-hover:text-indigo-600",
+    statOn: "from-indigo-500 to-blue-600",
+    statSubOn: "text-indigo-100",
+    ctaOn: "text-indigo-600",
+    arrowOn: "bg-indigo-100 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white",
+    arrowOff: "bg-slate-100 text-slate-400 group-hover:bg-indigo-500 group-hover:text-white",
+  },
+} as const;
+
+function TableCard({ table, definitions, instanceMap, hrefBase, staggerIndex, section }: {
   table: { kode: string; nama: string; desc: string };
   definitions: { id: string; kode: string }[];
   instanceMap: Map<string, { _count?: { rows: number } }>;
   hrefBase: string;
   staggerIndex: number;
+  section: keyof typeof SECTION_THEMES;
 }) {
   const def = definitions.find(d => d.kode === table.kode);
   const inst = def ? instanceMap.get(def.id) : null;
@@ -130,11 +155,12 @@ function TableCard({ table, definitions, instanceMap, hrefBase, staggerIndex }: 
   const hasData = rowCount > 0;
   const IconComponent = TABLE_ICONS[table.kode] || FileText;
   const staggerClass = `stagger-${Math.min(staggerIndex + 1, 8)}`;
+  const t = SECTION_THEMES[section];
 
   return (
     <Link href={`${hrefBase}/tabel-${table.kode.replace(/\./g, "")}`} className={`group relative block animate-fade-in-up ${staggerClass}`}>
-      <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
-        <div className="relative h-20 bg-gradient-to-br from-slate-500 to-slate-600">
+      <div className={`relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 ${t.hoverBorder}`}>
+        <div className={`relative h-20 bg-gradient-to-br ${t.grad}`}>
           <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10" />
           <div className="absolute -bottom-3 right-4">
             <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-white/25 border border-white/40 shadow-lg rotate-12 group-hover:rotate-0 group-hover:scale-105 transition-all duration-300">
@@ -146,32 +172,39 @@ function TableCard({ table, definitions, instanceMap, hrefBase, staggerIndex }: 
               Tabel {table.kode}
             </span>
           </div>
+
+          {hasData && (
+            <div className="absolute top-3 right-3">
+              <span className="flex items-center gap-1 rounded-full px-2.5 py-1 bg-emerald-500/90 text-white text-xs font-bold">
+                <CheckCircle2 className="w-3 h-3" /> Terisi
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="p-5">
-          <h3 className="text-base font-bold text-slate-800 leading-snug mb-4 group-hover:text-slate-600 transition-colors">
+          <h3 className={`text-base font-bold text-slate-800 leading-snug mb-2 ${t.hoverText} transition-colors`}>
             {table.nama}
           </h3>
+          <p className="text-xs text-slate-400 mb-4">{table.desc}</p>
 
           <div className={`rounded-xl p-4 ${hasData
-            ? 'bg-gradient-to-br from-slate-500 to-slate-600 text-white'
+            ? `bg-gradient-to-br ${t.statOn} text-white`
             : 'bg-slate-100 border-2 border-dashed border-slate-200'}`}>
             <div className="flex items-center justify-between">
               <div>
                 <div className={`text-3xl font-black ${hasData ? 'text-white' : 'text-slate-300'}`}>{rowCount}</div>
-                <div className={`text-sm font-medium ${hasData ? 'text-slate-100' : 'text-slate-400'}`}>Data Entry</div>
+                <div className={`text-sm font-medium ${hasData ? t.statSubOn : 'text-slate-400'}`}>Data Entry</div>
               </div>
-              {hasData ? <CheckCircle2 className="w-6 h-6 text-white/80" /> : <FileText className="w-6 h-6 text-slate-300" />}
+              {hasData ? <CheckCircle2 className="w-6 h-6 text-white/80" /> : <IconComponent className="w-6 h-6 text-slate-300" />}
             </div>
           </div>
 
           <div className="flex items-center justify-between mt-4">
-            <span className={`text-sm font-semibold ${hasData ? 'text-slate-600' : 'text-slate-500'} group-hover:underline`}>
+            <span className={`text-sm font-semibold ${hasData ? t.ctaOn : 'text-slate-500'} group-hover:underline`}>
               {hasData ? 'Lihat & Edit Data' : 'Mulai Mengisi'}
             </span>
-            <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 ${hasData
-              ? 'bg-slate-100 text-slate-600 group-hover:bg-slate-600 group-hover:text-white'
-              : 'bg-slate-100 text-slate-400 group-hover:bg-slate-500 group-hover:text-white'}`}>
+            <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 ${hasData ? t.arrowOn : t.arrowOff}`}>
               <ArrowRight className="w-4 h-4" />
             </div>
           </div>

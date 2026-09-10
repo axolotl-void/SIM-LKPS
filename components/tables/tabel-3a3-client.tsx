@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 import { Role, TabelStatus } from "@prisma/client";
 import { canEditTable } from "@/lib/utils/permissions";
+import { DosenSelect, type DosenOption } from "@/components/shared/DosenSelect";
 
 interface PengembanganItem {
   id: string;
@@ -29,9 +30,10 @@ interface Props {
   tabelKode: string;
   status: string;
   userRole: Role;
+  dosens: DosenOption[];
 }
 
-export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
+export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status, userRole, dosens }: Props) {
   const [rows, setRows] = useState<PengembanganItem[]>(initialRows);
   const [currentStatus, setCurrentStatus] = useState<TabelStatus>(status as TabelStatus);
   const canEdit = canEditTable(userRole, currentStatus);
@@ -230,8 +232,16 @@ export function Tabel3A3Client({ initialRows, tahunAkademikId, tabelKode, status
                 <div className="rounded-2xl border border-teal-100 bg-teal-50/30 p-5 space-y-4">
                   <div className="flex items-center gap-2 text-xs font-bold text-purple-700"><GraduationCap className="h-4 w-4" /> Identitas</div>
                   <div>
-                    <label className="block text-2xs font-bold text-slate-600 mb-1">Nama DTPR <span className="text-red-500">*</span></label>
-                    <input type="text" placeholder="Nama dosen" value={form.namaDtpr} onChange={(e) => setForm((p) => ({ ...p, namaDtpr: e.target.value }))} className="w-full rounded-xl border border-teal-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-sm placeholder:text-slate-300" />
+<DosenSelect
+                      value={form.namaDtpr}
+                      onChange={(val) => setForm((p) => ({ ...p, namaDtpr: val }))}
+                      dosens={dosens}
+                      label="Nama DTPR"
+                      placeholder="Ketik atau pilih nama dosen..."
+                      accent="teal"
+                      size="md"
+                      required
+                    />
                   </div>
                   <div>
                     <label className="block text-2xs font-bold text-slate-600 mb-1">Jenis Pengembangan <span className="text-red-500">*</span></label>

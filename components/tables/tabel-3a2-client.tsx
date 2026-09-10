@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 import { Role, TabelStatus } from "@prisma/client";
 import { canEditTable } from "@/lib/utils/permissions";
+import { DosenSelect, type DosenOption } from "@/components/shared/DosenSelect";
 
 interface PenelitianItem {
   id: string;
@@ -35,9 +36,10 @@ interface Props {
   tabelKode: string;
   status: string;
   userRole: Role;
+  dosens: DosenOption[];
 }
 
-export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status, userRole }: Props) {
+export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status, userRole, dosens }: Props) {
   const [rows, setRows] = useState<PenelitianItem[]>(initialRows);
   const [currentStatus, setCurrentStatus] = useState<TabelStatus>(status as TabelStatus);
   const canEdit = canEditTable(userRole, currentStatus);
@@ -364,15 +366,15 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-2xs font-bold text-slate-600 mb-1">
-                        Nama DTPR (Ketua) <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Nama lengkap dosen"
+<DosenSelect
                         value={form.namaDtpr}
-                        onChange={(e) => setForm((p) => ({ ...p, namaDtpr: e.target.value }))}
-                        className="w-full rounded-xl border border-teal-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-sm placeholder:text-slate-300"
+                        onChange={(val) => setForm((p) => ({ ...p, namaDtpr: val }))}
+                        dosens={dosens}
+                        label="Nama DTPR (Ketua)"
+                        placeholder="Ketik atau pilih nama dosen..."
+                        accent="teal"
+                        size="md"
+                        required
                       />
                     </div>
                     <div>
