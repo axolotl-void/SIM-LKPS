@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Role, TabelStatus } from "@prisma/client";
 import { canEditTable } from "@/lib/utils/permissions";
-import { upsertLkpsRow, deleteLkpsRow, createDosen } from "@/lib/actions/lkps";
+import { upsertLkpsRow, deleteLkpsRow } from "@/lib/actions/lkps";
 
 interface DosenOption {
   id: string;
@@ -60,7 +60,6 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
   const [localDosenList, setLocalDosenList] = useState<DosenOption[]>(dosenList);
   const [dosenSearchQuery, setDosenSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isCreatingDosen, setIsCreatingDosen] = useState(false);
 
   const triggerToast = (message: string, type: "success" | "error") => {
     setToast({ message, type });
@@ -102,24 +101,6 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
     setDosenId(dosen.id);
     setDosenSearchQuery(dosen.nama);
     setIsDropdownOpen(false);
-  };
-
-  const handleCreateCustomDosen = async () => {
-    if (!dosenSearchQuery.trim()) return;
-    setIsCreatingDosen(true);
-    try {
-      const newDosen = await createDosen(dosenSearchQuery.trim());
-      setLocalDosenList([...localDosenList, newDosen]);
-      setDosenId(newDosen.id);
-      setDosenSearchQuery(newDosen.nama);
-      setIsDropdownOpen(false);
-      triggerToast(`Dosen "${newDosen.nama}" berhasil ditambahkan`, "success");
-    } catch (err) {
-      console.error(err);
-      triggerToast("Gagal menambahkan dosen kustom baru.", "error");
-    } finally {
-      setIsCreatingDosen(false);
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -465,19 +446,18 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
                             
                             {dosenSearchQuery.trim() && !localDosenList.some(d => d.nama.toLowerCase() === dosenSearchQuery.toLowerCase().trim()) && (
                               <div className="border-t border-slate-100/60 my-1 pt-1">
-                                <button
-                                  type="button"
-                                  disabled={isCreatingDosen}
-                                  onClick={handleCreateCustomDosen}
-                                  className="w-full rounded-lg px-3 py-2 text-left text-xs font-bold text-blue-600 hover:bg-blue-50/50 transition-colors flex items-center gap-1.5"
+                                <Link
+                                  href="/master/dosen/new"
+                                  className="w-full rounded-lg px-3 py-2 text-left text-xs font-bold text-blue-600 hover:bg-blue-50/50 transition-colors flex items-start gap-1.5"
                                 >
-                                  {isCreatingDosen ? (
-                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                                  ) : (
-                                    <Plus className="h-3.5 w-3.5" />
-                                  )}
-                                  Tambah &ldquo;{dosenSearchQuery}&rdquo; sebagai dosen baru
-                                </button>
+                                  <Plus className="h-3.5 w-3.5 mt-px shrink-0" />
+                                  <span>
+                                    Tambah &ldquo;{dosenSearchQuery}&rdquo; di Master Data
+                                    <span className="mt-0.5 block text-3xs font-medium text-slate-500">
+                                      Perlu NIDN, pendidikan, dan status — isi di halaman Master Data
+                                    </span>
+                                  </span>
+                                </Link>
                               </div>
                             )}
                           </div>

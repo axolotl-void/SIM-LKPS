@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { hasPermission } from "@/lib/utils/permissions";
+import { createAuditLog, logAccessDenied } from "@/lib/utils/audit";
 import { Role } from "@prisma/client";
 import { z } from "zod";
 
@@ -25,6 +27,7 @@ export async function POST(request: NextRequest) {
 
     const role = session.user.role as Role;
     if (!hasPermission(role, "master.dosen.create")) {
+      logAccessDenied("CREATE", "Dosen", "Izin master.dosen.create tidak dimiliki", { role });
       return NextResponse.json(
         { error: "Anda tidak memiliki izin untuk menambah data dosen" },
         { status: 403 }
@@ -69,6 +72,16 @@ export async function POST(request: NextRequest) {
         isActive: true,
       },
     });
+
+    await createAuditLog({
+      action: "CREATE",
+      entity: "Dosen",
+      entityId: dosen.id,
+      newValue: { nama: dosen.nama, nidn: dosen.nidn },
+    });
+
+    revalidatePath("/master/dosen");
+    revalidatePath("/dashboard");
 
     return NextResponse.json(dosen, { status: 201 });
   } catch (error) {

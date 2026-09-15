@@ -12,7 +12,7 @@ const PERMISSIONS: Record<Role, string[]> = {
   ADMIN: [
     "user.*",
     "master_data.*",
-    "master_dosen.*",
+    "master.dosen.*",
     "tabel_lkps.*",
     "evidence.*",
     "settings.*",
@@ -30,7 +30,7 @@ const PERMISSIONS: Record<Role, string[]> = {
     "evidence.create",
     "evidence.read",
     "master_data.read",
-    "master_dosen.create",
+    "master.dosen.create",
     "dashboard.read",
     "report.read",
   ],

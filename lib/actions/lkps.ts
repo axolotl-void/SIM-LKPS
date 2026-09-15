@@ -420,32 +420,44 @@ export async function validateLkpsTabel(
   });
 }
 
-export async function createDosen(nama: string) {
+export async function createDosen(data: {
+  nidn: string;
+  nama: string;
+  jabatanFungsional?: string;
+  pendidikanTerakhir?: string;
+  bidangKeahlian?: string;
+  status?: string;
+  jenisKelamin?: string;
+}) {
   return withErrorHandling(async () => {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
-  // Generate a random 10-digit NIDN that doesn't conflict
-  let nidn = "";
-  let isUnique = false;
-  while (!isUnique) {
-    const rand = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-    const existing = await db.dosen.findUnique({
-      where: { nidn: rand },
-    });
-    if (!existing) {
-      nidn = rand;
-      isUnique = true;
-    }
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "master.dosen.create")) {
+    logAccessDenied("CREATE", "Dosen", "Izin master.dosen.create tidak dimiliki", { role });
+    throw new Error("Tidak memiliki izin untuk menambah data dosen");
   }
+
+  const nidn = (data.nidn || "").trim();
+  const nama = (data.nama || "").trim();
+
+  if (!nama) throw new Error("Nama dosen tidak boleh kosong");
+  if (!nidn) throw new Error("NIDN tidak boleh kosong");
+  if (!/^\d+$/.test(nidn)) throw new Error("NIDN harus berupa angka");
+
+  const existing = await db.dosen.findUnique({ where: { nidn } });
+  if (existing) throw new Error("NIDN sudah terdaftar");
 
   const newDosen = await db.dosen.create({
     data: {
       nidn,
       nama,
-      status: "Tetap",
-      pendidikanTerakhir: "S2",
-      jenisKelamin: "L", // default
+      jabatanFungsional: data.jabatanFungsional || null,
+      pendidikanTerakhir: data.pendidikanTerakhir || "S2",
+      bidangKeahlian: data.bidangKeahlian || null,
+      status: data.status || "Tetap",
+      jenisKelamin: data.jenisKelamin || "L",
     },
   });
 
@@ -453,13 +465,13 @@ export async function createDosen(nama: string) {
     action: "CREATE",
     entity: "Dosen",
     entityId: newDosen.id,
-    newValue: { nama, nidn, status: "Tetap" },
+    newValue: { nama: newDosen.nama, nidn: newDosen.nidn },
   });
 
   await notifyMutation({
     action: "CREATE",
     entity: "Dosen",
-    entityLabel: `${nama} (NIDN ${nidn})`,
+    entityLabel: `${newDosen.nama} (NIDN ${newDosen.nidn})`,
     link: "/master/dosen",
   });
 
@@ -470,6 +482,10 @@ export async function createDosen(nama: string) {
     id: newDosen.id,
     nidn: newDosen.nidn,
     nama: newDosen.nama,
+    jabatanFungsional: newDosen.jabatanFungsional,
+    pendidikanTerakhir: newDosen.pendidikanTerakhir,
+    status: newDosen.status,
+    jenisKelamin: newDosen.jenisKelamin,
   };
   });
 }
