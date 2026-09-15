@@ -453,7 +453,7 @@ export function Tabel1A4Client({ initialRows, dosenList, tahunAkademikId, tabelK
                                   <Plus className="h-3.5 w-3.5 mt-px shrink-0" />
                                   <span>
                                     Tambah &ldquo;{dosenSearchQuery}&rdquo; di Master Data
-                                    <span className="mt-0.5 block text-3xs font-medium text-slate-500">
+                                    <span className="mt-0.5 block text-[10px] font-medium text-slate-500">
                                       Perlu NIDN, pendidikan, dan status — isi di halaman Master Data
                                     </span>
                                   </span>
