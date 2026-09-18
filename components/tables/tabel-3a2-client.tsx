@@ -191,10 +191,10 @@ export function Tabel3A2Client({ initialRows, tahunAkademikId, tabelKode, status
       {/* Top bar */}
       <div className="flex items-center justify-between">
         <Link
-          href="/lkps/bab-3"
+          href="/lkps/kriteria-3"
           className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-purple-600 transition-colors"
         >
-          <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 3
+          <ArrowLeft className="h-4 w-4" /> Kembali ke Kriteria 3
         </Link>
         <div className="flex items-center gap-2.5">
           <button

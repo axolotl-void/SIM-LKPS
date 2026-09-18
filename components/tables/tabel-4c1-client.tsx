@@ -105,7 +105,7 @@ export function Tabel4C1Client({ initialRows, tahunAkademikId, tabelKode, status
   return (
     <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Link href="/lkps/bab-4" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-teal-600 transition-colors"><ArrowLeft className="h-4 w-4" /> Kembali ke BAB 4</Link>
+        <Link href="/lkps/kriteria-4" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-teal-600 transition-colors"><ArrowLeft className="h-4 w-4" /> Kembali ke Kriteria 4</Link>
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-3 py-1.5 shadow-soft-sm"><span className="text-3xs font-bold uppercase tracking-wider text-slate-600">Jumlah Mitra</span><span className="text-sm font-black text-slate-800">{totalMitra}</span></div>
           <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-3 py-1.5 shadow-soft-sm"><span className="text-3xs font-bold uppercase tracking-wider text-slate-600">Total Dana TS</span><span className="text-sm font-black text-teal-600">{totalDanaTs.toLocaleString("id-ID")} jt</span></div>

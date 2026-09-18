@@ -117,12 +117,12 @@ export default async function DashboardPage() {
   }
 
   const babNames: Record<number, { title: string; color: string; glowColor: string }> = {
-    1: { title: "BAB 1 - Tata Pamong", color: "#6366F1", glowColor: "#818CF8" },
-    2: { title: "BAB 2 - Pendidikan", color: "#3B82F6", glowColor: "#60A5FA" },
-    3: { title: "BAB 3 - Penelitian", color: "#10B981", glowColor: "#34D399" },
-    4: { title: "BAB 4 - Pengabdian", color: "#F59E0B", glowColor: "#FBBF24" },
-    5: { title: "BAB 5 - Tata Kelola", color: "#EC4899", glowColor: "#F472B6" },
-    6: { title: "BAB 6 - Visi Misi", color: "#8B5CF6", glowColor: "#A78BFA" },
+    1: { title: "Kriteria 1 - Budaya Mutu", color: "#6366F1", glowColor: "#818CF8" },
+    2: { title: "Kriteria 2 - Relevansi Pendidikan", color: "#3B82F6", glowColor: "#60A5FA" },
+    3: { title: "Kriteria 3 - Relevansi Penelitian", color: "#10B981", glowColor: "#34D399" },
+    4: { title: "Kriteria 4 - Relevansi PkM", color: "#F59E0B", glowColor: "#FBBF24" },
+    5: { title: "Kriteria 5 - Akuntabilitas", color: "#EC4899", glowColor: "#F472B6" },
+    6: { title: "Kriteria 6 - Diferensiasi Misi", color: "#8B5CF6", glowColor: "#A78BFA" },
   };
 
   const progressItems = babStats.map((stat) => {

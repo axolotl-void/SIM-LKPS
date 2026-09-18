@@ -174,7 +174,7 @@ export function Tabel1A5Client({ initialRows, tahunAkademikId, tabelKode, status
       {/* Control bar */}
       <div className="flex items-center justify-between">
         <Link
-          href="/lkps/bab-1"
+          href="/lkps/kriteria-1"
           className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke Daftar Tabel

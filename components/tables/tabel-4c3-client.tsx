@@ -139,10 +139,10 @@ export function Tabel4C3Client({ initialRows, tahunAkademikId, tabelKode, status
       {/* Top bar — kembali · ringkasan · tambah */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Link
-          href="/lkps/bab-4"
+          href="/lkps/kriteria-4"
           className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-pink-600 transition-colors"
         >
-          <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 4
+          <ArrowLeft className="h-4 w-4" /> Kembali ke Kriteria 4
         </Link>
 
         <div className="flex flex-wrap items-center gap-2">

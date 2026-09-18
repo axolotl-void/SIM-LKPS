@@ -34,7 +34,7 @@ export function Tabel2B2Client({ initialRows, tahunAkademikId, tabelKode, status
   return (
     <div className="space-y-6">
       <div className="flex justify-between">
-        <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-800"><ArrowLeft className="h-4 w-4" /> Kembali</Link>
+        <Link href="/lkps/kriteria-2" className="flex gap-2 text-xs font-bold text-slate-800"><ArrowLeft className="h-4 w-4" /> Kembali</Link>
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => { setEditId(undefined); setForm({ kodeCpl: "", pl01: false, pl02: false, pl03: false, pl04: false, pl05: false }); setIsOpen(true); }}

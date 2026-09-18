@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { login, expectHealthyPage } from './fixtures';
 
-const TARGET_TABEL = '/lkps/bab-1/tabel-1a2';
+const TARGET_TABEL = '/lkps/kriteria-1/tabel-1a2';
 
 test.describe('Workflow: DRAFT → DIAJUKAN → DISETUJUI', () => {
   test('OPERATOR can submit a DRAFT tabel', async ({ page }) => {

@@ -3,61 +3,63 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import {
-  FileText, ArrowRight, Calendar, Eye, Target,
-  CheckCircle2, Clock, Users, Award,
+  FileText, ArrowRight, Calendar, BookOpen,
+  GraduationCap, Users, Map, BarChart3,
+  Briefcase, Star, Shuffle, Award, CheckCircle2, Clock
 } from "lucide-react";
-import type { Metadata } from "next";
 import type { LucideIcon } from "lucide-react";
-import { STATUS_LABELS, STATUS_COLORS } from "@/lib/utils/permissions";
-import { TabelStatus } from "@prisma/client";
 
-export const metadata: Metadata = {
-  title: "BAB 6 — Visi dan Misi",
-};
+export const metadata = { title: "Kriteria 2 — Relevansi Pendidikan" };
 
 const TABLE_ICONS: Record<string, LucideIcon> = {
-  "6.1": Eye,
-  "6.2": Target,
+  "2.A.1": Users, "2.A.2": Map, "2.A.3": BarChart3,
+  "2.B.1": BookOpen, "2.B.2": GraduationCap, "2.B.3": FileText,
+  "2.B.4": Clock, "2.B.5": Briefcase, "2.B.6": Star,
+  "2.C": Shuffle, "2.D": Award,
 };
 
 const TABLE_DESCS: Record<string, string> = {
-  "6.1": "Data keselarasan visi, misi, dan tujuan program studi.",
-  "6.2": "Data strategi pencapaian tujuan program studi.",
+  "2.A.1": "Data jumlah dan profil mahasiswa program studi.",
+  "2.A.2": "Data keragaman asal daerah dan sekolah mahasiswa.",
+  "2.A.3": "Data kondisi jumlah mahasiswa per angkatan.",
+  "2.B.1": "Data isi pembelajaran dan bahan kajian kurikulum.",
+  "2.B.2": "Data pemetaan CPL terhadap profil lulusan.",
+  "2.B.3": "Data pemenuhan CPL pada mata kuliah.",
+  "2.B.4": "Data rata-rata masa tunggu lulusan mendapatkan pekerjaan.",
+  "2.B.5": "Data kesesuaian bidang kerja lulusan dengan keilmuan.",
+  "2.B.6": "Data tingkat kepuasan pengguna lulusan.",
+  "2.C": "Data fleksibilitas proses pembelajaran di program studi.",
+  "2.D": "Data rekognisi dan apresiasi kompetensi lulusan.",
 };
 
-export default async function Bab6Page() {
+export default async function Bab2Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
   const [activeTa, definitions] = await Promise.all([
     db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true } }),
-    db.tabelDefinition.findMany({ where: { bab: 6 }, orderBy: { urutan: "asc" } }),
+    db.tabelDefinition.findMany({ where: { bab: 2 }, orderBy: { urutan: "asc" } }),
   ]);
 
   if (!activeTa) redirect("/dashboard");
 
-  const instances = await db.tabelLkps.findMany({
-    where: {
-      tahunAkademikId: activeTa.id,
-      tabelDefinitionId: { in: definitions.map((d) => d.id) },
-    },
-    include: { _count: { select: { rows: true } } },
-  });
+  const instances = activeTa
+    ? await db.tabelLkps.findMany({
+        where: { tahunAkademikId: activeTa.id, tabelDefinitionId: { in: definitions.map(d => d.id) } },
+        include: { _count: { select: { rows: true } } },
+      })
+    : [];
 
-  const instanceMap = Object.fromEntries(
-    instances.map((inst) => [inst.tabelDefinitionId, inst])
-  );
-
+  const instanceMap = Object.fromEntries(instances.map(i => [i.tabelDefinitionId, i]));
   const totalData = instances.reduce((s, i) => s + i._count.rows, 0);
-  const filledTables = instances.filter((i) => i._count.rows > 0).length;
-  const progressPercent = definitions.length
-    ? Math.round((filledTables / definitions.length) * 100)
-    : 0;
+  const filledTables = instances.filter(i => i._count.rows > 0).length;
+  const progressPercent = definitions.length ? Math.round((filledTables / definitions.length) * 100) : 0;
 
   return (
     <div className="min-h-screen pb-12">
       {/* HERO */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-600 via-slate-700 to-slate-800 p-5 mb-6 shadow-xl animate-fade-in-up">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-600 via-teal-600 to-cyan-700 p-5 mb-6 shadow-xl animate-fade-in-up">
+        {/* Decorative circles */}
         <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full border-4 border-white/10 transform rotate-12" />
         <div className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full border-4 border-white/10 transform -rotate-12" />
 
@@ -65,11 +67,11 @@ export default async function Bab6Page() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white/20 border border-white/30 transform hover:scale-105 transition-transform">
-                <Eye className="w-6 h-6 text-white" />
+                <GraduationCap className="w-6 h-6 text-white" />
               </div>
               <div>
-                <span className="text-white/60 text-xs font-bold uppercase tracking-widest">BAB 6 • Akreditasi</span>
-                <h1 className="text-white text-xl font-black tracking-tight">Visi dan Misi</h1>
+                <span className="text-white/60 text-xs font-bold uppercase tracking-widest">KRITERIA 2 • Relevansi Pendidikan</span>
+                <h1 className="text-white text-xl font-black tracking-tight">Pendidikan</h1>
               </div>
             </div>
             <div className="relative w-16 h-16">
@@ -88,14 +90,15 @@ export default async function Bab6Page() {
             <StatCard icon={CheckCircle2} label="Terisi" value={`${filledTables}/${definitions.length}`} color="emerald" />
             <StatCard icon={FileText} label="Total Data" value={totalData} color="blue" />
             <StatCard icon={Clock} label="Status" value="Draft" color="amber" />
-            <StatCard icon={Calendar} label="Tahun" value={activeTa.tahun} color="pink" />
+            <StatCard icon={Calendar} label="Tahun" value={activeTa?.tahun || '-'} color="pink" />
           </div>
 
-          <div className="mt-3 flex flex-wrap items-center gap-2 text-white/80 text-xs font-medium">
-            <span className="px-2 py-1 bg-white/10 rounded-lg border border-white/20">{activeTa.tahun} ({activeTa.semester})</span>
-            <span className="px-2 py-1 bg-white/10 rounded-lg border border-white/20">{activeTa.prodi.nama} ({activeTa.prodi.jenjang})</span>
-            <span className="px-2 py-1 bg-slate-500/30 rounded-lg border border-slate-400/30 text-slate-200">{filledTables}/{definitions.length} tabel</span>
-          </div>
+          {activeTa && (
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-white/80 text-xs font-medium">
+              <span className="px-2 py-1 bg-white/10 rounded-lg border border-white/20">{activeTa.semester}</span>
+              <span className="px-2 py-1 bg-white/10 rounded-lg border border-white/20">{activeTa.prodi.nama} ({activeTa.prodi.jenjang})</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -105,15 +108,13 @@ export default async function Bab6Page() {
           const inst = instanceMap[def.id];
           const rowCount = inst?._count.rows || 0;
           const hasData = rowCount > 0;
-          const status = (inst?.status ?? "DRAFT") as TabelStatus;
-          const colors = STATUS_COLORS[status];
           const IconComponent = TABLE_ICONS[def.kode] || FileText;
           const staggerClass = `stagger-${Math.min(index + 1, 8)}`;
 
           return (
-            <Link key={def.id} href={`/lkps/bab-6/tabel-${def.kode.replace(/\./g, "")}`} className={`group relative block animate-fade-in-up ${staggerClass}`}>
-              <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-slate-300">
-                <div className="relative h-20 bg-gradient-to-br from-slate-500 via-slate-600 to-slate-700">
+            <Link key={def.id} href={`/lkps/kriteria-2/tabel-${def.kode.toLowerCase().replace(/\./g, "")}`} className={`group relative block animate-fade-in-up ${staggerClass}`}>
+              <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-cyan-200">
+                <div className="relative h-20 bg-gradient-to-br from-cyan-500 via-teal-500 to-sky-500">
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10" />
 
                   <div className="absolute -bottom-3 right-4">
@@ -128,38 +129,40 @@ export default async function Bab6Page() {
                     </span>
                   </div>
 
-                  <div className="absolute top-3 right-3">
-                    <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold border ${colors.bg} ${colors.text} ${colors.border}`}>
-                      {STATUS_LABELS[status]}
-                    </span>
-                  </div>
+                  {hasData && (
+                    <div className="absolute top-3 right-3">
+                      <span className="flex items-center gap-1 rounded-full px-2.5 py-1 bg-emerald-500/90 text-white text-xs font-bold">
+                        <CheckCircle2 className="w-3 h-3" /> Terisi
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-5">
-                  <h3 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-slate-600 transition-colors">
+                  <h3 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-cyan-600 transition-colors">
                     {def.nama}
                   </h3>
                   <p className="text-xs text-slate-400 mb-4">{TABLE_DESCS[def.kode] ?? ""}</p>
 
                   <div className={`rounded-xl p-4 ${hasData
-                    ? 'bg-gradient-to-br from-slate-500 to-slate-600 text-white'
+                    ? 'bg-gradient-to-br from-cyan-500 to-teal-600 text-white'
                     : 'bg-slate-100 border-2 border-dashed border-slate-200'}`}>
                     <div className="flex items-center justify-between">
                       <div>
                         <div className={`text-3xl font-black ${hasData ? 'text-white' : 'text-slate-300'}`}>{rowCount}</div>
-                        <div className={`text-sm font-medium ${hasData ? 'text-slate-100' : 'text-slate-400'}`}>Data Entry</div>
+                        <div className={`text-sm font-medium ${hasData ? 'text-cyan-100' : 'text-slate-400'}`}>Data Entry</div>
                       </div>
                       {hasData ? <CheckCircle2 className="w-6 h-6 text-white/80" /> : <IconComponent className="w-6 h-6 text-slate-300" />}
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between mt-4">
-                    <span className={`text-sm font-semibold ${hasData ? 'text-slate-600' : 'text-slate-500'} group-hover:underline`}>
+                    <span className={`text-sm font-semibold ${hasData ? 'text-cyan-600' : 'text-slate-500'} group-hover:underline`}>
                       {hasData ? 'Lihat & Edit Data' : 'Mulai Mengisi'}
                     </span>
                     <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 ${hasData
-                      ? 'bg-slate-100 text-slate-600 group-hover:bg-slate-600 group-hover:text-white'
-                      : 'bg-slate-100 text-slate-400 group-hover:bg-slate-500 group-hover:text-white'}`}>
+                      ? 'bg-cyan-100 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white'
+                      : 'bg-slate-100 text-slate-400 group-hover:bg-cyan-500 group-hover:text-white'}`}>
                       <ArrowRight className="w-4 h-4" />
                     </div>
                   </div>

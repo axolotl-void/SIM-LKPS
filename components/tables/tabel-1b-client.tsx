@@ -176,11 +176,11 @@ export function Tabel1BClient({ initialRows, tahunAkademikId, tabelKode, status,
       {/* Top Actions */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <Link
-          href="/lkps/bab-1"
+          href="/lkps/kriteria-1"
           className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-xs font-bold text-slate-500 shadow-soft-sm hover:bg-slate-50 hover:text-indigo-600 transition-all border border-slate-100"
         >
           <ArrowLeft className="h-4 w-4" />
-          Kembali ke BAB 1
+          Kembali ke Kriteria 1
         </Link>
         <div className="flex items-center gap-2.5">
           <button

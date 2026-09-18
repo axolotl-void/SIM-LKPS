@@ -5,15 +5,15 @@ import Link from "next/link";
 import { FileText, ArrowRight, Settings, Building2, Eye, Target, CheckCircle2 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-export const metadata = { title: "BAB 5 & 6 — Tata Kelola & Visi Misi" };
+export const metadata = { title: "Kriteria 5 & 6 — Akuntabilitas & Diferensiasi Misi" };
 
 const TABLE_ICONS: Record<string, LucideIcon> = { "5.1": Settings, "5.2": Building2, "6.1": Eye, "6.2": Target };
 
 const tables = [
-  { kode: "5.1", nama: "Sistem Tata Kelola", desc: "Data sistem informasi tata kelola UPPS/PS.", bab: "BAB 5" },
-  { kode: "5.2", nama: "Sarana dan Prasarana", desc: "Data inventaris sarana dan prasarana.", bab: "BAB 5" },
-  { kode: "6.1", nama: "Visi Misi Tujuan", desc: "Data keselarasan visi, misi, dan tujuan.", bab: "BAB 6" },
-  { kode: "6.2", nama: "Strategi Pencapaian", desc: "Data strategi pencapaian tujuan.", bab: "BAB 6" },
+  { kode: "5.1", nama: "Sistem Tata Kelola", desc: "Data sistem informasi tata kelola UPPS/PS.", bab: "Kriteria 5" },
+  { kode: "5.2", nama: "Sarana dan Prasarana", desc: "Data inventaris sarana dan prasarana.", bab: "Kriteria 5" },
+  { kode: "6.1", nama: "Visi Misi Tujuan", desc: "Data keselarasan visi, misi, dan tujuan.", bab: "Kriteria 6" },
+  { kode: "6.2", nama: "Strategi Pencapaian", desc: "Data strategi pencapaian tujuan.", bab: "Kriteria 6" },
 ];
 
 export default async function Bab5Page() {
@@ -40,8 +40,8 @@ export default async function Bab5Page() {
   const totalData = instances.reduce((s, i) => s + i._count.rows, 0);
   const progressPercent = tables.length ? Math.round((filledTables / tables.length) * 100) : 0;
 
-  const bab5Tables = tables.filter(t => t.bab === "BAB 5");
-  const bab6Tables = tables.filter(t => t.bab === "BAB 6");
+  const kriteria5Tables = tables.filter(t => t.bab === "Kriteria 5");
+  const kriteria6Tables = tables.filter(t => t.bab === "Kriteria 6");
 
   return (
     <div className="min-h-screen pb-12">
@@ -58,7 +58,7 @@ export default async function Bab5Page() {
                 <Eye className="w-6 h-6 text-white" />
               </div>
               <div>
-                <span className="text-white/60 text-xs font-bold uppercase tracking-widest">BAB 5 & 6 • Akreditasi</span>
+                <span className="text-white/60 text-xs font-bold uppercase tracking-widest">KRITERIA 5 & 6 • Akuntabilitas & Diferensiasi Misi</span>
                 <h1 className="text-white text-xl font-black tracking-tight">Tata Kelola & Visi Misi</h1>
               </div>
             </div>
@@ -75,9 +75,9 @@ export default async function Bab5Page() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-            <MiniStat icon={Settings} label="Tata Kelola" sub={`${bab5Tables.length}`} />
+            <MiniStat icon={Settings} label="Tata Kelola" sub={`${kriteria5Tables.length}`} />
             <MiniStat icon={Building2} label="Sarana" sub="-" />
-            <MiniStat icon={Eye} label="Visi Misi" sub={`${bab6Tables.length}`} />
+            <MiniStat icon={Eye} label="Visi Misi" sub={`${kriteria6Tables.length}`} />
             <MiniStat icon={Target} label="Strategi" sub="-" />
             <MiniStat icon={FileText} label="Total" sub={`${totalData}`} />
           </div>
@@ -90,26 +90,26 @@ export default async function Bab5Page() {
         </div>
       </div>
 
-      {/* BAB 5 Section */}
+      {/* Kriteria 5 Section */}
       <div className="mb-8 animate-fade-in-up stagger-1">
         <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-2">
-          <Settings className="w-4 h-4" /> BAB 5 — Tata Kelola
+          <Settings className="w-4 h-4" /> Kriteria 5 — Akuntabilitas
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {bab5Tables.map((table, index) => (
-            <TableCard key={table.kode} table={table} definitions={definitions} instanceMap={instanceMap} hrefBase="/lkps/bab-5" staggerIndex={index} section="BAB5" />
+          {kriteria5Tables.map((table, index) => (
+            <TableCard key={table.kode} table={table} definitions={definitions} instanceMap={instanceMap} hrefBase="/lkps/kriteria-5-6" staggerIndex={index} section="KRITERIA5" />
           ))}
         </div>
       </div>
 
-      {/* BAB 6 Section */}
+      {/* Kriteria 6 Section */}
       <div className="animate-fade-in-up stagger-2">
         <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-2">
-          <Eye className="w-4 h-4" /> BAB 6 — Visi dan Misi
+          <Eye className="w-4 h-4" /> Kriteria 6 — Diferensiasi Misi
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {bab6Tables.map((table, index) => (
-            <TableCard key={table.kode} table={table} definitions={definitions} instanceMap={instanceMap} hrefBase="/lkps/bab-6" staggerIndex={index + 2} section="BAB6" />
+          {kriteria6Tables.map((table, index) => (
+            <TableCard key={table.kode} table={table} definitions={definitions} instanceMap={instanceMap} hrefBase="/lkps/kriteria-6" staggerIndex={index + 2} section="KRITERIA6" />
           ))}
         </div>
       </div>
@@ -117,9 +117,9 @@ export default async function Bab5Page() {
   );
 }
 
-// Kartu tabel — struktur identik dengan kartu di BAB 1/2/3/4 (band gradient + ikon tile + blok data + CTA)
+// Kartu tabel — struktur identik dengan kartu di Kriteria 1/2/3/4 (band gradient + ikon tile + blok data + CTA)
 const SECTION_THEMES = {
-  BAB5: {
+  KRITERIA5: {
     grad: "from-slate-500 via-slate-600 to-slate-700",
     hoverBorder: "group-hover:border-slate-300",
     hoverText: "group-hover:text-slate-700",
@@ -129,7 +129,7 @@ const SECTION_THEMES = {
     arrowOn: "bg-slate-100 text-slate-600 group-hover:bg-slate-600 group-hover:text-white",
     arrowOff: "bg-slate-100 text-slate-400 group-hover:bg-slate-500 group-hover:text-white",
   },
-  BAB6: {
+  KRITERIA6: {
     grad: "from-indigo-500 via-indigo-600 to-blue-600",
     hoverBorder: "group-hover:border-indigo-200",
     hoverText: "group-hover:text-indigo-600",

@@ -43,11 +43,11 @@ const menuGroups: MenuGroup[] = [
   {
     group: "Instrumen LKPS",
     items: [
-      { label: "BAB 1 — Tata Pamong", href: "/lkps/bab-1", icon: FileText, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
-      { label: "BAB 2 — Pendidikan", href: "/lkps/bab-2", icon: GraduationCap, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
-      { label: "BAB 3 — Penelitian", href: "/lkps/bab-3", icon: BookOpen, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
-      { label: "BAB 4 — Pengabdian", href: "/lkps/bab-4", icon: Users, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
-      { label: "BAB 5 & 6", href: "/lkps/bab-5", icon: ClipboardList, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "Kriteria 1 — Budaya Mutu", href: "/lkps/kriteria-1", icon: FileText, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "Kriteria 2 — Relevansi Pendidikan", href: "/lkps/kriteria-2", icon: GraduationCap, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "Kriteria 3 — Relevansi Penelitian", href: "/lkps/kriteria-3", icon: BookOpen, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "Kriteria 4 — Relevansi PkM", href: "/lkps/kriteria-4", icon: Users, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "Kriteria 5 & 6 — Akuntabilitas & Diferensiasi Misi", href: "/lkps/kriteria-5-6", icon: ClipboardList, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
     ],
   },
   {

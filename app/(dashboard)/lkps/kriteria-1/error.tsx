@@ -17,7 +17,7 @@ export default function Bab1Error({
       </div>
 
       <div className="space-y-1 text-center">
-        <h2 className="text-base font-bold text-slate-800">Gagal Memuat Data BAB 1</h2>
+        <h2 className="text-base font-bold text-slate-800">Gagal Memuat Data Kriteria 1</h2>
         <p className="max-w-xs text-xs font-semibold text-slate-400">
           {error.message || "Terjadi kesalahan saat memuat data tabel."}
         </p>
@@ -25,7 +25,7 @@ export default function Bab1Error({
 
       <div className="flex items-center gap-3">
         <Link
-          href="/lkps/bab-1"
+          href="/lkps/kriteria-1"
           className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-500 hover:bg-slate-50 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />

@@ -11,6 +11,7 @@ import {
 import { createAuditLog, logAccessDenied } from "@/lib/utils/audit";
 import { createNotification, notifyMutation } from "@/lib/actions/notification";
 import { Role, TabelStatus } from "@prisma/client";
+import { kriteriaSlug, tabelHref } from "@/lib/utils/kriteria";
 
 /**
  * Wrap server actions to convert unhandled DB/network errors into user-friendly
@@ -62,7 +63,7 @@ const STATUS_LABELS_ERROR: Record<TabelStatus, string> = {
 
 function revalidateTabel(kode: string, bab?: number) {
   const clean = kode.toLowerCase().replace(/\./g, "");
-  const path = bab ? `/lkps/bab-${bab}/tabel-${clean}` : `/lkps`;
+  const path = bab ? `/lkps/${kriteriaSlug(bab)}/tabel-${clean}` : `/lkps`;
   revalidatePath(path);
 }
 
@@ -311,7 +312,7 @@ export async function submitLkpsTabel(tabelKode: string, tahunAkademikId: string
       title: "Tabel Diajukan",
       message: `Tabel ${lkps.tabelDefinition.kode} - ${lkps.tabelDefinition.nama} telah diajukan untuk divalidasi.`,
       type: "INFO",
-      link: `/lkps/bab-${lkps.tabelDefinition.bab}/tabel-${tabelKode.toLowerCase().replace(/\./g, "")}`,
+      link: tabelHref(lkps.tabelDefinition.bab, tabelKode),
     });
   }
 
@@ -409,7 +410,7 @@ export async function validateLkpsTabel(
       title: `Tabel ${labelMap[action]}`,
       message: `Tabel ${lkps.tabelDefinition.kode} - ${lkps.tabelDefinition.nama} telah ${labelMap[action]} oleh validator.${comment ? ` Catatan: ${comment}` : ""}`,
       type: action === "APPROVE" ? "SUCCESS" : "WARNING",
-      link: `/lkps/bab-${lkps.tabelDefinition.bab}/tabel-${tabelKode.toLowerCase().replace(/\./g, "")}`,
+      link: tabelHref(lkps.tabelDefinition.bab, tabelKode),
     });
   }
 

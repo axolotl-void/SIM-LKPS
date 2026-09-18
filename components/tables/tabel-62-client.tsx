@@ -158,8 +158,8 @@ export function Tabel62Client({ initialRows, tahunAkademikId, tabelKode, status,
     <div className="space-y-8">
       {/* Action Bar */}
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-6" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-indigo-600 transition-colors cursor-pointer">
-          <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 6
+        <Link href="/lkps/kriteria-6" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-indigo-600 transition-colors cursor-pointer">
+          <ArrowLeft className="h-4 w-4" /> Kembali ke Kriteria 6
         </Link>
         {canEdit && (
           <button onClick={openAdd} className="flex items-center gap-1.5 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:shadow-md transition-all cursor-pointer">

@@ -73,7 +73,7 @@ export function Tabel2B1Client({ initialRows, tahunAkademikId, tabelKode, status
   return (
     <div className="space-y-6">
       <div className="flex justify-between">
-        <Link href="/lkps/bab-2" className="flex gap-2 text-xs font-bold text-slate-800 hover:text-indigo-600"><ArrowLeft className="h-4 w-4" /> BAB 2</Link>
+        <Link href="/lkps/kriteria-2" className="flex gap-2 text-xs font-bold text-slate-800 hover:text-indigo-600"><ArrowLeft className="h-4 w-4" />Kriteria 2</Link>
         <div className="flex items-center gap-2.5">
           <button
             onClick={handleOpenAdd}

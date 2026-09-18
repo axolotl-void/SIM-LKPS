@@ -30,7 +30,7 @@ test.describe('Export laporan lengkap', () => {
 test.describe('Per-tabel page', () => {
   test('Tabel page renders for OPERATOR', async ({ page }) => {
     await login(page, 'OPERATOR');
-    await page.goto('/lkps/bab-1/tabel-1a2');
+    await page.goto('/lkps/kriteria-1/tabel-1a2');
     await expectHealthyPage(page);
   });
 });

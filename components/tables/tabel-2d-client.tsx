@@ -93,8 +93,8 @@ export function Tabel2DClient({ tahunAkademikId, tabelKode, defaultSources, rows
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors">
-          <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
+        <Link href="/lkps/kriteria-2" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors">
+          <ArrowLeft className="h-4 w-4" /> Kembali ke Kriteria 2
         </Link>
       </div>
 

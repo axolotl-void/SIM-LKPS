@@ -112,8 +112,8 @@ export function Tabel2B5Client({ initialRows, tahunAkademikId, tabelKode, status
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <Link href="/lkps/bab-2" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors">
-          <ArrowLeft className="h-4 w-4" /> Kembali ke BAB 2
+        <Link href="/lkps/kriteria-2" className="flex items-center gap-2 text-xs font-bold text-slate-800 hover:text-blue-600 transition-colors">
+          <ArrowLeft className="h-4 w-4" /> Kembali ke Kriteria 2
         </Link>
         <div className="flex items-center gap-2.5">
           <button

@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import Link from "next/link";
 import { Clock, ArrowRight, Calendar, User, CheckCircle2 } from "lucide-react";
 import type { Metadata } from "next";
+import { tabelHref } from "@/lib/utils/kriteria";
 
 export const metadata: Metadata = {
   title: "Validasi — Tabel Menunggu Review",
@@ -59,7 +60,7 @@ export default async function ValidasiPage() {
           {pendingTables.map((tabel) => (
             <Link
               key={tabel.id}
-              href={`/lkps/bab-${tabel.tabelDefinition.bab}/tabel-${tabel.tabelDefinition.kode.toLowerCase().replace(/\./g, "")}`}
+              href={tabelHref(tabel.tabelDefinition.bab, tabel.tabelDefinition.kode)}
               className="group flex items-center justify-between rounded-3xl bg-white p-5 shadow-soft border border-slate-100/50 hover:shadow-[0_20px_60px_rgba(59,130,246,0.12)] hover:border-blue-200/60 hover:scale-[1.01] transition-all duration-300"
             >
               <div className="flex items-center gap-4">

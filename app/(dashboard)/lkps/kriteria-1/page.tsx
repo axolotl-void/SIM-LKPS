@@ -3,42 +3,35 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import {
-  FileText, ArrowRight, Calendar, BookOpen,
-  GraduationCap, Users, Map, BarChart3,
-  Briefcase, Star, Shuffle, Award, CheckCircle2, Clock
+  FileText, ArrowRight, Calendar,
+  Users, Wallet, PieChart, LineChart,
+  UserCheck, ShieldCheck, Target, CheckCircle2, Clock,
+  type LucideIcon
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 
-export const metadata = { title: "BAB 2 — Pendidikan" };
+export const metadata = { title: "Kriteria 1 — Budaya Mutu" };
 
 const TABLE_ICONS: Record<string, LucideIcon> = {
-  "2.A.1": Users, "2.A.2": Map, "2.A.3": BarChart3,
-  "2.B.1": BookOpen, "2.B.2": GraduationCap, "2.B.3": FileText,
-  "2.B.4": Clock, "2.B.5": Briefcase, "2.B.6": Star,
-  "2.C": Shuffle, "2.D": Award,
+  "1.A.1": Users, "1.A.2": Wallet, "1.A.3": PieChart,
+  "1.A.4": LineChart, "1.A.5": UserCheck, "1.B": ShieldCheck,
 };
 
 const TABLE_DESCS: Record<string, string> = {
-  "2.A.1": "Data jumlah dan profil mahasiswa program studi.",
-  "2.A.2": "Data keragaman asal daerah dan sekolah mahasiswa.",
-  "2.A.3": "Data kondisi jumlah mahasiswa per angkatan.",
-  "2.B.1": "Data isi pembelajaran dan bahan kajian kurikulum.",
-  "2.B.2": "Data pemetaan CPL terhadap profil lulusan.",
-  "2.B.3": "Data pemenuhan CPL pada mata kuliah.",
-  "2.B.4": "Data rata-rata masa tunggu lulusan mendapatkan pekerjaan.",
-  "2.B.5": "Data kesesuaian bidang kerja lulusan dengan keilmuan.",
-  "2.B.6": "Data tingkat kepuasan pengguna lulusan.",
-  "2.C": "Data fleksibilitas proses pembelajaran di program studi.",
-  "2.D": "Data rekognisi dan apresiasi kompetensi lulusan.",
+  "1.A.1": "Data pimpinan, tugas pokok, dan fungsi UPPS/PS.",
+  "1.A.2": "Data sumber pendanaan UPPS dan program studi.",
+  "1.A.3": "Data penggunaan dana UPPS dan program studi.",
+  "1.A.4": "Data rata-rata beban kerja dosen per semester (EWMP).",
+  "1.A.5": "Data kualifikasi tenaga kependidikan.",
+  "1.B": "Data unit SPMI dan sumber daya manusia pendukung.",
 };
 
-export default async function Bab2Page() {
+export default async function Bab1Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
   const [activeTa, definitions] = await Promise.all([
     db.tahunAkademik.findFirst({ where: { isActive: true }, include: { prodi: true } }),
-    db.tabelDefinition.findMany({ where: { bab: 2 }, orderBy: { urutan: "asc" } }),
+    db.tabelDefinition.findMany({ where: { bab: 1 }, orderBy: { urutan: "asc" } }),
   ]);
 
   if (!activeTa) redirect("/dashboard");
@@ -58,20 +51,20 @@ export default async function Bab2Page() {
   return (
     <div className="min-h-screen pb-12">
       {/* HERO */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-600 via-teal-600 to-cyan-700 p-5 mb-6 shadow-xl animate-fade-in-up">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-5 mb-6 shadow-xl animate-fade-in-up">
         {/* Decorative circles */}
-        <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full border-4 border-white/10 transform rotate-12" />
-        <div className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full border-4 border-white/10 transform -rotate-12" />
+        <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full border-4 border-white/10 transform rotate-12" />
+        <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full border-4 border-white/10 transform -rotate-12" />
 
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white/20 border border-white/30 transform hover:scale-105 transition-transform">
-                <GraduationCap className="w-6 h-6 text-white" />
+                <Target className="w-6 h-6 text-white" />
               </div>
               <div>
-                <span className="text-white/60 text-xs font-bold uppercase tracking-widest">BAB 2 • Akreditasi</span>
-                <h1 className="text-white text-xl font-black tracking-tight">Pendidikan</h1>
+                <span className="text-white/60 text-xs font-bold uppercase tracking-widest">KRITERIA 1 • Budaya Mutu</span>
+                <h1 className="text-white text-xl font-black tracking-tight">Tata Pamong & Tata Kelola</h1>
               </div>
             </div>
             <div className="relative w-16 h-16">
@@ -112,9 +105,11 @@ export default async function Bab2Page() {
           const staggerClass = `stagger-${Math.min(index + 1, 8)}`;
 
           return (
-            <Link key={def.id} href={`/lkps/bab-2/tabel-${def.kode.toLowerCase().replace(/\./g, "")}`} className={`group relative block animate-fade-in-up ${staggerClass}`}>
-              <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-cyan-200">
-                <div className="relative h-20 bg-gradient-to-br from-cyan-500 via-teal-500 to-sky-500">
+            <Link key={def.id} href={`/lkps/kriteria-1/tabel-${def.kode.toLowerCase().replace(/\./g, "")}`}
+              className={`group relative block animate-fade-in-up ${staggerClass}`}>
+              <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-blue-200">
+                <div className="relative h-20 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600">
+                  {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10" />
 
                   <div className="absolute -bottom-3 right-4">
@@ -139,30 +134,30 @@ export default async function Bab2Page() {
                 </div>
 
                 <div className="p-5">
-                  <h3 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-cyan-600 transition-colors">
+                  <h3 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-blue-600 transition-colors">
                     {def.nama}
                   </h3>
                   <p className="text-xs text-slate-400 mb-4">{TABLE_DESCS[def.kode] ?? ""}</p>
 
                   <div className={`rounded-xl p-4 ${hasData
-                    ? 'bg-gradient-to-br from-cyan-500 to-teal-600 text-white'
+                    ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white'
                     : 'bg-slate-100 border-2 border-dashed border-slate-200'}`}>
                     <div className="flex items-center justify-between">
                       <div>
                         <div className={`text-3xl font-black ${hasData ? 'text-white' : 'text-slate-300'}`}>{rowCount}</div>
-                        <div className={`text-sm font-medium ${hasData ? 'text-cyan-100' : 'text-slate-400'}`}>Data Entry</div>
+                        <div className={`text-sm font-medium ${hasData ? 'text-blue-100' : 'text-slate-400'}`}>Data Entry</div>
                       </div>
                       {hasData ? <CheckCircle2 className="w-6 h-6 text-white/80" /> : <IconComponent className="w-6 h-6 text-slate-300" />}
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between mt-4">
-                    <span className={`text-sm font-semibold ${hasData ? 'text-cyan-600' : 'text-slate-500'} group-hover:underline`}>
+                    <span className={`text-sm font-semibold ${hasData ? 'text-blue-600' : 'text-slate-500'} group-hover:underline`}>
                       {hasData ? 'Lihat & Edit Data' : 'Mulai Mengisi'}
                     </span>
                     <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 ${hasData
-                      ? 'bg-cyan-100 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white'
-                      : 'bg-slate-100 text-slate-400 group-hover:bg-cyan-500 group-hover:text-white'}`}>
+                      ? 'bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white'
+                      : 'bg-slate-100 text-slate-400 group-hover:bg-blue-500 group-hover:text-white'}`}>
                       <ArrowRight className="w-4 h-4" />
                     </div>
                   </div>

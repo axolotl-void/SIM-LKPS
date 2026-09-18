@@ -6,7 +6,7 @@ import { login, expectHealthyPage } from './fixtures';
  * Login inline per test (simpler, deterministic, no cross-file imports).
  */
 
-const TARGET_TABEL = '/lkps/bab-1/tabel-1a2';
+const TARGET_TABEL = '/lkps/kriteria-1/tabel-1a2';
 
 test.describe('Permission matrix — ADMIN', () => {
   test('ADMIN: Tambah row button is enabled', async ({ page }) => {

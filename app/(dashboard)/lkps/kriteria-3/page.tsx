@@ -2,24 +2,29 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import Link from "next/link";
-import { FileText, ArrowRight, Microscope, Users, Handshake, Speaker, Trophy, CheckCircle2 } from "lucide-react";
+import {
+  FileText, ArrowRight,
+  FlaskConical, Users, BookMarked, Handshake, FileTextIcon, Award, CheckCircle2
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-export const metadata = { title: "BAB 4 — Pengadian Masyarakat" };
+export const metadata = { title: "Kriteria 3 — Relevansi Penelitian" };
 
 const TABLE_ICONS: Record<string, LucideIcon> = {
-  "4.A.1": Microscope, "4.A.2": Users, "4.C.1": Handshake, "4.C.2": Speaker, "4.C.3": Trophy,
+  "3.A.1": FlaskConical, "3.A.2": Users, "3.A.3": BookMarked,
+  "3.C.1": Handshake, "3.C.2": FileTextIcon, "3.C.3": Award,
 };
 
 const tables = [
-  { kode: "4.A.1", nama: "Sarana dan Prasarana PkM", desc: "Data inventaris sarana dan prasarana pengadian kepada masyarakat." },
-  { kode: "4.A.2", nama: "PkM DTPR, Hibah, dan Pembiayaan", desc: "Data PkM, sumber pendanaan, dan pembiayaan." },
-  { kode: "4.C.1", nama: "Kerja Sama PkM", desc: "Data kerjasama PkM dengan institusi dalam dan luar negeri." },
-  { kode: "4.C.2", nama: "Diseminasi Hasil PkM", desc: "Data diseminasi hasil PkM dalam lingkup lokal, nasional, internasional." },
-  { kode: "4.C.3", nama: "Perolehan HKI PkM", desc: "Data hak kekayaan intelektual dari hasil PkM." },
+  { kode: "3.A.1", nama: "Sarana dan Prasarana Penelitian", desc: "Data inventaris dan kelengkapan sarana penelitian." },
+  { kode: "3.A.2", nama: "Penelitian DTPR, Hibah dan Pembiayaan", desc: "Data penelitian, sumber pendanaan, dan pembiayaan." },
+  { kode: "3.A.3", nama: "Pengembangan DTPR di Bidang Penelitian", desc: "Data pengembangan dan inovasi penelitian DTPR." },
+  { kode: "3.C.1", nama: "Kerjasama Penelitian", desc: "Data kerjasama penelitian dengan institusi dalam dan luar negeri." },
+  { kode: "3.C.2", nama: "Publikasi Penelitian", desc: "Data publikasi pada jurnal, prosiding, dan media lainnya." },
+  { kode: "3.C.3", nama: "Perolehan HKI (Granted)", desc: "Data hak kekayaan intelektual yang diperoleh." },
 ];
 
-export default async function Bab4Page() {
+export default async function Bab3Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
@@ -46,7 +51,7 @@ export default async function Bab4Page() {
   return (
     <div className="min-h-screen pb-12">
       {/* HERO */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 p-5 mb-6 shadow-xl animate-fade-in-up">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-600 via-cyan-600 to-sky-600 p-5 mb-6 shadow-xl animate-fade-in-up">
         {/* Decorative circles */}
         <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full border-4 border-white/10 transform rotate-12" />
         <div className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full border-4 border-white/10 transform -rotate-12" />
@@ -55,11 +60,11 @@ export default async function Bab4Page() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white/20 border border-white/30 transform hover:scale-105 transition-transform">
-                <Microscope className="w-6 h-6 text-white" />
+                <FlaskConical className="w-6 h-6 text-white" />
               </div>
               <div>
-                <span className="text-white/60 text-xs font-bold uppercase tracking-widest">BAB 4 • Akreditasi</span>
-                <h1 className="text-white text-xl font-black tracking-tight">Pengadian Masyarakat</h1>
+                <span className="text-white/60 text-xs font-bold uppercase tracking-widest">KRITERIA 3 • Relevansi Penelitian</span>
+                <h1 className="text-white text-xl font-black tracking-tight">Penelitian</h1>
               </div>
             </div>
             <div className="relative w-16 h-16">
@@ -75,17 +80,17 @@ export default async function Bab4Page() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-            <MiniStat icon={Microscope} label="Sarana" sub="PKM" />
+            <MiniStat icon={FlaskConical} label="Sarana" sub="Penelitian" />
             <MiniStat icon={Users} label="DTPR" sub="Hibah" />
-            <MiniStat icon={Handshake} label="Kerja Sama" sub="Nasional" />
-            <MiniStat icon={Speaker} label="Diseminasi" sub="Hasil" />
-            <MiniStat icon={Trophy} label="HKI" sub={`${totalData}`} />
+            <MiniStat icon={BookMarked} label="Publikasi" sub="Jurnal" />
+            <MiniStat icon={Award} label="HKI" sub="Granted" />
+            <MiniStat icon={FileText} label="Total" sub={`${totalData} data`} />
           </div>
 
           <div className="mt-3 flex flex-wrap items-center gap-2 text-white/80 text-xs font-medium">
             <span className="px-2 py-1 bg-white/10 rounded-lg border border-white/20">{activeTa.tahun} ({activeTa.semester})</span>
             <span className="px-2 py-1 bg-white/10 rounded-lg border border-white/20">{activeTa.prodi.nama}</span>
-            <span className="px-2 py-1 bg-emerald-500/30 rounded-lg border border-emerald-400/30 text-emerald-200">{filledTables}/{tables.length} tabel</span>
+            <span className="px-2 py-1 bg-teal-500/30 rounded-lg border border-teal-400/30 text-teal-200">{filledTables}/{tables.length} tabel</span>
           </div>
         </div>
       </div>
@@ -97,13 +102,13 @@ export default async function Bab4Page() {
           const inst = def ? instanceMap.get(def.id) : null;
           const rowCount = inst?._count.rows || 0;
           const hasData = rowCount > 0;
-          const IconComponent = TABLE_ICONS[table.kode] || FileText;
+          const IconComponent = TABLE_ICONS[table.kode] || FlaskConical;
           const staggerClass = `stagger-${Math.min(index + 1, 8)}`;
 
           return (
-            <Link key={table.kode} href={`/lkps/bab-4/tabel-${table.kode.replace(/\./g, "").toLowerCase()}`} className={`group relative block animate-fade-in-up ${staggerClass}`}>
-              <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-emerald-200">
-                <div className="relative h-20 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500">
+            <Link key={table.kode} href={`/lkps/kriteria-3/tabel-${table.kode.replace(/\./g, "").toLowerCase()}`} className={`group relative block animate-fade-in-up ${staggerClass}`}>
+              <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-teal-200">
+                <div className="relative h-20 bg-gradient-to-br from-teal-500 via-cyan-500 to-sky-500">
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10" />
 
                   <div className="absolute -bottom-3 right-4">
@@ -128,30 +133,30 @@ export default async function Bab4Page() {
                 </div>
 
                 <div className="p-5">
-                  <h3 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-emerald-600 transition-colors">
+                  <h3 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-teal-600 transition-colors">
                     {table.nama}
                   </h3>
                   <p className="text-xs text-slate-400 mb-4">{table.desc}</p>
 
                   <div className={`rounded-xl p-4 ${hasData
-                    ? 'bg-gradient-to-br from-emerald-500 to-teal-500 text-white'
+                    ? 'bg-gradient-to-br from-teal-500 to-cyan-600 text-white'
                     : 'bg-slate-100 border-2 border-dashed border-slate-200'}`}>
                     <div className="flex items-center justify-between">
                       <div>
                         <div className={`text-3xl font-black ${hasData ? 'text-white' : 'text-slate-300'}`}>{rowCount}</div>
-                        <div className={`text-sm font-medium ${hasData ? 'text-emerald-100' : 'text-slate-400'}`}>Data Entry</div>
+                        <div className={`text-sm font-medium ${hasData ? 'text-teal-100' : 'text-slate-400'}`}>Data Entry</div>
                       </div>
-                      {hasData ? <CheckCircle2 className="w-6 h-6 text-white/80" /> : <Microscope className="w-6 h-6 text-slate-300" />}
+                      {hasData ? <CheckCircle2 className="w-6 h-6 text-white/80" /> : <FlaskConical className="w-6 h-6 text-slate-300" />}
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between mt-4">
-                    <span className={`text-sm font-semibold ${hasData ? 'text-emerald-600' : 'text-slate-500'} group-hover:underline`}>
+                    <span className={`text-sm font-semibold ${hasData ? 'text-teal-600' : 'text-slate-500'} group-hover:underline`}>
                       {hasData ? 'Lihat & Edit Data' : 'Mulai Mengisi'}
                     </span>
                     <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 ${hasData
-                      ? 'bg-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white'
-                      : 'bg-slate-100 text-slate-400 group-hover:bg-emerald-500 group-hover:text-white'}`}>
+                      ? 'bg-teal-100 text-teal-600 group-hover:bg-teal-600 group-hover:text-white'
+                      : 'bg-slate-100 text-slate-400 group-hover:bg-teal-500 group-hover:text-white'}`}>
                       <ArrowRight className="w-4 h-4" />
                     </div>
                   </div>

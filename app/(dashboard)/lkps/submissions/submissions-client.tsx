@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { CheckCircle2, Clock, AlertCircle, XCircle, Search, X, ArrowRight, MessageSquare, FileText } from "lucide-react";
+import { tabelHref } from "@/lib/utils/kriteria";
 
 interface SubmissionItem {
   id: string;
@@ -142,7 +143,7 @@ export function SubmissionStatusClient({ initialSubmissions, activeTa, prodi }: 
             return (
               <Link
                 key={sub.id}
-                href={`/lkps/bab-${sub.bab}/tabel-${sub.kode.toLowerCase().replace(/\./g, "")}`}
+                href={tabelHref(sub.bab, sub.kode)}
                 className="group flex flex-col gap-3 rounded-2xl bg-white p-5 shadow-soft border border-slate-100/50 hover:shadow-[0_20px_60px_rgba(59,130,246,0.12)] hover:border-blue-200/60 hover:scale-[1.01] transition-all duration-300"
               >
                 <div className="flex items-start justify-between gap-4">
