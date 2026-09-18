@@ -5,7 +5,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project
 
 **SIM-LKPS** — Sistem Informasi Manajemen Laporan Kinerja Program Studi
-Next.js 15 app (App Router) for managing 31 BAN-PT LKPS tables. Indonesian higher education accreditation system for Prodi Ilmu Komputer, Universitas Bina Bangsa Getsempena.
+Next.js 15 app (App Router) for managing **32 LKPS tables** + LED + Matriks Penilaian, sesuai instrumen **LAM INFOKOM 2.1**. Indonesian higher education accreditation system for Prodi Ilmu Komputer, Universitas Bina Bangsa Getsempena.
+
+### Tiga modul instrumen (LAM INFOKOM 2.1)
+
+| Modul | Isi | Route |
+|---|---|---|
+| **LKPS** | 32 tabel data kuantitatif | `/lkps/kriteria-{1..6}` |
+| **LED** | Laporan Evaluasi Diri — BAB I–III, 92 bagian naratif (PPEPP) | `/led`, `/led/bab-1..3`, `/led/export` |
+| **Matriks Penilaian** | 82 butir, bobot total 400, prediksi status akreditasi | `/penilaian` |
+
+Tabel LKPS dulu disebut "BAB N"; sekarang **"Kriteria N"** (redirect lama ada di `next.config.ts`).
+Halaman LED & Matriks Penilaian memakai izin `led.*` dan `penilaian.*`; `penilaian.finalisasi` hanya ADMIN.
 
 ## Commands
 

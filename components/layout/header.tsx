@@ -39,6 +39,7 @@ const breadcrumbLabels: Record<string, string> = {
   profil: "Profil UPPS",
   kriteria: "Kriteria",
   suplemen: "Suplemen Prodi",
+  export: "Export Dokumen",
   penilaian: "Matriks Penilaian",
   butir: "Detail Butir",
   "kriteria-1": "Kriteria 1",

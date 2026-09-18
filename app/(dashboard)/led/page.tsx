@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { FileText } from "lucide-react";
+import Link from "next/link";
+import { FileText, Download } from "lucide-react";
 import { hasPermission } from "@/lib/utils/permissions";
 import { Role } from "@prisma/client";
 import {
@@ -118,6 +119,22 @@ export default async function LedIndexPage() {
       )}
 
       <LedBatasBanner estimasi={progres.estimasiHalaman} batas={BATAS_HALAMAN_LED} />
+
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4">
+        <div>
+          <h2 className="text-sm font-bold text-slate-800">Dokumen LED</h2>
+          <p className="text-2xs text-slate-500">
+            Periksa kelengkapan, lalu unduh sebagai Word (bisa diedit) atau PDF (siap kirim).
+          </p>
+        </div>
+        <Link
+          href="/led/export"
+          className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-xs font-bold text-white shadow-soft-sm transition-colors hover:bg-violet-700"
+        >
+          <Download className="h-3.5 w-3.5" />
+          Buka Export Dokumen
+        </Link>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {kartu.map((k, i) => (

@@ -1,5 +1,12 @@
 # SIM-LKPS — Requirements Specification
 
+> ⚠️ **KEDALUWARSA (2026-09-18).** Dokumen ini ditulis untuk format **BAN-PT lama**
+> (31 tabel LKPS, 4 peran termasuk VALIDATOR, tanpa LED/Matriks Penilaian).
+> Sistem sekarang mengikuti **LAM INFOKOM 2.1**: 32 tabel LKPS bernama "Kriteria",
+> 3 peran (ADMIN/OPERATOR/PIMPINAN), plus modul **LED** dan **Matriks Penilaian 82 butir**.
+> Sumber kebenaran terkini: `CLAUDE.md`, `README.md`, dan vault
+> `SIM-LKPS/rancangan/RANCANGAN-008..013`.
+
 **Versi:** 1.0  
 **Sprint:** 0  
 **Agent:** PM Agent  

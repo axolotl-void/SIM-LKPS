@@ -19,6 +19,7 @@ import {
   ScrollText,
   Calculator,
   Award,
+  Download,
 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -60,6 +61,7 @@ const menuGroups: MenuGroup[] = [
       { label: "BAB I — Pendahuluan", href: "/led/bab-1", icon: BookOpen, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
       { label: "BAB II — Laporan Evaluasi Diri", href: "/led/bab-2", icon: FileText, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
       { label: "BAB III — Penutup", href: "/led/bab-3", icon: ClipboardList, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "Export Dokumen", href: "/led/export", icon: Download, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
     ],
   },
   {

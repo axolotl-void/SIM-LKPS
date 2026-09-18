@@ -32,12 +32,14 @@
 
 ## Highlights
 
-- **31 Tabel BAN-PT** sesuai format LKPS, mencakup semua BAB (Tata Pamong, Pendidikan, Penelitian, Pengabdian, Tata Kelola, Visi Misi)
-- **4 Role Terpisah** dengan permission matrix granular: Admin, Operator, Validator, Pimpinan
+- **32 Tabel LKPS** sesuai format LAM INFOKOM 2.1, dikelompokkan per Kriteria (Tata Pamong, Pendidikan, Penelitian, Pengabdian, Tata Kelola, Visi Misi)
+- **LED (Laporan Evaluasi Diri)** — BAB I–III, 92 bagian naratif mengikuti siklus PPEPP, editor Markdown + pratinjau, bukti pendukung, export Word/PDF sesuai Lampiran 2 (A4, Arial 11, spasi 1,15)
+- **Matriks Penilaian** — 82 butir, bobot total 400, prediksi status akreditasi (Tidak Terakreditasi s.d. Unggul 5 tahun), kunci finalisasi
+- **3 Role Terpisah** dengan permission matrix granular: Admin, Operator, Pimpinan
 - **Workflow Validasi** lengkap: Draft ke Diajukan ke Disetujui atau Ditolak atau Direvisi dengan komentar validator
 - **Evidence Management** ke Cloudflare R2 (S3-compatible), support upload file dan link URL eksternal
-- **Dashboard Progress** visual per BAB plus notifikasi real-time
-- **Export Excel, Word, PDF** untuk laporan siap akreditasi
+- **Dashboard Progress** visual per Kriteria plus notifikasi real-time
+- **Export Excel, Word, PDF** untuk laporan siap akreditasi (LKPS dan LED)
 - **Audit Log** untuk setiap mutasi dan login atau logout
 - **Responsive** di desktop, tablet, dan HP (minimal 375px)
 
@@ -172,17 +174,18 @@ npm run start
 
 > Ganti semua password setelah deploy ke production. Password default hanya untuk demo skripsi.
 
-## 31 Tabel LKPS
+## 32 Tabel LKPS
 
-| BAB | Jumlah | Tabel |
+| Kriteria | Jumlah | Tabel |
 |-----|--------|-------|
-| BAB 1, Tata Pamong | 6 | 1.A.1, 1.A.2, 1.A.3, 1.A.4, 1.A.5, 1.B |
-| BAB 2, Pendidikan | 11 | 2.A.1, 2.A.2, 2.A.3, 2.B.1, 2.B.2, 2.B.3, 2.B.4, 2.B.5, 2.B.6, 2.C, 2.D |
-| BAB 3, Penelitian | 6 | 3.A.1, 3.A.2, 3.A.3, 3.C.1, 3.C.2, 3.C.3 |
-| BAB 4, Pengabdian | 5 | 4.A.1, 4.A.2, 4.C.1, 4.C.2, 4.C.3 |
-| BAB 5, Tata Kelola | 2 | 5.1, 5.2 |
-| BAB 6, Visi Misi | 1 | 6 |
-| **Total** | **31** | |
+| Kriteria 1, Tata Pamong | 6 | 1.A.1, 1.A.2, 1.A.3, 1.A.4, 1.A.5, 1.B |
+| Kriteria 2, Pendidikan | 11 | 2.A.1, 2.A.2, 2.A.3, 2.B.1, 2.B.2, 2.B.3, 2.B.4, 2.B.5, 2.B.6, 2.C, 2.D |
+| Kriteria 3, Penelitian | 6 | 3.A.1, 3.A.2, 3.A.3, 3.C.1, 3.C.2, 3.C.3 |
+| Kriteria 4, Pengabdian | 5 | 4.A.1, 4.A.2, 4.C.1, 4.C.2, 4.C.3 |
+| Kriteria 5 & 6, Tata Kelola & Visi Misi | 3 | 5.1, 5.2, 6.1, 6.2 |
+| **Total** | **32** | |
+
+> Tabel 5.1/5.2 berada di `/lkps/kriteria-5-6`, tabel 6.1/6.2 di `/lkps/kriteria-6`.
 
 ## Development
 
