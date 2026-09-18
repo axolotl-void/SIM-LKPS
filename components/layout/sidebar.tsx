@@ -17,6 +17,8 @@ import {
   ChevronRight,
   UserCircle2,
   ScrollText,
+  Calculator,
+  Award,
 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -58,6 +60,16 @@ const menuGroups: MenuGroup[] = [
       { label: "BAB I — Pendahuluan", href: "/led/bab-1", icon: BookOpen, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
       { label: "BAB II — Laporan Evaluasi Diri", href: "/led/bab-2", icon: FileText, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
       { label: "BAB III — Penutup", href: "/led/bab-3", icon: ClipboardList, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+    ],
+  },
+  {
+    group: "Penilaian",
+    items: [
+      { label: "Matriks Penilaian", href: "/penilaian", icon: Calculator, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "Kriteria 1 — Budaya Mutu", href: "/penilaian/kriteria/C1", icon: Award, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "Kriteria 2 — Relevansi Pendidikan", href: "/penilaian/kriteria/C2", icon: GraduationCap, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "Kriteria 3 — Relevansi Penelitian", href: "/penilaian/kriteria/C3", icon: BookOpen, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
+      { label: "Kriteria 4–6 & Suplemen", href: "/penilaian/kriteria/C4", icon: ClipboardList, roles: ["ADMIN", "OPERATOR", "PIMPINAN"] },
     ],
   },
   {

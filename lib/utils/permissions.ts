@@ -21,6 +21,7 @@ const PERMISSIONS: Record<Role, string[]> = {
     "report.*",
     "led.*",
     "penilaian.*",
+    "penilaian.finalisasi",
   ],
   OPERATOR: [
     "tabel_lkps.read",

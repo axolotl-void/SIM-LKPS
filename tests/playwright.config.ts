@@ -7,6 +7,7 @@ export default defineConfig({
   retries: 1,
   workers: 1,
   reporter: 'list',
+  globalSetup: './global-setup-penilaian.ts',
   timeout: 30_000,
   expect: { timeout: 5_000 },
   use: {
@@ -18,7 +19,9 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      // headless shell bawaan Playwright belum ter-download di mesin ini;
+      // pakai Chrome sistem supaya suite bisa jalan tanpa `playwright install`.
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     },
   ],
 });
