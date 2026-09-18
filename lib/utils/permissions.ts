@@ -19,6 +19,8 @@ const PERMISSIONS: Record<Role, string[]> = {
     "audit_log.read",
     "dashboard.read",
     "report.*",
+    "led.*",
+    "penilaian.*",
   ],
   OPERATOR: [
     "tabel_lkps.read",
@@ -33,6 +35,13 @@ const PERMISSIONS: Record<Role, string[]> = {
     "master.dosen.create",
     "dashboard.read",
     "report.read",
+    "led.read",
+    "led.create",
+    "led.update",
+    "led.submit",
+    "penilaian.read",
+    "penilaian.create",
+    "penilaian.update",
   ],
   PIMPINAN: [
     "dashboard.read",
@@ -40,6 +49,8 @@ const PERMISSIONS: Record<Role, string[]> = {
     "report.read",
     "report.export",
     "master_data.read",
+    "led.read",
+    "penilaian.read",
   ],
 };
 
