@@ -70,6 +70,11 @@ model User {
   validationHistory ValidationHistory[]
   uploadedEvidence  Evidence[]
 
+  // Modul LED + Penilaian (LAM INFOKOM 2.1)
+  ledIsianUpdated     LedIsian[]      @relation("LedUpdatedBy")
+  ledEvidenceUploaded LedEvidence[]   @relation("LedEvidenceUploadedBy")
+  skorDinilai         SkorPenilaian[] @relation("SkorDinilaiOleh")
+
   @@index([role])
   @@index([email])
   @@map("users")
@@ -145,6 +150,10 @@ model TahunAkademik {
 
   prodi     Prodi       @relation(fields: [prodiId], references: [id])
   tabelLkps TabelLkps[]
+
+  // Modul LED + Penilaian (LAM INFOKOM 2.1)
+  ledIsian      LedIsian[]
+  penilaianSesi PenilaianSesi[]
 
   @@unique([tahun, semester, prodiId])
   @@map("tahun_akademik")
@@ -369,4 +378,161 @@ model Notification {
   @@index([userId, isRead])
   @@index([createdAt])
   @@map("notifications")
+}
+
+// ============================================================================
+// MODUL LED — Laporan Evaluasi Diri (LAM INFOKOM 2.1)
+// ============================================================================
+
+enum LedJenis {
+  NARASI // isian teks/markdown
+  KRITERIA // 6 kriteria PPEPP
+  SUPLEMEN // 4 bagian suplemen prodi
+  IDENTITAS // identitas pengusul / tim penyusun
+}
+
+enum LedStatus {
+  KOSONG
+  DRAFT
+  LENGKAP
+  DIAJUKAN
+  DISETUJUI
+}
+
+/// Struktur baku LED (Lampiran 1 Instrumen LED). Di-seed, bukan diinput user.
+model LedBagian {
+  id           String   @id @default(cuid())
+  kode         String   @unique // "BAB1.A", "BAB2.C.1.1.A", "BAB2.D.1"
+  bab          String // "I" | "II" | "III"
+  bagian       String // "A" | "B" | "C" | "D" | "-"
+  subBagian    String?
+  judul        String
+  petunjuk     String?  @db.Text // teks panduan asli dari instrumen PDF
+  jenis        LedJenis
+  kriteria     Int? // 1-6 untuk KRITERIA
+  tahapPpepp   String? // "PENETAPAN" | "PELAKSANAAN" | ... untuk KRITERIA
+  subButir     String? // "A" | "B" | "C" | "D"
+  urutan       Int
+  batasHalaman Int? // maks halaman per bagian (Lampiran 2)
+
+  isian LedIsian[]
+
+  @@index([bab, urutan])
+  @@index([jenis])
+  @@map("led_bagian")
+}
+
+/// Isi naratif per bagian per tahun akademik
+model LedIsian {
+  id              String    @id @default(cuid())
+  ledBagianId     String
+  tahunAkademikId String
+  konten          String    @db.Text @default("") // Markdown
+  status          LedStatus @default(KOSONG)
+  jumlahKarakter  Int       @default(0)
+  updatedById     String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  ledBagian     LedBagian     @relation(fields: [ledBagianId], references: [id], onDelete: Cascade)
+  tahunAkademik TahunAkademik @relation(fields: [tahunAkademikId], references: [id])
+  updatedBy     User?         @relation("LedUpdatedBy", fields: [updatedById], references: [id])
+  evidence      LedEvidence[]
+
+  @@unique([ledBagianId, tahunAkademikId])
+  @@index([status])
+  @@index([tahunAkademikId])
+  @@map("led_isian")
+}
+
+/// Bukti pendukung khusus LED (terpisah dari Evidence tabel LKPS)
+model LedEvidence {
+  id           String   @id @default(cuid())
+  ledIsianId   String
+  filename     String
+  minioKey     String?
+  mimeType     String?
+  size         Int?
+  linkUrl      String?
+  keterangan   String?
+  uploadedById String
+  createdAt    DateTime @default(now())
+
+  ledIsian   LedIsian @relation(fields: [ledIsianId], references: [id], onDelete: Cascade)
+  uploadedBy User     @relation("LedEvidenceUploadedBy", fields: [uploadedById], references: [id])
+
+  @@index([ledIsianId])
+  @@map("led_evidence")
+}
+
+// ============================================================================
+// MODUL MATRIKS PENILAIAN — 77 butir inti + 5 suplemen, bobot 400
+// ============================================================================
+
+enum JenisPenilaian {
+  INPUT // I
+  PROSES // P
+  OUTPUT // O
+}
+
+/// Butir penilaian baku dari Matriks Penilaian LAM INFOKOM. Di-seed.
+model ButirPenilaian {
+  id               String         @id @default(cuid())
+  kode             String         @unique // "1.1.A", "2.2.D", "6.3", "SUP.3"
+  kriteria         String // "KE" | "PU" | "C1".."C6" | "SUP"
+  namaKriteria     String
+  tahapPpepp       String?
+  subButir         String? // "A" | "B" | "C" | "D"
+  elemenPenilaian  String         @db.Text
+  deskriptor       String         @db.Text
+  skor1            String         @db.Text
+  skor2            String         @db.Text
+  skor3            String         @db.Text
+  skor4            String         @db.Text
+  syaratUnggul     String?        @db.Text
+  bobot            Float // 2,0 - 30,0
+  jenis            JenisPenilaian
+  urutan           Int
+
+  skor SkorPenilaian[]
+
+  @@index([kriteria])
+  @@index([jenis])
+  @@map("butir_penilaian")
+}
+
+/// Sesi penilaian mandiri per tahun akademik
+model PenilaianSesi {
+  id              String   @id @default(cuid())
+  tahunAkademikId String
+  catatan         String?  @db.Text
+  finalisasi      Boolean  @default(false)
+  nilaiAkhir      Float?
+  statusPrediksi  String? // "TIDAK_TERAKREDITASI" | "TERAKREDITASI" | "UNGGUL_3TH" | "UNGGUL_5TH"
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  tahunAkademik TahunAkademik    @relation(fields: [tahunAkademikId], references: [id])
+  skor          SkorPenilaian[]
+
+  @@unique([tahunAkademikId])
+  @@map("penilaian_sesi")
+}
+
+/// Skor 1-4 per butir
+model SkorPenilaian {
+  id               String   @id @default(cuid())
+  penilaianSesiId  String
+  butirPenilaianId String
+  skor             Int? // 1-4, null = belum dinilai
+  catatanBukti     String?  @db.Text
+  dinilaiOlehId    String?
+  updatedAt        DateTime @updatedAt
+
+  penilaianSesi  PenilaianSesi  @relation(fields: [penilaianSesiId], references: [id], onDelete: Cascade)
+  butirPenilaian ButirPenilaian @relation(fields: [butirPenilaianId], references: [id])
+  dinilaiOleh    User?          @relation("SkorDinilaiOleh", fields: [dinilaiOlehId], references: [id])
+
+  @@unique([penilaianSesiId, butirPenilaianId])
+  @@map("skor_penilaian")
 }

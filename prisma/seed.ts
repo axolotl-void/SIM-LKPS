@@ -1,5 +1,6 @@
 import { PrismaClient, Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { seedLedDanPenilaian } from "./seed-led";
 
 const db = new PrismaClient();
 
@@ -476,6 +477,9 @@ async function main() {
     });
   }
   console.log(`  ✅ Tabel Definitions: ${tabelDefinitions.length} tabel LKPS`);
+
+  // 8. Modul LED + Matriks Penilaian (LAM INFOKOM 2.1) — idempoten, hanya upsert
+  await seedLedDanPenilaian(db);
 
   console.log("\n🎉 Seeding complete!");
   console.log("   Admin login: admin@ubbg.ac.id / SANDI_LAMA_ADMIN_DIHAPUS");
