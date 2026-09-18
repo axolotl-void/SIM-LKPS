@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { hasPermission } from "@/lib/utils/permissions";
 import { createAuditLog, logAccessDenied } from "@/lib/utils/audit";
+import { ruteBagianLed } from "@/lib/utils/led-rute";
 import { LedStatus, Role } from "@prisma/client";
 import { BATAS_KARAKTER_PER_BAGIAN } from "@/lib/utils/led-progress";
 
@@ -64,9 +65,16 @@ async function tahunAktif() {
   return ta;
 }
 
-function revalidateLed(kriteria?: number | null) {
-  revalidatePath("/led", "layout");
-  if (kriteria) revalidatePath(`/led/bab-2/kriteria/${kriteria}`);
+function revalidateLed(bagian: { kode: string; kriteria: number | null }) {
+  // SENGAJA tanpa flag "layout".
+  // revalidatePath(x, "layout") mengirim ulang SELURUH layout dashboard, sehingga
+  // <Sidebar> ikut remount dan animasi masuk + stagger menunya jalan ulang tiap
+  // simpan — terlihat seperti sidebar "refresh" terus.
+  // Sidebar tidak menampilkan data yang berubah, jadi cukup halaman spesifik.
+  revalidatePath("/led"); // ringkasan progres
+  revalidatePath("/led/export"); // pemeriksaan pra-export
+  revalidatePath(ruteBagianLed(bagian.kode)); // halaman editornya
+  if (bagian.kriteria) revalidatePath(`/led/bab-2/kriteria/${bagian.kriteria}`);
 }
 
 // ──────────────────────────────────────────────
@@ -158,7 +166,7 @@ export async function saveLedIsian(params: {
       newValue: { kode: bagian.kode, jumlahKarakter: disimpan.jumlahKarakter },
     });
 
-    revalidateLed(bagian.kriteria);
+    revalidateLed({ kode: bagian.kode, kriteria: bagian.kriteria });
 
     return {
       ok: true as const,
@@ -211,7 +219,7 @@ export async function setLedStatus(params: { ledBagianId: string; status: LedSta
       newValue: { kode: bagian.kode, status: simpan.status },
     });
 
-    revalidateLed(bagian.kriteria);
+    revalidateLed({ kode: bagian.kode, kriteria: bagian.kriteria });
     return { ok: true as const, status: simpan.status };
   });
 }

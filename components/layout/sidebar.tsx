@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, memo } from "react";
+import { useState, memo, useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
@@ -97,14 +97,25 @@ const sidebarVariants = {
   },
 };
 
+/**
+ * Animasi masuk sidebar hanya boleh jalan SEKALI per sesi browser.
+ *
+ * Layout dashboard bisa dikirim ulang oleh Next.js saat server action selesai
+ * (mis. setelah menyimpan narasi LED atau skor penilaian). Kalau animasi masuk
+ * ikut jalan lagi, seluruh daftar menu terlihat "refresh" dan mengganggu.
+ * Flag tingkat-modul ini bertahan lintas remount, tapi reset saat halaman
+ * dimuat ulang penuh — jadi kesan pertama tetap dianimasikan.
+ */
+let sudahPernahTampil = false;
+
 const menuItemVariants = {
   hidden: { opacity: 0, x: -20 },
   visible: (i: number) => ({
     opacity: 1,
     x: 0,
     transition: {
-      delay: 0.2 + i * 0.06,
-      duration: 0.4,
+      delay: sudahPernahTampil ? 0 : 0.2 + i * 0.06,
+      duration: sudahPernahTampil ? 0 : 0.4,
       ease: [0.25, 0.46, 0.45, 0.94],
     },
   }),
@@ -127,17 +138,26 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
   const pathname = usePathname();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  // Animasi masuk hanya sekali; remount berikutnya langsung tampil diam.
+  // Nilainya ditangkap sekali saat mount (useState), BUKAN dibaca tiap render —
+  // kalau dibaca tiap render, hover (yang memicu render ulang) akan membalik
+  // nilainya ke false dan animasi yang sedang jalan mati mendadak.
+  const [sekaliIni] = useState(() => !sudahPernahTampil);
+  useEffect(() => {
+    sudahPernahTampil = true;
+  }, []);
+
   return (
     <motion.aside
       variants={sidebarVariants}
-      initial="hidden"
+      initial={sekaliIni ? "hidden" : false}
       animate="visible"
       className="fixed left-4 top-4 z-50 flex h-[calc(100vh-2rem)] w-72 flex-col rounded-2xl bg-white border border-slate-200/60 shadow-xl shadow-slate-200/40 overflow-hidden"
     >
       {/* Header - Logo */}
       <div className="flex h-16 items-center border-b border-slate-100/80 px-5 bg-gradient-to-r from-slate-50 to-white">
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={sekaliIni ? { scale: 0.8, opacity: 0 } : false}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.4, ease: "backOut" }}
           className="flex items-center gap-3"
@@ -167,7 +187,7 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
             <div key={group.group} className="mb-5">
               {/* Group Label */}
               <motion.p
-                initial={{ opacity: 0 }}
+                initial={sekaliIni ? { opacity: 0 } : false}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.1 + groupIndex * 0.1 }}
                 className="mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400"
@@ -187,7 +207,7 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
                       key={item.href}
                       custom={globalIndex}
                       variants={menuItemVariants}
-                      initial="hidden"
+                      initial={sekaliIni ? "hidden" : false}
                       animate="visible"
                       onHoverStart={() => setHoveredIndex(globalIndex)}
                       onHoverEnd={() => setHoveredIndex(null)}
@@ -257,41 +277,23 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
 
       {/* Footer - Info Card Only */}
       <div className="p-4">
-        {/* Program Info Card — ambient gradient + breathing pulse + shimmer */}
-        <motion.div
-          animate={{
-            backgroundPosition: [
-              "0% 50%, center",
-              "100% 50%, center",
-              "0% 50%, center",
-            ],
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-600 p-4 text-white shadow-lg [background-size:200%_200%,cover]"
+        {/*
+          Kartu info program.
+          Semua lapisan animasi di sini (geser gradien, denyut, kilau) SENGAJA
+          tidak dipakai lagi: layout dashboard bisa dikirim ulang setiap kali
+          server action selesai, dan animasi yang berulang akan selalu mulai
+          dari posisi awal — terlihat seperti kartu "refresh" terus, tepat
+          seperti keluhan pada sidebar. Kartu statis juga menghemat CPU.
+        */}
+        <div
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-600 p-4 text-white shadow-lg"
           style={{
             backgroundImage:
               "linear-gradient(135deg, rgba(37, 99, 235, 0.92) 0%, rgba(67, 56, 202, 0.92) 50%, rgba(8, 145, 178, 0.92) 100%), url('/img/gedung-ubbg.webp')",
-            backgroundSize: "200% 200%, cover",
-            backgroundPosition: "0% 50%, center",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
         >
-          {/* Breathing pulse layer */}
-          <motion.div
-            aria-hidden
-            animate={{ scale: [1, 1.04, 1], opacity: [0.5, 0.8, 0.5] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="pointer-events-none absolute inset-0 rounded-2xl bg-blue-400/20 blur-xl"
-          />
-
-          {/* Shimmer sweep layer */}
-          <motion.div
-            aria-hidden
-            initial={{ x: "-120%" }}
-            animate={{ x: "220%" }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.5 }}
-            className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-          />
-
           <div className="relative">
             <p className="text-[11px] font-bold uppercase tracking-wider text-blue-100">
               Program Studi
@@ -309,7 +311,7 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
               Developer
             </Link>
           </div>
-        </motion.div>
+        </div>
       </div>
     </motion.aside>
   );

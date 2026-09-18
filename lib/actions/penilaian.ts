@@ -78,8 +78,12 @@ async function sesiAktif(buat = true) {
   return { ta, sesi: baru };
 }
 
-function revalidatePenilaian() {
-  revalidatePath("/penilaian", "layout");
+function revalidatePenilaian(kriteria?: string | null) {
+  // SENGAJA tanpa flag "layout" — lihat catatan di lib/actions/led.ts:
+  // flag itu mengirim ulang seluruh layout dashboard sehingga <Sidebar> remount
+  // dan animasinya jalan ulang tiap kali skor disimpan.
+  revalidatePath("/penilaian");
+  if (kriteria) revalidatePath(`/penilaian/kriteria/${kriteria}`);
 }
 
 // ──────────────────────────────────────────────
@@ -138,7 +142,8 @@ export async function setSkor(params: {
       newValue: { kode: butir.kode, skor: skor.skor },
     });
 
-    revalidatePenilaian();
+    revalidatePenilaian(butir.kriteria);
+
     return { ok: true as const, skor: skor.skor };
   });
 }
@@ -188,6 +193,14 @@ export async function setSkorBanyak(
     });
 
     revalidatePenilaian();
+    // halaman kriteria yang butirnya ikut tersentuh
+    const kriteriaTersentuh = await db.butirPenilaian.findMany({
+      where: { id: { in: daftar.map((d) => d.butirId) } },
+      select: { kriteria: true },
+      distinct: ["kriteria"],
+    });
+    for (const k of kriteriaTersentuh) revalidatePath(`/penilaian/kriteria/${k.kriteria}`);
+
     return { ok: true as const, jumlah: daftar.length };
   });
 }
@@ -255,7 +268,9 @@ export async function finalisasiSesi(params: { catatan?: string } = {}) {
       },
     });
 
-    revalidatePenilaian();
+    revalidatePath("/penilaian");
+
+    // tidak ada flag "layout" (lihat catatan di atas) — cukup halaman matriks
     return { ok: true as const, nilaiAkhir: disimpan.nilaiAkhir, status: disimpan.statusPrediksi };
   });
 }
@@ -281,7 +296,9 @@ export async function bukaKembaliSesi() {
       newValue: { finalisasi: false },
     });
 
-    revalidatePenilaian();
+    revalidatePath("/penilaian");
+
+    // tidak ada flag "layout" (lihat catatan di atas) — cukup halaman matriks
     return { ok: true as const };
   });
 }
@@ -307,7 +324,9 @@ export async function resetSesi() {
       oldValue: { jumlahSkorDihapus: dihapus.count },
     });
 
-    revalidatePenilaian();
+    revalidatePath("/penilaian");
+
+    // tidak ada flag "layout" (lihat catatan di atas) — cukup halaman matriks
     return { ok: true as const, dihapus: dihapus.count };
   });
 }
