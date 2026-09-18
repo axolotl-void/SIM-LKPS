@@ -83,7 +83,7 @@ export function LedExportDialog({ ringkas, urlWord, urlPdf, jumlahCetak }: Props
       <button
         type="button"
         onClick={() => setBuka(true)}
-        className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-xs font-bold text-white shadow-soft-sm transition-colors hover:bg-violet-700 cursor-pointer"
+        className="inline-flex items-center gap-2 rounded-xl bg-slate-800 px-4 py-2.5 text-xs font-bold text-white shadow-soft-sm transition-colors hover:bg-slate-900 cursor-pointer"
       >
         <Download className="h-3.5 w-3.5" />
         Export Dokumen
@@ -99,8 +99,8 @@ export function LedExportDialog({ ringkas, urlWord, urlPdf, jumlahCetak }: Props
           <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
             <div className="mb-4 flex items-start justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50">
-                  <Download className="h-4 w-4 text-violet-600" />
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100">
+                  <Download className="h-4 w-4 text-slate-800" />
                 </div>
                 <div>
                   <h2 className="text-sm font-bold text-slate-800">Export Laporan Evaluasi Diri</h2>
@@ -203,7 +203,7 @@ export function LedExportDialog({ ringkas, urlWord, urlPdf, jumlahCetak }: Props
               Unduhan tercatat di audit log.{" "}
               <Link
                 href="/led"
-                className="inline-flex items-center gap-0.5 font-semibold text-violet-600 hover:underline"
+                className="inline-flex items-center gap-0.5 font-semibold text-slate-800 hover:underline"
               >
                 Kembali ke ringkasan LED
                 <ExternalLink className="h-2.5 w-2.5" />
@@ -285,7 +285,7 @@ function TombolFormat({
         disabled={status === "jalan"}
         className={cn(
           "flex w-full items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left transition-colors cursor-pointer",
-          "border-slate-200 bg-white hover:border-violet-300 hover:bg-violet-50",
+          "border-slate-200 bg-white hover:border-slate-400 hover:bg-slate-100",
           "disabled:cursor-not-allowed disabled:opacity-60",
         )}
       >

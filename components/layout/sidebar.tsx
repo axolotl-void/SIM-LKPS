@@ -222,7 +222,7 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
                         animate={hoveredIndex === globalIndex ? "hover" : "rest"}
                         className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium transition-all duration-200 cursor-pointer ${
                           isActive
-                            ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/20"
+                            ? "bg-slate-800 text-white shadow-sm"
                             : "text-slate-600 hover:bg-slate-50"
                         }`}
                       >
@@ -230,7 +230,7 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
                         {isActive && (
                           <motion.div
                             layoutId="activeIndicator"
-                            className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-white/30"
+                            className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-white/40"
                             transition={{ type: "spring", stiffness: 500, damping: 30 }}
                           />
                         )}
@@ -286,20 +286,20 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
           seperti keluhan pada sidebar. Kartu statis juga menghemat CPU.
         */}
         <div
-          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-600 p-4 text-white shadow-lg"
+          className="relative overflow-hidden rounded-2xl bg-slate-800 p-4 text-white shadow-lg"
           style={{
             backgroundImage:
-              "linear-gradient(135deg, rgba(37, 99, 235, 0.92) 0%, rgba(67, 56, 202, 0.92) 50%, rgba(8, 145, 178, 0.92) 100%), url('/img/gedung-ubbg.webp')",
+              "linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 41, 59, 0.93) 55%, rgba(51, 65, 85, 0.90) 100%), url('/img/gedung-ubbg.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         >
           <div className="relative">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-blue-100">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-300">
               Program Studi
             </p>
             <p className="mt-0.5 text-sm font-bold">Ilmu Komputer UBBG</p>
-            <p className="mt-2 text-[11px] text-blue-200">
+            <p className="mt-2 text-[11px] text-slate-400">
               Versi 0.1.0 (Soft UI)
             </p>
 

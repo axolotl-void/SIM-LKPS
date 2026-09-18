@@ -127,7 +127,7 @@ export function Header({ user }: HeaderProps) {
 
         {/* User pill */}
         <div className="flex items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-50/80 px-3 py-1.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-[11px] font-bold text-white shadow-sm">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-800 text-[11px] font-bold text-white shadow-sm">
             {getInitials(user?.name)}
           </div>
           <div className="hidden flex-col sm:flex">

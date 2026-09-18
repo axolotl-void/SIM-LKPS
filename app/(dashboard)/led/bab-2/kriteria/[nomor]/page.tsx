@@ -69,7 +69,7 @@ function PemilihKriteria({ aktif }: { aktif: number }) {
           href={`/led/bab-2/kriteria/${k.nomor}`}
           className={`px-2.5 py-1 rounded-lg text-2xs font-bold border transition-colors cursor-pointer ${
             k.nomor === aktif
-              ? "bg-white text-violet-700 border-white"
+              ? "bg-white text-slate-800 border-white"
               : "bg-white/10 text-white/80 border-white/25 hover:bg-white/20"
           }`}
         >

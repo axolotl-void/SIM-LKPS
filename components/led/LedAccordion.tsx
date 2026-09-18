@@ -28,10 +28,10 @@ export function LedAccordion({ tahap, butir, readOnly = false, defaultOpen = tru
         onClick={() => setBuka((v) => !v)}
         aria-expanded={buka}
         aria-controls={id}
-        className="w-full flex items-center justify-between gap-3 px-4 py-3 bg-gradient-to-r from-violet-50/70 to-transparent hover:from-violet-100/70 transition-colors cursor-pointer"
+        className="w-full flex items-center justify-between gap-3 px-4 py-3 bg-gradient-to-r from-slate-100/70 to-transparent hover:from-slate-200/70 transition-colors cursor-pointer"
       >
         <div className="flex items-center gap-3">
-          <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-100 text-violet-700 text-xs font-black">
+          <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-200 text-slate-800 text-xs font-black">
             {nomorTahap > 0 ? nomorTahap : "•"}
           </span>
           <div className="text-left">

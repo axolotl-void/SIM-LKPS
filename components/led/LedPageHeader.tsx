@@ -18,7 +18,7 @@ type Props = {
 
 /**
  * Top bar halaman LED — mengikuti pola halaman detail tabel LKPS:
- * chip statistik + tombol aksi sebaris, aksen violet.
+ * chip statistik + tombol aksi sebaris, aksen slate.
  */
 export function LedPageHeader({
   kembaliHref, kembaliLabel, ikon: Icon, eyebrow, judul,
@@ -27,7 +27,7 @@ export function LedPageHeader({
   const persen = total === 0 ? 0 : Math.round((terisi / total) * 100);
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 p-5 mb-6 shadow-xl animate-fade-in-up">
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 p-5 mb-6 shadow-xl animate-fade-in-up">
       <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full border-4 border-white/10 transform rotate-12" />
       <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full border-4 border-white/10 transform -rotate-12" />
 

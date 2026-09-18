@@ -34,7 +34,7 @@ export function StatusGauge({ nilaiAkhir, status, syarat, sementara, rerataKunci
   const busur = 565;
 
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 p-5 shadow-xl">
+    <div className="rounded-2xl bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 p-5 shadow-xl">
       <div className="flex flex-col lg:flex-row items-center gap-6">
         {/* Gauge */}
         <div className="relative shrink-0">

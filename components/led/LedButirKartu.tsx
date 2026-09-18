@@ -58,9 +58,9 @@ export function LedButirKartu({
             type="button"
             onClick={() => setPetunjukBuka((v) => !v)}
             aria-expanded={petunjukBuka}
-            className="w-full flex items-center gap-2 px-3 py-2 text-2xs font-semibold text-slate-600 hover:text-slate-800 transition-colors cursor-pointer"
+            className="w-full flex items-center gap-2 px-3 py-2 text-2xs font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
           >
-            <Info className="w-3.5 h-3.5 text-violet-500" />
+            <Info className="w-3.5 h-3.5 text-slate-600" />
             Petunjuk instrumen
             <ChevronDown
               className={cn("w-3 h-3 ml-auto transition-transform", petunjukBuka && "rotate-180")}

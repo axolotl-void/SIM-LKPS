@@ -47,7 +47,7 @@ export default async function PenilaianKriteriaPage({
   return (
     <div className="min-h-screen pb-12">
       {/* Hero */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 p-5 mb-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 p-5 mb-6 shadow-xl">
         <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full border-4 border-white/10 transform rotate-12" />
         <div className="relative z-10">
           <div className="flex items-center justify-between gap-4 mb-4">
@@ -135,8 +135,8 @@ export default async function PenilaianKriteriaPage({
                 className={cn(
                   "px-2.5 py-1 rounded-lg text-2xs font-bold border transition-colors",
                   k === kodeBersih
-                    ? "bg-violet-600 border-violet-600 text-white"
-                    : "bg-white border-slate-200 text-slate-500 hover:border-violet-300 hover:text-violet-700",
+                    ? "bg-slate-800 border-slate-800 text-white"
+                    : "bg-white border-slate-200 text-slate-500 hover:border-slate-400 hover:text-slate-900",
                 )}
               >
                 {k}

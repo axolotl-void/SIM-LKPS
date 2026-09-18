@@ -61,8 +61,8 @@ export function SkorSelector({ nilai, onChange, disabled = false, ukuran = "md",
               "rounded-lg border font-bold transition-all cursor-pointer",
               ukuran === "sm" ? "w-7 h-7 text-2xs" : "w-9 h-9 text-xs",
               aktif
-                ? "bg-violet-600 border-violet-600 text-white shadow-sm scale-105"
-                : "bg-white border-slate-200 text-slate-500 hover:border-violet-300 hover:text-violet-600",
+                ? "bg-slate-800 border-slate-800 text-white shadow-sm scale-105"
+                : "bg-white border-slate-200 text-slate-500 hover:border-slate-400 hover:text-slate-900",
               disabled && "opacity-60 cursor-not-allowed hover:border-slate-200 hover:text-slate-500",
             )}
           >

@@ -56,7 +56,7 @@ export function AksiFinalisasi({ finalisasi, lengkap, jumlahKosong, bolehFinalis
             disabled={pending || !lengkap}
             title={!lengkap ? `${jumlahKosong} butir belum dinilai` : "Kunci penilaian & simpan status"}
             onClick={() => jalankan(() => finalisasiSesi({}))}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3 py-2 text-xs font-bold text-white hover:bg-violet-700 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-slate-800 px-3 py-2 text-xs font-bold text-white hover:bg-slate-900 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {pending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Lock className="w-3.5 h-3.5" />}
             Finalisasi

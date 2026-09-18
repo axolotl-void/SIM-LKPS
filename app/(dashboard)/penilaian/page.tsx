@@ -173,7 +173,7 @@ export default async function PenilaianPage() {
 
 function HeroPenilaian() {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 p-5 mb-6 shadow-xl">
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 p-5 mb-6 shadow-xl">
       <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full border-4 border-white/10 transform rotate-12" />
       <div className="relative z-10 flex items-center gap-3">
         <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white/20 border border-white/30">

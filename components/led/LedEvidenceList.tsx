@@ -80,7 +80,7 @@ export function LedEvidenceList({ bagianId, evidence, readOnly = false }: Props)
           <button
             type="button"
             onClick={() => setFormBuka((v) => !v)}
-            className="inline-flex items-center gap-1 text-2xs font-semibold text-violet-600 hover:text-violet-800 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 text-2xs font-semibold text-slate-800 hover:text-slate-900 transition-colors cursor-pointer"
           >
             <Plus className="w-3 h-3" /> Tambah
           </button>
@@ -105,7 +105,7 @@ export function LedEvidenceList({ bagianId, evidence, readOnly = false }: Props)
                   href={b.linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-violet-600 hover:text-violet-800 cursor-pointer"
+                  className="text-slate-800 hover:text-slate-900 cursor-pointer"
                   title="Buka bukti"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -133,20 +133,20 @@ export function LedEvidenceList({ bagianId, evidence, readOnly = false }: Props)
             value={nama}
             onChange={(e) => setNama(e.target.value)}
             placeholder="Nama berkas, mis. RPS Algoritma 2025"
-            className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs outline-none focus:border-violet-300 focus:ring-2 focus:ring-violet-100"
+            className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
           <input
             value={link}
             onChange={(e) => setLink(e.target.value)}
             placeholder="https://tautan-berkas-atau-dokumen"
-            className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs outline-none focus:border-violet-300 focus:ring-2 focus:ring-violet-100"
+            className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
           />
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={tambah}
               disabled={pending}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-violet-600 px-3 py-1.5 text-2xs font-bold text-white hover:bg-violet-700 transition-colors cursor-pointer disabled:opacity-60"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-slate-800 px-3 py-1.5 text-2xs font-bold text-white hover:bg-slate-900 transition-colors cursor-pointer disabled:opacity-60"
             >
               {pending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
               Simpan bukti

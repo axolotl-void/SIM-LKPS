@@ -49,7 +49,7 @@ export default async function ButirPenilaianPage({
   return (
     <div className="min-h-screen pb-12">
       {/* Hero */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 p-5 mb-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 p-5 mb-6 shadow-xl">
         <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full border-4 border-white/10 transform rotate-12" />
         <div className="relative z-10">
           <div className="flex items-start justify-between gap-4">
@@ -122,8 +122,8 @@ export default async function ButirPenilaianPage({
             <p className="text-xs text-slate-400 italic">Tidak ada catatan khusus.</p>
           )}
           {["C1", "C2", "C3"].includes(butir.kriteria) && (
-            <div className="mt-3 rounded-lg bg-violet-50 border border-violet-200 px-3 py-2">
-              <p className="text-2xs text-violet-800 leading-relaxed">
+            <div className="mt-3 rounded-lg bg-slate-100 border border-slate-300 px-3 py-2">
+              <p className="text-2xs text-slate-900 leading-relaxed">
                 Butir kriteria kunci: untuk gelar <strong>Unggul</strong>, nilai butir ini minimal{" "}
                 <strong>{BUTIR_MIN.toFixed(2).replace(".", ",")}</strong> dan rerata{" "}
                 {butir.kriteria} minimal <strong>{RERATA_KUNCI_MIN.toFixed(2).replace(".", ",")}</strong>.
@@ -149,13 +149,13 @@ export default async function ButirPenilaianPage({
                 key={d.level}
                 className={cn(
                   "px-4 py-3 flex items-start gap-3",
-                  aktif && "bg-violet-50/60",
+                  aktif && "bg-slate-100/60",
                 )}
               >
                 <span
                   className={cn(
                     "shrink-0 inline-flex flex-col items-center justify-center w-12 h-12 rounded-xl font-black",
-                    aktif ? "bg-violet-600 text-white" : "bg-slate-100 text-slate-500",
+                    aktif ? "bg-slate-800 text-white" : "bg-slate-100 text-slate-500",
                   )}
                 >
                   <span className="text-lg leading-none">{d.level}</span>
@@ -166,13 +166,13 @@ export default async function ButirPenilaianPage({
                 <p
                   className={cn(
                     "text-xs leading-relaxed flex-1",
-                    aktif ? "text-violet-900 font-medium" : "text-slate-600",
+                    aktif ? "text-slate-900 font-medium" : "text-slate-600",
                   )}
                 >
                   {d.teks}
                 </p>
                 {aktif && (
-                  <span className="shrink-0 rounded-full bg-violet-600 px-2 py-0.5 text-[9px] font-black text-white uppercase">
+                  <span className="shrink-0 rounded-full bg-slate-800 px-2 py-0.5 text-[9px] font-black text-white uppercase">
                     dipilih
                   </span>
                 )}

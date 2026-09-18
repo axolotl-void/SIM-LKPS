@@ -24,12 +24,12 @@ export function KriteriaBreakdown({ perKriteria }: { perKriteria: RerataKriteria
           <li key={p.kriteria}>
             <Link
               href={`/penilaian/kriteria/${p.kriteria}`}
-              className="flex items-center gap-3 px-4 py-3 hover:bg-violet-50/50 transition-colors group"
+              className="flex items-center gap-3 px-4 py-3 hover:bg-slate-100/50 transition-colors group"
             >
               <span
                 className={cn(
                   "shrink-0 inline-flex items-center justify-center min-w-9 h-9 px-2 rounded-lg text-xs font-black",
-                  p.kunci ? "bg-violet-100 text-violet-700" : "bg-slate-100 text-slate-500",
+                  p.kunci ? "bg-slate-200 text-slate-800" : "bg-slate-100 text-slate-500",
                 )}
                 title={p.kunci ? "Kriteria kunci penentu Unggul" : undefined}
               >
@@ -40,7 +40,7 @@ export function KriteriaBreakdown({ perKriteria }: { perKriteria: RerataKriteria
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-semibold text-slate-700 truncate">{p.nama}</span>
                   {p.kunci && (
-                    <span className="shrink-0 rounded-full bg-violet-100 px-1.5 py-0.5 text-[9px] font-black text-violet-600 uppercase">
+                    <span className="shrink-0 rounded-full bg-slate-200 px-1.5 py-0.5 text-[9px] font-black text-slate-800 uppercase">
                       kunci
                     </span>
                   )}
@@ -67,7 +67,7 @@ export function KriteriaBreakdown({ perKriteria }: { perKriteria: RerataKriteria
                 </div>
               </div>
 
-              <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-violet-600 group-hover:translate-x-0.5 transition-all shrink-0" />
+              <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-slate-900 group-hover:translate-x-0.5 transition-all shrink-0" />
             </Link>
           </li>
         ))}

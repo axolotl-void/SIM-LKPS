@@ -47,7 +47,7 @@ export function LedStatusSelect({ bagianId, statusAwal, readOnly = false }: Prop
         aria-label="Status bagian"
         className={cn(
           "text-2xs font-semibold rounded-lg border px-2 py-1 cursor-pointer outline-none",
-          "focus:ring-2 focus:ring-violet-200 disabled:opacity-60",
+          "focus:ring-2 focus:ring-slate-300 disabled:opacity-60",
           statusKelas(status),
         )}
       >

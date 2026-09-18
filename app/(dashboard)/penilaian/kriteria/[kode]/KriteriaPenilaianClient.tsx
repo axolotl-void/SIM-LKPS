@@ -78,7 +78,7 @@ export function KriteriaPenilaianClient({
               <div className="flex items-start gap-3">
                 <Link
                   href={`/penilaian/butir/${encodeURIComponent(b.kode)}`}
-                  className="shrink-0 inline-flex items-center justify-center min-w-14 h-7 px-2 rounded-lg bg-slate-100 text-slate-600 text-2xs font-mono font-black hover:bg-violet-100 hover:text-violet-700 transition-colors"
+                  className="shrink-0 inline-flex items-center justify-center min-w-14 h-7 px-2 rounded-lg bg-slate-100 text-slate-600 text-2xs font-mono font-black hover:bg-slate-200 hover:text-slate-900 transition-colors"
                   title="Lihat deskriptor 4 level"
                 >
                   {b.kode}
@@ -100,7 +100,7 @@ export function KriteriaPenilaianClient({
                       </span>
                     )}
                     {st === "menyimpan" && (
-                      <span className="inline-flex items-center gap-1 text-2xs text-violet-600">
+                      <span className="inline-flex items-center gap-1 text-2xs text-slate-800">
                         <Loader2 className="w-3 h-3 animate-spin" /> menyimpan
                       </span>
                     )}
@@ -128,13 +128,13 @@ export function KriteriaPenilaianClient({
       <div className="px-4 py-3 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between">
         <Link
           href="/penilaian"
-          className="inline-flex items-center gap-1.5 text-2xs font-semibold text-slate-500 hover:text-violet-700 transition-colors"
+          className="inline-flex items-center gap-1.5 text-2xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Kembali ke ringkasan
         </Link>
         <Link
           href="/penilaian"
-          className="inline-flex items-center gap-1.5 text-2xs font-semibold text-violet-600 hover:text-violet-800 transition-colors"
+          className="inline-flex items-center gap-1.5 text-2xs font-semibold text-slate-800 hover:text-slate-900 transition-colors"
         >
           Lihat nilai akhir <ExternalLink className="w-3 h-3" />
         </Link>

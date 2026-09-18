@@ -103,16 +103,16 @@ function SubKartu({
   const belum = terisi === 0;
   return (
     <Link href={href} className="group block">
-      <div className="h-full rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-300 hover:border-violet-300 hover:shadow-lg hover:-translate-y-0.5">
+      <div className="h-full rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-300 hover:border-slate-400 hover:shadow-lg hover:-translate-y-0.5">
         <div className="flex items-start gap-3 mb-3">
-          <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-violet-100 text-violet-700 shrink-0">
+          <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-slate-200 text-slate-800 shrink-0">
             <Icon className="w-5 h-5" />
           </div>
           <div className="min-w-0">
-            <div className="text-2xs font-black text-violet-500 uppercase tracking-wider">
+            <div className="text-2xs font-black text-slate-600 uppercase tracking-wider">
               Bagian {kode}
             </div>
-            <h3 className="text-sm font-bold text-slate-800 leading-snug group-hover:text-violet-700 transition-colors">
+            <h3 className="text-sm font-bold text-slate-800 leading-snug group-hover:text-slate-900 transition-colors">
               {judul}
             </h3>
           </div>
@@ -123,14 +123,14 @@ function SubKartu({
         <div className="flex items-center gap-3">
           <div className="flex-1 h-1.5 rounded-full bg-slate-100 overflow-hidden">
             <div
-              className={`h-full rounded-full transition-all duration-500 ${belum ? "bg-slate-200" : "bg-violet-500"}`}
+              className={`h-full rounded-full transition-all duration-500 ${belum ? "bg-slate-200" : "bg-slate-600"}`}
               style={{ width: `${persen}%` }}
             />
           </div>
-          <span className={`text-2xs font-bold ${belum ? "text-slate-400" : "text-violet-600"}`}>
+          <span className={`text-2xs font-bold ${belum ? "text-slate-400" : "text-slate-800"}`}>
             {terisi}/{jumlah}
           </span>
-          <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-violet-600 group-hover:translate-x-0.5 transition-all" />
+          <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-slate-900 group-hover:translate-x-0.5 transition-all" />
         </div>
       </div>
     </Link>

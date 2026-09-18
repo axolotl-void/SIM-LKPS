@@ -157,7 +157,7 @@ export function LedEditor({ bagianId, nilaiAwal, readOnly = false, updatedAtAwal
             className={cn(
               "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
               mode === "tulis"
-                ? "bg-white text-violet-700 border border-violet-200 shadow-sm"
+                ? "bg-white text-slate-800 border border-slate-300 shadow-sm"
                 : "text-slate-500 hover:text-slate-700",
             )}
             aria-pressed={mode === "tulis"}
@@ -170,7 +170,7 @@ export function LedEditor({ bagianId, nilaiAwal, readOnly = false, updatedAtAwal
             className={cn(
               "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
               mode === "pratinjau"
-                ? "bg-white text-violet-700 border border-violet-200 shadow-sm"
+                ? "bg-white text-slate-800 border border-slate-300 shadow-sm"
                 : "text-slate-500 hover:text-slate-700",
             )}
             aria-pressed={mode === "pratinjau"}
@@ -187,7 +187,7 @@ export function LedEditor({ bagianId, nilaiAwal, readOnly = false, updatedAtAwal
           {readOnly ? (
             <span className="font-semibold text-slate-400">Hanya baca</span>
           ) : menyimpan ? (
-            <span className="inline-flex items-center gap-1 text-violet-600 font-semibold">
+            <span className="inline-flex items-center gap-1 text-slate-800 font-semibold">
               <Loader2 className="w-3 h-3 animate-spin" /> Menyimpan…
             </span>
           ) : galat ? (

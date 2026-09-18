@@ -18,7 +18,7 @@ export type KartuLed = {
   status: LedStatus[]; // status tiap bagian di dalamnya
 };
 
-/** Kartu progres untuk satu bagian LED (pola kartu kanonik LKPS, aksen violet). */
+/** Kartu progres untuk satu bagian LED (pola kartu kanonik LKPS, aksen slate). */
 export function LedProgressCard({ kartu, index = 0 }: { kartu: KartuLed; index?: number }) {
   const ringkas = useMemo(
     () => ringkasProgres(kartu.status.map((s) => ({ status: s, jumlahKarakter: s === "KOSONG" ? 0 : 1 }))),
@@ -32,8 +32,8 @@ export function LedProgressCard({ kartu, index = 0 }: { kartu: KartuLed; index?:
       href={kartu.href}
       className={cn("group relative block animate-fade-in-up", `stagger-${Math.min(index + 1, 8)}`)}
     >
-      <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-violet-200">
-        <div className="relative h-20 bg-gradient-to-br from-violet-500 via-violet-600 to-indigo-700">
+      <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-slate-300">
+        <div className="relative h-20 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900">
           <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10" />
           <div className="absolute -bottom-3 right-4">
             <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-white/25 border border-white/40 shadow-lg rotate-12 group-hover:rotate-0 group-hover:scale-105 transition-all duration-300">
@@ -48,7 +48,7 @@ export function LedProgressCard({ kartu, index = 0 }: { kartu: KartuLed; index?:
         </div>
 
         <div className="p-5">
-          <h3 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-violet-700 transition-colors">
+          <h3 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-slate-900 transition-colors">
             {kartu.judul}
           </h3>
           <p className="text-xs text-slate-400 mb-4">{kartu.deskripsi}</p>
@@ -58,7 +58,7 @@ export function LedProgressCard({ kartu, index = 0 }: { kartu: KartuLed; index?:
               "rounded-xl p-4",
               belumMulai
                 ? "bg-slate-100 border-2 border-dashed border-slate-200"
-                : "bg-gradient-to-br from-violet-500 to-indigo-600 text-white",
+                : "bg-gradient-to-br from-slate-700 to-slate-800 text-white",
             )}
           >
             <div className="flex items-center justify-between mb-2">
@@ -66,7 +66,7 @@ export function LedProgressCard({ kartu, index = 0 }: { kartu: KartuLed; index?:
                 <div className={cn("text-3xl font-black", belumMulai ? "text-slate-300" : "text-white")}>
                   {ringkas.persen}%
                 </div>
-                <div className={cn("text-xs font-medium", belumMulai ? "text-slate-400" : "text-violet-100")}>
+                <div className={cn("text-xs font-medium", belumMulai ? "text-slate-400" : "text-slate-200")}>
                   {ringkas.terisi}/{ringkas.total} bagian terisi
                 </div>
               </div>
@@ -81,15 +81,15 @@ export function LedProgressCard({ kartu, index = 0 }: { kartu: KartuLed; index?:
           </div>
 
           <div className="flex items-center justify-between mt-4">
-            <span className={cn("text-sm font-semibold group-hover:underline", belumMulai ? "text-slate-500" : "text-violet-700")}>
+            <span className={cn("text-sm font-semibold group-hover:underline", belumMulai ? "text-slate-500" : "text-slate-800")}>
               {belumMulai ? "Mulai Mengisi" : "Lanjut Mengisi"}
             </span>
             <div
               className={cn(
                 "flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200",
                 belumMulai
-                  ? "bg-slate-100 text-slate-400 group-hover:bg-violet-500 group-hover:text-white"
-                  : "bg-violet-100 text-violet-700 group-hover:bg-violet-600 group-hover:text-white",
+                  ? "bg-slate-100 text-slate-400 group-hover:bg-slate-600 group-hover:text-white"
+                  : "bg-slate-200 text-slate-800 group-hover:bg-slate-800 group-hover:text-white",
               )}
             >
               <ArrowRight className="w-4 h-4" />

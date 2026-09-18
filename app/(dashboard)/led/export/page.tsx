@@ -74,8 +74,8 @@ export default async function LedExportPage({ searchParams }: Props) {
                 className={cn(
                   "rounded-lg border px-2.5 py-1 text-2xs font-bold transition-colors",
                   aktif
-                    ? "border-violet-300 bg-violet-50 text-violet-700"
-                    : "border-slate-200 bg-white text-slate-600 hover:border-violet-200",
+                    ? "border-slate-400 bg-slate-100 text-slate-800"
+                    : "border-slate-200 bg-white text-slate-600 hover:border-slate-300",
                 )}
               >
                 {t.tahun} {t.semester}
@@ -173,7 +173,7 @@ export default async function LedExportPage({ searchParams }: Props) {
 
 function Kepala() {
   return (
-    <div className="relative mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 p-5 shadow-xl">
+    <div className="relative mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 p-5 shadow-xl">
       <div className="absolute -right-8 -top-8 h-32 w-32 rotate-12 rounded-full border-4 border-white/10" />
       <div className="relative z-10 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/30 bg-white/20">

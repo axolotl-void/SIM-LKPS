@@ -129,7 +129,7 @@ export default async function LedIndexPage() {
         </div>
         <Link
           href="/led/export"
-          className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-xs font-bold text-white shadow-soft-sm transition-colors hover:bg-violet-700"
+          className="inline-flex items-center gap-2 rounded-xl bg-slate-800 px-4 py-2.5 text-xs font-bold text-white shadow-soft-sm transition-colors hover:bg-slate-900"
         >
           <Download className="h-3.5 w-3.5" />
           Buka Export Dokumen
@@ -166,7 +166,7 @@ function HeroLed({
   persen?: number;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 p-5 mb-6 shadow-xl animate-fade-in-up">
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 p-5 mb-6 shadow-xl animate-fade-in-up">
       <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full border-4 border-white/10 transform rotate-12" />
       <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full border-4 border-white/10 transform -rotate-12" />
 
