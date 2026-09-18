@@ -19,12 +19,12 @@ const DEVELOPER = {
   role: "Full-Stack Developer",
   project: "SIM-LKPS",
   institution: "Universitas Bina Bangsa Getsempena",
-  bio: "Mahasiswa Program Studi Ilmu Komputer, Universitas Bina Bangsa Getsempena. Pengembang utama sistem SIM-LKPS untuk akreditasi BAN-PT.",
+  bio: "Mahasiswa Program Studi Ilmu Komputer, Universitas Bina Bangsa Getsempena. Pengembang utama sistem SIM-LKPS untuk akreditasi LAM INFOKOM 2.1.",
   photoUrl: "/img/profile.webp",
   repoUrl: "https://github.com/axolotl-void/SIM-LKPS.git",
   stats: {
-    tables: 31,
-    roles: 4,
+    tables: 32,
+    roles: 3,
     stack: "Next.js 15",
   },
   message:
@@ -60,8 +60,8 @@ const DEVELOPER = {
     },
     {
       label: "Portofolio",
-      value: "portofolio-r6to.vercel.app",
-      href: "https://portofolio-r6to.vercel.app",
+      value: "yogi.zegika.com",
+      href: "https://yogi.zegika.com",
       icon: "portfolio",
       external: true,
     },

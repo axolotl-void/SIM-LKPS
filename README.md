@@ -182,7 +182,7 @@ npm run start
 | Kriteria 2, Pendidikan | 11 | 2.A.1, 2.A.2, 2.A.3, 2.B.1, 2.B.2, 2.B.3, 2.B.4, 2.B.5, 2.B.6, 2.C, 2.D |
 | Kriteria 3, Penelitian | 6 | 3.A.1, 3.A.2, 3.A.3, 3.C.1, 3.C.2, 3.C.3 |
 | Kriteria 4, Pengabdian | 5 | 4.A.1, 4.A.2, 4.C.1, 4.C.2, 4.C.3 |
-| Kriteria 5 & 6, Tata Kelola & Visi Misi | 3 | 5.1, 5.2, 6.1, 6.2 |
+| Kriteria 5 & 6, Tata Kelola & Visi Misi | 4 | 5.1, 5.2, 6.1, 6.2 |
 | **Total** | **32** | |
 
 > Tabel 5.1/5.2 berada di `/lkps/kriteria-5-6`, tabel 6.1/6.2 di `/lkps/kriteria-6`.
@@ -222,7 +222,7 @@ Skripsi project, tidak untuk distribusi komersial tanpa izin.
 
 ## Credits
 
-- **LAM INFOKOM**, format 31 tabel LKPS dan dokumen akreditasi
+- **LAM INFOKOM**, format 32 tabel LKPS dan dokumen akreditasi
 - **BAN-PT**, standar Instrumen Suplemen Konversi
 - **Universitas Bina Bangsa Getsempena**, studi kasus dan data pengujian
 - **shadcn/ui, Prisma, Auth.js, Vercel, Cloudflare**, tooling open-source
