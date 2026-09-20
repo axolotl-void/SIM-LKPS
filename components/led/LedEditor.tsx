@@ -30,12 +30,12 @@ export function LedEditor({ bagianId, nilaiAwal, readOnly = false, updatedAtAwal
   const [galat, setGalat] = useState<string | null>(null);
   const [adaDraftLokal, setAdaDraftLokal] = useState(false);
   const [konflik, setKonflik] = useState<string | null>(null);
+  /** Nilai yang terakhir diketahui sudah masuk server — pembanding "kotor".
+   *  Sengaja state, bukan ref: nilainya dipakai saat render (badge status). */
+  const [nilaiTersimpan, setNilaiTersimpan] = useState(nilaiAwal);
 
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const updatedAtRef = useRef<string | null>(updatedAtAwal);
-  const kontenRef = useRef(konten);
-  kontenRef.current = konten;
-  const nilaiTersimpanRef = useRef(nilaiAwal);
   const mounted = useRef(false);
 
   // ── pulihkan draft lokal kalau ada (mis. jaringan putus saat menyimpan)
@@ -53,8 +53,8 @@ export function LedEditor({ bagianId, nilaiAwal, readOnly = false, updatedAtAwal
 
   const simpan = useCallback(
     async (nilai?: string) => {
-      const isi = nilai ?? kontenRef.current;
-      if (readOnly || isi === nilaiTersimpanRef.current) return;
+      const isi = nilai ?? konten;
+      if (readOnly || isi === nilaiTersimpan) return;
 
       setMenyimpan(true);
       setGalat(null);
@@ -76,7 +76,7 @@ export function LedEditor({ bagianId, nilaiAwal, readOnly = false, updatedAtAwal
         }
 
         if (hasil.ok) {
-          nilaiTersimpanRef.current = isi;
+          setNilaiTersimpan(isi);
           updatedAtRef.current = hasil.updatedAt;
           setTersimpanPada(
             new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }),
@@ -99,7 +99,7 @@ export function LedEditor({ bagianId, nilaiAwal, readOnly = false, updatedAtAwal
         setMenyimpan(false);
       }
     },
-    [bagianId, onSaved, readOnly],
+    [bagianId, onSaved, readOnly, konten, nilaiTersimpan],
   );
 
   // ── autosave setelah berhenti mengetik
@@ -109,14 +109,14 @@ export function LedEditor({ bagianId, nilaiAwal, readOnly = false, updatedAtAwal
       return;
     }
     if (readOnly) return;
-    if (konten === nilaiTersimpanRef.current) return;
+    if (konten === nilaiTersimpan) return;
 
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => void simpan(), DEBOUNCE_MS);
     return () => {
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [konten, readOnly, simpan]);
+  }, [konten, readOnly, simpan, nilaiTersimpan]);
 
   // ── Ctrl/Cmd + S
   useEffect(() => {
@@ -144,7 +144,7 @@ export function LedEditor({ bagianId, nilaiAwal, readOnly = false, updatedAtAwal
   const jumlah = konten.length;
   const halaman = estimasiHalaman(jumlah);
   const lewatBatas = jumlah > BATAS_KARAKTER_PER_BAGIAN;
-  const kotor = konten !== nilaiTersimpanRef.current;
+  const kotor = konten !== nilaiTersimpan;
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">

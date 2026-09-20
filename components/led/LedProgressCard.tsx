@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { createElement, useMemo } from "react";
 import Link from "next/link";
 import { AlertTriangle, FileText, ArrowRight } from "lucide-react";
 import type { LedStatus } from "@prisma/client";
@@ -18,13 +18,19 @@ export type KartuLed = {
   status: LedStatus[]; // status tiap bagian di dalamnya
 };
 
+/** Ikon kartu dirender lewat createElement — komponennya diresolusi dari nama
+ *  (server→client tidak bisa kirim fungsi), dan memanggilnya langsung saat render
+ *  akan dianggap "membuat komponen di dalam render" oleh react-hooks/static-components. */
+function ikonKartu(nama: string, className: string) {
+  return createElement(ikonLed(nama), { className });
+}
+
 /** Kartu progres untuk satu bagian LED (pola kartu kanonik LKPS, aksen slate). */
 export function LedProgressCard({ kartu, index = 0 }: { kartu: KartuLed; index?: number }) {
   const ringkas = useMemo(
     () => ringkasProgres(kartu.status.map((s) => ({ status: s, jumlahKarakter: s === "KOSONG" ? 0 : 1 }))),
     [kartu.status],
   );
-  const Icon = ikonLed(kartu.ikon);
   const belumMulai = ringkas.terisi === 0;
 
   return (
@@ -37,7 +43,7 @@ export function LedProgressCard({ kartu, index = 0 }: { kartu: KartuLed; index?:
           <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10" />
           <div className="absolute -bottom-3 right-4">
             <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-white/25 border border-white/40 shadow-lg rotate-12 group-hover:rotate-0 group-hover:scale-105 transition-all duration-300">
-              <Icon className="w-7 h-7 text-white" />
+              {ikonKartu(kartu.ikon, "w-7 h-7 text-white")}
             </div>
           </div>
           <div className="absolute top-3 left-3">
@@ -70,7 +76,7 @@ export function LedProgressCard({ kartu, index = 0 }: { kartu: KartuLed; index?:
                   {ringkas.terisi}/{ringkas.total} bagian terisi
                 </div>
               </div>
-              <Icon className={cn("w-6 h-6", belumMulai ? "text-slate-300" : "text-white/80")} />
+              {ikonKartu(kartu.ikon, cn("w-6 h-6", belumMulai ? "text-slate-300" : "text-white/80"))}
             </div>
             <div className={cn("h-1.5 rounded-full overflow-hidden", belumMulai ? "bg-slate-200" : "bg-white/25")}>
               <div
