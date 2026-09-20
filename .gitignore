@@ -59,3 +59,8 @@ Thumbs.db
 
 # local development scripts (pindah dari repo, simpan lokal untuk reference)
 .local-scripts/
+
+# .env* ditambah otomatis oleh `vercel link` (20 Sep 2026) — tapi jangan
+# sampai menelan template yang memang ikut di-commit.
+.env*
+!.env.example
