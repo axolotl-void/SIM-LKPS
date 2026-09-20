@@ -35,7 +35,7 @@ yang tidak dijelaskan).
 ### `handover/referensi/` — Penjelasan tiap berkas kode
 
 Satu halaman untuk **setiap berkas** di `app/`, `components/`, `lib/`, dan
-`prisma/` — sekitar 260 halaman.
+`prisma/` — 263 halaman.
 
 Tiap halaman berisi:
 

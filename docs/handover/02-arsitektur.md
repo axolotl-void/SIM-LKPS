@@ -153,7 +153,7 @@ sim-lkps/
 │
 ├── components/              ← Komponen tampilan yang dipakai ulang
 │   ├── layout/              ← Menu kiri, header atas, tombol mode gelap
-│   ├── tables/              ← 34 komponen tabel LKPS
+│   ├── tables/              ← 36 berkas komponen tabel LKPS
 │   ├── led/                 ← Editor narasi, kartu progres, daftar bukti
 │   ├── penilaian/           ← Tampilan matriks dan skor
 │   ├── shared/              ← Pemilih dosen, kotak pencarian, dan sejenisnya
@@ -378,7 +378,7 @@ Dicatat supaya tidak dikira kelalaian:
 
 | Hal | Alasan |
 |---|---|
-| **34 komponen tabel terpisah**, bukan satu formulir serbaguna | Sudah dicoba dirancang serbaguna, tapi tiap tabel punya kebutuhan berbeda. Memaksakan satu formulir justru bikin rumit. |
+| **33 komponen tabel terpisah**, bukan satu formulir serbaguna | Sudah dicoba dirancang serbaguna, tapi tiap tabel punya kebutuhan berbeda. Memaksakan satu formulir justru bikin rumit. |
 | **Pemeriksaan status tidak mengunci pengisian** | Blokir pengisian saat status bukan DRAFT sengaja dimatikan. Kode penandanya masih ada dengan label `VALIDASI DIHAPUS`. Jangan dihidupkan tanpa membicarakannya dulu. |
 | **Folder migrasi database tidak ada** | Perubahan susunan tabel dilakukan dengan `prisma db push`, bukan sistem migrasi bertahap. Konsekuensinya ada di [`04-basis-data.md`](./04-basis-data.md) — penting dibaca sebelum mengubah tabel. |
 | **Ada dua berkas dokumentasi lama** (`docs/roadmap.md`, `docs/requirements.md`) | Masih memakai istilah BAN-PT lama dan menyebut 31 tabel. Sudah ditandai kedaluwarsa; jangan dijadikan acuan. |

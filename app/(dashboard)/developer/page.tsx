@@ -87,7 +87,7 @@ const DEVELOPER = {
     },
     {
       label: "Referensi Kode",
-      desc: "Sekitar 260 halaman — penjelasan setiap berkas di dalam proyek",
+      desc: "263 halaman — penjelasan setiap berkas di dalam proyek",
       href: "https://github.com/axolotl-void/SIM-LKPS/tree/main/docs/handover/referensi",
       tag: "Lengkap",
     },
