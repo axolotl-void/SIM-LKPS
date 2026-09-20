@@ -26,6 +26,10 @@ export default async function globalSetup() {
   try {
     await prisma.skorPenilaian.deleteMany();
     await prisma.penilaianSesi.deleteMany();
+    // Narasi LED juga dibersihkan: `export-led.spec.ts` mengharapkan hitungan
+    // "N/92" mulai dari nol, sedangkan suite LED mengisi bagian. Tanpa ini,
+    // urutan suite menentukan hasil (dulu: 1/92 vs 2/92 → test gagal).
+    await prisma.ledIsian.deleteMany();
   } finally {
     await prisma.$disconnect();
   }
