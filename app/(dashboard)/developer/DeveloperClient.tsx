@@ -22,6 +22,9 @@ import {
   ExternalLink,
   Terminal,
   Heart,
+  BookOpen,
+  FileText,
+  ShieldCheck,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -44,6 +47,12 @@ interface DeveloperInfo {
   repoUrl: string;
   stats: { tables: number; roles: number; stack: string };
   message: string;
+  handover: {
+    intro: string;
+    highlight: string;
+    repoDocsUrl: string;
+  };
+  docs: Array<{ label: string; desc: string; href: string; tag: string }>;
   contacts: ContactLink[];
 }
 
@@ -364,6 +373,82 @@ export function DeveloperClient({ developer }: { developer: DeveloperInfo }) {
                 </div>
               </div>
             </motion.a>
+
+            {/* Section: serah terima dokumentasi */}
+            <div className="mt-10 flex items-center gap-3">
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+                Dokumentasi Serah Terima
+              </h2>
+              <div className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent" />
+            </div>
+
+            <div className="mt-3 rounded-2xl border border-sky-200/70 bg-sky-50/50 p-5">
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
+                  <BookOpen className="h-5 w-5" strokeWidth={2} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm leading-relaxed text-slate-700">
+                    {developer.handover.intro}
+                  </p>
+                  <p className="mt-2 text-sm font-medium text-sky-800">
+                    {developer.handover.highlight}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Grid dokumen */}
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {developer.docs.map((doc, idx) => (
+                <motion.a
+                  key={doc.label}
+                  href={doc.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.3 + idx * 0.03 }}
+                  whileHover={{ y: -2 }}
+                  className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-shadow duration-200 hover:border-sky-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600 transition-colors duration-200 group-hover:bg-sky-100 group-hover:text-sky-700">
+                      <FileText className="h-4 w-4" strokeWidth={2} />
+                    </div>
+                    <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+                      {doc.tag}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm font-semibold text-slate-800">{doc.label}</p>
+                  <p className="mt-1 flex-1 text-xs leading-relaxed text-slate-500">{doc.desc}</p>
+                  <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-sky-700">
+                    Buka dokumen
+                    <ExternalLink className="h-3 w-3" strokeWidth={2} />
+                  </span>
+                </motion.a>
+              ))}
+            </div>
+
+            {/* Panduan memindahkan akun — penting untuk kampus */}
+            <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50/60 p-5">
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
+                  <ShieldCheck className="h-5 w-5" strokeWidth={2} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-amber-900">
+                    Penting untuk pihak kampus
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-amber-800">
+                    Kepemilikan akun Vercel, Neon, Cloudflare, dan GitHub masih memakai email
+                    pribadi saya. Panduan lengkap cara memindahkannya ke email institusi ada di
+                    dokumen <strong>Akun &amp; Keamanan</strong> di atas — termasuk daftar
+                    periksa agar sistem benar-benar sudah menjadi milik kampus.
+                  </p>
+                </div>
+              </div>
+            </div>
 
             {/* Section title */}
             <div className="mt-10 flex items-center gap-3">

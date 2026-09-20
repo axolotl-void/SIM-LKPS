@@ -1,0 +1,47 @@
+# `app/(dashboard)/master/dosen/page.tsx`
+
+| | |
+|---|---|
+| **Area** | Halaman & API (App Router) |
+| **Ukuran** | 115 baris |
+| **Jenis** | modul biasa |
+| **Alamat URL** | `/master/dosen` |
+| **Dipakai oleh** | 0 berkas |
+
+## Maksud berkas
+
+Berkas halaman untuk alamat `/master/dosen`. Tugasnya menyiapkan data di server (dan memeriksa izin), lalu menyerahkan tampilan ke komponen client.
+
+## Letak berkas
+
+Dari akar repo: `app/(dashboard)/master/dosen/page.tsx`.
+
+## Isi yang bisa dipakai berkas lain
+
+### `metadata`
+
+Jenis: **konstanta**
+
+### `DosenPage`
+
+Jenis: **default**
+
+## Alamat yang dilayani
+
+Halaman ini bisa dibuka di `/master/dosen`.
+
+Kalau mau mengubah apa yang tampil di alamat itu, **berkas ini yang pertama dibuka**.
+
+## Pustaka luar yang dipakai
+
+- `lucide-react`
+- `next`
+- `next/link`
+- `next/navigation`
+
+## Berkas lain di proyek ini yang dipanggil
+
+- [`app/(dashboard)/master/dosen/DosenActions.tsx`](./app__-dashboard-__master__dosen__DosenActions.md)
+- [`lib/auth.ts`](./lib__auth.md)
+- [`lib/db.ts`](./lib__db.md)
+
