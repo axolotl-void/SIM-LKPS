@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 
 const EMAIL = 'admin@ubbg.ac.id';
-const PASSWORD = 'SANDI_LAMA_ADMIN_DIHAPUS';
+const PASSWORD = process.env.TEST_ADMIN_PASSWORD ?? '';
 
 async function login(page: Page) {
   await page.goto('/login');
@@ -167,7 +167,7 @@ test('10. Bukti pendukung bisa ditambah & dihapus', async ({ page }) => {
 test('11. Pimpinan hanya bisa baca (tanpa textarea & tombol tambah)', async ({ page }) => {
   await page.goto('/login');
   await page.fill('input[type="email"]', 'pimpinan.uji@ubbg.ac.id');
-  await page.fill('input[type="password"]', 'SANDI_LAMA_PIMPINAN_DIHAPUS');
+  await page.fill('input[type="password"]', process.env.TEST_PIMPINAN_PASSWORD ?? '');
   await page.click('button[type="submit"]');
   await page.waitForURL((url) => !url.pathname.startsWith('/login'), { timeout: 30_000 });
 

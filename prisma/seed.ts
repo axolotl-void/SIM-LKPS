@@ -4,13 +4,51 @@ import { seedLedDanPenilaian } from "./seed-led";
 
 const db = new PrismaClient();
 
+/**
+ * Ambil sandi awal dari variabel lingkungan.
+ *
+ * Mengapa tidak ditulis langsung di berkas ini: repo ini PUBLIK, dan sandi yang
+ * tertulis di kode akan terbaca siapa pun yang membuka GitHub — termasuk bot
+ * pemindai yang menjelajah repo publik. Sandi yang pernah tertulis di kode harus
+ * dianggap bocor selamanya, karena ia tetap tersimpan di riwayat git.
+ *
+ * Cara pakai:
+ *   - Lokal  : isi `SEED_ADMIN_PASSWORD` di `.env` (berkas itu tidak ikut ter-commit).
+ *   - Produksi: JANGAN jalankan seed untuk mengubah sandi. Pakai halaman
+ *     "Pengguna" di aplikasi, atau ganti lewat database.
+ *
+ * Kalau variabelnya tidak ada, seed BERHENTI — bukan memakai sandi bawaan.
+ * Berhenti lebih baik daripada diam-diam membuat akun dengan sandi yang
+ * bisa ditebak.
+ */
+function sandiAwal(namaVariabel: string): string {
+  const nilai = process.env[namaVariabel];
+  if (!nilai || nilai.trim().length < 12) {
+    console.error(
+      `\n❌ Variabel ${namaVariabel} belum diisi (atau kurang dari 12 karakter).\n` +
+        `   Seed butuh sandi awal untuk membuat akun.\n\n` +
+        `   Buat sandi acak:\n` +
+        `     openssl rand -base64 18\n\n` +
+        `   Lalu tambahkan ke .env (berkas ini tidak ikut ter-commit):\n` +
+        `     ${namaVariabel}="sandi-yang-tadi-dibuat"\n\n` +
+        `   Untuk memakai database yang sudah ada isinya, tidak perlu seed sama sekali.\n`
+    );
+    process.exit(1);
+  }
+  return nilai;
+}
+
 async function main() {
   console.log("🌱 Seeding database...");
 
+  // Sandi dibaca dari lingkungan, bukan ditulis di kode (lihat catatan di atas).
+  const sandiAdmin = sandiAwal("SEED_ADMIN_PASSWORD");
+
   // 1. Seed Admin User
-  const hashedPassword = await bcrypt.hash("SANDI_LAMA_ADMIN_DIHAPUS", 12);
+  const hashedPassword = await bcrypt.hash(sandiAdmin, 12);
   const admin = await db.user.upsert({
     where: { email: "admin@ubbg.ac.id" },
+    // `update: {}` disengaja: kalau akunnya sudah ada, sandinya TIDAK ditimpa.
     update: {},
     create: {
       name: "Administrator",
@@ -20,36 +58,64 @@ async function main() {
       isActive: true,
     },
   });
-  console.log(`  ✅ Admin user: ${admin.email}`);
+  console.log(`  ✅ Admin user: ${admin.email} (sandi dari SEED_ADMIN_PASSWORD)`);
 
-  // 1b. Seed Operator + Pimpinan users (for E2E test multi-role login)
-  const operatorPassword = await bcrypt.hash("SANDI_LAMA_OPERATOR_DIHAPUS", 12);
-  const operator = await db.user.upsert({
-    where: { email: "operator@ubbg.ac.id" },
-    update: { role: Role.OPERATOR, isActive: true },
-    create: {
-      name: "Operator LKPS",
-      email: "operator@ubbg.ac.id",
-      password: operatorPassword,
-      role: Role.OPERATOR,
-      isActive: true,
-    },
-  });
-  console.log(`  ✅ Operator user: ${operator.email}`);
+  // 1b. Seed Operator + Pimpinan users (untuk uji login multi-peran)
+  //     Keduanya juga membaca sandi dari lingkungan. Kalau variabelnya tidak
+  //     diisi, akun tetap dibuat TAPI tanpa sandi yang bisa dipakai — jadi
+  //     tidak ada akun aktif dengan sandi bawaan yang bisa ditebak.
+  const sandiOperator = process.env.SEED_OPERATOR_PASSWORD;
+  const sandiPimpinan = process.env.SEED_PIMPINAN_PASSWORD;
 
-  const pimpinanPassword = await bcrypt.hash("SANDI_LAMA_PIMPINAN_DIHAPUS", 12);
-  const pimpinan = await db.user.upsert({
-    where: { email: "pimpinan@ubbg.ac.id" },
-    update: { role: Role.PIMPINAN, isActive: true },
-    create: {
-      name: "Pimpinan Prodi",
-      email: "pimpinan@ubbg.ac.id",
-      password: pimpinanPassword,
-      role: Role.PIMPINAN,
-      isActive: true,
-    },
-  });
-  console.log(`  ✅ Pimpinan user: ${pimpinan.email}`);
+  const operator = sandiOperator
+    ? await db.user.upsert({
+        where: { email: "operator@ubbg.ac.id" },
+        update: { role: Role.OPERATOR, isActive: true },
+        create: {
+          name: "Operator LKPS",
+          email: "operator@ubbg.ac.id",
+          password: await bcrypt.hash(sandiOperator, 12),
+          role: Role.OPERATOR,
+          isActive: true,
+        },
+      })
+    : await db.user.upsert({
+        where: { email: "operator@ubbg.ac.id" },
+        update: { role: Role.OPERATOR },
+        create: {
+          name: "Operator LKPS",
+          email: "operator@ubbg.ac.id",
+          password: await bcrypt.hash(crypto.randomUUID() + crypto.randomUUID(), 12),
+          role: Role.OPERATOR,
+          isActive: false, // tidak aktif sampai sandinya diatur
+        },
+      });
+  console.log(`  ✅ Operator user: ${operator.email}${sandiOperator ? "" : " (nonaktif — sandi belum diatur)"}`);
+
+  const pimpinan = sandiPimpinan
+    ? await db.user.upsert({
+        where: { email: "pimpinan@ubbg.ac.id" },
+        update: { role: Role.PIMPINAN, isActive: true },
+        create: {
+          name: "Pimpinan Prodi",
+          email: "pimpinan@ubbg.ac.id",
+          password: await bcrypt.hash(sandiPimpinan, 12),
+          role: Role.PIMPINAN,
+          isActive: true,
+        },
+      })
+    : await db.user.upsert({
+        where: { email: "pimpinan@ubbg.ac.id" },
+        update: { role: Role.PIMPINAN },
+        create: {
+          name: "Pimpinan Prodi",
+          email: "pimpinan@ubbg.ac.id",
+          password: await bcrypt.hash(crypto.randomUUID() + crypto.randomUUID(), 12),
+          role: Role.PIMPINAN,
+          isActive: false,
+        },
+      });
+  console.log(`  ✅ Pimpinan user: ${pimpinan.email}${sandiPimpinan ? "" : " (nonaktif — sandi belum diatur)"}`);
 
   // 2. Seed Program Studi
   const prodi = await db.prodi.upsert({
@@ -482,7 +548,9 @@ async function main() {
   await seedLedDanPenilaian(db);
 
   console.log("\n🎉 Seeding complete!");
-  console.log("   Admin login: admin@ubbg.ac.id / SANDI_LAMA_ADMIN_DIHAPUS");
+  // Sandi sengaja TIDAK dicetak. Log bisa tersimpan di sistem lain, dan sandi
+  // yang tercetak di log sama bocornya dengan sandi yang ditulis di kode.
+  console.log("   Akun admin: admin@ubbg.ac.id (sandi = nilai SEED_ADMIN_PASSWORD di .env)");
 }
 
 main()

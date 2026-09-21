@@ -125,12 +125,13 @@ Tunggu sampai muncul tulisan:
 - Local:  http://localhost:3000
 ```
 
-Buka **http://localhost:3000** di browser, lalu masuk dengan:
+Buka **http://localhost:3000** di browser, lalu masuk dengan akun yang sudah
+kamu buat. Emailnya `admin@ubbg.ac.id`, sandinya adalah nilai
+`SEED_ADMIN_PASSWORD` yang kamu isi di `.env` saat langkah seed tadi.
 
-```
-Email : admin@ubbg.ac.id
-Sandi : SANDI_LAMA_ADMIN_DIHAPUS
-```
+Sandi itu sengaja **tidak ditulis di dokumen ini** — dokumen ini ikut tersimpan
+di GitHub yang bisa dibaca publik. Kalau kamu lupa, lihat lagi berkas `.env` di
+komputer tempat kamu memasang aplikasi ini.
 
 Untuk mematikan: tekan `Ctrl + C` di jendela tempat perintah tadi berjalan.
 

@@ -64,3 +64,12 @@ Thumbs.db
 # sampai menelan template yang memang ikut di-commit.
 .env*
 !.env.example
+
+# Sandi akun uji E2E — jangan pernah di-commit (repo ini publik).
+# Contohnya ada di tests/.env.test.example (yang INI ikut di-commit).
+tests/.env.test
+tests/.env.test.local
+tests/.auth/
+# ...tapi contohnya HARUS ikut ter-commit, supaya orang tahu cara mengisinya.
+# Tanpa baris di bawah, pola ".env*" di atas menelannya.
+!tests/.env.test.example

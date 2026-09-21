@@ -1,7 +1,8 @@
 import { test, expect, Page } from '@playwright/test';
 
 const EMAIL = 'admin@ubbg.ac.id';
-const PASSWORD = 'SANDI_LAMA_ADMIN_DIHAPUS';
+const PASSWORD = process.env.TEST_ADMIN_PASSWORD ?? '';
+const PIMPINAN_PASSWORD = process.env.TEST_PIMPINAN_PASSWORD ?? '';
 
 async function login(page: Page, email = EMAIL, password = PASSWORD) {
   await page.goto('/login');
@@ -122,7 +123,7 @@ test('6. finalisasi terkunci selama masih ada butir kosong', async ({ page }) =>
 });
 
 test('7. PIMPINAN hanya bisa membaca (tombol finalisasi tidak ada)', async ({ page }) => {
-  await login(page, 'pimpinan@ubbg.ac.id', 'SANDI_LAMA_PIMPINAN_DIHAPUS');
+  await login(page, 'pimpinan@ubbg.ac.id', PIMPINAN_PASSWORD);
   await page.goto('/penilaian');
   await expectSehat(page);
   await expect(page.getByText('hanya bisa membaca hasil penilaian', { exact: false })).toBeVisible();

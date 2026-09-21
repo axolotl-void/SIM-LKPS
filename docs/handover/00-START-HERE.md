@@ -90,11 +90,12 @@ Akun bawaan saat aplikasi dipasang pertama kali:
 
 ```
 Email    : admin@ubbg.ac.id
-Sandi    : SANDI_LAMA_ADMIN_DIHAPUS
+Sandi    : nilai SEED_ADMIN_PASSWORD yang kamu isi di berkas .env
 ```
 
-> **PENTING: ganti kata sandi ini sebelum aplikasi dipakai sungguhan.**
-> Caranya ada di [`05-akun-dan-keamanan.md`](./05-akun-dan-keamanan.md).
+> **Sandi tidak ditulis di dokumen ini** — dokumen ini ikut tersimpan di GitHub
+> yang bisa dibaca publik. Cara mengaturnya ada di
+> [`05-akun-dan-keamanan.md`](./05-akun-dan-keamanan.md).
 
 ---
 

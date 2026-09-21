@@ -33,12 +33,25 @@ npm run test         # Vitest
 npm run test:e2e     # Playwright
 ```
 
-## Default Credentials
+## Akun awal (lokal saja)
 
+Sandi akun awal **tidak ditulis di kode** — repo ini publik, dan sandi yang
+tertulis di kode akan terbaca siapa pun yang membuka GitHub. Sandi diambil dari
+variabel lingkungan:
+
+```bash
+# .env  (berkas ini TIDAK ikut ter-commit)
+SEED_ADMIN_PASSWORD="hasil dari: openssl rand -base64 18"
+SEED_OPERATOR_PASSWORD="..."
+SEED_PIMPINAN_PASSWORD="..."
 ```
-Email:    admin@ubbg.ac.id
-Password: SANDI_LAMA_ADMIN_DIHAPUS
-```
+
+Email akunnya: `admin@ubbg.ac.id`, `operator@ubbg.ac.id`, `pimpinan@ubbg.ac.id`.
+Lupa sandinya? Ganti lewat halaman **Pengguna** di aplikasi (peran ADMIN), atau
+variabel lingkungan di dashboard hosting.
+
+> ⚠️ Jangan pernah menaruh sandi di berkas yang ikut ter-commit — termasuk
+> berkas ini, README, dokumentasi, atau berkas uji.
 
 ## Architecture
 

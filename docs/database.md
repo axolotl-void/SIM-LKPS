@@ -183,7 +183,7 @@ Karena 31 tabel LKPS memiliki kolom yang **berbeda-beda**, kita menggunakan pend
 ### Admin User
 ```
 email: admin@ubbg.ac.id
-password: SANDI_LAMA_ADMIN_DIHAPUS (hashed with bcrypt)
+password: diambil dari env SEED_ADMIN_PASSWORD (di-hash bcrypt, cost 12)
 role: ADMIN
 name: Administrator
 ```

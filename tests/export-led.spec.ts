@@ -1,7 +1,8 @@
 import { test, expect, Page } from '@playwright/test';
 
 const EMAIL = 'admin@ubbg.ac.id';
-const PASSWORD = 'SANDI_LAMA_ADMIN_DIHAPUS';
+const PASSWORD = process.env.TEST_ADMIN_PASSWORD ?? '';
+const PIMPINAN_PASSWORD = process.env.TEST_PIMPINAN_PASSWORD ?? '';
 
 async function login(page: Page, email = EMAIL, password = PASSWORD) {
   await page.goto('/login');
@@ -103,7 +104,7 @@ test('5. export tanpa login ditolak 401', async ({ page }) => {
 });
 
 test('6. PIMPINAN punya report.export → boleh unduh', async ({ page }) => {
-  await login(page, 'pimpinan@ubbg.ac.id', 'SANDI_LAMA_PIMPINAN_DIHAPUS');
+  await login(page, 'pimpinan@ubbg.ac.id', PIMPINAN_PASSWORD);
   const res = await page.request.get('/api/export/led/word');
   expect(res.status()).toBe(200);
 });

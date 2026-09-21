@@ -45,26 +45,66 @@ itu memang tujuan peran ini.
 
 Saat aplikasi dipasang pertama kali, ada tiga akun yang dibuat otomatis:
 
-| Peran | Email | Sandi bawaan |
+| Peran | Email | Sandi |
 |---|---|---|
-| ADMIN | `admin@ubbg.ac.id` | `SANDI_LAMA_ADMIN_DIHAPUS` |
-| OPERATOR | `operator@ubbg.ac.id` | `SANDI_LAMA_OPERATOR_DIHAPUS` |
-| PIMPINAN | `pimpinan@ubbg.ac.id` | `SANDI_LAMA_PIMPINAN_DIHAPUS` |
+| ADMIN | `admin@ubbg.ac.id` | dari `SEED_ADMIN_PASSWORD` di `.env` |
+| OPERATOR | `operator@ubbg.ac.id` | dari `SEED_OPERATOR_PASSWORD` di `.env` |
+| PIMPINAN | `pimpinan@ubbg.ac.id` | dari `SEED_PIMPINAN_PASSWORD` di `.env` |
 
-> ## ⚠️ WAJIB DIGANTI SEBELUM DIPAKAI PRODUKTIF
+Sandi **tidak ditulis di dokumen ini**, dan tidak ditulis di dalam kode.
+Alasannya: dokumen ini dan seluruh kodenya tersimpan di GitHub yang bisa dibaca
+publik. Sandi yang tertulis di sana akan ditemukan bot pemindai dalam hitungan
+jam, dan sandi yang pernah tertulis di sana harus dianggap bocor selamanya
+karena tetap tersimpan di riwayat git.
+
+Sandi diisi lewat variabel lingkungan di berkas `.env` (berkas itu **tidak**
+ikut ter-commit). Cara membuatnya:
+
+```bash
+openssl rand -base64 18      # jalankan, hasilnya salin ke .env
+```
+
+> ## ⚠️ Kalau variabelnya tidak diisi
 >
-> Ketiga sandi di atas **tertulis di dokumen ini** dan di repositori GitHub yang
-> bisa diakses publik. Selama belum diganti, siapa pun yang menemukan dokumen
-> ini bisa masuk ke sistem.
+> Akun admin tidak akan dibuat (seed berhenti dengan pesan jelas), dan akun
+> operator/pimpinan dibuat dalam keadaan **nonaktif**. Jadi tidak akan pernah
+> ada akun aktif dengan sandi yang bisa ditebak.
 >
-> **Langkah pengamanan yang harus dilakukan sekarang:**
-> 1. Masuk sebagai ADMIN
-> 2. Ganti sandi ketiga akun bawaan
-> 3. Hapus akun bawaan yang tidak dipakai
-> 4. Buat akun terpisah untuk setiap orang — **jangan berbagi satu akun**
->
-> Alasan poin 4: catatan audit mencatat **siapa** mengubah apa berdasarkan akun.
-> Kalau satu akun dipakai beramai-ramai, catatan itu jadi tidak berguna.
+> Ini disengaja: lebih baik gagal terang-terangan daripada diam-diam membuat
+> pintu masuk dengan kunci yang sudah tertulis di internet.
+
+## Mengganti sandi
+
+### Kalau sudah bisa masuk sebagai ADMIN
+
+1. Masuk sebagai ADMIN
+2. Buka menu **Pengguna**
+3. Pilih akun → ganti sandi
+
+### Kalau sudah tidak bisa masuk sama sekali
+
+Sandi hanya bisa diganti kalau ada akses ke database. Caranya:
+
+1. Buat hash sandi baru:
+   ```bash
+   node -e "console.log(require('bcryptjs').hashSync('SANDI-BARU-ANDA', 12))"
+   ```
+2. Jalankan di database:
+   ```sql
+   UPDATE "User" SET password = '<hash-tadi>' WHERE email = 'admin@ubbg.ac.id';
+   ```
+3. Hapus semua sesi lama supaya siapa pun yang sudah masuk terlempar:
+   ```sql
+   DELETE FROM "Session";
+   ```
+
+> **Setelah mengganti sandi, selalu hapus sesi lama.** Tanpa itu, orang yang
+> sudah masuk dengan sandi lama tetap bisa memakai sesinya sampai kedaluwarsa.
+
+## Buat akun terpisah untuk setiap orang — jangan berbagi satu akun
+
+Catatan audit mencatat **siapa** mengubah apa berdasarkan akun. Kalau satu akun
+dipakai beramai-ramai, catatan itu jadi tidak berguna.
 
 ---
 

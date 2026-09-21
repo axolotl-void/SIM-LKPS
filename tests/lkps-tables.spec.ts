@@ -2,7 +2,7 @@ import { test, expect, chromium } from '@playwright/test';
 
 const BASE_URL = 'http://localhost:3000';
 const TEST_EMAIL = 'admin@ubbg.ac.id';
-const TEST_PASSWORD = 'SANDI_LAMA_ADMIN_DIHAPUS';
+const TEST_PASSWORD = process.env.TEST_ADMIN_PASSWORD ?? '';
 
 // Helper function
 async function loginAndTest(page: any, path: string, name: string) {
