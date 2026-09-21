@@ -4,6 +4,10 @@ const nextConfig: NextConfig = {
   // Enable React strict mode
   reactStrictMode: true,
 
+  // Jangan bocorkan teknologi yang dipakai lewat header "X-Powered-By: Next.js".
+  // Header itu membantu penyerang memilih celah sesuai versi framework.
+  poweredByHeader: false,
+
   // Image optimization
   images: {
     remotePatterns: [
@@ -32,23 +36,17 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Security headers
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          { key: "X-Frame-Options", value: "DENY" },
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          {
-            key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
-          },
-        ],
-      },
-    ];
-  },
+  // Header keamanan TIDAK lagi diatur di sini.
+  //
+  // Sebelumnya header diatur di dua tempat (berkas ini DAN middleware.ts),
+  // dengan isi yang berbeda-beda. Ketika sebuah header diatur dua kali, yang
+  // menang tidak selalu jelas, dan perubahan di satu tempat diam-diam
+  // tertimpa oleh tempat lain. Sekarang semuanya ada di `middleware.ts`,
+  // supaya hanya ada SATU sumber kebenaran.
+  //
+  // Yang diatur di middleware: X-Frame-Options, X-Content-Type-Options,
+  // Referrer-Policy, Permissions-Policy, Strict-Transport-Security, dan
+  // Content-Security-Policy.
 };
 
 export default nextConfig;
