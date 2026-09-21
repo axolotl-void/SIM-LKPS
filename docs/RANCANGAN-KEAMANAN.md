@@ -565,11 +565,33 @@ mereka harus diberi tahu sandi barunya.
 lemah atau pernah bocor, orang bisa **membuat cookie sesi palsu** tanpa perlu
 tahu sandi siapa pun. Perlu diperiksa dan dirotasi. **Menunggu keputusan.**
 
-### 4. Verifikasi di produksi
+### 4. Verifikasi di produksi — ✅ SELESAI
 
-Setelah push, periksa langsung ke `lkps.zegika.com`:
+Dijalankan langsung ke `lkps.zegika.com` setelah deploy. **21 pemeriksaan, 0 gagal:**
 
-- Header HSTS & CSP baru terpasang
-- Penghitung percobaan login benar-benar jalan (bukan hanya di lokal)
-- Tidak ada `X-Powered-By`
-- Halaman baru di luar daftar publik → dialihkan ke `/login`
+| Kelompok | Hasil |
+|---|---|
+| Halaman publik (`/login`, aset statis) | **200** ✓ |
+| 6 halaman berautentikasi tanpa login | **307** ke `/login` ✓ |
+| 3 API tanpa login | **401** ✓ |
+| Header keamanan (HSTS, CSP, X-Frame, dll.) | terpasang ✓ |
+| `X-Powered-By` | tidak ada ✓ |
+| Halaman 404 membocorkan detail teknis? | **0** ✓ |
+| Pesan terkunci sampai ke layar | ✓ |
+
+**Pembatas login terbukti jalan di produksi** (ini yang sebelumnya mati):
+
+- 10 percobaan gagal berturut-turut → percobaan ke-11 ditolak dengan
+  `code=terlalu_banyak_percobaan`.
+- Hitungan tersimpan di tabel `login_attempt` di database Neon — terlihat
+  naik 6 → 8 → 10 lewat pembacaan langsung. Jadi ia berlaku lintas instance
+  Vercel, bukan tersimpan di memori satu proses seperti sebelumnya.
+- Uji memakai email yang **tidak ada**, supaya akun asli tidak ikut terkunci.
+  Setelah selesai, baris uji dihapus dari database produksi (dengan pengaman
+  yang menolak menghapus kalau ada baris dari IP lain).
+
+**Login produksi dengan sandi baru juga diuji langsung:** berhasil, cookie
+`next-auth.session-token` terbit dengan `HttpOnly; Secure; SameSite=Lax`,
+dan halaman `/dashboard`, `/settings/users`, `/api/master/dosen` semuanya
+balas **200**. Sandi lama (yang tertulis di repo publik) **ditolak**.
+
