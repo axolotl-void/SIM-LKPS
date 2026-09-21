@@ -3,8 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
-import { createAuditLog } from "@/lib/utils/audit";
-import { notifyMutation } from "@/lib/actions/notification";
+import { createAuditLog, logAccessDenied } from "@/lib/utils/audit";
+import { hasPermission } from "@/lib/utils/permissions";
+import { Role } from "@prisma/client";
+import { notifyMutation } from "@/lib/notifikasi-internal";
 
 function revalidateAkademik() {
   revalidatePath("/dashboard");
@@ -20,6 +22,12 @@ export async function createMahasiswa(data: {
 }) {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
+
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "master_data.create")) {
+    logAccessDenied("CREATE", "Mahasiswa", "missing_permission", { role });
+    throw new Error("Anda tidak memiliki izin menambah data mahasiswa.");
+  }
 
   const existing = await db.mahasiswa.findUnique({ where: { nim: data.nim } });
   if (existing) throw new Error("NIM sudah terdaftar");
@@ -54,6 +62,12 @@ export async function updateMahasiswa(id: string, data: {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "master_data.update")) {
+    logAccessDenied("UPDATE", "Mahasiswa", "missing_permission", { role });
+    throw new Error("Anda tidak memiliki izin mengubah data mahasiswa.");
+  }
+
   const existing = await db.mahasiswa.findUnique({ where: { id } });
   if (!existing) throw new Error("Mahasiswa tidak ditemukan");
 
@@ -82,6 +96,12 @@ export async function updateMahasiswa(id: string, data: {
 export async function deleteMahasiswa(id: string) {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
+
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "master_data.delete")) {
+    logAccessDenied("DELETE", "Mahasiswa", "missing_permission", { role });
+    throw new Error("Anda tidak memiliki izin menghapus data mahasiswa.");
+  }
 
   const existing = await db.mahasiswa.findUnique({ where: { id } });
   if (!existing) throw new Error("Mahasiswa tidak ditemukan");

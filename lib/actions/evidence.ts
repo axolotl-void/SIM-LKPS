@@ -4,8 +4,10 @@ import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { uploadFile, getDownloadUrl, deleteFile } from "@/lib/minio";
 import { revalidatePath } from "next/cache";
-import { createAuditLog } from "@/lib/utils/audit";
-import { notifyMutation } from "@/lib/actions/notification";
+import { createAuditLog, logAccessDenied } from "@/lib/utils/audit";
+import { hasPermission } from "@/lib/utils/permissions";
+import { Role } from "@prisma/client";
+import { notifyMutation } from "@/lib/notifikasi-internal";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
@@ -44,6 +46,12 @@ export async function uploadEvidence(tabelLkpsId: string, formData: FormData) {
     const session = await auth();
     if (!session?.user?.id) {
       return { success: false, error: "Unauthorized" };
+    }
+
+    const role = session.user.role as Role;
+    if (!hasPermission(role, "evidence.create")) {
+      logAccessDenied("UPLOAD", "Evidence", "missing_permission", { role });
+      return { success: false, error: "Anda tidak memiliki izin untuk mengunggah bukti." };
     }
 
     const file = formData.get("file") as File | null;
@@ -130,6 +138,12 @@ export async function getEvidenceList(tabelLkpsId: string) {
       return { success: false, error: "Unauthorized" };
     }
 
+    const role = session.user.role as Role;
+    if (!hasPermission(role, "evidence.read")) {
+      logAccessDenied("READ", "Evidence", "missing_permission", { role });
+      return { success: false, error: "Anda tidak memiliki izin untuk melihat bukti." };
+    }
+
     const records = await db.evidence.findMany({
       where: { tabelLkpsId },
       orderBy: { createdAt: "desc" },
@@ -172,6 +186,12 @@ export async function deleteEvidence(evidenceId: string) {
     const session = await auth();
     if (!session?.user?.id) {
       return { success: false, error: "Unauthorized" };
+    }
+
+    const role = session.user.role as Role;
+    if (!hasPermission(role, "evidence.delete")) {
+      logAccessDenied("DELETE", "Evidence", "missing_permission", { role });
+      return { success: false, error: "Anda tidak memiliki izin untuk menghapus bukti." };
     }
 
     const evidence = await db.evidence.findUnique({
@@ -218,6 +238,12 @@ export async function addEvidenceLink(tabelLkpsId: string, linkUrl: string, labe
       return { success: false, error: "Unauthorized" };
     }
 
+    const role = session.user.role as Role;
+    if (!hasPermission(role, "evidence.create")) {
+      logAccessDenied("ADD_LINK", "Evidence", "missing_permission", { role });
+      return { success: false, error: "Anda tidak memiliki izin untuk menambahkan bukti." };
+    }
+
     // Validate URL
     let url: URL;
     try {
@@ -261,45 +287,5 @@ export async function addEvidenceLink(tabelLkpsId: string, linkUrl: string, labe
   } catch (error) {
     console.error("addEvidenceLink error:", error);
     return { success: false, error: "Gagal menambahkan link" };
-  }
-}
-
-export async function getTabelLkpsId(tabelKode: string, tahunAkademikId: string) {
-  try {
-    const session = await auth();
-    if (!session?.user?.id) {
-      return { success: false, error: "Unauthorized" };
-    }
-
-    const def = await db.tabelDefinition.findUnique({
-      where: { kode: tabelKode },
-    });
-    if (!def) {
-      return { success: false, error: "Tabel definition tidak ditemukan" };
-    }
-
-    let tabelLkps = await db.tabelLkps.findUnique({
-      where: {
-        tabelDefinitionId_tahunAkademikId: {
-          tabelDefinitionId: def.id,
-          tahunAkademikId,
-        },
-      },
-    });
-
-    if (!tabelLkps) {
-      tabelLkps = await db.tabelLkps.create({
-        data: {
-          tabelDefinitionId: def.id,
-          tahunAkademikId,
-          status: "DRAFT",
-        },
-      });
-    }
-
-    return { success: true, tabelLkpsId: tabelLkps.id };
-  } catch (error) {
-    console.error("getTabelLkpsId error:", error);
-    return { success: false, error: "Gagal mendapatkan ID tabel" };
   }
 }

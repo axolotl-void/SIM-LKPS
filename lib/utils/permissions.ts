@@ -32,6 +32,7 @@ const PERMISSIONS: Record<Role, string[]> = {
     "tabel_lkps.comment",
     "evidence.create",
     "evidence.read",
+    "evidence.delete",
     "master_data.read",
     "master.dosen.create",
     "dashboard.read",

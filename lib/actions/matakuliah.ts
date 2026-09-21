@@ -3,8 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
-import { createAuditLog } from "@/lib/utils/audit";
-import { notifyMutation } from "@/lib/actions/notification";
+import { createAuditLog, logAccessDenied } from "@/lib/utils/audit";
+import { hasPermission } from "@/lib/utils/permissions";
+import { Role } from "@prisma/client";
+import { notifyMutation } from "@/lib/notifikasi-internal";
 
 function revalidateAkademik() {
   revalidatePath("/dashboard");
@@ -20,6 +22,12 @@ export async function createMatakuliah(data: {
 }) {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
+
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "master_data.create")) {
+    logAccessDenied("CREATE", "MataKuliah", "missing_permission", { role });
+    throw new Error("Anda tidak memiliki izin menambah mata kuliah.");
+  }
 
   const existing = await db.mataKuliah.findUnique({ where: { kode: data.kode } });
   if (existing) throw new Error("Kode mata kuliah sudah terdaftar");
@@ -54,6 +62,12 @@ export async function updateMatakuliah(id: string, data: {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "master_data.update")) {
+    logAccessDenied("UPDATE", "MataKuliah", "missing_permission", { role });
+    throw new Error("Anda tidak memiliki izin mengubah mata kuliah.");
+  }
+
   const existing = await db.mataKuliah.findUnique({ where: { id } });
   if (!existing) throw new Error("Mata kuliah tidak ditemukan");
 
@@ -82,6 +96,12 @@ export async function updateMatakuliah(id: string, data: {
 export async function deleteMatakuliah(id: string) {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
+
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "master_data.delete")) {
+    logAccessDenied("DELETE", "MataKuliah", "missing_permission", { role });
+    throw new Error("Anda tidak memiliki izin menghapus mata kuliah.");
+  }
 
   const existing = await db.mataKuliah.findUnique({ where: { id } });
   if (!existing) throw new Error("Mata kuliah tidak ditemukan");
