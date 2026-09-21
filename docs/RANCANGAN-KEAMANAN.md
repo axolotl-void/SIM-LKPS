@@ -360,9 +360,40 @@ Kesalahan menaruhnya di `package.json` membuat `pnpm install` melaporkan
 | uuid | 8.3.2 | **14.0.2** ✓ |
 | deepmerge-ts | 7.1.5 | **8.0.2** ✓ |
 | decode-uri-component | 0.2.2 | **0.5.0** ✓ |
-| stream-json | 1.9.1 | **3.7.0** ✓ |
+| stream-json | 1.9.1 | *tidak di-override* — lihat di bawah ⚠️ |
 
-`pnpm audit --prod` → **"No known vulnerabilities found"**
+`pnpm audit --prod` → **8 temuan hilang, sisa 1 temuan sedang** (stream-json).
+
+### Koreksi: override `stream-json` sempat merusak build produksi
+
+Perbaikan awal memaksa `stream-json: '>=3.4.1'`. **Build lokal lolos, tapi deploy
+Vercel GAGAL** dengan:
+
+```
+./node_modules/.pnpm/minio@8.0.7/node_modules/minio/dist/esm/notification.mjs
+Module not found: Can't resolve 'stream-json/jsonl/Parser.js'
+```
+
+Sebabnya soal **huruf besar-kecil**: minio mengimpor `jsonl/Parser.js` (P besar),
+sedangkan stream-json 3.x hanya menyediakan `src/jsonl/parser.js` (p kecil) dan
+mengekspornya lewat `"./*": "./src/*"`. **macOS memaafkan perbedaan ini, Linux
+tidak** — jadi bug ini mustahil terdeteksi dari laptop, hanya muncul di Vercel.
+
+Override itu dibuang dan minio kembali mendapat `1.9.1` yang berkasnya cocok.
+Sisa temuan diterima dengan alasan yang dicatat di `pnpm-workspace.yaml`:
+
+- Kode yang rentan adalah filter `pick/ignore/filter/replace` stream-json.
+  Aplikasi **tidak menyentuhnya** — hanya memakai `bucketExists`, `makeBucket`,
+  `putObject`, `removeObject`, dan `presignedGetObject`.
+- Efeknya DoS pada proses sendiri, **bukan kebocoran data**.
+- `minio@8.0.7` adalah versi terbaru; belum ada perbaikan dari hulu.
+- Versi 1.x versi berapa pun ada di rentang rentan (`<=3.4.0`), jadi menaikkan
+  ke 1.9.1 tidak menolong.
+
+Pelajaran yang lebih luas: **build lokal yang hijau tidak membuktikan build
+Linux/Vercel hijau.** Perbedaan yang tidak terasa di macOS — huruf besar-kecil
+nama berkas, pemisah jalur — baru muncul di sana. Satu-satunya cara tahu adalah
+men-deploy.
 
 ---
 

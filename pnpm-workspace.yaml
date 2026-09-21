@@ -15,9 +15,23 @@ allowBuilds:
 # ditambal oleh pustaka masing-masing.
 #
 # Jalankan `pnpm audit --prod` untuk memeriksa ulang.
+#
+# SENGAJA TIDAK ADA override `stream-json` di sini.
+# Audit menandai stream-json <=3.4.0 (lewat minio) sebagai DoS sedang; minio
+# meminta `^1.8.0` dan versi 1.x memang ada di rentang rentan. Tapi memaksa
+# `>=3.4.1` MERUSAK build produksi: minio mengimpor
+# `stream-json/jsonl/Parser.js` (huruf besar P), sedangkan 3.x hanya punya
+# `src/jsonl/parser.js` (huruf kecil). macOS tidak peduli, Linux/Vercel peduli:
+# build gagal `Module not found`. Tanpa override, minio dapat 1.9.1 yang
+# berkasnya cocok.
+# Dampaknya nihil untuk kita: kode yang rentan adalah filter pick/ignore/
+# filter/replace, sedangkan aplikasi hanya memakai bucketExists, makeBucket,
+# putObject, removeObject, dan presignedGetObject. Efeknya pun DoS pada proses
+# sendiri, bukan kebocoran data. minio 8.0.7 adalah versi terbaru, jadi belum
+# ada perbaikan dari hulu.
+# Kalau nanti memakai API notification/select minio, tinjau ulang keputusan ini.
 overrides:
   postcss: '>=8.5.23'
   uuid: '>=11.1.1'
   deepmerge-ts: '>=8.0.0'
   decode-uri-component: '>=0.4.3'
-  stream-json: '>=3.4.1'
