@@ -33,16 +33,6 @@ export function LoginForm() {
     }
   }, [state.success]);
 
-  const [failureCount, setFailureCount] = useState(0);
-  useEffect(() => {
-    if (state.success === false && state.error) {
-      setFailureCount((c) => c + 1);
-    } else if (state.success === true) {
-      setFailureCount(0);
-    }
-  }, [state]);
-  const isRateLimited = pending === false && failureCount >= 5;
-
   const fieldClass = (hasError: boolean) =>
     [
       "block w-full rounded-xl border bg-white/90 py-2.5 pl-10 pr-10 text-sm text-slate-800 shadow-sm transition-all outline-none",
@@ -58,6 +48,14 @@ export function LoginForm() {
   const passwordError = state.fieldErrors?.password;
   const formError = state.success === false ? state.error : null;
   const success = state.success === true;
+
+  // Server sudah menangani pembatasan percobaan login (berbasis database,
+  // berlaku lintas instance). Di sini kita hanya menampilkan keadaan itu:
+  // tombol dimatikan sementara supaya pengguna tidak menekan berulang,
+  // tapi TIDAK dihitung ulang di sisi klien — hitungan di klien mudah
+  // dilewati (muat ulang halaman) dan bisa keliru mengunci pengguna sah.
+  const terkunciSementara =
+    formError?.startsWith("Terlalu banyak percobaan") ?? false;
 
   return (
     <form action={action} noValidate className="flex flex-col">
@@ -196,7 +194,7 @@ export function LoginForm() {
       <div className="login-stagger-item login-stagger-5 mt-3.5 2xl:mt-4">
         <button
           type="submit"
-          disabled={pending || isRateLimited}
+          disabled={pending || terkunciSementara}
           aria-busy={pending}
           className="group/btn relative inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:from-blue-700 hover:to-sky-600 hover:shadow-blue-500/35 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/30 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70 sm:py-3 2xl:py-3.5 2xl:text-base"
         >
@@ -209,8 +207,8 @@ export function LoginForm() {
               <Loader2 className="h-[18px] w-[18px] animate-spin" aria-hidden />
               <span>Memproses…</span>
             </>
-          ) : isRateLimited ? (
-            <span>Terlalu banyak percobaan. Coba lagi nanti.</span>
+          ) : terkunciSementara ? (
+            <span>Coba lagi nanti</span>
           ) : (
             <>
               <span>Masuk ke Akun</span>

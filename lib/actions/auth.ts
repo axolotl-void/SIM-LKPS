@@ -1,6 +1,7 @@
 "use server";
 
 import { signIn, signOut } from "@/lib/auth";
+import { TerlaluBanyakPercobaan } from "@/lib/auth";
 import { loginSchema } from "@/lib/validations/auth";
 import { AuthError } from "next-auth";
 import { isTransientDbError } from "@/lib/utils/db-retry";
@@ -26,6 +27,23 @@ export interface LoginState {
   success: boolean | null;
   error?: string;
   fieldErrors?: { email?: string; password?: string };
+}
+
+/**
+ * Cari penanda "terlalu banyak percobaan" di rantai `cause`.
+ *
+ * NextAuth membungkus error dari `authorize()`, sehingga error kita tidak
+ * muncul di lapisan teratas — yang tampak hanya `CallbackRouteError`. Kita
+ * telusuri rantainya supaya pembatas login bisa memberi pesan yang tepat
+ * (bukan "sandi salah", yang justru membuat pengguna mencoba terus).
+ */
+function cariPembatas(e: unknown): TerlaluBanyakPercobaan | null {
+  let cur: unknown = e;
+  for (let i = 0; i < 6 && cur; i++) {
+    if (cur instanceof TerlaluBanyakPercobaan) return cur;
+    cur = (cur as { cause?: unknown }).cause;
+  }
+  return null;
 }
 
 /**
@@ -100,6 +118,19 @@ export async function loginAction(
         success: false,
         error:
           "Server sedang tidak dapat dihubungi. Coba lagi sebentar lagi.",
+      };
+    }
+
+    // Pembatas login diperiksa LEBIH DULU, sebelum cabang AuthError yang lain:
+    // TerlaluBanyakPercobaan adalah turunan CredentialsSignin, jadi kalau
+    // tidak dicek duluan ia akan jatuh ke cabang "sandi salah" dan pengguna
+    // disuruh mencoba lagi — persis yang tidak boleh terjadi saat terkunci.
+    const pembatas = cariPembatas(error);
+    if (pembatas) {
+      const menit = Math.ceil(pembatas.detikSisa / 60);
+      return {
+        success: false,
+        error: `Terlalu banyak percobaan login. Coba lagi dalam ${menit} menit.`,
       };
     }
 

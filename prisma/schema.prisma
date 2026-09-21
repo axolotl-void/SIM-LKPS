@@ -536,3 +536,35 @@ model SkorPenilaian {
   @@unique([penilaianSesiId, butirPenilaianId])
   @@map("skor_penilaian")
 }
+
+// ============================================================================
+// KEAMANAN — pembatas percobaan login
+// ============================================================================
+
+/// Hitungan percobaan login yang gagal, per alamat IP.
+///
+/// KENAPA DI DATABASE, BUKAN DI MEMORI:
+/// Aplikasi ini berjalan di Vercel, yang menjalankan beberapa instance
+/// sekaligus dan mendaur ulang instance kapan saja. Penghitung yang disimpan
+/// di memori proses hanya berlaku untuk instance itu, dan hilang begitu
+/// instance-nya didaur ulang. Akibatnya pembatasnya praktis tidak pernah
+/// tercapai — penyerang bisa mencoba sandi sepuasnya.
+///
+/// Di database, penghitung ini berlaku untuk semua instance sekaligus.
+///
+/// Satu baris per (ip, jendela waktu). Baris lama dibersihkan otomatis.
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  ip        String
+  /// Jumlah percobaan GAGAL di jendela ini. Login yang berhasil mengosongkan.
+  count     Int      @default(0)
+  /// Awal jendela waktu (detik Unix).
+  windowStart BigInt
+  /// Kapan baris ini boleh dibersihkan (detik Unix).
+  expiresAt BigInt
+  updatedAt DateTime @updatedAt
+
+  @@unique([ip, windowStart])
+  @@index([expiresAt])
+  @@map("login_attempt")
+}
