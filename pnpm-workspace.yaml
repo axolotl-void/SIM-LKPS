@@ -4,3 +4,20 @@ allowBuilds:
   esbuild: set this to true or false
   prisma: set this to true or false
   unrs-resolver: set this to true or false
+
+# ---------------------------------------------------------------------------
+# Penambalan dependensi transitif yang rentan (pnpm 11)
+# ---------------------------------------------------------------------------
+# `pnpm audit --prod` menemukan 3 kerentanan tingkat tinggi, semuanya di
+# dependensi tidak langsung (postcss lewat next, deepmerge-ts lewat prisma,
+# dan lain-lain). Kita tidak memakainya secara langsung, tapi versinya ikut
+# terpasang. Override di bawah memaksa resolver memakai versi yang sudah
+# ditambal oleh pustaka masing-masing.
+#
+# Jalankan `pnpm audit --prod` untuk memeriksa ulang.
+overrides:
+  postcss: '>=8.5.23'
+  uuid: '>=11.1.1'
+  deepmerge-ts: '>=8.0.0'
+  decode-uri-component: '>=0.4.3'
+  stream-json: '>=3.4.1'
