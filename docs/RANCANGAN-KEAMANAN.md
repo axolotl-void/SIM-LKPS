@@ -108,8 +108,8 @@ mengganti sandi, lubangnya masih terbuka.
 Berkas itu sudah menulis "Ganti `ADMIN_PASSWORD` setelah first login" sejak
 dulu — tapi tidak pernah dijalankan. Ia juga mengandalkan "GitHub secret
 scanning aktif", padahal fitur itu **hanya mendeteksi pola penyedia tertentu**
-(token AWS, kunci Stripe). Sandi buatan sendiri seperti `SANDI_LAMA_ADMIN_DIHAPUS` tidak
-akan pernah terdeteksi.
+(token AWS, kunci Stripe). Sandi buatan sendiri (mis. `NamaAplikasi` + tahun + tanda seru) **tidak akan
+pernah terdeteksi** — bentuknya tidak cocok dengan pola mana pun.
 
 **Pelajaran:** peringatan yang tidak dijalankan sama nilainya dengan tidak ada
 peringatan. Yang bekerja adalah yang **tidak bisa dilewati** — dalam hal ini,
@@ -477,7 +477,7 @@ sungguhan"**. Itu perubahan yang nyata dan terukur.
 cd ~/Documents/03_Proyek/SIM-LKPS/ai-company/sim-lkps
 
 # 1. Tidak ada sandi lama di berkas ter-track (harus 0 kecocokan)
-git grep -n -I -E 'SANDI_LAMA_ADMIN_DIHAPUS|SANDI_LAMA_OPERATOR_DIHAPUS|SANDI_LAMA_PIMPINAN_DIHAPUS'
+git grep -n -I -E 'SANDI_LAMA_1|SANDI_LAMA_2|SANDI_LAMA_3'   # ganti dengan pola sandi lama
 
 # 2. Dependensi bersih
 pnpm audit --prod
