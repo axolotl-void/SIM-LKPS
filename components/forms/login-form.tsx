@@ -46,7 +46,21 @@ export function LoginForm() {
 
   const emailError = state.fieldErrors?.email;
   const passwordError = state.fieldErrors?.password;
-  const formError = state.success === false ? state.error : null;
+
+  // Jalur Server Action (form normal) mengembalikan pesan lewat `state`.
+  // Jalur POST langsung ke /api/auth/* (mis. tautan lama, muat ulang halaman
+  // saat submit) mengembalikan pesan lewat query `?code=`. Keduanya harus
+  // sampai ke layar, kalau tidak pengguna yang diblokir hanya melihat halaman
+  // login yang diam dan akan terus mencoba.
+  const kodeDariUrl = searchParams.get("code");
+  const pesanDariUrl =
+    kodeDariUrl === "terlalu_banyak_percobaan"
+      ? "Terlalu banyak percobaan login. Coba lagi dalam beberapa menit."
+      : kodeDariUrl === "credentials"
+        ? "Email atau kata sandi tidak sesuai."
+        : null;
+
+  const formError = (state.success === false ? state.error : null) ?? pesanDariUrl;
   const success = state.success === true;
 
   // Server sudah menangani pembatasan percobaan login (berbasis database,
@@ -55,7 +69,8 @@ export function LoginForm() {
   // tapi TIDAK dihitung ulang di sisi klien — hitungan di klien mudah
   // dilewati (muat ulang halaman) dan bisa keliru mengunci pengguna sah.
   const terkunciSementara =
-    formError?.startsWith("Terlalu banyak percobaan") ?? false;
+    (formError?.startsWith("Terlalu banyak percobaan") ?? false) ||
+    kodeDariUrl === "terlalu_banyak_percobaan";
 
   return (
     <form action={action} noValidate className="flex flex-col">

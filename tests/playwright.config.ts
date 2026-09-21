@@ -3,6 +3,11 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: '.',
   testMatch: '**/*.spec.ts',
+  // Uji "pesan pembatas login" sengaja menghabiskan kuota percobaan gagal (10x)
+  // untuk sebuah akun, jadi TIDAK boleh ikut suite ini: ia memperlambat
+  // jalannya suite dan bisa bentrok dengan uji login lain. Jalankan terpisah:
+  //   npx playwright test --config=tests/playwright-pesan.config.ts
+  testIgnore: ['uji-pesan-pembatas.spec.ts'],
   fullyParallel: false,
   retries: 1,
   workers: 1,
