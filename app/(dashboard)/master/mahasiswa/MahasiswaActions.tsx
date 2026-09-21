@@ -9,9 +9,11 @@ import { deleteMahasiswa } from "@/lib/actions/mahasiswa";
 interface MahasiswaActionsProps {
   id: string;
   nama: string;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
-export function MahasiswaActions({ id, nama }: MahasiswaActionsProps) {
+export function MahasiswaActions({ id, nama, canEdit = true, canDelete = true }: MahasiswaActionsProps) {
   const router = useRouter();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -31,12 +33,15 @@ export function MahasiswaActions({ id, nama }: MahasiswaActionsProps) {
   return (
     <>
       <div className="flex items-center justify-end gap-1">
+        {canEdit && (
         <a
           href={`/master/mahasiswa/${id}/edit`}
           className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-blue-600 transition-colors"
         >
           <Pencil className="h-4 w-4" />
         </a>
+        )}
+        {canDelete && (
         <button
           type="button"
           className="rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
@@ -44,6 +49,7 @@ export function MahasiswaActions({ id, nama }: MahasiswaActionsProps) {
         >
           <Trash2 className="h-4 w-4" />
         </button>
+        )}
       </div>
 
       <AnimatePresence>

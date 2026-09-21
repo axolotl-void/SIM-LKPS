@@ -40,7 +40,13 @@ function getFileIcon(mimeType: string) {
   return <File className="h-5 w-5 text-slate-500" />;
 }
 
-export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidence: TabelLkpsItem[] }) {
+export function EvidenceClient({
+  tabelLkpsWithEvidence,
+  bolehHapus = true,
+}: {
+  tabelLkpsWithEvidence: TabelLkpsItem[];
+  bolehHapus?: boolean;
+}) {
   const [allData, setAllData] = useState(tabelLkpsWithEvidence);
   const [searchQuery, setSearchQuery] = useState("");
   const [uploadingId, setUploadingId] = useState<string | null>(null);
@@ -313,12 +319,14 @@ export function EvidenceClient({ tabelLkpsWithEvidence }: { tabelLkpsWithEvidenc
                                   <Download className="h-3 w-3" /> Download
                                 </a>
                               ) : null}
-                              <button
-                                onClick={() => setDeleteModal({ evidenceId: ev.id, tabelLkpsId: item.id, filename: ev.filename })}
-                                className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-xs font-bold text-red-600 hover:bg-red-100 transition-colors"
-                              >
-                                <Trash2 className="h-3 w-3" /> Hapus
-                              </button>
+                              {bolehHapus && (
+                                <button
+                                  onClick={() => setDeleteModal({ evidenceId: ev.id, tabelLkpsId: item.id, filename: ev.filename })}
+                                  className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-xs font-bold text-red-600 hover:bg-red-100 transition-colors"
+                                >
+                                  <Trash2 className="h-3 w-3" /> Hapus
+                                </button>
+                              )}
                             </div>
                           </div>
                         ))}

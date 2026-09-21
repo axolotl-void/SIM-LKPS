@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { hasPermission } from "@/lib/utils/permissions";
+import { Role } from "@prisma/client";
 import type { Metadata } from "next";
 import { BookOpen, Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -20,6 +22,12 @@ interface Props {
 export default async function MataKuliahPage({ searchParams }: Props) {
   const session = await auth();
   if (!session?.user) redirect("/login");
+
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "master_data.read")) redirect("/dashboard");
+  const bolehTambah = hasPermission(role, "master_data.create");
+  const bolehUbah = hasPermission(role, "master_data.update");
+  const bolehHapus = hasPermission(role, "master_data.delete");
 
   const params = await searchParams;
   const query = params.q || "";
@@ -58,13 +66,15 @@ export default async function MataKuliahPage({ searchParams }: Props) {
               {total} mata kuliah terdaftar
             </p>
           </div>
-          <Link
-            href="/master/mata-kuliah/new"
-            className="flex items-center gap-2 rounded-xl bg-white/20 px-4 py-2 text-sm font-semibold backdrop-blur-sm transition-colors hover:bg-white/30"
-          >
-            <Plus className="h-4 w-4" />
-            Tambah Mata Kuliah
-          </Link>
+          {bolehTambah && (
+            <Link
+              href="/master/mata-kuliah/new"
+              className="flex items-center gap-2 rounded-xl bg-white/20 px-4 py-2 text-sm font-semibold backdrop-blur-sm transition-colors hover:bg-white/30"
+            >
+              <Plus className="h-4 w-4" />
+              Tambah Mata Kuliah
+            </Link>
+          )}
         </div>
       </div>
 
@@ -118,7 +128,12 @@ export default async function MataKuliahPage({ searchParams }: Props) {
                     </span>
                   </td>
                   <td className="py-3">
-                    <MataKuliahActions id={mk.id} nama={mk.nama} />
+                    <MataKuliahActions
+                      id={mk.id}
+                      nama={mk.nama}
+                      canEdit={bolehUbah}
+                      canDelete={bolehHapus}
+                    />
                   </td>
                 </tr>
               ))}

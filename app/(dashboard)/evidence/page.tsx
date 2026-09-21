@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { hasPermission } from "@/lib/utils/permissions";
+import { Role } from "@prisma/client";
 import { EvidenceClient } from "./evidence-client";
 import type { Metadata } from "next";
 
@@ -11,6 +13,10 @@ export const metadata: Metadata = {
 export default async function EvidencePage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
+
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "evidence.read")) redirect("/dashboard");
+  const bolehHapus = hasPermission(role, "evidence.delete");
 
   const activeTa = await db.tahunAkademik.findFirst({
     where: { isActive: true },
@@ -53,6 +59,7 @@ export default async function EvidencePage() {
 
       <EvidenceClient
         tabelLkpsWithEvidence={tabelLkpsSerializable as Parameters<typeof EvidenceClient>[0]["tabelLkpsWithEvidence"]}
+        bolehHapus={bolehHapus}
       />
     </div>
   );

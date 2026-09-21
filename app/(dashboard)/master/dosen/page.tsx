@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { hasPermission } from "@/lib/utils/permissions";
+import { Role } from "@prisma/client";
 import type { Metadata } from "next";
 import { Users, Plus } from "lucide-react";
 import Link from "next/link";
@@ -13,6 +15,12 @@ export const metadata: Metadata = {
 export default async function DosenPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
+
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "master_data.read")) redirect("/dashboard");
+  const bolehTambah = hasPermission(role, "master.dosen.create");
+  const bolehUbah = hasPermission(role, "master.dosen.update");
+  const bolehHapus = hasPermission(role, "master.dosen.delete");
 
   const dosens = await db.dosen.findMany({
     orderBy: { nama: "asc" },
@@ -29,13 +37,15 @@ export default async function DosenPage() {
               {dosens.length} dosen terdaftar
             </p>
           </div>
-          <Link
-            href="/master/dosen/new"
-            className="flex items-center gap-2 rounded-xl bg-white/20 px-4 py-2 text-sm font-semibold backdrop-blur-sm transition-colors hover:bg-white/30"
-          >
-            <Plus className="h-4 w-4" />
-            Tambah Dosen
-          </Link>
+          {bolehTambah && (
+            <Link
+              href="/master/dosen/new"
+              className="flex items-center gap-2 rounded-xl bg-white/20 px-4 py-2 text-sm font-semibold backdrop-blur-sm transition-colors hover:bg-white/30"
+            >
+              <Plus className="h-4 w-4" />
+              Tambah Dosen
+            </Link>
+          )}
         </div>
       </div>
 
@@ -92,7 +102,12 @@ export default async function DosenPage() {
                     {dosen.jenisKelamin}
                   </td>
                   <td className="py-3">
-                    <DosenActions id={dosen.id} nama={dosen.nama} />
+                    <DosenActions
+                      id={dosen.id}
+                      nama={dosen.nama}
+                      canEdit={bolehUbah}
+                      canDelete={bolehHapus}
+                    />
                   </td>
                 </tr>
               ))}

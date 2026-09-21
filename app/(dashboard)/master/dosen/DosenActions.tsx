@@ -10,9 +10,11 @@ import { motion, AnimatePresence } from "framer-motion";
 interface DosenActionsProps {
   id: string;
   nama: string;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
-export function DosenActions({ id, nama }: DosenActionsProps) {
+export function DosenActions({ id, nama, canEdit = true, canDelete = true }: DosenActionsProps) {
   const router = useRouter();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -32,19 +34,23 @@ export function DosenActions({ id, nama }: DosenActionsProps) {
   return (
     <>
       <div className="flex items-center justify-end gap-1">
-        <Link
-          href={`/master/dosen/${id}/edit`}
-          className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-blue-600 transition-colors"
-        >
-          <Pencil className="h-4 w-4" />
-        </Link>
-        <button
-          type="button"
-          className="rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
-          onClick={() => setShowDeleteModal(true)}
-        >
-          <Trash2 className="h-4 w-4" />
-        </button>
+        {canEdit && (
+          <Link
+            href={`/master/dosen/${id}/edit`}
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-blue-600 transition-colors"
+          >
+            <Pencil className="h-4 w-4" />
+          </Link>
+        )}
+        {canDelete && (
+          <button
+            type="button"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+            onClick={() => setShowDeleteModal(true)}
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       <AnimatePresence>

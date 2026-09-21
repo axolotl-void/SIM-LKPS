@@ -9,9 +9,11 @@ import { deleteMatakuliah } from "@/lib/actions/matakuliah";
 interface MataKuliahActionsProps {
   id: string;
   nama: string;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
-export function MataKuliahActions({ id, nama }: MataKuliahActionsProps) {
+export function MataKuliahActions({ id, nama, canEdit = true, canDelete = true }: MataKuliahActionsProps) {
   const router = useRouter();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -31,12 +33,15 @@ export function MataKuliahActions({ id, nama }: MataKuliahActionsProps) {
   return (
     <>
       <div className="flex items-center justify-end gap-1">
+        {canEdit && (
         <a
           href={`/master/mata-kuliah/${id}/edit`}
           className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-blue-600 transition-colors"
         >
           <Pencil className="h-4 w-4" />
         </a>
+        )}
+        {canDelete && (
         <button
           type="button"
           className="rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors"
@@ -44,6 +49,7 @@ export function MataKuliahActions({ id, nama }: MataKuliahActionsProps) {
         >
           <Trash2 className="h-4 w-4" />
         </button>
+        )}
       </div>
 
       <AnimatePresence>
