@@ -60,6 +60,27 @@ function jalurPublik(pathname: string): boolean {
 }
 
 /**
+ * Ekstensi yang menandakan permintaan berkas statis, bukan halaman.
+ *
+ * KENAPA INI PERLU — pernah kejadian (21 Sep 2026):
+ * Pemeriksaan login di middleware tanpa ini membuat **semua aset di `public/`
+ * ikut dialihkan ke `/login`**. Terbukti: `/logo-ubbg.svg` dan
+ * `/images/ubbg-campus.webp` balas `307 → /login?callbackUrl=...`. Akibatnya
+ * logo UBBG dan seluruh gambar halaman login rusak — halaman yang justru
+ * dibuka SEBELUM pengguna punya sesi.
+ *
+ * Berkas statis memang harus bisa diakses tanpa login (logo itu bagian dari
+ * halaman login itu sendiri). Halaman aplikasi dan route API tidak punya
+ * ekstensi berkas, jadi aturan ini tidak membuka jalan masuk apa pun.
+ */
+const EKSTENSI_STATIS =
+  /\.(svg|png|jpe?g|gif|webp|avif|ico|bmp|txt|xml|json|webmanifest|css|js|mjs|map|woff2?|ttf|eot|otf|mp4|webm|pdf)$/i;
+
+function berkasStatis(pathname: string): boolean {
+  return EKSTENSI_STATIS.test(pathname);
+}
+
+/**
  * Apakah permintaan ini minta balasan JSON, bukan halaman HTML?
  *
  * Dipakai untuk memilih bentuk balasan yang tepat: API dan permintaan
@@ -77,7 +98,7 @@ export async function middleware(request: NextRequest) {
   // ---------------------------------------------------------------------
   // 1. Pemeriksaan login
   // ---------------------------------------------------------------------
-  if (!jalurPublik(pathname)) {
+  if (!jalurPublik(pathname) && !berkasStatis(pathname)) {
     const sesi = await auth();
     if (!sesi?.user) {
       if (mintaJson(request)) {
