@@ -9,7 +9,7 @@ import {
   canDeleteRow,
 } from "@/lib/utils/permissions";
 import { createAuditLog, logAccessDenied } from "@/lib/utils/audit";
-import { createNotification, notifyMutation } from "@/lib/actions/notification";
+import { createNotification, notifyMutation } from "@/lib/notifikasi-internal";
 import { Role, TabelStatus } from "@prisma/client";
 import { kriteriaSlug, tabelHref } from "@/lib/utils/kriteria";
 
@@ -28,6 +28,7 @@ async function withErrorHandling<T>(fn: () => Promise<T>): Promise<T> {
         "Unauthorized",
         "Tidak terautentikasi",
         "Tidak memiliki izin",
+        "tidak memiliki izin", // varian huruf kecil — pesan izin action baru
         "Tidak dapat",
         "Hanya tabel",
         "Komentar wajib",
@@ -496,6 +497,12 @@ export async function updateDosen(id: string, data: { nama?: string; status?: st
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
 
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "master.dosen.update")) {
+    logAccessDenied("UPDATE", "Dosen", "missing_permission", { role, id });
+    throw new Error("Anda tidak memiliki izin mengubah data dosen.");
+  }
+
   const existing = await db.dosen.findUnique({ where: { id } });
   if (!existing) throw new Error("Dosen tidak ditemukan");
 
@@ -530,6 +537,12 @@ export async function deleteDosen(id: string) {
   return withErrorHandling(async () => {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
+
+  const role = session.user.role as Role;
+  if (!hasPermission(role, "master.dosen.delete")) {
+    logAccessDenied("DELETE", "Dosen", "missing_permission", { role, id });
+    throw new Error("Anda tidak memiliki izin menghapus data dosen.");
+  }
 
   const existing = await db.dosen.findUnique({ where: { id } });
   if (!existing) throw new Error("Dosen tidak ditemukan");

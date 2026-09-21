@@ -97,7 +97,10 @@ export function NotificationBell() {
       setUnread((c) => Math.max(0, c - 1));
       await markNotificationAsRead(n.id);
     }
-    if (n.link) {
+    // Tautan di dalam notifikasi berasal dari data pengguna. Hanya jalur
+    // internal yang boleh dinavigasi; selain itu cukup jadi teks, jangan
+    // dijadikan tujuan router.push begitu saja.
+    if (n.link && n.link.startsWith("/") && !n.link.startsWith("//") && !n.link.startsWith("/\\")) {
       setOpen(false);
       router.push(n.link);
     }

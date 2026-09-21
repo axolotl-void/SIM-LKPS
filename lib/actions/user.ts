@@ -7,7 +7,7 @@ import { auth } from "@/lib/auth";
 import { createUserSchema, updateUserSchema } from "@/lib/validations/auth";
 import { hasPermission } from "@/lib/utils/permissions";
 import { createAuditLog } from "@/lib/utils/audit";
-import { notifyMutation } from "@/lib/actions/notification";
+import { notifyMutation } from "@/lib/notifikasi-internal";
 import { Role } from "@prisma/client";
 
 interface ActionResult {
