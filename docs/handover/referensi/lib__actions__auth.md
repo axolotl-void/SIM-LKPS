@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Logika Server, Utilitas, Export |
-| **Ukuran** | 139 baris |
+| **Ukuran** | 170 baris |
 | **Jenis** | Server Action (`"use server"`) |
 | **Dipakai oleh** | 1 berkas |
 

@@ -1,9 +1,9 @@
-# `README.md`
+# `tests/playwright-pesan.config.ts`
 
 | | |
 |---|---|
-| **Area** | Berkas Akar Repo |
-| **Ukuran** | 233 baris |
+| **Area** | Pengujian |
+| **Ukuran** | 22 baris |
 | **Jenis** | modul biasa |
 | **Dipakai oleh** | 0 berkas |
 
@@ -13,5 +13,9 @@ Berkas ini tidak mengekspor apa pun ke luar — dipakai sekali di tempatnya send
 
 ## Letak berkas
 
-Dari akar repo: `README.md`.
+Dari akar repo: `tests/playwright-pesan.config.ts`.
+
+## Pustaka luar yang dipakai
+
+- `@playwright/test`
 

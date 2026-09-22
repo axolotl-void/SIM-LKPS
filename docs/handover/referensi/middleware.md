@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Berkas Akar Repo |
-| **Ukuran** | 96 baris |
+| **Ukuran** | 174 baris |
 | **Jenis** | modul biasa |
 | **Dipakai oleh** | 0 berkas |
 
@@ -19,7 +19,7 @@ Dari akar repo: `middleware.ts`.
 
 ### `middleware`
 
-Jenis: **fungsi**
+Jenis: **fungsi async**
 
 ### `config`
 
@@ -27,5 +27,10 @@ Jenis: **konstanta**
 
 ## Pustaka luar yang dipakai
 
+- `next-auth`
 - `next/server`
+
+## Berkas lain di proyek ini yang dipanggil
+
+- [`lib/auth.config.ts`](./lib__auth.config.md)
 

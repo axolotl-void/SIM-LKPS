@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Komponen Antarmuka |
-| **Ukuran** | 225 baris |
+| **Ukuran** | 238 baris |
 | **Jenis** | Client Component (`"use client"`) |
 | **Dipakai oleh** | 1 berkas |
 

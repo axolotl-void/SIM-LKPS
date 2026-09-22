@@ -237,12 +237,15 @@ menaruh narasi di modul LKPS atau sebaliknya.
 | Kriteria 2 | Relevansi Pendidikan | 11 |
 | Kriteria 3 | Relevansi Penelitian | 6 |
 | Kriteria 4 | Relevansi PkM | 5 |
-| Kriteria 5 & 6 | Akuntabilitas & Diferensiasi Misi | 4 |
+| Kriteria 5 | Akuntabilitas | 2 |
+| Kriteria 6 | Diferensiasi Misi | 2 |
 | **Total** | | **32** |
 
 > **Sumber kebenaran jumlah tabel adalah berkas `prisma/seed.ts`,** bukan
 > hitungan langsung di database. Di database uji pernah ada satu baris nyasar
-> yang membuat hitungannya jadi 33. Kalau ada yang bertanya, jawabannya **32**.
+> (kode `"6"`, sisa penomoran lama sebelum Kriteria 5 & 6 dipecah) yang membuat
+> hitungannya jadi 33. Baris itu sudah dihapus 22 Sep 2026. Kalau ada yang
+> bertanya, jawabannya **32**.
 
 ### Cara penilaian dihitung
 

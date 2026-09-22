@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Halaman & API (App Router) |
-| **Ukuran** | 21 baris |
+| **Ukuran** | 27 baris |
 | **Jenis** | modul biasa |
 | **Alamat URL** | `/master/mahasiswa/[id]/edit` |
 | **Dipakai oleh** | 0 berkas |
@@ -30,6 +30,7 @@ Kalau mau mengubah apa yang tampil di alamat itu, **berkas ini yang pertama dibu
 
 ## Pustaka luar yang dipakai
 
+- `@prisma/client`
 - `next/navigation`
 
 ## Berkas lain di proyek ini yang dipanggil
@@ -37,4 +38,5 @@ Kalau mau mengubah apa yang tampil di alamat itu, **berkas ini yang pertama dibu
 - [`app/(dashboard)/master/mahasiswa/MahasiswaForm.tsx`](./app__-dashboard-__master__mahasiswa__MahasiswaForm.md)
 - [`lib/auth.ts`](./lib__auth.md)
 - [`lib/db.ts`](./lib__db.md)
+- [`lib/utils/permissions.ts`](./lib__utils__permissions.md)
 

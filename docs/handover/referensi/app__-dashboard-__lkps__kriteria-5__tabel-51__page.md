@@ -1,20 +1,20 @@
-# `app/(dashboard)/lkps/kriteria-5-6/tabel-51/page.tsx`
+# `app/(dashboard)/lkps/kriteria-5/tabel-51/page.tsx`
 
 | | |
 |---|---|
 | **Area** | Halaman & API (App Router) |
 | **Ukuran** | 124 baris |
 | **Jenis** | modul biasa |
-| **Alamat URL** | `/lkps/kriteria-5-6/tabel-51` |
+| **Alamat URL** | `/lkps/kriteria-5/tabel-51` |
 | **Dipakai oleh** | 0 berkas |
 
 ## Maksud berkas
 
-Berkas halaman untuk alamat `/lkps/kriteria-5-6/tabel-51`. Tugasnya menyiapkan data di server (dan memeriksa izin), lalu menyerahkan tampilan ke komponen client.
+Berkas halaman untuk alamat `/lkps/kriteria-5/tabel-51`. Tugasnya menyiapkan data di server (dan memeriksa izin), lalu menyerahkan tampilan ke komponen client.
 
 ## Letak berkas
 
-Dari akar repo: `app/(dashboard)/lkps/kriteria-5-6/tabel-51/page.tsx`.
+Dari akar repo: `app/(dashboard)/lkps/kriteria-5/tabel-51/page.tsx`.
 
 ## Isi yang bisa dipakai berkas lain
 
@@ -28,7 +28,7 @@ Jenis: **default**
 
 ## Alamat yang dilayani
 
-Halaman ini bisa dibuka di `/lkps/kriteria-5-6/tabel-51`.
+Halaman ini bisa dibuka di `/lkps/kriteria-5/tabel-51`.
 
 Kalau mau mengubah apa yang tampil di alamat itu, **berkas ini yang pertama dibuka**.
 

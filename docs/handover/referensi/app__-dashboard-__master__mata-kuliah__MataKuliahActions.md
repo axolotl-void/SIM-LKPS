@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Halaman & API (App Router) |
-| **Ukuran** | 103 baris |
+| **Ukuran** | 109 baris |
 | **Jenis** | Client Component (`"use client"`) |
 | **Dipakai oleh** | 1 berkas |
 

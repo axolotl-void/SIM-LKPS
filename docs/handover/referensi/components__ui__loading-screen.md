@@ -35,6 +35,6 @@ Kalau kamu mengubah nama fungsi atau bentuk datanya, berkas-berkas ini ikut terd
 - [`app/(dashboard)/lkps/kriteria-2/loading.tsx`](./app__-dashboard-__lkps__kriteria-2__loading.md)
 - [`app/(dashboard)/lkps/kriteria-3/loading.tsx`](./app__-dashboard-__lkps__kriteria-3__loading.md)
 - [`app/(dashboard)/lkps/kriteria-4/loading.tsx`](./app__-dashboard-__lkps__kriteria-4__loading.md)
-- [`app/(dashboard)/lkps/kriteria-5-6/loading.tsx`](./app__-dashboard-__lkps__kriteria-5-6__loading.md)
+- [`app/(dashboard)/lkps/kriteria-5/loading.tsx`](./app__-dashboard-__lkps__kriteria-5__loading.md)
 - [`app/(dashboard)/lkps/kriteria-6/loading.tsx`](./app__-dashboard-__lkps__kriteria-6__loading.md)
 

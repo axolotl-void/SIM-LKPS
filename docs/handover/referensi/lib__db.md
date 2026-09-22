@@ -5,7 +5,7 @@
 | **Area** | Logika Server, Utilitas, Export |
 | **Ukuran** | 14 baris |
 | **Jenis** | modul biasa |
-| **Dipakai oleh** | 74 berkas |
+| **Dipakai oleh** | 76 berkas |
 
 ## Maksud berkas
 
@@ -64,9 +64,9 @@ Kalau kamu mengubah nama fungsi atau bentuk datanya, berkas-berkas ini ikut terd
 - [`app/(dashboard)/lkps/kriteria-4/tabel-4c1/page.tsx`](./app__-dashboard-__lkps__kriteria-4__tabel-4c1__page.md)
 - [`app/(dashboard)/lkps/kriteria-4/tabel-4c2/page.tsx`](./app__-dashboard-__lkps__kriteria-4__tabel-4c2__page.md)
 - [`app/(dashboard)/lkps/kriteria-4/tabel-4c3/page.tsx`](./app__-dashboard-__lkps__kriteria-4__tabel-4c3__page.md)
-- [`app/(dashboard)/lkps/kriteria-5-6/page.tsx`](./app__-dashboard-__lkps__kriteria-5-6__page.md)
-- [`app/(dashboard)/lkps/kriteria-5-6/tabel-51/page.tsx`](./app__-dashboard-__lkps__kriteria-5-6__tabel-51__page.md)
-- [`app/(dashboard)/lkps/kriteria-5-6/tabel-52/page.tsx`](./app__-dashboard-__lkps__kriteria-5-6__tabel-52__page.md)
+- [`app/(dashboard)/lkps/kriteria-5/page.tsx`](./app__-dashboard-__lkps__kriteria-5__page.md)
+- [`app/(dashboard)/lkps/kriteria-5/tabel-51/page.tsx`](./app__-dashboard-__lkps__kriteria-5__tabel-51__page.md)
+- [`app/(dashboard)/lkps/kriteria-5/tabel-52/page.tsx`](./app__-dashboard-__lkps__kriteria-5__tabel-52__page.md)
 - [`app/(dashboard)/lkps/kriteria-6/page.tsx`](./app__-dashboard-__lkps__kriteria-6__page.md)
 - [`app/(dashboard)/lkps/kriteria-6/tabel-61/page.tsx`](./app__-dashboard-__lkps__kriteria-6__tabel-61__page.md)
 - [`app/(dashboard)/lkps/kriteria-6/tabel-62/page.tsx`](./app__-dashboard-__lkps__kriteria-6__tabel-62__page.md)
@@ -99,8 +99,10 @@ Kalau kamu mengubah nama fungsi atau bentuk datanya, berkas-berkas ini ikut terd
 - [`lib/actions/user.ts`](./lib__actions__user.md)
 - [`lib/auth.ts`](./lib__auth.md)
 - [`lib/export/helpers.ts`](./lib__export__helpers.md)
+- [`lib/notifikasi-internal.ts`](./lib__notifikasi-internal.md)
 - [`lib/utils/audit.ts`](./lib__utils__audit.md)
 - [`lib/utils/led-export-query.ts`](./lib__utils__led-export-query.md)
 - [`lib/utils/led-query.ts`](./lib__utils__led-query.md)
+- [`lib/utils/login-rate-limit.ts`](./lib__utils__login-rate-limit.md)
 - [`lib/utils/penilaian-query.ts`](./lib__utils__penilaian-query.md)
 

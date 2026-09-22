@@ -1,19 +1,19 @@
-# `components/layout/sidebar.tsx`
+# `app/(dashboard)/master/dosen/new/NewDosenForm.tsx`
 
 | | |
 |---|---|
-| **Area** | Komponen Antarmuka |
-| **Ukuran** | 322 baris |
+| **Area** | Halaman & API (App Router) |
+| **Ukuran** | 259 baris |
 | **Jenis** | Client Component (`"use client"`) |
 | **Dipakai oleh** | 1 berkas |
 
 ## Maksud berkas
 
-Berkas ini berisi 1 deklarasi: `Sidebar`.
+Berkas ini menyediakan 1 fungsi utama: `NewDosenForm`.
 
 ## Letak berkas
 
-Dari akar repo: `components/layout/sidebar.tsx`.
+Dari akar repo: `app/(dashboard)/master/dosen/new/NewDosenForm.tsx`.
 
 Berkas ini berjalan **di browser pengguna** (`"use client"`). Di dalamnya ada
 pengelolaan state dan kejadian klik/ketik. Jangan menaruh kode rahasia
@@ -21,15 +21,14 @@ pengelolaan state dan kejadian klik/ketik. Jangan menaruh kode rahasia
 
 ## Isi yang bisa dipakai berkas lain
 
-### `Sidebar`
+### `NewDosenForm`
 
-Jenis: **konstanta**
+Jenis: **fungsi**
 
 ## Pustaka luar yang dipakai
 
 - `framer-motion`
 - `lucide-react`
-- `next/image`
 - `next/link`
 - `next/navigation`
 - `react`
@@ -38,5 +37,5 @@ Jenis: **konstanta**
 
 Kalau kamu mengubah nama fungsi atau bentuk datanya, berkas-berkas ini ikut terdampak:
 
-- [`app/(dashboard)/layout.tsx`](./app__-dashboard-__layout.md)
+- [`app/(dashboard)/master/dosen/new/page.tsx`](./app__-dashboard-__master__dosen__new__page.md)
 

@@ -3,9 +3,9 @@
 | | |
 |---|---|
 | **Area** | Logika Server, Utilitas, Export |
-| **Ukuran** | 152 baris |
+| **Ukuran** | 153 baris |
 | **Jenis** | modul biasa |
-| **Dipakai oleh** | 62 berkas |
+| **Dipakai oleh** | 75 berkas |
 
 ## Maksud berkas
 
@@ -80,6 +80,7 @@ Check if user can delete rows from a table based on status and role Same rules a
 Kalau kamu mengubah nama fungsi atau bentuk datanya, berkas-berkas ini ikut terdampak:
 
 - [`app/(dashboard)/dashboard/page.tsx`](./app__-dashboard-__dashboard__page.md)
+- [`app/(dashboard)/evidence/page.tsx`](./app__-dashboard-__evidence__page.md)
 - [`app/(dashboard)/led/bab-1/page.tsx`](./app__-dashboard-__led__bab-1__page.md)
 - [`app/(dashboard)/led/bab-2/kondisi-eksternal/page.tsx`](./app__-dashboard-__led__bab-2__kondisi-eksternal__page.md)
 - [`app/(dashboard)/led/bab-2/kriteria/[nomor]/page.tsx`](./app__-dashboard-__led__bab-2__kriteria__-nomor-__page.md)
@@ -88,7 +89,16 @@ Kalau kamu mengubah nama fungsi atau bentuk datanya, berkas-berkas ini ikut terd
 - [`app/(dashboard)/led/bab-3/page.tsx`](./app__-dashboard-__led__bab-3__page.md)
 - [`app/(dashboard)/led/export/page.tsx`](./app__-dashboard-__led__export__page.md)
 - [`app/(dashboard)/led/page.tsx`](./app__-dashboard-__led__page.md)
+- [`app/(dashboard)/lkps/kriteria-5/page.tsx`](./app__-dashboard-__lkps__kriteria-5__page.md)
 - [`app/(dashboard)/lkps/kriteria-6/page.tsx`](./app__-dashboard-__lkps__kriteria-6__page.md)
+- [`app/(dashboard)/master/dosen/new/page.tsx`](./app__-dashboard-__master__dosen__new__page.md)
+- [`app/(dashboard)/master/dosen/page.tsx`](./app__-dashboard-__master__dosen__page.md)
+- [`app/(dashboard)/master/mahasiswa/[id]/edit/page.tsx`](./app__-dashboard-__master__mahasiswa__-id-__edit__page.md)
+- [`app/(dashboard)/master/mahasiswa/new/page.tsx`](./app__-dashboard-__master__mahasiswa__new__page.md)
+- [`app/(dashboard)/master/mahasiswa/page.tsx`](./app__-dashboard-__master__mahasiswa__page.md)
+- [`app/(dashboard)/master/mata-kuliah/[id]/edit/page.tsx`](./app__-dashboard-__master__mata-kuliah__-id-__edit__page.md)
+- [`app/(dashboard)/master/mata-kuliah/new/page.tsx`](./app__-dashboard-__master__mata-kuliah__new__page.md)
+- [`app/(dashboard)/master/mata-kuliah/page.tsx`](./app__-dashboard-__master__mata-kuliah__page.md)
 - [`app/(dashboard)/penilaian/butir/[kode]/page.tsx`](./app__-dashboard-__penilaian__butir__-kode-__page.md)
 - [`app/(dashboard)/penilaian/kriteria/[kode]/page.tsx`](./app__-dashboard-__penilaian__kriteria__-kode-__page.md)
 - [`app/(dashboard)/penilaian/page.tsx`](./app__-dashboard-__penilaian__page.md)
@@ -132,13 +142,16 @@ Kalau kamu mengubah nama fungsi atau bentuk datanya, berkas-berkas ini ikut terd
 - [`components/tables/tabel-4c3-client.tsx`](./components__tables__tabel-4c3-client.md)
 - [`components/tables/tabel-51-client.tsx`](./components__tables__tabel-51-client.md)
 - [`components/tables/tabel-52-client.tsx`](./components__tables__tabel-52-client.md)
-- [`components/tables/tabel-6-client.tsx`](./components__tables__tabel-6-client.md)
 - [`components/tables/tabel-61-client.tsx`](./components__tables__tabel-61-client.md)
 - [`components/tables/tabel-62-client.tsx`](./components__tables__tabel-62-client.md)
 - [`components/tables/user-table.tsx`](./components__tables__user-table.md)
+- [`lib/actions/evidence.ts`](./lib__actions__evidence.md)
 - [`lib/actions/led.ts`](./lib__actions__led.md)
 - [`lib/actions/lkps.ts`](./lib__actions__lkps.md)
+- [`lib/actions/mahasiswa.ts`](./lib__actions__mahasiswa.md)
+- [`lib/actions/matakuliah.ts`](./lib__actions__matakuliah.md)
 - [`lib/actions/penilaian.ts`](./lib__actions__penilaian.md)
 - [`lib/actions/user.ts`](./lib__actions__user.md)
 - [`tests/unit/bug-01-permission-dosen.test.ts`](./tests__unit__bug-01-permission-dosen.test.md)
+- [`tests/unit/permission-guards.test.ts`](./tests__unit__permission-guards.test.md)
 

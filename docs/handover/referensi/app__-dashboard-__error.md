@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Halaman & API (App Router) |
-| **Ukuran** | 35 baris |
+| **Ukuran** | 44 baris |
 | **Jenis** | Client Component (`"use client"`) |
 | **Dipakai oleh** | 0 berkas |
 
@@ -28,4 +28,8 @@ Jenis: **default**
 ## Pustaka luar yang dipakai
 
 - `lucide-react`
+
+## Berkas lain di proyek ini yang dipanggil
+
+- [`lib/utils/pesan-galat.ts`](./lib__utils__pesan-galat.md)
 

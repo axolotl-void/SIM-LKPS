@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Pengujian |
-| **Ukuran** | 52 baris |
+| **Ukuran** | 95 baris |
 | **Jenis** | modul biasa |
 | **Dipakai oleh** | 5 berkas |
 

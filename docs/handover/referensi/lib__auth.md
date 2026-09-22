@@ -3,30 +3,39 @@
 | | |
 |---|---|
 | **Area** | Logika Server, Utilitas, Export |
-| **Ukuran** | 98 baris |
+| **Ukuran** | 103 baris |
 | **Jenis** | modul biasa |
-| **Dipakai oleh** | 88 berkas |
+| **Dipakai oleh** | 92 berkas |
 
 ## Maksud berkas
 
-Berkas ini tidak mengekspor apa pun ke luar — dipakai sekali di tempatnya sendiri.
+Berkas ini berisi 1 deklarasi: `KODE_TERLALU_BANYAK`.
 
 ## Letak berkas
 
 Dari akar repo: `lib/auth.ts`.
 
+## Isi yang bisa dipakai berkas lain
+
+### `KODE_TERLALU_BANYAK`
+
+Jenis: **konstanta**
+
+Error yang dilempar saat percobaan login sudah melewati batas. MENGAPA MEWARISI `CredentialsSignin` (bukan `Error` biasa): NextAuth hanya meneruskan sebagian jenis error ke sisi klien (lihat `clientErrors` di @auth/core/errors.js). Error yang tidak dikenal akan dirubah menjadi halaman error umum — pengguna cuma melihat "Configuration", tanpa penjelasan. `CredentialsSignin` termasuk yang diteruskan
+
 ## Pustaka luar yang dipakai
 
 - `@auth/prisma-adapter`
-- `@prisma/client`
 - `bcryptjs`
 - `next-auth`
 - `zod`
 
 ## Berkas lain di proyek ini yang dipanggil
 
+- [`lib/auth.config.ts`](./lib__auth.config.md)
 - [`lib/db.ts`](./lib__db.md)
 - [`lib/utils/db-retry.ts`](./lib__utils__db-retry.md)
+- [`lib/utils/login-rate-limit.ts`](./lib__utils__login-rate-limit.md)
 
 ## Berkas yang memanggil berkas ini
 
@@ -79,18 +88,21 @@ Kalau kamu mengubah nama fungsi atau bentuk datanya, berkas-berkas ini ikut terd
 - [`app/(dashboard)/lkps/kriteria-4/tabel-4c1/page.tsx`](./app__-dashboard-__lkps__kriteria-4__tabel-4c1__page.md)
 - [`app/(dashboard)/lkps/kriteria-4/tabel-4c2/page.tsx`](./app__-dashboard-__lkps__kriteria-4__tabel-4c2__page.md)
 - [`app/(dashboard)/lkps/kriteria-4/tabel-4c3/page.tsx`](./app__-dashboard-__lkps__kriteria-4__tabel-4c3__page.md)
-- [`app/(dashboard)/lkps/kriteria-5-6/page.tsx`](./app__-dashboard-__lkps__kriteria-5-6__page.md)
-- [`app/(dashboard)/lkps/kriteria-5-6/tabel-51/page.tsx`](./app__-dashboard-__lkps__kriteria-5-6__tabel-51__page.md)
-- [`app/(dashboard)/lkps/kriteria-5-6/tabel-52/page.tsx`](./app__-dashboard-__lkps__kriteria-5-6__tabel-52__page.md)
+- [`app/(dashboard)/lkps/kriteria-5/page.tsx`](./app__-dashboard-__lkps__kriteria-5__page.md)
+- [`app/(dashboard)/lkps/kriteria-5/tabel-51/page.tsx`](./app__-dashboard-__lkps__kriteria-5__tabel-51__page.md)
+- [`app/(dashboard)/lkps/kriteria-5/tabel-52/page.tsx`](./app__-dashboard-__lkps__kriteria-5__tabel-52__page.md)
 - [`app/(dashboard)/lkps/kriteria-6/page.tsx`](./app__-dashboard-__lkps__kriteria-6__page.md)
 - [`app/(dashboard)/lkps/kriteria-6/tabel-61/page.tsx`](./app__-dashboard-__lkps__kriteria-6__tabel-61__page.md)
 - [`app/(dashboard)/lkps/kriteria-6/tabel-62/page.tsx`](./app__-dashboard-__lkps__kriteria-6__tabel-62__page.md)
 - [`app/(dashboard)/lkps/submissions/page.tsx`](./app__-dashboard-__lkps__submissions__page.md)
 - [`app/(dashboard)/lkps/validasi/page.tsx`](./app__-dashboard-__lkps__validasi__page.md)
+- [`app/(dashboard)/master/dosen/new/page.tsx`](./app__-dashboard-__master__dosen__new__page.md)
 - [`app/(dashboard)/master/dosen/page.tsx`](./app__-dashboard-__master__dosen__page.md)
 - [`app/(dashboard)/master/mahasiswa/[id]/edit/page.tsx`](./app__-dashboard-__master__mahasiswa__-id-__edit__page.md)
+- [`app/(dashboard)/master/mahasiswa/new/page.tsx`](./app__-dashboard-__master__mahasiswa__new__page.md)
 - [`app/(dashboard)/master/mahasiswa/page.tsx`](./app__-dashboard-__master__mahasiswa__page.md)
 - [`app/(dashboard)/master/mata-kuliah/[id]/edit/page.tsx`](./app__-dashboard-__master__mata-kuliah__-id-__edit__page.md)
+- [`app/(dashboard)/master/mata-kuliah/new/page.tsx`](./app__-dashboard-__master__mata-kuliah__new__page.md)
 - [`app/(dashboard)/master/mata-kuliah/page.tsx`](./app__-dashboard-__master__mata-kuliah__page.md)
 - [`app/(dashboard)/master/page.tsx`](./app__-dashboard-__master__page.md)
 - [`app/(dashboard)/master/prodi/page.tsx`](./app__-dashboard-__master__prodi__page.md)
@@ -119,5 +131,6 @@ Kalau kamu mengubah nama fungsi atau bentuk datanya, berkas-berkas ini ikut terd
 - [`lib/actions/notification.ts`](./lib__actions__notification.md)
 - [`lib/actions/penilaian.ts`](./lib__actions__penilaian.md)
 - [`lib/actions/user.ts`](./lib__actions__user.md)
+- [`lib/notifikasi-internal.ts`](./lib__notifikasi-internal.md)
 - [`lib/utils/audit.ts`](./lib__utils__audit.md)
 

@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Halaman & API (App Router) |
-| **Ukuran** | 6 baris |
+| **Ukuran** | 17 baris |
 | **Jenis** | modul biasa |
 | **Alamat URL** | `/master/mata-kuliah/new` |
 | **Dipakai oleh** | 0 berkas |
@@ -28,7 +28,14 @@ Halaman ini bisa dibuka di `/master/mata-kuliah/new`.
 
 Kalau mau mengubah apa yang tampil di alamat itu, **berkas ini yang pertama dibuka**.
 
+## Pustaka luar yang dipakai
+
+- `@prisma/client`
+- `next/navigation`
+
 ## Berkas lain di proyek ini yang dipanggil
 
 - [`app/(dashboard)/master/mata-kuliah/MataKuliahForm.tsx`](./app__-dashboard-__master__mata-kuliah__MataKuliahForm.md)
+- [`lib/auth.ts`](./lib__auth.md)
+- [`lib/utils/permissions.ts`](./lib__utils__permissions.md)
 

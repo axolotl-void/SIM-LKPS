@@ -1,9 +1,9 @@
-# `tests/export-led.spec.ts`
+# `tests/uji-pesan-pembatas.spec.ts`
 
 | | |
 |---|---|
 | **Area** | Pengujian |
-| **Ukuran** | 170 baris |
+| **Ukuran** | 87 baris |
 | **Jenis** | modul biasa |
 | **Dipakai oleh** | 0 berkas |
 
@@ -13,7 +13,7 @@ Berkas pengujian otomatis — memeriksa bahwa fitur ini bekerja seperti seharusn
 
 ## Letak berkas
 
-Dari akar repo: `tests/export-led.spec.ts`.
+Dari akar repo: `tests/uji-pesan-pembatas.spec.ts`.
 
 ## Pustaka luar yang dipakai
 

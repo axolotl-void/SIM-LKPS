@@ -3,13 +3,13 @@
 | | |
 |---|---|
 | **Area** | Logika Server, Utilitas, Export |
-| **Ukuran** | 306 baris |
+| **Ukuran** | 292 baris |
 | **Jenis** | Server Action (`"use server"`) |
 | **Dipakai oleh** | 1 berkas |
 
 ## Maksud berkas
 
-Berkas ini menyediakan 5 fungsi utama: `uploadEvidence`, `getEvidenceList`, `deleteEvidence`, `addEvidenceLink`, `getTabelLkpsId`.
+Berkas ini menyediakan 4 fungsi utama: `uploadEvidence`, `getEvidenceList`, `deleteEvidence`, `addEvidenceLink`.
 
 ## Letak berkas
 
@@ -36,21 +36,19 @@ Jenis: **fungsi async**
 
 Jenis: **fungsi async**
 
-### `getTabelLkpsId`
-
-Jenis: **fungsi async**
-
 ## Pustaka luar yang dipakai
 
+- `@prisma/client`
 - `next/cache`
 
 ## Berkas lain di proyek ini yang dipanggil
 
-- [`lib/actions/notification.ts`](./lib__actions__notification.md)
 - [`lib/auth.ts`](./lib__auth.md)
 - [`lib/db.ts`](./lib__db.md)
 - [`lib/minio.ts`](./lib__minio.md)
+- [`lib/notifikasi-internal.ts`](./lib__notifikasi-internal.md)
 - [`lib/utils/audit.ts`](./lib__utils__audit.md)
+- [`lib/utils/permissions.ts`](./lib__utils__permissions.md)
 
 ## Berkas yang memanggil berkas ini
 

@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Halaman & API (App Router) |
-| **Ukuran** | 60 baris |
+| **Ukuran** | 67 baris |
 | **Jenis** | modul biasa |
 | **Alamat URL** | `/evidence` |
 | **Dipakai oleh** | 0 berkas |
@@ -34,6 +34,7 @@ Kalau mau mengubah apa yang tampil di alamat itu, **berkas ini yang pertama dibu
 
 ## Pustaka luar yang dipakai
 
+- `@prisma/client`
 - `next`
 - `next/navigation`
 
@@ -42,4 +43,5 @@ Kalau mau mengubah apa yang tampil di alamat itu, **berkas ini yang pertama dibu
 - [`app/(dashboard)/evidence/evidence-client.tsx`](./app__-dashboard-__evidence__evidence-client.md)
 - [`lib/auth.ts`](./lib__auth.md)
 - [`lib/db.ts`](./lib__db.md)
+- [`lib/utils/permissions.ts`](./lib__utils__permissions.md)
 

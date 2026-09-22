@@ -3,13 +3,13 @@
 | | |
 |---|---|
 | **Area** | Logika Server, Utilitas, Export |
-| **Ukuran** | 129 baris |
+| **Ukuran** | 48 baris |
 | **Jenis** | Server Action (`"use server"`) |
-| **Dipakai oleh** | 6 berkas |
+| **Dipakai oleh** | 1 berkas |
 
 ## Maksud berkas
 
-Berkas ini menyediakan 4 fungsi utama: `createNotification`, `notifyMutation`, `markNotificationAsRead`, `markAllNotificationsAsRead`.
+Berkas ini menyediakan 2 fungsi utama: `markNotificationAsRead`, `markAllNotificationsAsRead`.
 
 ## Letak berkas
 
@@ -20,17 +20,11 @@ ke basis data lewat sini, dan di sini juga pemeriksaan izin dilakukan.
 
 ## Isi yang bisa dipakai berkas lain
 
-### `createNotification`
-
-Jenis: **fungsi async**
-
-### `notifyMutation`
-
-Jenis: **fungsi async**
-
 ### `markNotificationAsRead`
 
 Jenis: **fungsi async**
+
+Aksi notifikasi yang memang perlu dipanggil dari client. `createNotification` dan `notifyMutation` SENGAJA TIDAK ada di sini. Dulu keduanya server action di berkas ini, sehingga siapa pun yang login bisa memanggil `createNotification({ userId: "<orang lain>", ... })` langsung dari browser. Keduanya sekarang tinggal di `@/lib/notifikasi-internal` yang tidak punya direktif "use server". /
 
 ### `markAllNotificationsAsRead`
 
@@ -38,7 +32,6 @@ Jenis: **fungsi async**
 
 ## Pustaka luar yang dipakai
 
-- `@prisma/client`
 - `next/cache`
 
 ## Berkas lain di proyek ini yang dipanggil
@@ -51,9 +44,4 @@ Jenis: **fungsi async**
 Kalau kamu mengubah nama fungsi atau bentuk datanya, berkas-berkas ini ikut terdampak:
 
 - [`components/layout/NotificationBell.tsx`](./components__layout__NotificationBell.md)
-- [`lib/actions/evidence.ts`](./lib__actions__evidence.md)
-- [`lib/actions/lkps.ts`](./lib__actions__lkps.md)
-- [`lib/actions/mahasiswa.ts`](./lib__actions__mahasiswa.md)
-- [`lib/actions/matakuliah.ts`](./lib__actions__matakuliah.md)
-- [`lib/actions/user.ts`](./lib__actions__user.md)
 

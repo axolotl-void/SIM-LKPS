@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Skema & Seed Basis Data |
-| **Ukuran** | 496 baris |
+| **Ukuran** | 564 baris |
 | **Jenis** | modul biasa |
 | **Dipakai oleh** | 0 berkas |
 

@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Berkas Akar Repo |
-| **Ukuran** | 55 baris |
+| **Ukuran** | 57 baris |
 | **Jenis** | modul biasa |
 | **Dipakai oleh** | 0 berkas |
 

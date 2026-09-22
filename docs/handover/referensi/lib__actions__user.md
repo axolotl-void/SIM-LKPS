@@ -58,9 +58,9 @@ Reset user password /
 
 ## Berkas lain di proyek ini yang dipanggil
 
-- [`lib/actions/notification.ts`](./lib__actions__notification.md)
 - [`lib/auth.ts`](./lib__auth.md)
 - [`lib/db.ts`](./lib__db.md)
+- [`lib/notifikasi-internal.ts`](./lib__notifikasi-internal.md)
 - [`lib/utils/audit.ts`](./lib__utils__audit.md)
 - [`lib/utils/permissions.ts`](./lib__utils__permissions.md)
 - [`lib/validations/auth.ts`](./lib__validations__auth.md)

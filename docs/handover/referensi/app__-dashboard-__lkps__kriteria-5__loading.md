@@ -1,4 +1,4 @@
-# `app/(dashboard)/lkps/kriteria-5-6/loading.tsx`
+# `app/(dashboard)/lkps/kriteria-5/loading.tsx`
 
 | | |
 |---|---|
@@ -13,7 +13,7 @@ Tampilan sementara yang muncul saat halaman ini masih dimuat.
 
 ## Letak berkas
 
-Dari akar repo: `app/(dashboard)/lkps/kriteria-5-6/loading.tsx`.
+Dari akar repo: `app/(dashboard)/lkps/kriteria-5/loading.tsx`.
 
 ## Isi yang bisa dipakai berkas lain
 

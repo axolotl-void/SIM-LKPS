@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Halaman & API (App Router) |
-| **Ukuran** | 188 baris |
+| **Ukuran** | 195 baris |
 | **Jenis** | modul biasa |
 | **Alamat URL** | `/lkps/kriteria-6` |
 | **Dipakai oleh** | 0 berkas |

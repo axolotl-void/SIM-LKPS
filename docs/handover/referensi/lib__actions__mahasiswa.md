@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Logika Server, Utilitas, Export |
-| **Ukuran** | 109 baris |
+| **Ukuran** | 129 baris |
 | **Jenis** | Server Action (`"use server"`) |
 | **Dipakai oleh** | 2 berkas |
 
@@ -34,14 +34,16 @@ Jenis: **fungsi async**
 
 ## Pustaka luar yang dipakai
 
+- `@prisma/client`
 - `next/cache`
 
 ## Berkas lain di proyek ini yang dipanggil
 
-- [`lib/actions/notification.ts`](./lib__actions__notification.md)
 - [`lib/auth.ts`](./lib__auth.md)
 - [`lib/db.ts`](./lib__db.md)
+- [`lib/notifikasi-internal.ts`](./lib__notifikasi-internal.md)
 - [`lib/utils/audit.ts`](./lib__utils__audit.md)
+- [`lib/utils/permissions.ts`](./lib__utils__permissions.md)
 
 ## Berkas yang memanggil berkas ini
 

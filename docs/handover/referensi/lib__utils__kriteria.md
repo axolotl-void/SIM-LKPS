@@ -21,7 +21,7 @@ Dari akar repo: `lib/utils/kriteria.ts`.
 
 Jenis: **fungsi**
 
-Slug route halaman kriteria, mis. `kriteria-5-6`.
+Slug route halaman kriteria, mis. `kriteria-5`.
 
 ### `kriteriaNama`
 

@@ -10,7 +10,7 @@ Setiap berkas sumber punya halamannya sendiri di folder ini.
 > node docs/handover/generate-referensi.mjs
 > ```
 
-Terakhir dibuat: 2026-09-20 · 263 berkas · 48.252 baris kode
+Terakhir dibuat: 2026-09-22 · 271 berkas · 48.890 baris kode
 
 ## Cara memakai halaman ini
 
@@ -24,7 +24,7 @@ lebih cepat buka `../03-ubah-fitur-ini.md`.
 
 ## Halaman & API (App Router)
 
-125 berkas · 16.816 baris
+126 berkas · 16.931 baris
 
 | Berkas | Baris | URL | Ringkas |
 |---|---:|---|---|
@@ -43,9 +43,9 @@ lebih cepat buka `../03-ubah-fitur-ini.md`.
 | [`app/(dashboard)/dashboard/Topbar.tsx`](./app__-dashboard-__dashboard__Topbar.md) | 13 | — | This component is deprecated - header is now in the layout Kept for backwards compatibility but renders nothin |
 | [`app/(dashboard)/developer/DeveloperClient.tsx`](./app__-dashboard-__developer__DeveloperClient.md) | 540 | — | DeveloperClient |
 | [`app/(dashboard)/developer/page.tsx`](./app__-dashboard-__developer__page.md) | 140 | `/developer` | metadata, DeveloperPage |
-| [`app/(dashboard)/error.tsx`](./app__-dashboard-__error.md) | 35 | — | DashboardError |
-| [`app/(dashboard)/evidence/evidence-client.tsx`](./app__-dashboard-__evidence__evidence-client.md) | 481 | — | EvidenceClient |
-| [`app/(dashboard)/evidence/page.tsx`](./app__-dashboard-__evidence__page.md) | 60 | `/evidence` | metadata, EvidencePage |
+| [`app/(dashboard)/error.tsx`](./app__-dashboard-__error.md) | 44 | — | DashboardError |
+| [`app/(dashboard)/evidence/evidence-client.tsx`](./app__-dashboard-__evidence__evidence-client.md) | 489 | — | EvidenceClient |
+| [`app/(dashboard)/evidence/page.tsx`](./app__-dashboard-__evidence__page.md) | 67 | `/evidence` | metadata, EvidencePage |
 | [`app/(dashboard)/forbidden/page.tsx`](./app__-dashboard-__forbidden__page.md) | 21 | `/forbidden` | ForbiddenPage |
 | [`app/(dashboard)/laporan/LaporanClient.tsx`](./app__-dashboard-__laporan__LaporanClient.md) | 241 | — | LaporanClient |
 | [`app/(dashboard)/laporan/page.tsx`](./app__-dashboard-__laporan__page.md) | 107 | `/laporan` | metadata, LaporanPage |
@@ -59,7 +59,7 @@ lebih cepat buka `../03-ubah-fitur-ini.md`.
 | [`app/(dashboard)/led/bab-3/page.tsx`](./app__-dashboard-__led__bab-3__page.md) | 42 | `/led/bab-3` | metadata, LedBab3Page |
 | [`app/(dashboard)/led/export/page.tsx`](./app__-dashboard-__led__export__page.md) | 218 | `/led/export` | metadata, LedExportPage |
 | [`app/(dashboard)/led/page.tsx`](./app__-dashboard-__led__page.md) | 219 | `/led` | metadata, LedIndexPage |
-| [`app/(dashboard)/lkps/kriteria-1/error.tsx`](./app__-dashboard-__lkps__kriteria-1__error.md) | 45 | — | Bab1Error |
+| [`app/(dashboard)/lkps/kriteria-1/error.tsx`](./app__-dashboard-__lkps__kriteria-1__error.md) | 51 | — | Bab1Error |
 | [`app/(dashboard)/lkps/kriteria-1/loading.tsx`](./app__-dashboard-__lkps__kriteria-1__loading.md) | 6 | — | Loading |
 | [`app/(dashboard)/lkps/kriteria-1/page.tsx`](./app__-dashboard-__lkps__kriteria-1__page.md) | 186 | `/lkps/kriteria-1` | metadata, Bab1Page |
 | [`app/(dashboard)/lkps/kriteria-1/tabel-1a1/page.tsx`](./app__-dashboard-__lkps__kriteria-1__tabel-1a1__page.md) | 135 | `/lkps/kriteria-1/tabel-1a1` | metadata, Tabel1A1Page |
@@ -97,33 +97,34 @@ lebih cepat buka `../03-ubah-fitur-ini.md`.
 | [`app/(dashboard)/lkps/kriteria-4/tabel-4c1/page.tsx`](./app__-dashboard-__lkps__kriteria-4__tabel-4c1__page.md) | 150 | `/lkps/kriteria-4/tabel-4c1` | metadata, Tabel4C1Page |
 | [`app/(dashboard)/lkps/kriteria-4/tabel-4c2/page.tsx`](./app__-dashboard-__lkps__kriteria-4__tabel-4c2__page.md) | 152 | `/lkps/kriteria-4/tabel-4c2` | metadata, Tabel4C2Page |
 | [`app/(dashboard)/lkps/kriteria-4/tabel-4c3/page.tsx`](./app__-dashboard-__lkps__kriteria-4__tabel-4c3__page.md) | 152 | `/lkps/kriteria-4/tabel-4c3` | metadata, Tabel4C3Page |
-| [`app/(dashboard)/lkps/kriteria-5-6/loading.tsx`](./app__-dashboard-__lkps__kriteria-5-6__loading.md) | 6 | — | Loading |
-| [`app/(dashboard)/lkps/kriteria-5-6/page.tsx`](./app__-dashboard-__lkps__kriteria-5-6__page.md) | 230 | `/lkps/kriteria-5-6` | metadata, Bab5Page |
-| [`app/(dashboard)/lkps/kriteria-5-6/tabel-51/page.tsx`](./app__-dashboard-__lkps__kriteria-5-6__tabel-51__page.md) | 124 | `/lkps/kriteria-5-6/tabel-51` | metadata, Tabel51Page |
-| [`app/(dashboard)/lkps/kriteria-5-6/tabel-52/page.tsx`](./app__-dashboard-__lkps__kriteria-5-6__tabel-52__page.md) | 149 | `/lkps/kriteria-5-6/tabel-52` | metadata, Tabel52Page |
+| [`app/(dashboard)/lkps/kriteria-5/loading.tsx`](./app__-dashboard-__lkps__kriteria-5__loading.md) | 6 | — | Loading |
+| [`app/(dashboard)/lkps/kriteria-5/page.tsx`](./app__-dashboard-__lkps__kriteria-5__page.md) | 194 | `/lkps/kriteria-5` | metadata, Kriteria5Page |
+| [`app/(dashboard)/lkps/kriteria-5/tabel-51/page.tsx`](./app__-dashboard-__lkps__kriteria-5__tabel-51__page.md) | 124 | `/lkps/kriteria-5/tabel-51` | metadata, Tabel51Page |
+| [`app/(dashboard)/lkps/kriteria-5/tabel-52/page.tsx`](./app__-dashboard-__lkps__kriteria-5__tabel-52__page.md) | 149 | `/lkps/kriteria-5/tabel-52` | metadata, Tabel52Page |
 | [`app/(dashboard)/lkps/kriteria-6/loading.tsx`](./app__-dashboard-__lkps__kriteria-6__loading.md) | 6 | — | Loading |
-| [`app/(dashboard)/lkps/kriteria-6/page.tsx`](./app__-dashboard-__lkps__kriteria-6__page.md) | 188 | `/lkps/kriteria-6` | metadata, Bab6Page |
+| [`app/(dashboard)/lkps/kriteria-6/page.tsx`](./app__-dashboard-__lkps__kriteria-6__page.md) | 195 | `/lkps/kriteria-6` | metadata, Bab6Page |
 | [`app/(dashboard)/lkps/kriteria-6/tabel-61/page.tsx`](./app__-dashboard-__lkps__kriteria-6__tabel-61__page.md) | 160 | `/lkps/kriteria-6/tabel-61` | metadata, Tabel61Page |
 | [`app/(dashboard)/lkps/kriteria-6/tabel-62/page.tsx`](./app__-dashboard-__lkps__kriteria-6__tabel-62__page.md) | 160 | `/lkps/kriteria-6/tabel-62` | metadata, Tabel62Page |
 | [`app/(dashboard)/lkps/submissions/page.tsx`](./app__-dashboard-__lkps__submissions__page.md) | 104 | `/lkps/submissions` | metadata, SubmissionsPage |
 | [`app/(dashboard)/lkps/submissions/submissions-client.tsx`](./app__-dashboard-__lkps__submissions__submissions-client.md) | 200 | — | SubmissionStatusClient |
 | [`app/(dashboard)/lkps/validasi/page.tsx`](./app__-dashboard-__lkps__validasi__page.md) | 104 | `/lkps/validasi` | metadata, ValidasiPage |
 | [`app/(dashboard)/loading.tsx`](./app__-dashboard-__loading.md) | 6 | — | No loading screen for dashboard — content loads fast enough. Full LoadingScreen only shows inside bab-* table  |
-| [`app/(dashboard)/master/dosen/DosenActions.tsx`](./app__-dashboard-__master__dosen__DosenActions.md) | 104 | — | DosenActions |
-| [`app/(dashboard)/master/dosen/new/page.tsx`](./app__-dashboard-__master__dosen__new__page.md) | 259 | `/master/dosen/new` | NewDosenPage |
-| [`app/(dashboard)/master/dosen/page.tsx`](./app__-dashboard-__master__dosen__page.md) | 115 | `/master/dosen` | metadata, DosenPage |
-| [`app/(dashboard)/master/mahasiswa/[id]/edit/page.tsx`](./app__-dashboard-__master__mahasiswa__-id-__edit__page.md) | 21 | `/master/mahasiswa/[id]/edit` | EditMahasiswaPage |
-| [`app/(dashboard)/master/mahasiswa/MahasiswaActions.tsx`](./app__-dashboard-__master__mahasiswa__MahasiswaActions.md) | 103 | — | MahasiswaActions |
+| [`app/(dashboard)/master/dosen/DosenActions.tsx`](./app__-dashboard-__master__dosen__DosenActions.md) | 110 | — | DosenActions |
+| [`app/(dashboard)/master/dosen/new/NewDosenForm.tsx`](./app__-dashboard-__master__dosen__new__NewDosenForm.md) | 259 | — | NewDosenForm |
+| [`app/(dashboard)/master/dosen/new/page.tsx`](./app__-dashboard-__master__dosen__new__page.md) | 17 | `/master/dosen/new` | NewDosenPage |
+| [`app/(dashboard)/master/dosen/page.tsx`](./app__-dashboard-__master__dosen__page.md) | 130 | `/master/dosen` | metadata, DosenPage |
+| [`app/(dashboard)/master/mahasiswa/[id]/edit/page.tsx`](./app__-dashboard-__master__mahasiswa__-id-__edit__page.md) | 27 | `/master/mahasiswa/[id]/edit` | EditMahasiswaPage |
+| [`app/(dashboard)/master/mahasiswa/MahasiswaActions.tsx`](./app__-dashboard-__master__mahasiswa__MahasiswaActions.md) | 109 | — | MahasiswaActions |
 | [`app/(dashboard)/master/mahasiswa/MahasiswaForm.tsx`](./app__-dashboard-__master__mahasiswa__MahasiswaForm.md) | 190 | — | MahasiswaForm |
-| [`app/(dashboard)/master/mahasiswa/new/page.tsx`](./app__-dashboard-__master__mahasiswa__new__page.md) | 6 | `/master/mahasiswa/new` | NewMahasiswaPage |
-| [`app/(dashboard)/master/mahasiswa/page.tsx`](./app__-dashboard-__master__mahasiswa__page.md) | 175 | `/master/mahasiswa` | metadata, MahasiswaPage |
+| [`app/(dashboard)/master/mahasiswa/new/page.tsx`](./app__-dashboard-__master__mahasiswa__new__page.md) | 17 | `/master/mahasiswa/new` | NewMahasiswaPage |
+| [`app/(dashboard)/master/mahasiswa/page.tsx`](./app__-dashboard-__master__mahasiswa__page.md) | 190 | `/master/mahasiswa` | metadata, MahasiswaPage |
 | [`app/(dashboard)/master/mahasiswa/SearchBar.tsx`](./app__-dashboard-__master__mahasiswa__SearchBar.md) | 49 | — | SearchBar |
 | [`app/(dashboard)/master/MasterActions.tsx`](./app__-dashboard-__master__MasterActions.md) | 44 | — | MasterActions |
-| [`app/(dashboard)/master/mata-kuliah/[id]/edit/page.tsx`](./app__-dashboard-__master__mata-kuliah__-id-__edit__page.md) | 21 | `/master/mata-kuliah/[id]/edit` | EditMataKuliahPage |
-| [`app/(dashboard)/master/mata-kuliah/MataKuliahActions.tsx`](./app__-dashboard-__master__mata-kuliah__MataKuliahActions.md) | 103 | — | MataKuliahActions |
+| [`app/(dashboard)/master/mata-kuliah/[id]/edit/page.tsx`](./app__-dashboard-__master__mata-kuliah__-id-__edit__page.md) | 27 | `/master/mata-kuliah/[id]/edit` | EditMataKuliahPage |
+| [`app/(dashboard)/master/mata-kuliah/MataKuliahActions.tsx`](./app__-dashboard-__master__mata-kuliah__MataKuliahActions.md) | 109 | — | MataKuliahActions |
 | [`app/(dashboard)/master/mata-kuliah/MataKuliahForm.tsx`](./app__-dashboard-__master__mata-kuliah__MataKuliahForm.md) | 187 | — | MataKuliahForm |
-| [`app/(dashboard)/master/mata-kuliah/new/page.tsx`](./app__-dashboard-__master__mata-kuliah__new__page.md) | 6 | `/master/mata-kuliah/new` | NewMataKuliahPage |
-| [`app/(dashboard)/master/mata-kuliah/page.tsx`](./app__-dashboard-__master__mata-kuliah__page.md) | 167 | `/master/mata-kuliah` | metadata, MataKuliahPage |
+| [`app/(dashboard)/master/mata-kuliah/new/page.tsx`](./app__-dashboard-__master__mata-kuliah__new__page.md) | 17 | `/master/mata-kuliah/new` | NewMataKuliahPage |
+| [`app/(dashboard)/master/mata-kuliah/page.tsx`](./app__-dashboard-__master__mata-kuliah__page.md) | 182 | `/master/mata-kuliah` | metadata, MataKuliahPage |
 | [`app/(dashboard)/master/mata-kuliah/SearchBar.tsx`](./app__-dashboard-__master__mata-kuliah__SearchBar.md) | 49 | — | SearchBar |
 | [`app/(dashboard)/master/page.tsx`](./app__-dashboard-__master__page.md) | 430 | `/master` | metadata, MasterDataPage |
 | [`app/(dashboard)/master/prodi/page.tsx`](./app__-dashboard-__master__prodi__page.md) | 28 | `/master/prodi` | metadata, ProdiPage |
@@ -156,18 +157,18 @@ lebih cepat buka `../03-ubah-fitur-ini.md`.
 
 ## Komponen Antarmuka
 
-68 berkas · 18.699 baris
+67 berkas · 18.353 baris
 
 | Berkas | Baris | URL | Ringkas |
 |---|---:|---|---|
 | [`components/forms/create-user-dialog.tsx`](./components__forms__create-user-dialog.md) | 157 | — | CreateUserDialog |
 | [`components/forms/delete-user-dialog.tsx`](./components__forms__delete-user-dialog.md) | 145 | — | DeleteUserDialog |
 | [`components/forms/edit-user-dialog.tsx`](./components__forms__edit-user-dialog.md) | 275 | — | EditableUser, EditUserDialog |
-| [`components/forms/login-form.tsx`](./components__forms__login-form.md) | 225 | — | LoginForm |
+| [`components/forms/login-form.tsx`](./components__forms__login-form.md) | 238 | — | LoginForm |
 | [`components/layout/developer-badge.tsx`](./components__layout__developer-badge.md) | 261 | — | DeveloperBadge |
 | [`components/layout/header.tsx`](./components__layout__header.md) | 157 | — | Header |
-| [`components/layout/NotificationBell.tsx`](./components__layout__NotificationBell.md) | 233 | — | NotificationBell |
-| [`components/layout/sidebar.tsx`](./components__layout__sidebar.md) | 321 | — | Sidebar |
+| [`components/layout/NotificationBell.tsx`](./components__layout__NotificationBell.md) | 236 | — | NotificationBell |
+| [`components/layout/sidebar.tsx`](./components__layout__sidebar.md) | 322 | — | Sidebar |
 | [`components/layout/theme-sync.tsx`](./components__layout__theme-sync.md) | 60 | — | ThemeSync |
 | [`components/layout/theme-toggle.tsx`](./components__layout__theme-toggle.md) | 56 | — | ThemeToggle |
 | [`components/led/ikon.ts`](./components__led__ikon.md) | 32 | — | IKON_LED, ikonLed |
@@ -221,7 +222,6 @@ lebih cepat buka `../03-ubah-fitur-ini.md`.
 | [`components/tables/tabel-4c3-client.tsx`](./components__tables__tabel-4c3-client.md) | 344 | — | Tabel4C3Client |
 | [`components/tables/tabel-51-client.tsx`](./components__tables__tabel-51-client.md) | 585 | — | Tabel51Client |
 | [`components/tables/tabel-52-client.tsx`](./components__tables__tabel-52-client.md) | 612 | — | Tabel52Client |
-| [`components/tables/tabel-6-client.tsx`](./components__tables__tabel-6-client.md) | 363 | — | Tabel6Client |
 | [`components/tables/tabel-61-client.tsx`](./components__tables__tabel-61-client.md) | 432 | — | Tabel61Client |
 | [`components/tables/tabel-62-client.tsx`](./components__tables__tabel-62-client.md) | 390 | — | Tabel62Client |
 | [`components/tables/user-table.tsx`](./components__tables__user-table.md) | 192 | — | UserTable |
@@ -231,20 +231,21 @@ lebih cepat buka `../03-ubah-fitur-ini.md`.
 
 ## Logika Server, Utilitas, Export
 
-37 berkas · 6.501 baris
+41 berkas · 6.964 baris
 
 | Berkas | Baris | URL | Ringkas |
 |---|---:|---|---|
-| [`lib/actions/auth.ts`](./lib__actions__auth.md) | 139 | — | LoginState, loginAction, logoutAction |
-| [`lib/actions/evidence.ts`](./lib__actions__evidence.md) | 306 | — | uploadEvidence, getEvidenceList, deleteEvidence, addEvidenceLink |
+| [`lib/actions/auth.ts`](./lib__actions__auth.md) | 170 | — | LoginState, loginAction, logoutAction |
+| [`lib/actions/evidence.ts`](./lib__actions__evidence.md) | 292 | — | uploadEvidence, getEvidenceList, deleteEvidence, addEvidenceLink |
 | [`lib/actions/led.ts`](./lib__actions__led.md) | 311 | — | saveLedIsian, setLedStatus, addLedEvidence, deleteLedEvidence |
-| [`lib/actions/lkps.ts`](./lib__actions__lkps.md) | 559 | — | upsertLkpsRow, deleteLkpsRow, submitLkpsTabel, validateLkpsTabel |
-| [`lib/actions/mahasiswa.ts`](./lib__actions__mahasiswa.md) | 109 | — | createMahasiswa, updateMahasiswa, deleteMahasiswa |
-| [`lib/actions/matakuliah.ts`](./lib__actions__matakuliah.md) | 109 | — | createMatakuliah, updateMatakuliah, deleteMatakuliah |
-| [`lib/actions/notification.ts`](./lib__actions__notification.md) | 129 | — | createNotification, notifyMutation, markNotificationAsRead, markAllNotificationsAsRead |
+| [`lib/actions/lkps.ts`](./lib__actions__lkps.md) | 572 | — | upsertLkpsRow, deleteLkpsRow, submitLkpsTabel, validateLkpsTabel |
+| [`lib/actions/mahasiswa.ts`](./lib__actions__mahasiswa.md) | 129 | — | createMahasiswa, updateMahasiswa, deleteMahasiswa |
+| [`lib/actions/matakuliah.ts`](./lib__actions__matakuliah.md) | 129 | — | createMatakuliah, updateMatakuliah, deleteMatakuliah |
+| [`lib/actions/notification.ts`](./lib__actions__notification.md) | 48 | — | markNotificationAsRead, markAllNotificationsAsRead |
 | [`lib/actions/penilaian.ts`](./lib__actions__penilaian.md) | 333 | — | setSkor, setSkorBanyak, finalisasiSesi, bukaKembaliSesi |
 | [`lib/actions/user.ts`](./lib__actions__user.md) | 279 | — | getUsers, createUser, updateUser, deleteUser |
-| [`lib/auth.ts`](./lib__auth.md) | 98 | — | — |
+| [`lib/auth.config.ts`](./lib__auth.config.md) | 69 | — | authConfig |
+| [`lib/auth.ts`](./lib__auth.md) | 103 | — | KODE_TERLALU_BANYAK |
 | [`lib/config/developer.ts`](./lib__config__developer.md) | 52 | — | DeveloperInfo, developer |
 | [`lib/db.ts`](./lib__db.md) | 14 | — | db |
 | [`lib/export/excel.ts`](./lib__export__excel.md) | 341 | — | Excel Export Module Generates Excel (.xlsx) files using ExcelJS Single sheet, all tables grouped by BAB with p |
@@ -256,6 +257,7 @@ lebih cepat buka `../03-ubah-fitur-ini.md`.
 | [`lib/export/word.ts`](./lib__export__word.md) | 395 | — | Word Export Module Generates Word (.docx) files using docx library Single document with all tables grouped by  |
 | [`lib/format.ts`](./lib__format.md) | 32 | — | formatDate, formatCurrency, formatNumber, formatSKS |
 | [`lib/minio.ts`](./lib__minio.md) | 64 | — | ensureBucket, uploadFile, getDownloadUrl, deleteFile |
+| [`lib/notifikasi-internal.ts`](./lib__notifikasi-internal.md) | 124 | — | createNotification, notifyMutation |
 | [`lib/types/auth.ts`](./lib__types__auth.md) | 23 | — | — |
 | [`lib/utils/audit.ts`](./lib__utils__audit.md) | 62 | — | createAuditLog, logAccessDenied |
 | [`lib/utils/db-retry.ts`](./lib__utils__db-retry.md) | 65 | — | Retry untuk operasi database yang gagal karena gangguan koneksi sesaat. Database produksi ada di Neon (serverl |
@@ -266,29 +268,31 @@ lebih cepat buka `../03-ubah-fitur-ini.md`.
 | [`lib/utils/led-progress.ts`](./lib__utils__led-progress.md) | 138 | — | KARAKTER_PER_HALAMAN, BATAS_HALAMAN_LED, BATAS_KARAKTER_PER_BAGIAN, RingkasanIsian |
 | [`lib/utils/led-query.ts`](./lib__utils__led-query.md) | 104 | — | STATUS_KOSONG, ambilBagianLed, ambilRingkasanLed, ambilStatusPerKode |
 | [`lib/utils/led-rute.ts`](./lib__utils__led-rute.md) | 19 | — | Pemetaan kode bagian LED → rute halaman editornya. Dipakai untuk menautkan daftar bagian kosong di dialog expo |
+| [`lib/utils/login-rate-limit.ts`](./lib__utils__login-rate-limit.md) | 205 | — | Pembatas percobaan login — berbasis DATABASE, bukan memori proses. MASALAH YANG DIPERBAIKI Pembatas sebelumnya |
 | [`lib/utils/markdown.tsx`](./lib__utils__markdown.md) | 231 | — | renderMarkdown |
 | [`lib/utils/penilaian-query.ts`](./lib__utils__penilaian-query.md) | 105 | — | tahunAktifPenilaian, sesiPenilaian, ButirLengkap, ambilButirPenilaian |
 | [`lib/utils/penilaian.ts`](./lib__utils__penilaian.md) | 317 | — | Kalkulasi Matriks Penilaian LAM INFOKOM 2.1. Fungsi di file ini MURNI (tanpa DB, tanpa React) supaya gampang d |
-| [`lib/utils/permissions.ts`](./lib__utils__permissions.md) | 152 | — | hasPermission, hasAllPermissions, hasAnyPermission, getRolePermissions |
+| [`lib/utils/permissions.ts`](./lib__utils__permissions.md) | 153 | — | hasPermission, hasAllPermissions, hasAnyPermission, getRolePermissions |
+| [`lib/utils/pesan-galat.ts`](./lib__utils__pesan-galat.md) | 70 | — | Pesan galat yang aman ditampilkan ke pengguna. MASALAH YANG DIPERBAIKI Beberapa halaman menampilkan `error.mes |
 | [`lib/validations/auth.ts`](./lib__validations__auth.md) | 32 | — | loginSchema, createUserSchema, updateUserSchema, resetPasswordSchema |
 | [`lib/validations/master.ts`](./lib__validations__master.md) | 51 | — | tahunAkademikSchema, dosenSchema, mahasiswaSchema, mataKuliahSchema |
 
 ## Skema & Seed Basis Data
 
-6 berkas · 3.618 baris
+6 berkas · 3.718 baris
 
 | Berkas | Baris | URL | Ringkas |
 |---|---:|---|---|
-| [`prisma/schema.prisma`](./prisma__schema.md) | 539 | — | SIM-LKPS — Initial Prisma Schema Agent: CTO Agent Sprint: 0 Version: 1.0 |
+| [`prisma/schema.prisma`](./prisma__schema.md) | 571 | — | SIM-LKPS — Initial Prisma Schema Agent: CTO Agent Sprint: 0 Version: 1.0 |
 | [`prisma/seed-data/butir-penilaian.json`](./prisma__seed-data__butir-penilaian.md) | 1398 | — | — |
 | [`prisma/seed-data/led-bagian.json`](./prisma__seed-data__led-bagian.md) | 980 | — | — |
 | [`prisma/seed-led.ts`](./prisma__seed-led.md) | 177 | — | Seed modul LED + Matriks Penilaian — LAM INFOKOM 2.1 Modul terpisah dari seed LKPS supaya tidak mengganggu dat |
 | [`prisma/seed-modul-baru.ts`](./prisma__seed-modul-baru.md) | 28 | — | Entry point khusus modul LED + Matriks Penilaian. Dipakai untuk mengisi DB yang SUDAH ADA ISINYA tanpa menjala |
-| [`prisma/seed.ts`](./prisma__seed.md) | 496 | — | — |
+| [`prisma/seed.ts`](./prisma__seed.md) | 564 | — | — |
 
 ## Pengujian
 
-20 berkas · 2.025 baris
+25 berkas · 2.484 baris
 
 | Berkas | Baris | URL | Ringkas |
 |---|---:|---|---|
@@ -297,33 +301,37 @@ lebih cepat buka `../03-ubah-fitur-ini.md`.
 | [`tests/cleanup-dosen-uji.mjs`](./tests__cleanup-dosen-uji.md) | 26 | — | Hapus baris dosen uji (NIDN 9999999999) dari database. Dipakai setelah tests/e2e-dosen-http.mjs, karena API ti |
 | [`tests/db-retry.test.ts`](./tests__db-retry.test.md) | 77 | — | — |
 | [`tests/e2e-dosen-http.mjs`](./tests__e2e-dosen-http.md) | 188 | — | Uji end-to-end endpoint POST /api/master/dosen lewat HTTP sungguhan. Alur: ambil CSRF -> login kredensial -> P |
-| [`tests/export-led.spec.ts`](./tests__export-led.spec.md) | 169 | — | — |
+| [`tests/export-led.spec.ts`](./tests__export-led.spec.md) | 170 | — | — |
 | [`tests/export.spec.ts`](./tests__export.spec.md) | 36 | — | — |
-| [`tests/fixtures.ts`](./tests__fixtures.md) | 52 | — | ROLES, RoleKey, STORAGE_BY_ROLE, login |
+| [`tests/fixtures.ts`](./tests__fixtures.md) | 95 | — | ROLES, RoleKey, STORAGE_BY_ROLE, login |
 | [`tests/global-setup-penilaian.ts`](./tests__global-setup-penilaian.md) | 37 | — | globalSetup |
+| [`tests/global-setup-pesan.ts`](./tests__global-setup-pesan.md) | 38 | — | Persiapan sebelum uji "pesan pembatas login". Uji itu sengaja menghabiskan kuota percobaan gagal (10x) untuk s |
 | [`tests/led.spec.ts`](./tests__led.spec.md) | 184 | — | — |
 | [`tests/lkps-tables.spec.ts`](./tests__lkps-tables.spec.md) | 151 | — | — |
-| [`tests/penilaian.spec.ts`](./tests__penilaian.spec.md) | 198 | — | — |
+| [`tests/middleware-guard.spec.ts`](./tests__middleware-guard.spec.md) | 87 | — | — |
+| [`tests/penilaian.spec.ts`](./tests__penilaian.spec.md) | 199 | — | — |
 | [`tests/permissions.spec.ts`](./tests__permissions.spec.md) | 69 | — | — |
-| [`tests/playwright.config.ts`](./tests__playwright.config.md) | 28 | — | — |
+| [`tests/playwright-pesan.config.ts`](./tests__playwright-pesan.config.md) | 22 | — | — |
+| [`tests/playwright.config.ts`](./tests__playwright.config.md) | 33 | — | — |
 | [`tests/setup.ts`](./tests__setup.md) | 13 | — | — |
+| [`tests/uji-pesan-pembatas.spec.ts`](./tests__uji-pesan-pembatas.spec.md) | 87 | — | — |
 | [`tests/unit/bug-01-permission-dosen.test.ts`](./tests__unit__bug-01-permission-dosen.test.md) | 37 | — | — |
 | [`tests/unit/led-dokumen.test.ts`](./tests__unit__led-dokumen.test.md) | 267 | — | — |
 | [`tests/unit/penilaian.test.ts`](./tests__unit__penilaian.test.md) | 301 | — | — |
+| [`tests/unit/permission-guards.test.ts`](./tests__unit__permission-guards.test.md) | 175 | — | — |
 | [`tests/utils.test.ts`](./tests__utils.test.md) | 52 | — | — |
 | [`tests/workflow.spec.ts`](./tests__workflow.spec.md) | 37 | — | — |
 
 ## Berkas Akar Repo
 
-7 berkas · 593 baris
+6 berkas · 440 baris
 
 | Berkas | Baris | URL | Ringkas |
 |---|---:|---|---|
 | [`docker-compose.yml`](./docker-compose.yml.md) | 57 | — | — |
 | [`eslint.config.js`](./eslint.config.md) | 27 | — | — |
-| [`middleware.ts`](./middleware.md) | 96 | — | middleware, config |
-| [`next.config.ts`](./next.config.md) | 55 | — | — |
+| [`middleware.ts`](./middleware.md) | 174 | — | middleware, config |
+| [`next.config.ts`](./next.config.md) | 57 | — | — |
 | [`package.json`](./package.md) | 94 | — | — |
-| [`README.md`](./README.md.md) | 233 | — | — |
 | [`tsconfig.json`](./tsconfig.md) | 31 | — | — |
 

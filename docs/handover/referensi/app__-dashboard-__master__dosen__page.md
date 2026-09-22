@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Area** | Halaman & API (App Router) |
-| **Ukuran** | 115 baris |
+| **Ukuran** | 130 baris |
 | **Jenis** | modul biasa |
 | **Alamat URL** | `/master/dosen` |
 | **Dipakai oleh** | 0 berkas |
@@ -34,6 +34,7 @@ Kalau mau mengubah apa yang tampil di alamat itu, **berkas ini yang pertama dibu
 
 ## Pustaka luar yang dipakai
 
+- `@prisma/client`
 - `lucide-react`
 - `next`
 - `next/link`
@@ -44,4 +45,5 @@ Kalau mau mengubah apa yang tampil di alamat itu, **berkas ini yang pertama dibu
 - [`app/(dashboard)/master/dosen/DosenActions.tsx`](./app__-dashboard-__master__dosen__DosenActions.md)
 - [`lib/auth.ts`](./lib__auth.md)
 - [`lib/db.ts`](./lib__db.md)
+- [`lib/utils/permissions.ts`](./lib__utils__permissions.md)
 

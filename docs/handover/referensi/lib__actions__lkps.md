@@ -3,9 +3,9 @@
 | | |
 |---|---|
 | **Area** | Logika Server, Utilitas, Export |
-| **Ukuran** | 559 baris |
+| **Ukuran** | 572 baris |
 | **Jenis** | Server Action (`"use server"`) |
-| **Dipakai oleh** | 35 berkas |
+| **Dipakai oleh** | 34 berkas |
 
 ## Maksud berkas
 
@@ -61,9 +61,9 @@ Jenis: **fungsi async**
 
 ## Berkas lain di proyek ini yang dipanggil
 
-- [`lib/actions/notification.ts`](./lib__actions__notification.md)
 - [`lib/auth.ts`](./lib__auth.md)
 - [`lib/db.ts`](./lib__db.md)
+- [`lib/notifikasi-internal.ts`](./lib__notifikasi-internal.md)
 - [`lib/utils/audit.ts`](./lib__utils__audit.md)
 - [`lib/utils/kriteria.ts`](./lib__utils__kriteria.md)
 - [`lib/utils/permissions.ts`](./lib__utils__permissions.md)
@@ -103,7 +103,6 @@ Kalau kamu mengubah nama fungsi atau bentuk datanya, berkas-berkas ini ikut terd
 - [`components/tables/tabel-4c3-client.tsx`](./components__tables__tabel-4c3-client.md)
 - [`components/tables/tabel-51-client.tsx`](./components__tables__tabel-51-client.md)
 - [`components/tables/tabel-52-client.tsx`](./components__tables__tabel-52-client.md)
-- [`components/tables/tabel-6-client.tsx`](./components__tables__tabel-6-client.md)
 - [`components/tables/tabel-61-client.tsx`](./components__tables__tabel-61-client.md)
 - [`components/tables/tabel-62-client.tsx`](./components__tables__tabel-62-client.md)
 - [`components/tables/validation-controls.tsx`](./components__tables__validation-controls.md)
