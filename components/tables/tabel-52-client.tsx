@@ -181,7 +181,7 @@ export function Tabel52Client({ initialRows, tahunAkademikId, tabelKode, status,
       {/* Top bar */}
       <div className="flex items-center justify-between">
         <Link
-          href="/lkps/kriteria-5-6"
+          href="/lkps/kriteria-5"
           className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Kembali ke Kriteria 5

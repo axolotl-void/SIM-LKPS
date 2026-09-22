@@ -46,7 +46,7 @@ const breadcrumbLabels: Record<string, string> = {
   "kriteria-2": "Kriteria 2",
   "kriteria-3": "Kriteria 3",
   "kriteria-4": "Kriteria 4",
-  "kriteria-5-6": "Kriteria 5 & 6",
+  "kriteria-5": "Kriteria 5",
   "kriteria-6": "Kriteria 6",
   evidence: "Bukti Pendukung",
   laporan: "Laporan",

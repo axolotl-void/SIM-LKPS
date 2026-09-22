@@ -12,7 +12,7 @@ const SLUG_BY_BAB: Record<number, string> = {
   2: "kriteria-2",
   3: "kriteria-3",
   4: "kriteria-4",
-  5: "kriteria-5-6",
+  5: "kriteria-5",
   6: "kriteria-6",
 };
 
@@ -26,7 +26,7 @@ const LABEL_BY_BAB: Record<number, string> = {
   6: "Diferensiasi Misi",
 };
 
-/** Slug route halaman kriteria, mis. `kriteria-5-6`. */
+/** Slug route halaman kriteria, mis. `kriteria-5`. */
 export function kriteriaSlug(bab: number): string {
   return SLUG_BY_BAB[bab] ?? `kriteria-${bab}`;
 }

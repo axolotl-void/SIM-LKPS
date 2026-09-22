@@ -3,8 +3,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import {
-  FileText, ArrowRight, Calendar, Eye, Target,
-  CheckCircle2, Clock, Users, Award,
+  FileText, ArrowRight, Calendar, Settings, Building2, CheckCircle2, Clock,
 } from "lucide-react";
 import type { Metadata } from "next";
 import type { LucideIcon } from "lucide-react";
@@ -12,24 +11,24 @@ import { STATUS_LABELS, STATUS_COLORS } from "@/lib/utils/permissions";
 import { TabelStatus } from "@prisma/client";
 
 export const metadata: Metadata = {
-  title: "Kriteria 6 — Diferensiasi Misi",
+  title: "Kriteria 5 — Akuntabilitas",
 };
 
-// Kodе tabel Kriteria 6 menurut instrumen LKPS LAM INFOKOM 2.1.
-// Daftar eksplisit (bukan `bab: 6`) supaya definisi nyasar tidak ikut tampil.
-const KODE_TABEL = ["6.1", "6.2"] as const;
+// Kodе tabel Kriteria 5 menurut instrumen LKPS LAM INFOKOM 2.1.
+// Daftar eksplisit (bukan `bab: 5`) supaya definisi nyasar tidak ikut tampil.
+const KODE_TABEL = ["5.1", "5.2"] as const;
 
 const TABLE_ICONS: Record<string, LucideIcon> = {
-  "6.1": Eye,
-  "6.2": Target,
+  "5.1": Settings,
+  "5.2": Building2,
 };
 
 const TABLE_DESCS: Record<string, string> = {
-  "6.1": "Data keselarasan visi, misi, dan tujuan program studi.",
-  "6.2": "Data strategi pencapaian tujuan program studi.",
+  "5.1": "Data sistem informasi tata kelola UPPS/PS.",
+  "5.2": "Data inventaris sarana dan prasarana pendidikan.",
 };
 
-export default async function Bab6Page() {
+export default async function Kriteria5Page() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
@@ -72,11 +71,11 @@ export default async function Bab6Page() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white/20 border border-white/30 transform hover:scale-105 transition-transform">
-                <Eye className="w-6 h-6 text-white" />
+                <Settings className="w-6 h-6 text-white" />
               </div>
               <div>
-                <span className="text-white/60 text-xs font-bold uppercase tracking-widest">KRITERIA 6 • Diferensiasi Misi</span>
-                <h1 className="text-white text-xl font-black tracking-tight">Visi dan Misi</h1>
+                <span className="text-white/60 text-xs font-bold uppercase tracking-widest">KRITERIA 5 • Akuntabilitas</span>
+                <h1 className="text-white text-xl font-black tracking-tight">Tata Kelola &amp; Sarana Prasarana</h1>
               </div>
             </div>
             <div className="relative w-16 h-16">
@@ -118,7 +117,7 @@ export default async function Bab6Page() {
           const staggerClass = `stagger-${Math.min(index + 1, 8)}`;
 
           return (
-            <Link key={def.id} href={`/lkps/kriteria-6/tabel-${def.kode.replace(/\./g, "")}`} className={`group relative block animate-fade-in-up ${staggerClass}`}>
+            <Link key={def.id} href={`/lkps/kriteria-5/tabel-${def.kode.replace(/\./g, "")}`} className={`group relative block animate-fade-in-up ${staggerClass}`}>
               <div className="relative h-full rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-slate-300">
                 <div className="relative h-20 bg-gradient-to-br from-slate-500 via-slate-600 to-slate-700">
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10" />

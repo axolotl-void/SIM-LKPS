@@ -134,11 +134,11 @@ test('4.C.3 - Page loads', async ({ page }) => {
 });
 
 test('5.1 - Page loads', async ({ page }) => {
-  await loginAndTest(page, '/lkps/kriteria-5-6/tabel-51', '5.1 - Sistem Tata Kelola');
+  await loginAndTest(page, '/lkps/kriteria-5/tabel-51', '5.1 - Sistem Tata Kelola');
 });
 
 test('5.2 - Page loads', async ({ page }) => {
-  await loginAndTest(page, '/lkps/kriteria-5-6/tabel-52', '5.2 - Sarana Prasarana');
+  await loginAndTest(page, '/lkps/kriteria-5/tabel-52', '5.2 - Sarana Prasarana');
 });
 
 test('6.1 - Page loads', async ({ page }) => {

@@ -27,12 +27,16 @@ const nextConfig: NextConfig = {
       { source: "/lkps/bab-2", destination: "/lkps/kriteria-2", permanent: true },
       { source: "/lkps/bab-3", destination: "/lkps/kriteria-3", permanent: true },
       { source: "/lkps/bab-4", destination: "/lkps/kriteria-4", permanent: true },
-      { source: "/lkps/bab-5", destination: "/lkps/kriteria-5-6", permanent: true },
+      { source: "/lkps/bab-5", destination: "/lkps/kriteria-5", permanent: true },
       { source: "/lkps/bab-6", destination: "/lkps/kriteria-6", permanent: true },
       // Spesifik dulu — Next.js mencocokkan redirects secara berurutan
-      { source: "/lkps/bab-5/tabel-:kode", destination: "/lkps/kriteria-5-6/tabel-:kode", permanent: true },
+      { source: "/lkps/bab-5/tabel-:kode", destination: "/lkps/kriteria-5/tabel-:kode", permanent: true },
       { source: "/lkps/bab-6/tabel-:kode", destination: "/lkps/kriteria-6/tabel-:kode", permanent: true },
       { source: "/lkps/bab-:n/tabel-:kode", destination: "/lkps/kriteria-:n/tabel-:kode", permanent: true },
+      // URL halaman gabungan lama (Kriteria 5 & 6) → Kriteria 5.
+      // Tabel 5.x dulu berada di bawah slug ini, jadi sub-path-nya ikut dipetakan.
+      { source: "/lkps/kriteria-5-6/tabel-:kode", destination: "/lkps/kriteria-5/tabel-:kode", permanent: true },
+      { source: "/lkps/kriteria-5-6", destination: "/lkps/kriteria-5", permanent: true },
     ];
   },
 
