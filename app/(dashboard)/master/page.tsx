@@ -5,8 +5,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import {
   Users,
-  GraduationCap,
-  BookOpen,
+  UserCircle2,
   Calendar,
   Building2,
   UserCog,
@@ -94,28 +93,12 @@ type AccentKey = keyof typeof ACCENT_CONFIG;
 // Compact module definitions
 const COMPACT_MODULES = [
   {
-    id: "matakuliah",
-    title: "Mata Kuliah",
-    description: "Kelola kurikulum & MK",
-    icon: BookOpen,
-    href: "/master/mata-kuliah",
-    accent: "violet" as AccentKey,
-  },
-  {
     id: "tahunakademik",
     title: "Tahun Akademik",
     description: "Periode & semester",
     icon: Calendar,
     href: "/master/tahun-akademik",
     accent: "amber" as AccentKey,
-  },
-  {
-    id: "prodi",
-    title: "Program Studi",
-    description: "Info program studi",
-    icon: Building2,
-    href: "/master/prodi",
-    accent: "rose" as AccentKey,
   },
   {
     id: "pengguna",
@@ -134,23 +117,17 @@ export default async function MasterDataPage() {
   // Get counts with details
   const [
     dosenCount,
-    mahasiswaCount,
     tahunAktif,
-    prodiCount,
     userCount,
     dosentetapCount,
-    mahasiswaregCount,
   ] = await Promise.all([
     db.dosen.count({ where: { isActive: true } }),
-    db.mahasiswa.count({ where: { isActive: true } }),
     db.tahunAkademik.findFirst({
       where: { isActive: true },
       select: { tahun: true, semester: true },
     }),
-    db.prodi.count(),
     db.user.count({ where: { isActive: true } }),
     db.dosen.count({ where: { isActive: true, status: "Tetap" } }),
-    db.mahasiswa.count({ where: { isActive: true, angkatan: { gte: 2024 } } }),
   ]);
 
   const accent = ACCENT_CONFIG;
@@ -212,7 +189,7 @@ export default async function MasterDataPage() {
             {tahunAktif ? `${tahunAktif.tahun} / ${tahunAktif.semester}` : "Tahun akademik belum diatur"}
           </p>
           <div className="flex items-center gap-4 text-xs text-slate-500">
-            <span>{dosenCount + mahasiswaCount + userCount} total entri</span>
+            <span>{dosenCount + userCount} total entri</span>
           </div>
         </div>
       </div>
@@ -276,66 +253,12 @@ export default async function MasterDataPage() {
 
               {/* Action Buttons */}
               <div className="mt-4 flex gap-2">
-                <MasterActions type="dosen" withDetailLink />
+                <MasterActions withDetailLink />
               </div>
             </div>
 
             {/* Bottom Accent Line */}
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-          </Link>
-        </div>
-
-        {/* ───────────────────────────────────────────────────────────── */}
-        {/* GRID 2: Featured Mahasiswa Card (Spans 5 cols) */}
-        {/* ───────────────────────────────────────────────────────────── */}
-        <div className="col-span-12 lg:col-span-5 animate-fade-in-up opacity-0" style={{ animationDelay: "100ms", animationFillMode: "forwards" }}>
-          <Link
-            href="/master/mahasiswa"
-            className="group relative block h-full overflow-hidden rounded-2xl border border-indigo-200/60 bg-white shadow-sm transition-all duration-300 hover:border-indigo-300/80 hover:shadow-indigo-100/60"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/60 to-blue-50/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-            <div className="relative p-5">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-100 shadow-sm">
-                    <GraduationCap className="h-6 w-6 text-indigo-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-slate-800">Mahasiswa</h3>
-                    <p className="text-xs text-slate-500">Data mahasiswa aktif</p>
-                  </div>
-                </div>
-                <ChevronRight className="h-5 w-5 text-slate-400 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-indigo-600" />
-              </div>
-
-              {/* Stats */}
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                <div className="rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 p-4 text-white">
-                  <span className="text-3xl font-bold">{mahasiswaCount}</span>
-                  <p className="mt-1 text-xs font-medium text-indigo-100">Mahasiswa Aktif</p>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between rounded-lg bg-indigo-50/80 px-3 py-2">
-                    <span className="text-xs font-medium text-slate-700">Reg. 2024+</span>
-                    <span className="font-semibold text-indigo-700">{mahasiswaregCount}</span>
-                  </div>
-                  <div className="flex items-center justify-between rounded-lg bg-blue-50/80 px-3 py-2">
-                    <span className="text-xs font-medium text-slate-700">Status</span>
-                    <span className="flex items-center gap-1 font-semibold text-blue-700">
-                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />
-                      Aktif
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 flex gap-2">
-                <MasterActions type="mahasiswa" />
-              </div>
-            </div>
-
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 to-blue-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           </Link>
         </div>
 
@@ -349,12 +272,10 @@ export default async function MasterDataPage() {
 
           // Stats mapping
           const statsMap: Record<string, { count: number; subtitle: string }> = {
-            matakuliah: { count: 48, subtitle: "mata kuliah" },
             tahunakademik: {
               count: tahunAktif ? 1 : 0,
               subtitle: tahunAktif ? `${tahunAktif.tahun}/${tahunAktif.semester}` : "belum ada",
             },
-            prodi: { count: prodiCount, subtitle: "program studi" },
             pengguna: { count: userCount, subtitle: "pengguna" },
           };
           const stats = statsMap[module.id];

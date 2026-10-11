@@ -1,0 +1,19 @@
+# .htaccess untuk subdomain (mis. lkps.bbg.ac.id) di cPanel/Apache — WHM/EA4.
+#
+# Taruh di docroot subdomain, mis. /home/<user>/lkps.bbg.ac.id/.htaccess
+# Syarat: mod_proxy + mod_proxy_http aktif (di EA4 biasanya sudah; cek lewat WHM →
+#         Apache Modules). Kalau tidak bisa diaktifkan, pakai jalur "Node.js App"
+#         (Passenger) atau Docker + proxy di level WHM (lihat README-deploy.md).
+
+<IfModule mod_proxy.c>
+  # Semua permintaan diteruskan ke aplikasi Next.js di localhost:3000
+  ProxyPreserveHost On
+  ProxyPass        /  http://127.0.0.1:3000/  connectiontimeout=10 timeout=120
+  ProxyPassReverse /  http://127.0.0.1:3000/
+
+  # Header asli pengirim harus sampai ke aplikasi, supaya HTTPS & IP terdeteksi benar.
+  # Tanpa ini Next.js mengira dirinya diakses lewat HTTP → cookie sesi (secure) tidak terkirim.
+  RequestHeader set X-Forwarded-Proto "https"
+  RequestHeader set X-Forwarded-Host  "%{HTTP_HOST}s"
+  RequestHeader set X-Real-IP         "%{REMOTE_ADDR}s"
+</IfModule>

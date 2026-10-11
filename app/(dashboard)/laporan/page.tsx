@@ -65,7 +65,7 @@ export default async function LaporanPage() {
       .sort((a, b) => a[0] - b[0])
       .map(([bab, stats]) => ({
         num: bab,
-        title: BAB_TITLES[bab] || `BAB ${bab}`,
+        title: KRITERIA_TITLES[bab] || `Kriteria ${bab}`,
         tableCount: stats.total,
         filled: stats.filled,
         disetujui: stats.disetujui,
@@ -87,13 +87,19 @@ export default async function LaporanPage() {
   );
 }
 
-const BAB_TITLES: Record<number, string> = {
-  1: "Tata Pamong",
-  2: "Pendidikan",
-  3: "Penelitian",
-  4: "Pengabdian",
-  5: "Tata Kelola",
-  6: "Visi Misi",
+/**
+ * Nama kriteria ditulis di sini karena database hanya menyimpan nomor bab.
+ * Istilah mengikuti LAM INFOKOM 2.1 (dan sama dengan yang dipakai di sidebar),
+ * bukan lagi nama bab format lama — supaya pengguna melihat istilah yang sama
+ * di seluruh aplikasi.
+ */
+const KRITERIA_TITLES: Record<number, string> = {
+  1: "Budaya Mutu",
+  2: "Relevansi Pendidikan",
+  3: "Relevansi Penelitian",
+  4: "Relevansi PkM",
+  5: "Akuntabilitas",
+  6: "Diferensiasi Misi",
 };
 
 interface BABStats {

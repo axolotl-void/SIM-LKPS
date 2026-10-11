@@ -80,6 +80,30 @@ model User {
   @@map("users")
 }
 
+/// Tiket sekali pakai dari SPMI (spmi.bbg.ac.id).
+///
+/// RANCANGAN-014: token SSO dari SPMI ditandatangani HMAC dan umurnya cuma 90
+/// detik, jadi sebenarnya sudah sulit dipakai ulang. Tabel ini menutup sisa
+/// celahnya: `jti` (id unik per token) dijadikan PRIMARY KEY, sehingga
+/// percobaan memakai tautan yang sama dua kali gagal karena bentrok kunci —
+/// bukan karena pemeriksaan waktu yang bisa meleset.
+///
+/// Baris lama aman dibiarkan; tidak memuat data pribadi selain email yang
+/// memang sudah ada di tabel `users`. Bersihkan sesekali:
+///   DELETE FROM sso_tiket WHERE dipakai_pada < now() - interval '30 days';
+model SsoTiket {
+  jti         String   @id
+  email       String
+  peran       String
+  // Dipetakan ke huruf kecil-garis bawah supaya sama dengan gaya penamaan
+  // tabel lain di database. Tanpa @map, Prisma mencari kolom "dipakaiPada"
+  // dan gagal dengan P2022 kalau tabelnya dibuat lewat SQL manual.
+  dipakaiPada DateTime @default(now()) @map("dipakai_pada")
+
+  @@index([email])
+  @@map("sso_tiket")
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -191,38 +215,6 @@ model Tendik {
 
   @@index([nama])
   @@map("tendik")
-}
-
-model Mahasiswa {
-  id           String   @id @default(cuid())
-  nim          String   @unique
-  nama         String
-  angkatan     Int      // 2020, 2021, ...
-  status       String   @default("Aktif") // "Aktif", "Cuti", "Lulus", "DO"
-  jenisKelamin String
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  @@index([angkatan])
-  @@index([status])
-  @@index([nama])
-  @@map("mahasiswa")
-}
-
-model MataKuliah {
-  id        String   @id @default(cuid())
-  kode      String   @unique
-  nama      String
-  sks       Int
-  semester  Int      // 1-8
-  kategori  String?  // "Wajib", "Pilihan"
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([semester])
-  @@map("mata_kuliah")
 }
 
 // ============================================================================

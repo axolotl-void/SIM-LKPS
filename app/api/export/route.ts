@@ -123,7 +123,7 @@ export async function GET(request: NextRequest) {
       }
 
       const tablesData = await getBabDataForExport(babNum, taId);
-      filename = `SIM-LKPS_${prodiStr}_BAB-${babNum}_${tahunStr}`;
+      filename = `SIM-LKPS_${prodiStr}_Kriteria-${babNum}_${tahunStr}`;
 
       if (format === "excel") {
         buffer = await generateExcelWorkbook({ tables: tablesData });

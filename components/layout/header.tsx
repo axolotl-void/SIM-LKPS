@@ -92,11 +92,11 @@ export function Header({ user }: HeaderProps) {
     <header className="flex items-center justify-between rounded-2xl border border-slate-200/60 bg-white px-5 py-3 shadow-sm">
       {/* Left: breadcrumb + title */}
       <div className="min-w-0 flex-1">
-        <nav className="flex items-center gap-1 text-[11px] text-slate-400">
+        <nav className="flex items-center gap-1 text-[13px] text-slate-500">
           <span className="font-medium">Home</span>
           {breadcrumbs.map((crumb) => (
             <span key={crumb.label} className="flex items-center gap-1">
-              <ChevronRight className="h-3 w-3 text-slate-300" />
+              <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
               <span
                 className={
                   crumb.isLast
@@ -109,7 +109,7 @@ export function Header({ user }: HeaderProps) {
             </span>
           ))}
         </nav>
-        <h1 className="mt-0.5 text-base font-bold tracking-tight text-slate-800">
+        <h1 className="mt-1 text-xl font-bold tracking-tight text-slate-800">
           {pageTitle}
         </h1>
       </div>
@@ -131,10 +131,10 @@ export function Header({ user }: HeaderProps) {
             {getInitials(user?.name)}
           </div>
           <div className="hidden flex-col sm:flex">
-            <span className="text-xs font-semibold leading-tight text-slate-800">
+            <span className="text-sm font-semibold leading-tight text-slate-800">
               {user?.name || "User"}
             </span>
-            <span className="text-[10px] font-medium leading-tight text-slate-400">
+            <span className="text-xs font-medium leading-tight text-slate-500">
               {roleLabel}
             </span>
           </div>

@@ -27,7 +27,7 @@ interface DashboardData {
     diajukan: number;
     ditolak: number;
   };
-  quickStats: { dosenCount: number; mahasiswaCount: number; mataKuliahCount: number; userCount: number; evidenceCount: number };
+  quickStats: { dosenCount: number; userCount: number; evidenceCount: number };
   isAdmin: boolean;
   recentLogs: Array<{
     id: string;
@@ -78,7 +78,6 @@ export function DashboardClient({ data }: { data: DashboardData }) {
             userRole={user.role}
             tablesFilled={stats.terisi}
             totalTables={stats.totalDefinitions}
-            mahasiswaCount={quickStats.mahasiswaCount}
             dosenCount={quickStats.dosenCount}
           />
 
@@ -97,11 +96,7 @@ export function DashboardClient({ data }: { data: DashboardData }) {
         {/* Right Column - Hidden on small screens, visible on lg and up */}
         <div className="hidden lg:flex w-80 xl:w-[340px] flex-shrink-0 flex-col gap-4 min-h-0">
           {/* Summary Card */}
-          <SummaryCard
-            dosenAktif={quickStats.dosenCount}
-            mahasiswaAktif={quickStats.mahasiswaCount}
-            mataKuliahAktif={quickStats.mataKuliahCount}
-          />
+          <SummaryCard dosenAktif={quickStats.dosenCount} />
 
           {/* Activity Card */}
           <ActivityCard activities={activities} />

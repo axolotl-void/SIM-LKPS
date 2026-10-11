@@ -73,3 +73,7 @@ tests/.auth/
 # ...tapi contohnya HARUS ikut ter-commit, supaya orang tahu cara mengisinya.
 # Tanpa baris di bawah, pola ".env*" di atas menelannya.
 !tests/.env.test.example
+
+# Contoh env untuk deploy (tanpa rahasia) tetap ikut di-commit.
+!deploy/.env.production.example
+!*/.env.example

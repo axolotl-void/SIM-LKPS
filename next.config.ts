@@ -8,6 +8,26 @@ const nextConfig: NextConfig = {
   // Header itu membantu penyerang memilih celah sesuai versi framework.
   poweredByHeader: false,
 
+  // Keluaran mandiri: `.next/standalone` berisi server Node lengkap dengan hanya
+  // dependensi yang benar-benar dipakai. Ini yang membuat aplikasi bisa dijalankan
+  // di server kampus (`node server.js`) tanpa mengangkut seluruh node_modules.
+  // Tidak mengubah apa pun di Vercel — di sana opsi ini diabaikan.
+  output: "standalone",
+
+  // pdfkit memuat berkas fontnya secara DINAMIS lewat nama berkas yang disusun
+  // saat runtime, sehingga penelusuran dependensi Next.js tidak menyertakannya
+  // ke `.next/standalone`. Di Vercel hal ini tidak terasa (berkasnya masih ada),
+  // tapi di server mandiri ekspor LED (PDF) gagal dengan
+  // "Cannot find module .../pdfkit/js/standard-fonts/Helvetica.cjs".
+  //
+  // Pola menunjuk ke jalur ASLI di dalam `.pnpm` — itu tempat berkasnya benar-
+  // benar berada, sedangkan `node_modules/pdfkit` cuma tautan simbolik dan
+  // tidak pernah cocok dengan pola ini. `pdfkit` sendiri adalah dependensi
+  // tidak langsung, jadi versinya ikut nomor di nama direktori.
+  outputFileTracingIncludes: {
+    "/**": ["./node_modules/.pnpm/pdfkit@*/node_modules/pdfkit/**/*"],
+  },
+
   // Image optimization
   images: {
     remotePatterns: [

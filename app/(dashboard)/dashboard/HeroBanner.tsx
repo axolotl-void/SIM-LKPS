@@ -8,7 +8,6 @@ interface HeroBannerProps {
   userRole: string;
   tablesFilled: number;
   totalTables: number;
-  mahasiswaCount: number;
   dosenCount: number;
 }
 
@@ -17,7 +16,6 @@ export function HeroBanner({
   userRole,
   tablesFilled,
   totalTables,
-  mahasiswaCount,
   dosenCount,
 }: HeroBannerProps) {
   const [animated, setAnimated] = useState(false);
@@ -161,11 +159,6 @@ export function HeroBanner({
             className="hero-chip rounded-xl p-2 sm:p-2.5"
             style={{ width: "clamp(100px, 12vw, 130px)", backdropFilter: "blur(16px)" }}
           >
-            <div className="flex items-center gap-2 py-1 sm:py-1.5 border-b border-gray-100">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />
-              <span className="text-[9px] sm:text-[10px] text-gray-600 flex-1">Mahasiswa</span>
-              <span className="text-[9px] sm:text-[10px] font-semibold text-gray-900">{mahasiswaCount}</span>
-            </div>
             <div className="flex items-center gap-2 py-1 sm:py-1.5 border-b border-gray-100">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
               <span className="text-[9px] sm:text-[10px] text-gray-600 flex-1">Dosen</span>

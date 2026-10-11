@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.github
+.vercel
+.local-scripts
+Sessions
+docs
+tests
+*.md
+.env*
+!.env.example
+coverage
+test-results
+.playwright
+.DS_Store
+*.log

@@ -1,0 +1,66 @@
+# SIM-LKPS di server kampus — semua port terikat ke 127.0.0.1.
+#
+# Pemakaian:
+#   cp deploy/.env.production.example deploy/.env.production   # lalu isi
+#   docker compose -f deploy/docker-compose.prod.yml --env-file deploy/.env.production up -d --build
+#
+# Yang menghadap internet cuma Apache/nginx di host (WHM/cPanel). Container ini
+# sengaja TIDAK di-`ports: "3000:3000"` ke publik.
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: sim-lkps:latest
+    container_name: sim-lkps-app
+    restart: unless-stopped
+    env_file: .env.production
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+
+  # OPSIONAL. Kalau kampus memaksa semua data ada di dalam (tidak boleh Neon/R2).
+  # Kalau tetap pakai Neon + Cloudflare R2, dua service di bawah boleh dihapus.
+  postgres:
+    image: postgres:16-alpine
+    container_name: sim-lkps-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-sim_lkps}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?isi di .env.production}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    container_name: sim-lkps-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:?isi di .env.production}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:?isi di .env.production}
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    volumes:
+      - minio_data:/data
+
+volumes:
+  postgres_data:
+  minio_data:

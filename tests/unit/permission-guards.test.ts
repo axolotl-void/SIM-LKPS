@@ -9,9 +9,10 @@ import { Role } from "@prisma/client";
  *
  * Sebelum perbaikan, beberapa server action hanya memeriksa "sudah login":
  *   - lib/actions/evidence.ts   (5 action, tanpa cek izin sama sekali)
- *   - lib/actions/mahasiswa.ts  (3 action)
- *   - lib/actions/matakuliah.ts (3 action)
  *   - lib/actions/lkps.ts       -> updateDosen, deleteDosen
+ *
+ * (lib/actions/mahasiswa.ts dan matakuliah.ts juga punya celah yang sama, tapi
+ *  keduanya DIHAPUS 9 Okt 2026 bersama menunya — datanya tidak dipakai lagi.)
  *
  * Akibatnya PIMPINAN -- yang menurut matriks izin bersifat read-only -- tetap
  * bisa memanggilnya langsung dari browser, karena sidebar yang menyembunyikan
@@ -119,12 +120,6 @@ describe("Setiap action yang mengubah data memanggil hasPermission()", () => {
     ["lib/actions/evidence.ts", "getEvidenceList", "evidence.read"],
     ["lib/actions/evidence.ts", "deleteEvidence", "evidence.delete"],
     ["lib/actions/evidence.ts", "addEvidenceLink", "evidence.create"],
-    ["lib/actions/mahasiswa.ts", "createMahasiswa", "master_data.create"],
-    ["lib/actions/mahasiswa.ts", "updateMahasiswa", "master_data.update"],
-    ["lib/actions/mahasiswa.ts", "deleteMahasiswa", "master_data.delete"],
-    ["lib/actions/matakuliah.ts", "createMatakuliah", "master_data.create"],
-    ["lib/actions/matakuliah.ts", "updateMatakuliah", "master_data.update"],
-    ["lib/actions/matakuliah.ts", "deleteMatakuliah", "master_data.delete"],
     ["lib/actions/lkps.ts", "createDosen", "master.dosen.create"],
     ["lib/actions/lkps.ts", "updateDosen", "master.dosen.update"],
     ["lib/actions/lkps.ts", "deleteDosen", "master.dosen.delete"],

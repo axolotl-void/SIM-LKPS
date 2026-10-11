@@ -1,0 +1,38 @@
+# systemd — dipakai kalau server kampus TIDAK memakai Docker.
+#
+# Pasang:
+#   sudo cp deploy/sim-lkps.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now sim-lkps
+#
+# Aplikasi diharapkan sudah di-build di /var/www/sim-lkps:
+#   pnpm install --frozen-lockfile && pnpm prisma generate && pnpm build
+# Hasil build ada di /var/www/sim-lkps/.next/standalone → jalankan `node server.js`.
+
+[Unit]
+Description=SIM-LKPS (Next.js) — server kampus
+After=network.target
+
+[Service]
+Type=simple
+User=simlkps
+Group=simlkps
+WorkingDirectory=/var/www/sim-lkps/.next/standalone
+# Berkas env: AUTH_SECRET, AUTH_URL, DATABASE_URL, MINIO_*, SSO_SPMI_SECRET
+# chmod 600, milik root — JANGAN di dalam docroot yang bisa diunduh.
+EnvironmentFile=/etc/sim-lkps.env
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOSTNAME=127.0.0.1
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=3
+
+# Pengerasan dasar
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/www/sim-lkps/.next/standalone
+
+[Install]
+WantedBy=multi-user.target

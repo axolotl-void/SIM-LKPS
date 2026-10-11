@@ -45,6 +45,7 @@ const { auth } = NextAuth(authConfig);
  */
 const JALUR_PUBLIK = [
   "/login",
+  "/masuk",              // SSO dari SPMI — RANCANGAN-014: tokennya sendiri yang jadi bukti, bukan sesi
   "/api/auth",           // alur login NextAuth sendiri
   "/api/health",         // pemantauan uptime, tidak memuat data
   "/_next",              // berkas statis Next.js

@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { GraduationCap, BookOpen, Users } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 
 interface SummaryCardProps {
   dosenAktif: number;
-  mahasiswaAktif: number;
-  mataKuliahAktif: number;
 }
 
 function clampNonNegative(n: number): number {
@@ -82,13 +80,11 @@ function StatRow({
   );
 }
 
-export function SummaryCard({ dosenAktif, mahasiswaAktif, mataKuliahAktif }: SummaryCardProps) {
+export function SummaryCard({ dosenAktif }: SummaryCardProps) {
   const reduced = useReducedMotion() ?? false;
 
   const d = clampNonNegative(dosenAktif);
-  const m = clampNonNegative(mahasiswaAktif);
-  const k = clampNonNegative(mataKuliahAktif);
-  const total = d + m + k;
+  const total = d;
 
   const totalAnimated = useCountUp(total, 700);
   const totalDisplay = reduced ? total : totalAnimated;
@@ -161,22 +157,6 @@ export function SummaryCard({ dosenAktif, mahasiswaAktif, mataKuliahAktif }: Sum
               value={d}
               tone="indigo"
               delay={0.15}
-              reduced={reduced}
-            />
-            <StatRow
-              icon={Users}
-              label="Mahasiswa Aktif"
-              value={m}
-              tone="sky"
-              delay={0.25}
-              reduced={reduced}
-            />
-            <StatRow
-              icon={BookOpen}
-              label="Mata Kuliah Aktif"
-              value={k}
-              tone="violet"
-              delay={0.35}
               reduced={reduced}
             />
           </div>

@@ -18,22 +18,6 @@ export const dosenSchema = z.object({
   jenisKelamin: z.enum(["L", "P"], { required_error: "Jenis kelamin wajib dipilih" }),
 });
 
-export const mahasiswaSchema = z.object({
-  nim: z.string().min(1, "NIM wajib diisi"),
-  nama: z.string().min(2, "Nama minimal 2 karakter"),
-  angkatan: z.number().int().min(2000).max(2100),
-  status: z.enum(["Aktif", "Cuti", "Lulus", "DO"]).default("Aktif"),
-  jenisKelamin: z.enum(["L", "P"], { required_error: "Jenis kelamin wajib dipilih" }),
-});
-
-export const mataKuliahSchema = z.object({
-  kode: z.string().min(1, "Kode MK wajib diisi"),
-  nama: z.string().min(2, "Nama MK minimal 2 karakter"),
-  sks: z.number().int().min(1, "SKS minimal 1").max(6, "SKS maksimal 6"),
-  semester: z.number().int().min(1).max(8),
-  kategori: z.enum(["Wajib", "Pilihan"]).optional(),
-});
-
 export const tendikSchema = z.object({
   nip: z.string().min(1, "NIP wajib diisi"),
   nama: z.string().min(2, "Nama minimal 2 karakter"),
@@ -45,6 +29,4 @@ export const tendikSchema = z.object({
 
 export type TahunAkademikInput = z.infer<typeof tahunAkademikSchema>;
 export type DosenInput = z.infer<typeof dosenSchema>;
-export type MahasiswaInput = z.infer<typeof mahasiswaSchema>;
-export type MataKuliahInput = z.infer<typeof mataKuliahSchema>;
 export type TendikInput = z.infer<typeof tendikSchema>;

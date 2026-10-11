@@ -20,9 +20,19 @@ import {
   Calculator,
   Award,
   Download,
+  ArrowLeft,
 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+
+/**
+ * Alamat SPMI kampus, untuk tombol "Kembali ke SPMI" di kartu bawah sidebar.
+ *
+ * Diatur lewat env `NEXT_PUBLIC_SPMI_URL` supaya tidak perlu ubah kode saat
+ * pindah server: di server uji nilainya spmi.zegika.com, di kampus nanti
+ * https://spmi.bbg.ac.id. Kalau env tidak diisi, dipakai alamat kampus.
+ */
+const SPMI_URL = process.env.NEXT_PUBLIC_SPMI_URL || "https://spmi.bbg.ac.id";
 
 interface MenuItem {
   label: string;
@@ -311,6 +321,22 @@ export const Sidebar = memo(function Sidebar({ role }: SidebarProps) {
               <UserCircle2 className="h-3.5 w-3.5" />
               Developer
             </Link>
+
+            {/*
+              Tautan balik ke SPMI. SENGAJA pakai <a>, bukan <Link>: tujuannya
+              domain lain, jadi Next.js tidak boleh mencoba navigasi sisi-klien.
+              Juga SENGAJA tidak memanggil signOut(): pengguna sering perlu
+              bolak-balik SPMI ⇄ SIM-LKPS, dan log keluar di sini akan memaksa
+              mereka memasukkan sandi SPMI lagi. Sesi SIM-LKPS tetap hidup, jadi
+              klik menu LAM Infokom berikutnya langsung masuk lagi.
+            */}
+            <a
+              href={SPMI_URL}
+              className="mt-2 inline-flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-white/30 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:bg-white/20 hover:border-white/50 hover:shadow-md"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              Kembali ke SPMI
+            </a>
           </div>
         </div>
       </div>

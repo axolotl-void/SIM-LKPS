@@ -18,8 +18,6 @@ export default async function DashboardPage() {
   const [
     totalDefinitions,
     dosenCount,
-    mahasiswaCount,
-    mataKuliahCount,
     userCount,
     evidenceCount,
     recentLogs,
@@ -27,8 +25,6 @@ export default async function DashboardPage() {
   ] = await Promise.all([
     db.tabelDefinition.count(),
     db.dosen.count({ where: { isActive: true } }),
-    db.mahasiswa.count({ where: { isActive: true } }),
-    db.mataKuliah.count({ where: { isActive: true } }),
     db.user.count({ where: { isActive: true } }),
     db.evidence.count(),
     db.auditLog.findMany({
@@ -150,7 +146,7 @@ export default async function DashboardPage() {
       diajukan: globalStats.diajukan,
       ditolak: globalStats.ditolak
     },
-    quickStats: { dosenCount, mahasiswaCount, mataKuliahCount, userCount, evidenceCount },
+    quickStats: { dosenCount, userCount, evidenceCount },
     isAdmin: userRole === "ADMIN",
     recentLogs: recentLogs.map((log) => ({
       id: log.id,
