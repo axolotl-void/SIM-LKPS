@@ -1,13 +1,18 @@
 # Deploy SIM-LKPS di server kampus (`lkps.bbg.ac.id`)
 
+> **Panduan langkah-demi-langkah untuk tim kampus: [`PANDUAN-INSTALASI.md`](./PANDUAN-INSTALASI.md).**
+> Berkas itu yang diberikan ke BTIK. Dokumen ini menjelaskan **mengapa** keputusannya begitu,
+> dan berguna kalau ada yang perlu diubah.
+
 ## Kondisi server kampus (hasil periksa 7 Okt 2026)
 
 | Hal | Kenyataan |
 |---|---|
 | Aplikasi SPMI | PHP native + mysqli, tanpa framework, tanpa git |
 | IP server | `103.87.67.248` (Biznet, Indonesia) |
-| Panel | **WHM/cPanel** — port 2087 (WHM) & 2086 **terbuka** → bukan shared hosting biasa, ini server yang adminnya punya akses root |
-| Port lain terbuka | 22 (SSH), 21 (FTP), 80, 443, 3306 (MySQL), 8080, 8443 |
+| Panel | **WHM/cPanel**. ⚠️ *Diperiksa ulang 2 Nov 2026:* port **2087 & 2086 TERTUTUP** dari internet. Panel hanya bisa diakses dari jaringan kampus; dari luar, satu-satunya jalan masuk adalah **SSH (22)**. |
+| Port lain terbuka | 22 (SSH), 80, 443. Port 3000, 8080, 8443, 3306 tertutup dari luar. |
+| OS | **Ubuntu 24.04** (`SSH-2.0-OpenSSH_9.6p1 Ubuntu-3ubuntu13.20`) — pakai `apt`, bukan `dnf`/`yum`. |
 | Depan | **Cloudflare** mem-proxy `bbg.ac.id` + `spmi.bbg.ac.id` (origin disembunyikan) |
 | Artinya | Node.js **bisa** dijalankan. Yang perlu diputuskan cuma caranya |
 
@@ -24,11 +29,11 @@ memakai image/build yang sama; yang beda cuma siapa yang menjalankan prosesnya.
 
 ```bash
 # di server, sekali saja
-dnf install -y docker-ce docker-compose-plugin || yum install -y docker docker-compose
+apt-get install -y docker.io docker-compose-v2   # server Ubuntu 24.04 (cek: lsb_release -d)
 systemctl enable --now docker
 
 # deploy
-cd /opt/sim-lkps && git clone <repo> .   # atau rsync dari Mac
+cd /opt/sim-lkps && git clone https://github.com/axolotl-void/SIM-LKPS.git .
 cp deploy/.env.production.example deploy/.env.production && nano deploy/.env.production
 docker compose -f deploy/docker-compose.prod.yml --env-file deploy/.env.production up -d --build
 ```
@@ -46,7 +51,7 @@ docker compose -f deploy/docker-compose.prod.yml exec app \
 
 ```bash
 sudo useradd -r -m -d /var/www/sim-lkps simlkps
-sudo -u simlkps git clone <repo> /var/www/sim-lkps
+sudo -u simlkps git clone https://github.com/axolotl-void/SIM-LKPS.git /var/www/sim-lkps
 cd /var/www/sim-lkps
 sudo -u simlkps corepack enable && sudo -u simlkps pnpm install --frozen-lockfile
 sudo -u simlkps pnpm prisma generate && sudo -u simlkps pnpm build
