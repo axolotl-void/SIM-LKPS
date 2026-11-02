@@ -1,7 +1,7 @@
 # Deploy SIM-LKPS di server kampus (`lkps.bbg.ac.id`)
 
 > **Panduan langkah-demi-langkah untuk tim kampus: [`PANDUAN-INSTALASI.md`](./PANDUAN-INSTALASI.md).**
-> Berkas itu yang diberikan ke BTIK. Dokumen ini menjelaskan **mengapa** keputusannya begitu,
+> Berkas itu yang dipakai saat memasang. Dokumen ini menjelaskan **mengapa** keputusannya begitu,
 > dan berguna kalau ada yang perlu diubah.
 
 ## Kondisi server kampus (hasil periksa 7 Okt 2026)

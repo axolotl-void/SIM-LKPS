@@ -1,6 +1,5 @@
 # Panduan Instalasi SIM-LKPS di Server Kampus
 
-**Untuk:** Tim BTIK / pengelola server
 **Tujuan:** SIM-LKPS berjalan di `https://lkps.bbg.ac.id`, tersambung ke SPMI
 **Waktu pengerjaan:** ±60 menit (di luar waktu tunggu SSL ±15 menit)
 
@@ -380,7 +379,7 @@ sudo systemctl restart sim-lkps
 ```
 
 > **Siapa yang menjalankan ini setelah mahasiswa lulus?** Ini pertanyaan serah
-> terima, bukan teknis. Sebaiknya ditunjuk satu orang di BTIK dan dicatat namanya.
+> terima, bukan teknis. Sebaiknya ditunjuk satu orang penanggung jawab dan dicatat namanya.
 
 ### Kalau `prisma/schema.prisma` berubah
 
